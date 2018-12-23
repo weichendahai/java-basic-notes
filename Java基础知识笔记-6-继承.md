@@ -1,4 +1,4 @@
-﻿Java基础知识笔记-6-继承
+Java基础知识笔记-6-继承
 
 # 6 继承
 &emsp;&emsp;继承是一种由已创建的类创建新类的机制，利用继承，我们先创建一个共有属性的一般类，根据一般类再创建具有特殊属性的新类，新类继承一般类的状态和行为，并根据需要增加他自己新的状态和行为，由继承得到的类称为子类，被继承的称为父类。  
@@ -372,6 +372,33 @@ monkey.computer(10,10);
 
 ---
 ## 6 多态
+&emsp;&emsp;如下面这个例子，显示了饲养员Feeder，食物Feed，动物Animal，以及它的子类的类框图
+
+可以把饲养员 动物和食物看作独立的子系统。Feeder类的定义如下：
+```
+public class Feeder{
+	public void feed(Animals animal,Food food){
+		animal.eat(food);
+	}
+}
+Feeder feeder=new Feeder();
+Animal animal=new Dog();
+Food food=new Bone();
+feeder.feed(animal,food);//给狗喂肉骨肉
+
+animal=new Cat();
+food=new Fish();
+feeder.feed(animal.food);//给猫喂鱼
+```
+&emsp;&emsp;以上animal变量被定义为Animal类型，但实际上有可能引用Dog或Cat的实例。可见animal变量有多种状态，一会变成猫，一会变成狗，这就是多态的字面含义。
+
+Java语言允许某个实例的引用变量引用子类的实例，而且可以对这个引用变量进行类型转换：
+```
+Animal animal=new Dog();
+Dog dog=(Dog)animal;//向下转型，把animal类型转换为Dog类型
+Creature creature=animal;//向上转型，把animal类型转换为Creature类型
+```
+&emsp;&emsp;如果把引用变量转换为子类类型，称为向下转型，如果把引用变量转换为父类类型，成为向上转型。在进行引用变量的类型转换时，会受到各种限制，而且在通过引用变量访问它所引用的实例的静态属性，静态方法，实例属性，实例方法，以及从父类中继承的方法和属性事，Java虚拟机会采用不同的绑定机制。
 
 ---
 ## 7 继承与多态（重写的方法支持多态性）
@@ -466,3 +493,11 @@ public class exercise{
 }
 ```
 &emsp;&emsp;关于抽象类和final参见笔记 Java基础知识笔记-5-Java语言中的修饰符
+
+> 继承的利弊和使用原则
+
+- 继承树的层次不可太多
+- 继承树的上层为抽象层
+- 继承关系最大的弱点：打破封装
+- 精心设计专门用于被继承的类
+- 区分对象的属性与继承
