@@ -1,0 +1,478 @@
+﻿Java基础知识笔记-4-类对象和方法
+# 4 类，对象和方法
+
+## 1 类的基础知识
+&emsp;&emsp;类是定义对象形式的模板，指定了数据，以及操作数据代码，java使用类的规范来构造对象，而对象是类的实例。因此，类实质上是一系列指定如何构建对象的计划，类是逻辑抽象结构，搞清楚这个问题非常重要，直到类的对象被创建时，内存中才会有类的物理表示。
+> 顶层类是指不是嵌套类的类
+
+> 嵌套类是指其声明出现在其他类体或接口体中的类
+
+**组成类的方法和变量被称为类的成员。数据成员也被称为实例变量**
+### 1.1 类的基本形式
+&emsp;&emsp;当定义类时，要声明类确切的形式和特性。这是通过指定类所包含的实例变量和操作它们的方法来实现的，但大多数实际的类一般都包含这两者。
+### 1.2 定义类
+&emsp;&emsp;类体分为两种：一部份是变量的声明，另一部分是方法的定义。
+#### 1.变量的声明
+> 在声明变量的时候可以赋值，但是不可以这样赋值
+```
+class A {
+	int a;
+	a=5;
+}
+```
+> 成员变量又分为实例变量和类变量，在声明成员变量时，用关键字static修饰的称作类变量（也被称为静态变量）将在第八节详细讲到
+#### 2.方法的定义
+实例代码：
+```
+Class Lader{
+	float above;
+	float bottom;
+	Float height;
+	float computer{
+	area=(above+bottom)*height/2;
+	Return area;
+	}
+}
+```
+
+---
+## 2 构造函数
+
+&emsp;&emsp;构造函数在创建对象时初始化对象。它与类同名，并且在语法上与方法相似。然而，构造函数没有显式的返回类型，通常，构造函数用来初始化类定义的实例变量，获知型其他创建完整对象所需要的启动过程。
+例如：
+```
+class Myclass(){
+    int x;
+    Myclass(){
+        x=10;
+    }
+}
+
+```
+> 上面这个构造函数不带参数，但需要注意的是，构造函数还可以带形参
+
+例如：
+```
+class MyClass(){
+	int x;
+	MyClass(int i){
+		x=i;
+	}
+}
+class ParmConsDemo{
+	public static void main(String args[]){
+		MyClass t1=new MyClass(10);
+		MyClass t2=new MyClass(20);
+		System.out.println(t1.x+","+t2.x);
+	}
+}
+```
+程序输出
+```
+10,20
+```
+构造函数定义了一个名为i的形参，用于初始化实例变量x.
+
+> 无论是否定义，所有的类都有构造函数，因为java自动提供了一个默认的构造函数将所有成员变量初始化为它们的初始值，即0,null,flase，分别用于数值类型，引用类型和布尔类型。当然，一旦定义自己的构造函数，就不会再使用默认的的构造函数了。
+
+---
+## 3 如何创建对象
+
+### 1.对象的声明
+```
+Lader lader;
+```
+&emsp;&emsp;**在Java中，对象总是作为引用来储存的，这意味着分配给变量lader的空间只够持有一个Lader对象的地址，**
+为了给对象中的变量预留空间，我们需要使用new操作符来分配新对象。
+
+### 2.为创建的对象分配变量
+
+&emsp;&emsp;使用new运算符和类的构造方法为声明的对象分配变量。**储存在lader中的值是一个指向内存中该数据结构的引用，而不是该数据结构自身，在Java中，对象总是作为引用来储存的**
+上面两步可以写作这样的一步：
+```
+Lader lader=new Lader();
+```
+
+---
+## 4 引用变量和赋值
+
+### 4.1 对象操作自己的变量（改变属性的值）
+```
+对象.变量
+```
+### 4.2 对象调用类中的方法（体现对象的功能）
+```
+对象.方法
+```
+### 4.3 体现封装
+
+&emsp;&emsp;当对象调用方法时，方法中出现的成员变量就是指分配给该对象的变量。在讲述类的时候我们讲过类中的方法可以操作成员变量。当对象调用方法时，方法中出现的成员变量就是指分配给该对象的变量。
+```
+class XiyoujiRenwu{
+	float height,weight;  
+	String head,ear,hand,foot,nouth;
+	void speak(Strings) {
+		head="歪着头”;
+		Systen.out.printin(s);
+	}
+}
+
+public class Example5_3 {
+	public static void main(String args[]){
+		XiyoujiRenwu zhubajie,sunwukong;  //声明对象
+		zhubajie = new XiyoujiRenwu();  //为对象分配变量
+		sunwukong = new Xiyouj iRenwu();
+		zhubajie.height= 1.80f;  //对象给自己的变量赋值
+		zhubajie.head="大头";
+		zhubajie.ear="一双大耳朵";
+		sunwukong.height= 1.62f;  //对象给自己的变量赋值
+		sunwukong.weight= 1000f;
+		sunwukong.head="秀发飘飘";
+		System.out.println("zhubajie的身高:”+ zhubajie.height);
+		System.out.printIn(" zhubajie的头:”+ zhubajie.head);
+		System.out.println("sunwukong的重量:" + sunnukong.weight);
+		System.out.println("sunwukong的头:”+ sunmukong. head);
+		zhubajie.speak("俺老猪我想娶媳妇");  //对象调用方法
+		Systen.out.println("zhubajie现在的头:”+ zhubajie.head);
+		sunmukong.speak("老孙我重1000斤，我想骗八戒背我");  //对象调用方法
+		Systen.out.println(" sunwnukong现在的头:”+ sunwukong.head);
+	}
+}
+```
+&emsp;&emsp;我们知道:类中的方法可以操作成员变量，当对象调用该方法时，方法中出现的成员变量就是指该对象的成员变量。在例5.3中，当对象zhubajie调用过方法speak之后，就将自己的头改成歪着头，后一个对象调用方法后也是这样。
+
+### 4.4 对象的引用和引申
+
+&emsp;&emsp;类是体现封装的一种数据结构，类声明的变量称作对象，对象中负责存放引用，以确保对象可以操作分配给该对象的变量以及调用类中的方法。分配给对象的变量习惯的称作对象的实体。
+#### 1.避免使用空对象
+&emsp;&emsp;没有实体的对象称作空对象，空对象不能使用。
+#### 2.垃圾收集
+例如
+```
+Point p1=new Point(5,15);
+Point p2=new Point(8,18);
+P1=p2;
+```
+&emsp;&emsp;这个时候输出p1.x是8而不是5，与C++不同，这里的类有构方法，没有析构方法，JAVA默认有垃圾收集机制。
+
+---
+## 5 参数传值
+&emsp;&emsp;方法中最重要的部分之一就是方法的参数，参数属于局部变量，当对象调用方法时，参数被分配到内存空间，并要求调用者向参数传递值，即方法被调用时，参数变量必须有具体的值。
+### 5.1 传值机制
+&emsp;&emsp;Java中，方法所有的参数都是传值的，也就是说，方法中参数变量的值是调用者指定值的复制。
+### 5.2 基本数据类型参数的传值
+```
+package test1;
+import java.util.Scanner;
+
+class Circle{
+	double radius,area;
+	Circle(){
+}
+	Circle(double r){
+		radius=r;
+	}
+	void setRadius(double r) {
+		if(r>0) {
+			radius=r;
+		}
+	}
+	double getRadius() {
+		return radius;
+	}
+	double getArea() {
+		area=3.14*radius*radius;
+		return area;
+	}
+}
+
+class Circular{
+	Circle bottom;
+	double height;
+	Circular(Circle c,double h){
+		bottom=c;
+		height=h;
+	}
+	double getVolme() {
+		return bottom.getArea()*height/3.0;
+	}
+	double getBottomRadius() {
+		return bottom.getRadius();
+	}
+	public void setBottomRadius(double r) {
+		bottom.setRadius(r);
+	}
+}
+
+
+public class exercise {
+	public static void main(String args[]) {
+		Circle circle=new Circle(10);
+		System.out.println("main方法中circle的引用："+circle);
+		System.out.println("main方法中circle的半径："+circle.getRadius());
+		Circular circular=new Circular(circle,20);
+		System.out.println("circular圆锥的bottom的引用："+circular.bottom);
+		System.out.println("圆锥的bottom的半径："+circular.getVolme());
+		System.out.println("圆锥的体积："+circular.getVolme());
+		double r=8888;
+			System.out.println("圆锥更改底园bottom的半径："+r);
+		circular.setBottomRadius(r);
+		System.out.println("圆锥的bottom的半径："+circular.getBottomRadius());
+		System.out.println("圆锥的体积："+circular.getVolme());
+		System.out.println("main方法中circle的半径"+circle.getRadius());
+		System.out.println("main方法中circle的引用将会发生变化");
+		circle=new Circle(1000);
+		System.out.println("现在mian方法中circle的引用："+circle);
+		System.out.println("main方法中circle的引用："+circle.getRadius());
+		System.out.println("但是不影响circular圆锥的bottom的引用");
+		System.out.println("circular圆锥的bottom引用"+circular.bottom);
+		System.out.println("圆锥的bottom的半径："+circular.getBottomRadius());
+	}
+}
+```
+
+---
+## 6 深入介绍new运算符
+&emsp;&emsp;new运算符的基本形式如下：
+```
+class-var=new class-name(arg-list);
+```
+&emsp;&emsp;这里，class-var是要创建的类类型的变量，class-name是被初始化的类的类名。圆括号包含的实参列表（可以为空）前面的类名指定了类的构造函数。如果类不定义自己的构造函数，那么new将使用java默认的构造函数。因此，new可以创建任何类型的对象。new对象返回对新创建对象的引用。
+
+&emsp;&emsp;内存是有限的，由于内存不足，new可能无法为对象分配内存，如果出现这种情况，就会发生运行时异常。
+
+---
+
+## 7 垃圾收集
+
+> *前面已经记录，这次又一次重申*
+
+### 7.1 避免使用空对象
+&emsp;&emsp;没有实体的对象称作空对象，空对象不能使用。
+### 7.2 垃圾收集
+例如
+```
+Point p1=new Point(5,15);
+Point p2=new Point(8,18);
+P1=p2;
+```
+&emsp;&emsp;这个时候输出p1.x是8而不是5，与C++不同，这里的类有构方法，没有析构方法，JAVA默认有垃圾收集机制。
+
+---
+## 8 实例成员与类成员
+### 8.1 实例变量和类变量的声明
+&emsp;&emsp;类体中包括变量的声明和方法的定义
+
+&emsp;&emsp;成员变量又分为实例变量和类变量，在声明成员变量时，用关键字static修饰的称作类变量（也被称为静态变量）
+```
+class Dog{
+	float x;
+	static int y;
+}
+```
+### 8.2 实例变量和类变量的区别
+#### 1.不同对象的实例变量互不相同
+&emsp;&emsp;**分配给不同的对象的实例变量占有不同的内存空间。**
+#### 2.所有对象共享类变量
+#### 3.可以通过类名直接访问类变量
+- 类的静态变量在内存中只有一个，Java虚拟机在加载类的过程中为静态变量分配内存，静变量位于方法区，被类的所有实例共享。静态变量可以直接通过类名访问。
+- 类的每个实例都有相应的实例变量，每当创建一个类的实例，Java虚拟机就会为实例变量分配一次内存，实例变量位于堆区中。实例变量的生命周期取决于实例的生命周期，当创建实力的时候，实例变量被创建并分配内存，当销毁实例的时候，实例变量被销毁并撤销内存。
+
+&emsp;&emsp;改变其中一个对象的类变量就同时改变了其他对象的这个类变量。
+
+### 8.3 实例方法和类方法的定义
+&emsp;&emsp;用关键字static修饰的称作类方法
+
+> 见Java基础教程笔记-5-Java语言中的修饰符 4.2 static方法
+
+### 8.4 实例方法和类方法的区别
+#### 1.对象调用实例方法
+&emsp;&emsp;当类的字节码文件加载到内存时，类的实例方法不会被分配入口地址，只有该类创建对象后，类中的实例方法才分配入口地址。
+
+&emsp;&emsp;需要注意的是，当我们创建第一个对象时，类中的实例方法就分配了入口地址，当再创建对象时，不再分配入口地址，**也就是说，方法的入口地址被所有对象共享，当所有对象都不存在时，方法的入口地址才会被取消。**
+
+#### 2.类名调用类方法
+&emsp;&emsp;对于类中的类方法，在该类被加载到内存时，就分配了相应的入口地址，从而类方法不仅可以被类创建的任何对象调用执行，也可以被类名调用执行，**类方法的入口地址直到程序退出才被取消。**  
+
+&emsp;&emsp;**和实例方法不同的是，类方法不可以操作实例变量，这是因为在类创建对象之前，实例成员变量还没有分配内存。**
+```
+class Village{
+	static int treeAmount;
+	int peopleNumber;
+	String name;
+	Village(String s){
+		name=s;
+	}
+	void treePlanting(int n) {
+		treeAmount=n+treeAmount;
+		System.out.println(name+"植树"+n+"棵");
+	}
+	void feelTree(int n) {
+		if(treeAmount-n>0){
+			treeAmount=treeAmount-n;
+			System.out.println(name+"伐木"+n+"棵");
+		}
+		else {
+			System.out.println("无树木可伐");
+		}
+	}
+	static int loolTreeAmount() {
+		return treeAmount;
+	}
+	void addPeopleNumber(int n) {
+		peopleNumber=n+peopleNumber;
+		System.out.println(name+"增加了"+n+"人");
+	}
+}
+
+public class exercise{
+	public static void main(String args[]) {
+		Village zhaoZhuang,maJiaZhi;
+		zhaoZhuang=new Village("赵庄");
+		maJiaZhi=new Village("马家河子");
+		zhaoZhuang.peopleNumber=100;
+		maJiaZhi.peopleNumber=150;
+		Village.treeAmount=200;
+		int lefttree=Village.treeAmount;
+		System.out.println("森林中有"+lefttree+"棵树");
+		zhaoZhuang.treePlanting(50);
+		maJiaZhi.treePlanting(100);
+		System.out.println("森林中有"+Village.treeAmount+"棵树");
+	}
+}
+```
+---
+## 9 方法重载与多态
+&emsp;&emsp;在java中，同一个类的两个或者多个方法可以共享一个名称，只要它们的形参声明不一样就可以。当这种情况发生时，就称方法被重载了（overloaded)，这一过程称为方法重载。方法重载是java实现多态性的途径之一。
+
+&emsp;&emsp;方法重载的意思是一个类中可以有多个方法具有相同的名字，但这些方法的参数必须不相同，即或者是参数的个数不相同，或者是参数的类型不相同。  
+
+&emsp;&emsp;必须注意以下重要限制：每个被重载的方法的形参类型和数量必须不同，两个方法仅返回类型不同是不够的。当然，被重载的方法的返回类型也可以是不一样的。当调用被重载的方法时，将执行形参与实参相匹配的那个方法。
+
+重载方法必须满足以下条件：
+- 方法名相同
+- 方法的参数类型，个数，顺序至少有一项不相同
+- 方法的返回类型可以不相同
+- 方法的修饰符可以不相同
+
+&emsp;&emsp;**方法的返回类型和参数的名字不参与比较，也就是说如果两个方法的名字相同，即使类型不同，也必须保证参数不同。**
+
+> Java中存在两种多态，重载和重写，重写是与继承有关的多态，下一章讨论。    
+
+实例：
+```
+class Overload{
+	void ovlDemo(){
+		System.out.println("No parameters");
+	}
+	void ovlDemo(int a){
+		System.out.println("One parameter"+a);
+	}
+	int ovlDemo(int a,int b){
+		System.out.println("Two parameter"+a+" "+b);
+		return a+b;
+	}
+	double ovlDemo(double a,double b){
+		System.out.println("Two double parameter"+a+" "+b);
+		return a+b;
+	}
+}
+```
+&emsp;&emsp;方法重载支持多态性，因为它是java实现单接口，多方法的途径之一。考虑下面的内容，就会理解其中的原因，在不支持方法重载的语言中，每一种方法必须被赋予惟一的名称。
+
+> Tips 什么是签名？
+
+&emsp;&emsp;在java中，签名指的是方法名及其形参列表，因此，在重载时，一个类的两个方法不能具有相同的签名，注意，签名不包含返回类型，因为java不使用签名进行重载解析。
+
+### 关于重载构造函数（需要注意）
+&emsp;&emsp;与方法一样，构造函数也可以被重载，这样就可以用不同的方法来构造对象了。
+
+---
+## 10 this关键字
+
+&emsp;&emsp;this是Java中的一个关键字，表示某个对象。  
+&emsp;&emsp;**this可以出现在==实例方法==和==构造方法==中，但是不可以出现在类方法中。**
+
+### 10.1 在构造方法中使用this
+```
+public class People{
+	int leg,hand;
+	String name;
+	People(String s){
+		name=s;
+		this.init();//可以省略this，写成init()
+	}
+	void init() {
+		leg=2;
+		hand=2;
+		System.out.println(name+"有"+hand+"只手"+leg+"只脚");
+	}
+	public static void main(String args[]) {
+		People boshi=new People("布什");
+	}
+}
+```
+### 10.2 在实例方法中使用this
+&emsp;&emsp;实例方法必须通过对象来调用，不能通过类名来调用；当this出现在实例方法中，代表正在调用该方法的当前对象。  
+
+&emsp;&emsp;实例方法可以操作类的成员变量，当实例成员变量在实例方法中出现时，默认的格式是：
+```
+this.成员变量
+```
+而static成员变量在实例方法中出现时，默认的格式是：
+```
+类名.成员变量
+```
+如：
+```
+clsaa A{
+	int a;
+	static int y;
+	void f(){
+	this.x=100;
+	A.y=200;
+	}
+}
+```
+&emsp;&emsp;当实例成员变量的名字和局部变量的名字相同时，成员变量前面的this.或者类名.就不可省略  
+
+&emsp;&emsp;我们知道类的实例方法能调用类的其他方法，对于实例方法的调用的默认格式是：
+```
+this.方法
+```
+&emsp;&emsp;但是对于类方法调用的默认格式是：
+```
+类名.方法；
+```
+例如：
+```
+class B{
+	void f(){
+		this.g();
+		B.h();
+	}
+	void g(){
+		System.out.println("ok");
+	}
+	static void h(){
+		System.out.println("hello");
+	}
+}
+```
+&emsp;&emsp;在上述B类方法中出现了this，this代表调用方法f的当前对象，所以，方法f的方法体中this.g()就是当前对象调用方法g，也就是说，当某个对象调用方法f的过程中，又调用了方法g。由于这种逻辑关系非常明确，一个实例方法调用另一个方法时可以省略方法名字前面的"this."或"类名."  
+例如：
+```
+class B{
+	void f(){
+		.g();
+		h();
+	}
+	void g(){
+		System.out.println("ok");
+	}
+	static void h()){
+		System.out.println("hello");
+	}
+}
+```
+&emsp;&emsp;需要注意的是：**this不能出现在类方法中，这是因为，类方法可以通过类名直接调用，这时，可能还没有任何对象诞生。**
