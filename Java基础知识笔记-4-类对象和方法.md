@@ -21,6 +21,7 @@ class A {
 }
 ```
 > 成员变量又分为实例变量和类变量，在声明成员变量时，用关键字static修饰的称作类变量（也被称为静态变量）将在第八节详细讲到
+
 #### 2.方法的定义
 实例代码：
 ```
@@ -36,9 +37,40 @@ Class Lader{
 ```
 
 ---
-## 2 构造函数
+## 2 如何创建对象
+
+有四种显式创建对象的方式：
+- 用new语句创建对象，这是最常用的创建对象的方式。
+- 运用反射手段，调用java.lang.Class或者java.lang.reflect.Constructor类的newInstance()实例方法
+- 调用对象的clone()方法
+- 运营反序列化手段，调用java.io.ObjectInputStream对象的readObject()方法，具体见对象的序列化和反序列化
+
+一下重点讲new方法
+### 1.对象的声明
+```
+Lader lader;
+```
+&emsp;&emsp;**在Java中，对象总是作为引用来储存的，这意味着分配给变量lader的空间只够持有一个Lader对象的地址，**
+为了给对象中的变量预留空间，我们需要使用new操作符来分配新对象。
+
+### 2.为创建的对象分配变量
+
+&emsp;&emsp;使用new运算符和类的构造方法为声明的对象分配变量。**储存在lader中的值是一个指向内存中该数据结构的引用，而不是该数据结构自身，在Java中，对象总是作为引用来储存的**
+上面两步可以写作这样的一步：
+```
+Lader lader=new Lader();
+```
+
+---
+## 3 构造函数
 
 &emsp;&emsp;构造函数在创建对象时初始化对象。它与类同名，并且在语法上与方法相似。然而，构造函数没有显式的返回类型，通常，构造函数用来初始化类定义的实例变量，获知型其他创建完整对象所需要的启动过程。
+
+&emsp;&emsp;归纳可知构造方法必须满足以下语法规则：
+- 方法名必须与类名相同
+- 不要声明返回类型
+- 不能被static final abstract native修饰，构造方法不能被子类继承，所以用final和abstract修饰没有意义。构造方法用于初始化一个新建的对象，所以用static修饰没有意义，Java语言不支持native类型的构造方法
+
 例如：
 ```
 class Myclass(){
@@ -46,6 +78,8 @@ class Myclass(){
     Myclass(){
         x=10;
     }
+    public int Myclass(){
+    }//不是构造方法，有返回值
 }
 
 ```
@@ -73,25 +107,74 @@ class ParmConsDemo{
 ```
 构造函数定义了一个名为i的形参，用于初始化实例变量x.
 
+### 3.1 重载构造方法
+&emsp;&emsp;当通过new语句创建一个对象时，在不同的条件下，对象可能会有不同的初始化行为，例如，对于公司新进来的一个雇员，在开始的时候，有可能他的名字和年龄都是未知的，也有可能仅仅他的名字是已知的，也有可能两者都是已知的。如果姓名是未知的，那么就把姓名改为 无名氏，如果年龄是未知的，就把年龄设为-1
+
+&emsp;&emsp;可通过重载构造函数来表达对象的多种初始化行为，比如下面的例子的构造方法有三种重载形式，在一个类的多个构造方法中，可能会出现一些重复操作。为了提高代码的可重用性，Java语言允许在一个构造方法中，用this语句来调用另一个构造方法。
+```
+public class Employee{
+	private String name;
+	private int age;
+	
+	public Employee(String name,int age){
+		this.name=name;
+		this.age=age;
+	}
+	
+	public Employee(String name){
+		this(name,-1);
+	}
+	public Employee(){
+		this("无名氏");
+	}
+	public void setName(String name){
+		this.name=name;
+	}
+	public String setName(){
+		return name;
+	}
+	public void setAge(int age){
+		this.age=age;
+	}
+	public int getAge{
+		return age;
+	}
+}
+```
+&emsp;&emsp;以下程序分别通过3个构造方法创建了3个Employee对象:
+```
+Employee zhangsan=new Employee("张三",25);
+Employee zhang=new Employee("张三");
+Employee zh=new Employee();
+```
+&emsp;&emsp;用this语句来调用其他构造方法时，必须遵循以下语法规则：
+
+- 假如在一个构造方法中使用了this语句，那么它必须作为构造方法的第一条语句，比如下面的构造方法是错误的
+```
+public Employee(){
+	String name="无名氏";
+	this(name);//编译错误，this语句必须作为第一条语句
+}
+```
+- 只能在一个构造方法中使用this语句来调用类的其他构造方法，而不能在实例方法中用this语句来调用类的其他构造方法
+- 只能用this语句来调用其他构造方法，而不能通过方法名来直接调用构造方法。以下对构造方法的调用是非法的
+```
+public Employee(){
+	String name="无名氏";
+	Employee(name);//编译错误，不能通过方法名来直接调用构造方法
+```
+
+### 3.2 默认构造方法
 > 无论是否定义，所有的类都有构造函数，因为java自动提供了一个默认的构造函数将所有成员变量初始化为它们的初始值，即0,null,flase，分别用于数值类型，引用类型和布尔类型。当然，一旦定义自己的构造函数，就不会再使用默认的的构造函数了。
 
----
-## 3 如何创建对象
+### 3.3 子类调用父类的构造方法
+&emsp;&emsp;详见下一节的super关键字
 
-### 1.对象的声明
-```
-Lader lader;
-```
-&emsp;&emsp;**在Java中，对象总是作为引用来储存的，这意味着分配给变量lader的空间只够持有一个Lader对象的地址，**
-为了给对象中的变量预留空间，我们需要使用new操作符来分配新对象。
-
-### 2.为创建的对象分配变量
-
-&emsp;&emsp;使用new运算符和类的构造方法为声明的对象分配变量。**储存在lader中的值是一个指向内存中该数据结构的引用，而不是该数据结构自身，在Java中，对象总是作为引用来储存的**
-上面两步可以写作这样的一步：
-```
-Lader lader=new Lader();
-```
+### 3.4 构造方法的作用域
+&emsp;&emsp;构造方法只能通过以下方式被调用：
+- 当前类其他构造方法通过this语句调用它
+- 当前类的子类的构造方法通过super语句来调用它
+- 在程序中通过new语句调用它
 
 ---
 ## 4 引用变量和赋值
