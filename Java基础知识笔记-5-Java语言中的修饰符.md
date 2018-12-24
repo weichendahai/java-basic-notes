@@ -2,6 +2,7 @@
 
 # 5 Java语言中的修饰符
 &emsp;&emsp;表中的类仅限于顶层类，而不包括内部类。内部类是指定义在类或方法中的类。
+
 修饰符 | 类 | 成员方法 | 构造方法 | 成员变量 | 局部变量
 ---|---|---|---|---|---
 abstract |Y|Y|-|-|-
@@ -10,6 +11,7 @@ pubic |Y|Y|Y|Y|-
 protected |-|Y|Y|Y|-
 private |-|Y|Y|Y|-
 final |Y|Y|-|Y|Y
+
 &emsp;&emsp;从上表可以看出：修饰顶层类的修饰符包括：abstract,public,final,而static,protected,private不能修饰顶层类。成员方法和成员变量可以有多种修饰符，而局部变量只能用final来修饰。
 
 ## 5.1 访问控制修饰符
