@@ -107,13 +107,68 @@ class ParmConsDemo{
 ```
 构造函数定义了一个名为i的形参，用于初始化实例变量x.
 
-> 无论是否定义，所有的类都有构造函数，因为java自动提供了一个默认的构造函数将所有成员变量初始化为它们的初始值，即0,null,flase，分别用于数值类型，引用类型和布尔类型。当然，一旦定义自己的构造函数，就不会再使用默认的的构造函数了。
-
-### 重载构造方法
-
+### 3.1 重载构造方法
 &emsp;&emsp;当通过new语句创建一个对象时，在不同的条件下，对象可能会有不同的初始化行为，例如，对于公司新进来的一个雇员，在开始的时候，有可能他的名字和年龄都是未知的，也有可能仅仅他的名字是已知的，也有可能两者都是已知的。如果姓名是未知的，那么就把姓名改为 无名氏，如果年龄是未知的，就把年龄设为-1
 
 &emsp;&emsp;可通过重载构造函数来表达对象的多种初始化行为，比如下面的例子的构造方法有三种重载形式，在一个类的多个构造方法中，可能会出现一些重复操作。为了提高代码的可重用性，Java语言允许在一个构造方法中，用this语句来调用另一个构造方法。
+```
+public class Employee{
+	private String name;
+	private int age;
+	
+	public Employee(String name,int age){
+		this.name=name;
+		this.age=age;
+	}
+	
+	public Employee(String name){
+		this(name,-1);
+	}
+	public Employee(){
+		this("无名氏");
+	}
+	public void setName(String name){
+		this.name=name;
+	}
+	public String setName(){
+		return name;
+	}
+	public void setAge(int age){
+		this.age=age;
+	}
+	public int getAge{
+		return age;
+	}
+}
+```
+&emsp;&emsp;以下程序分别通过3个构造方法创建了3个Employee对象:
+```
+Employee zhangsan=new Employee("张三",25);
+Employee zhang=new Employee("张三");
+Employee zh=new Employee();
+```
+&emsp;&emsp;用this语句来调用其他构造方法时，必须遵循以下语法规则：
+
+- 假如在一个构造方法中使用了this语句，那么它必须作为构造方法的第一条语句，比如下面的构造方法是错误的
+```
+public Employee(){
+	String name="无名氏";
+	this(name);//编译错误，this语句必须作为第一条语句
+}
+```
+- 只能在一个构造方法中使用this语句来调用类的其他构造方法，而不能在实例方法中用this语句来调用类的其他构造方法
+- 只能用this语句来调用其他构造方法，而不能通过方法名来直接调用构造方法。以下对构造方法的调用是非法的
+```
+public Employee(){
+	String name="无名氏";
+	Employee(name);//编译错误，不能通过方法名来直接调用构造方法
+```
+
+### 3.2 默认构造方法
+> 无论是否定义，所有的类都有构造函数，因为java自动提供了一个默认的构造函数将所有成员变量初始化为它们的初始值，即0,null,flase，分别用于数值类型，引用类型和布尔类型。当然，一旦定义自己的构造函数，就不会再使用默认的的构造函数了。
+
+### 3.3 子类调用父类的构造方法
+&emsp;&emsp;详见下一节的super关键字
 
 ---
 ## 4 引用变量和赋值
