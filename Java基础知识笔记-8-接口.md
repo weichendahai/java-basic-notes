@@ -2,6 +2,10 @@ Java基础知识笔记-8-接口
 
 # 接口
 
+&emsp;&emsp;在Java语言中，接口有两种意思
+- 一是指概念性的接口，即指系统对外提供的所有服务，类的所有能被外部使用者访问的方法构成了类的接口
+- 二是指interface关键字定义的实实在在的接口，也称为接口类型。
+
 &emsp;&emsp;在面相对象程序设计中，定义一个类必须做什么而不是怎么做有时是很有益的。前面有一个这样的例子：抽象方法为方法定义了签名，但不提供实现方式。子类必须自己实现由其父类定义的抽象方法。这样，抽象方法就指定了方法的接口而不是实现。尽管抽象类和方法很有用，但还可以将这一概念进一步延伸。在java中，可使用关键字interface把类的接口和实现方法完全分开。
 
 &emsp;&emsp;使用关键字interface来定义一个接口。接口的定义和类的定义很相似，分为接口的声明和接口体
@@ -15,10 +19,11 @@ interface Printable{
 ```
 ### 1.接口声明
 &emsp;&emsp;接口包含接口声明和接口体，和类不同的是，接口声明使用关键字interface来表明自己是一个接口。
+
 ### 2.接口体
 &emsp;&emsp;接口体包含常量的声明（没有变量）和抽象方法两部分。
 
-&emsp;&emsp;接口体中中只有抽象的方法和普通的方法。而且接口体中所有常量的访问权限一定都是public（允许省略public，final修饰符），所有的抽象方法的访问权限一定都是public（允许省略public，abstract修饰符）例如：
+#### 接口体中中只有抽象的方法和普通的方法。而且接口体中所有常量的访问权限一定都是public（允许省略public，final修饰符），所有的抽象方法的访问权限一定都是public（允许省略public，abstract修饰符）例如：
 ```
 interface Printable{
 	public final int MAX=100;
@@ -26,7 +31,7 @@ interface Printable{
 	public abstract float sum(float x,float y);
 }
 ```
-> 在JDK8以前的版本中，接口只能包含抽象方法，从JDK8开始，为了提高代码的可重用性，允许在接口中定义默认方法和静态方法。默认方法用default关键字来声明，拥有默认的实现，接口的实现类既可以直接访问默认方法，也可以覆盖它，重新实现该方法，例如下例：
+#### 在JDK8以前的版本中，接口只能包含抽象方法，从JDK8开始，为了提高代码的可重用性，允许在接口中定义默认方法和静态方法。默认方法用default关键字来声明，拥有默认的实现，接口的实现类既可以直接访问默认方法，也可以覆盖它，重新实现该方法，例如下例：
 ```
 public interface MyIFC{
 	default void method1(){
@@ -41,22 +46,39 @@ public interface MyIFC{
 &emsp;&emsp;以下类实现了上面这个接口，Tester类作为非抽象类，必须实现MyIFC接口的抽象method3()方法。tester的实例可以直接访问在接口中定义的method1()默认方法
 ```
 public class Tester implements MyIFC{
-	public void method3(){
+	public void method3(){//实现接口中的method3()方法
 		System.out.println("method3);
 	}
 	public static void main(String args[]){
 		Tester t=new Tester();
-		t.method1();
-		t.method2();
-		MyIFC.method2();
-		t.method3();
-		
-
-
-
-		
+		t.method1();//访问接口中的默认方法
+		t.method2();//编译出错，Tester实例不能访问MyIFC接口的静态方法
+		MyIFC.method2();//合法，可以通过接口的名字来访问它的静态方法
+		t.method3();		
 	}
 }
+```
+&emsp;&emsp;接口中的静态方法只能在接口内部被访问，或者其他程序通过接口的名字来访问它的静态方法，如果试图通过实现接口的类的实例来访问该静态方法，会导致编译错误，例如：
+
+```
+t.method2();//编译出错，Tester实例不能访问MyIFC接口的静态方法
+MyIFC.method2();//合法，可以通过接口的名字来访问它的静态方法
+```
+&emsp;&emsp;另外，需要注意的是，在接口中为方法提供默认实现虽然可以提高代码的可重用性，但还是要谨慎地使用这一特性。因为在层次关系比较复杂的软件系统中，这一特性会使程序代码导致歧异和混淆。
+
+#### 接口没有构造方法，不能被实例化。在接口中定义构造方法是非法的，例如：
+```
+public interface A{
+	public A(){//编译出错，接口中不允许定义构造方法
+	...
+	}
+	void method();
+}
+```
+#### 虽然不允许创建接口的实例，但是允许定义接口类型的引用变量，该变量引用实现了这个接口的类的实例，例如：
+```
+//引用变量t被定义为Photographable接口类型，他引用Camera实例
+Photographable t=new Camera();
 ```
 
 ---
@@ -84,7 +106,10 @@ import java.io.*;
 
 &emsp;&emsp;接口也可以被继承，既可以通过关键字extends声明一个接口是另一个接口的子接口。由于接口中的方法和常量都是public，子接口将继承父接口中的全部方法和常量。  
 
-&emsp;&emsp;***注意：如果一个类声明实现某一个接口，但没有重写接口中的所有方法，那么这个类必须是abstracts类***  
+&emsp;&emsp;***注意：如果一个类声明实现某一个接口，但没有重写接口中的所有方法，那么这个类必须是abstracts类***
+这句话是指当类实现了某个接口，它必须实现接口中的所有抽象方法，否则这个类必须被定义为抽象类。
+
+
 例如:
 ```
 interface Computable{
