@@ -230,9 +230,9 @@ public class exercise{
 ## 8 abstract类与接口的比较
 &emsp;&emsp;接口和abstract类的比较如下：
 
-1.abstract类和接口都有abstract方法  
-2.接口中只可以有常量，不能有变量；而abstract类中既可以有常量又可以有变量  
-3.abstract类中也可以有非abstract方法，接口不可以==   
-在设计程序时，应当根据具体的分析方法来确定是使用抽象类还是接口。abstract类除了提供重要的需要子类重写的abstract方法外，也提供了子类需要继承的变量和非abstract方法，如果子类需要重写父类的abstract方法，还需要从父类继承一些变量或继承一些重要的非abstract方法，就可以考虑用abstract。  
+#### 1.abstract类和接口都有abstract方法  
+#### 2.接口中只可以有常量，不能有变量；而abstract类中既可以有常量又可以有变量  
+#### 3.abstract类中也可以有非abstract方法，接口不可以
+&emsp;&emsp;在设计程序时，应当根据具体的分析方法来确定是使用抽象类还是接口。abstract类除了提供重要的需要子类重写的abstract方法外，也提供了子类需要继承的变量和非abstract方法，如果子类需要重写父类的abstract方法，还需要从父类继承一些变量或继承一些重要的非abstract方法，就可以考虑用abstract。  
 
 &emsp;&emsp;如果某个问题不需要继承，只是需要若干个类给出某些重要的abstract方法的实现细节，就可以考虑使用接口。
