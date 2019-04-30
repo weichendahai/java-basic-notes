@@ -936,3 +936,145 @@ class B{
 }
 ```
 &emsp;&emsp;需要注意的是：**this不能出现在类方法中，这是因为，类方法可以通过类名直接调用，这时，可能还没有任何对象诞生。**
+
+## 11 文档注释
+JDK包含一个很有用的工具， 叫做javadoc, 它可以由源文件生成一个HTML文档。
+
+如果在源代码中添加以专用的定界符/** 开始的注释， 那么可以很容易地生成一个看上去具有专业水准的文档。这是一种很好的方式，因为这种方式可以将代码与注释保存在一个地方。如果将文档存入一个独立的文件中， 就有可能会随着时间的推移，出现代码和注释不一致的问题。然而，由于文档注释与源代码在同一个文件中，在修改源代码的同时，重新运行javadoc就可以轻而易举地保持两者的一致性。
+### 11.1 注释的插入
+javadoc 实用程序（utility ) 从下面几个特性中抽取信息：
+- 包
+- 公有类与接口
+- 公有的和受保护的构造器及方法
+ 公有的和受保护的域
+
+应该为上面几部分编写注释、注释应该放置在所描述特性的前面。注释以/** 开始， 并以*/ 结束。
+
+每个/* ... */文档注释在标记之后紧跟着自由格式文本（ free-form text )。标记由@开始，如@author或@param。
+
+自由格式文本的第一句应该是一个概要性的句子。javadoc实用程序自动地将这些句子抽取出来形成概要页。
+
+在自由格式文本中， 可以使用HTML 修饰符， 例如， 用于强调的<em>...</eitf>、用于着重强调的<strong>...</stroiig> 以及包含图像的<img...> 等。不过，一定不要使用<hl>或<hr>, 因为它们会与文档的格式产生冲突。若要键入等宽代码， 需使用{@code...} 而不是<code>...</code>—这样一来， 就不用操心对代码中的<字符转义了。
+
+### 11.2 类注释
+类注释必须放在import语句之后，类定义之前。
+
+下面是一个类注释的例子：
+```
+/**
+* A {©code Card} object represents a playing card , such
+* as "Queen of Hearts". A card has a suit (Diamond, Heart ,
+* Spade or Club) and a value (1 = Ace, 2 . . . 10, 11 = Jack,
+* 12 = Queen , 13 = King)
+*/
+public class Card
+{
+...
+}
+```
+> 注释： 没有必要在每一行的开始用星号\*， 例如， 以下注释同样是合法的：
+```
+/**
+A <code>Card< / code> object represents a playing card , such
+as "Queen of Hearts". A card has a suit (Diamond， Heart ,
+Spade or Club) and a value (1 = Ace, 2 . . . 10, 11 = jack ,
+12 = Queen, 13 = King) .
+*/
+```
+然而， 大部分IDE 提供了自动添加星号*, 并且当注释行改变时， 自动重新排列这
+些星号的功能。
+### 11.3 方法注释
+每一个方法注释必须放在所描述的方法之前。除了通用标记之外，还可以使用下面的标记：
+- @param 变量描述
+这个标记将对当前方法的“param ”（参数）部分添加一个条目。这个描述可以占据多行，并可以使用HTML标记。一个方法的所有@param标记必须放在一起。
+- @return 描述
+这个标记将对当前方法添加“return”（返回）部分。这个描述可以跨越多行，并可以使用HTML标记。
+- ©throws 类描述
+这个标记将添加一个注释，用于表示这个方法有可能抛出异常。
+### 11.4 域注释
+只需要对公有域（通常指的是静态常量）建立文档。例如,
+```
+/**
+* The "Hearts" card suit
+*/
+public static final int HEARTS = 1;
+```
+### 11.5 通用注释
+下面的标记可以用在类文档的注释中。
+- @author 姓名
+这个标记将产生一个** author"（作者）条目。可以使用多个@aUthor 标记， 每个@author标记对应一个作者
+- @version
+这个标记将产生一个“ version”（版本）条目。这里的文本可以是对当前版本的任何描述。
+下面的标记可以用于所有的文档注释中。
+- @sinee 文本
+这个标记将产生一个“since” （始于）条目。这里的text 可以是对引人特性的版本描述。例如，©since version 1.7.10
+- @deprecated
+这个标记将对类、方法或变量添加一个不再使用的注释。文本中给出了取代的建议。
+
+例如，`@deprecated Use <code> setVIsible(true)</code> instead`通过@see和@link标记，可以使用超级链接，链接到javadoc文档的相关部分或外
+部文档。
+- @see引用
+这个标记将在“see also”部分增加一个超级链接。它可以用于类中，也可以用于方法中。这里的引用可以选择下列情形之一：
+```
+package, class#feature label
+<a href="...n>lable/a>
+"test"
+```
+第一种情况是最常见的。只要提供类、方法或变量的名字，javadoc就在文档中插入一个超链接。例如，
+```
+@see com.horstraann.corejava.Employee#raiseSalary(double)
+```
+建立一个链接到com.horstmann.corejava.Employee类的raiseSalary(double)方法的超链接。可以省略包名，甚至把包名和类名都省去，此时，链接将定位于当前包或当前类
+
+需要注意，一定要使用井号（#)，而不要使用句号（.）分隔类名与方法名，或类名与变量名。Java编译器本身可以熟练地断定句点在分隔包、子包、类、内部类与方法和变量时的不同含义。但是javadoc 实用程序就没有这么聪明了，因此必须对它提供帮助。
+
+如果@see 标记后面有一个<字符，就需要指定一个超链接。可以超链接到任何URL。例如：
+```
+@see <a href="m«w.horstmann .com/corejava.htinl">The Core ]ava home page</a>
+```
+在上述各种情况下， 都可以指定一个可选的标签(label)作为链接锚(link anchor)如果省略了label,用户看到的锚的名称就是目标代码名或URL。
+如果@see 标记后面有一个双引号（"）字符， 文本就会显示在“ see also” 部分。
+
+例如，
+```
+Isee "Core Java 2 volume 2"
+```
+可以为一个特性添加多个@see标记，但必须将它们放在一起。
+- 如果愿意的话， 还可以在注释中的任何位置放置指向其他类或方法的超级链接， 以及插入一个专用的标记，例如，
+```
+{@link package, classifeature label}
+```
+这里的特性描述规则与@see标记规则一样。
+### 11.6 包与概述注释
+可以直接将类、方法和变量的注释放置在Java源文件中，只要用/** . . . \*/ 文档注释界定就可以了。但是，要想产生包注释，就需要在每一个包目录中添加一个单独的文件。可以有如下两个选择：
+- 1)提供一个以package.html 命名的HTML 文件。在标记<body>—</body>之间的所有文本都会被抽取出来。
+- 2)提供一个以package-info.java 命名的Java 文件。这个文件必须包含一个初始的以/** 和*/ 界定的Javadoc 注释，跟随在一个包语句之后。它不应该包含更多的代码或注释。
+
+还可以为所有的源文件提供一个概述性的注释。这个注释将被放置在一个名为overview,html的文件中，这个文件位于包含所有源文件的父目录中。标记<body>... </body>2间的所有文本将被抽取出来。当用户从导航栏中选择“ Overview” 时，就会显示出这些注释内容。
+### 11.7 注释的抽取
+这里，假设HTML文件将被存放在目录docDirectory下。执行以下步骤：
+- 1)切换到包含想要生成文档的源文件目录。如果有嵌套的包要生成文档，例如com.horstmann.corejava, 就必须切换到包含子目录com的目录（如果存在overview.html文件的话，这也是它的所在目录)。
+- 2)如果是一个包，应该运行命令:
+```
+javadoc -d docDirectory nameOfPackage
+```
+或对于多个包生成文档，运行:
+```
+javadoc -d docDirectory nameOfPackage\ nameOfPackage . . .
+```
+如果文件在默认包中，就应该运行：
+```
+javadoc -d docDirectory *. java
+```
+如果省略了-d docDirectory 选项，那HTML 文件就会被提取到当前目录下。这样有可能会带来混乱，因此不提倡这种做法。
+
+可以使用多种形式的命令行选项对javadoc程序进行调整。例如，可以使用-author和-version选项在文档中包含@author和@version标记（默认情况下，这些标记会被省略)。另一个很有用的选项是-link, 用来为标准类添加超链接。例如，如果使用命令
+```
+javadoc -link http://docs.oracle.eom/:javase/8/docs/api *.java
+```
+那么，所有的标准类库类都会自动地链接到Oracle 网站的文档。如果使用-linksource 选项，则每个源文件被转换为HTML (不对代码着色，但包含行编
+号)，并且每个类和方法名将转变为指向源代码的超链接。
+
+有关其他的选项， 请查阅javadoc实用程序的联机文档，http://docs.orade.eom/javase/8/docs/guides/javadoc
+
+> 注释：如果需要进一步的定制，例如，生成非HTML 格式的文档， 可以提供自定义的doclet, 以便生成想要的任何输出形式。显然， 这是一种特殊的需求， 有关细节内容请查阅http://docs.oracle.com/javase/8/docs/guides/javadoc/doclet/overview.html 的联机文档。
