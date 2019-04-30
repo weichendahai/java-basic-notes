@@ -345,7 +345,8 @@ int n = Employee.getNextldO;
 
 > C++注释：Java中的静态域与静态方法在功能上与C++相同。但是，语法书写上却稍有所不同。在C++中，使用：：操作符访问自身作用域之外的静态域和静态方法，如`Math::PI`
 
-术语“static”有一段不寻常的历史。起初，C引入关键字static是为了表示退出一个块后依然存在的局部变量在这种情况下，术语“static”是有意义的：变量一直存在，当再次进入该块时仍然存在。随后，static在C中有了第二种含义，表示不能被其他文件访问的全局变量和函数。为了避免引入一个新的关键字，关键字static被重用了。最后，C++第三次重用了这个关键字，与前面赋予的含义完全不一样， 这里将其解释为属于类且不属于类对象的变量和函数。这个含义与Java相同。
+> 术语“static”有一段不寻常的历史。起初，C引入关键字static是为了表示退出一个块后依然存在的局部变量在这种情况下，术语“static”是有意义的：变量一直存在，当再次进入该块时仍然存在。随后，static在C中有了第二种含义，表示不能被其他文件访问的全局变量和函数。为了避免引入一个新的关键字，关键字static被重用了。最后，C++第三次重用了这个关键字，与前面赋予的含义完全不一样， 这里将其解释为属于类且不属于类对象的变量和函数。这个含义与Java相同。
+
 ---
 ## 4 引用变量和赋值
 
@@ -413,6 +414,197 @@ P1=p2;
 &emsp;&emsp;方法中最重要的部分之一就是方法的参数，参数属于局部变量，当对象调用方法时，参数被分配到内存空间，并要求调用者向参数传递值，即方法被调用时，参数变量必须有具体的值。
 ### 5.1 传值机制
 &emsp;&emsp;Java中，方法所有的参数都是传值的，也就是说，方法中参数变量的值是调用者指定值的复制。
+
+Java程序设计语言总是采用按值调用。也就是说， 方法得到的是所有参数值的一个拷贝，特别是，方法不能修改传递给它的任何参数变量的内容。
+例如， 考虑下面的调用：
+```
+double percent = 10;
+harry.raiseSalary(percent);
+```
+不必理睬这个方法的具体实现，在方法调用之后，percent的值还是10。
+
+下面再仔细地研究一下这种情况。假定一个方法试图将一个参数值增加至3倍：
+```
+public static void tripieValue(double x) // doesn't work
+{
+	x = 3 * x;
+}
+```
+然后调用这个方法：
+```
+double percent = 10;
+tripieValue(percent)
+```
+不过，并没有做到这一点调用这个方法之后，percent的值还是10。下面看一下具体的执行
+过程：
+- x 被初始化为percent 值的一个拷贝（也就是10)
+- x 被乘以3后等于30。但是percent 仍然是10 (如图4-6 所示)。
+- 这个方法结束之后，参数变量X不再使用。
+
+然而，方法参数共有两种类型：
+- 基本数据类型（数字、布尔值）
+- 对象引用。
+
+读者已经看到，一个方法不可能修改一个基本数据类型的参数。而对象引用作为参数就不同了，可以很容易地利用下面这个方法实现将一个雇员的薪金提高两倍的操作：
+```
+public static void tri pi eSal ary(Employee x) // works
+{
+	x.raiseSa1ary(200) ;
+}
+```
+当调用
+```
+harry = new Employee(...);
+tri pi eSal ary(harry);
+```
+时，具体的执行过程为：
+- X 被初始化为harry值的拷贝，这里是一个对象的引用。
+- raiseSalary方法应用于这个对象引用。x和harry同时引用的那个Employee 对象的薪金提高了200%。
+- 方法结束后，参数变量x不再使用。当然，对象变量harry继续引用那个薪金增至3倍的雇员对象。
+
+读者已经看到，实现一个改变对象参数状态的方法并不是一件难事。理由很简单， 方法得到的是对象引用的拷贝，对象引用及其他的拷贝同时引用同一个对象。
+很多程序设计语言（特别是，C++ 和Pascal）提供了两种参数传递的方式：值调用和引用调用。有些程序员（甚至本书的作者）认为Java程序设计语言对对象采用的是引用调用，实际上，这种理解是不对的。由于这种误解具有一定的普遍性， 所以下面给出一个反例来详细地阐述一下这个问题。
+
+首先， 编写一个交换两个雇员对象的方法：
+```
+public static void swap(Employee x , Employee y) // doesn't work
+	Employee temp = x;
+	x = y;
+	y = temp;
+}
+```
+如果Java 对对象采用的是按引用调用，那么这个方法就应该能够实现交换数据的效果：
+```
+Employee a = new Employee("Alice", . . .);
+Employee b = new Employee("Bob", . . .);
+swap(a, b);
+// does a now refer to Bob, b to Alice?
+```
+但是，方法并没有改变存储在变量a和b中的对象引用。swap方法的参数x和y被初始化为两个对象引用的拷贝，这个方法交换的是这两个拷贝。
+```
+// x refers to Alice, y to Bob
+Employee temp = x;
+x = y;
+y = temp;
+// now x refers to Bob, y to Alice
+```
+最终，白费力气。在方法结束时参数变量x和y被丢弃了。原来的变量a和b仍然引用这个方法调用之前所引用的对象
+这个过程说明：Java 程序设计语言对对象采用的不是引用调用，实际上， 对象引用是按
+值传递的。
+下面总结一下Java 中方法参数的使用情况：
+•一个方法不能修改一个基本数据类型的参数（即数值型或布尔型）。
+•一个方法可以改变一个对象参数的状态。
+•一个方法不能让对象参数引用一个新的对象。
+
+程序清单4-4中的程序给出了相应的演示。在这个程序中， 首先试图将一个值参数的值提高两倍，但没有成功：
+```
+Testing tripleValue:
+Before: percent=10.0
+End of method: x:30.0
+After: percent=10.0
+```
+随后， 成功地将一个雇员的薪金提高了两倍：
+```
+Testing tripleSalary:
+Before: salary=50000.0
+End of method: salary=150000.0
+After: salary=150000.0
+```
+方法结束之后， harry引用的对象状态发生了改变。这是因为这个方法可以通过对象引用的拷贝修改所引用的对象状态。
+
+最后，程序演示了swap方法的失败效果：
+```
+Testing swap:
+Before: a=Alice
+Before: b=Bob
+End of method: x=Bob
+End of method: y=Alice
+After: a=Alice
+After: b=Bob
+```
+可以看出， 参数变量x和y交换了，但是变量a和b没有受到影响。
+```
+程序清单4-4 ParamTest/ParamTest.java
+/**
+* This program demonstrates parameter passing in Java.
+* ©version 1.00 2000-01-27
+* author Cay Horstmann
+**/
+public class ParamTest
+{
+	public static void main(String[] args)
+	{
+	/*
+	* Test 1: Methods can't modify numeric parameters
+	*/
+	System.out.println("Testing tri pi eValue:") ;
+	double percent = 10;
+	System.out.println("Before: percent " + percent) ;
+	tripieValue(percent) ;
+	System.out.println("After: percent=" + percent) ;
+
+	/*
+	* Test 2: Methods can change the state of object parameters
+	*/
+	System.out.println("\nTesting tripleSalary:")；
+	Employee harry = new Employee("Harry", 50000) ;
+
+	System.out.println("Before: salary=" + harry.getSalary()) ;
+	tripieSalary(harry) ;
+	System.out.println("After: salary=" + harry.getSal ary()) ;
+	/*
+	* Test 3: Methods can ' t attach new objects to object parameters
+	*/
+	System.out.println("\nTesting swap:")；
+	Employee a = new Employee("Alice", 70000) ;
+	Employee b = new Employee("Bob", 60000) ;
+	System,out.println("Before: a=" + a.getNameQ);
+	System,out.println("Before: b=" + b.getNameO) ;
+	swap(a, b);
+	System,out.println("After: a=" + a.getNameO) ;
+	System.out.println("After: b=" + b.getNameO) ;
+	public static void tripieValue(double x) // doesn't work
+	{
+		x = 3 * x; -
+		System.out.println('End of method: x=" + x);
+	}
+	public static void tripieSalary(Employee x) // works
+	{
+		x.raiseSalary(200);
+		System.out.println("End of method: salary=" + x.getSalary()) ;
+	public static void swap(Employee x , Employee y)
+	{
+		Employee temp = x;
+		x = y;
+		y = temp;
+		System, out.println("End of method: x=" + x.getName()) ;
+		System.out.println("End of method: y=" + y.getName());
+		}
+	class Employee // simplified Employee class
+	{
+		private String name;
+		private double salary;
+		public Employee(String n, double s)
+		{
+			name = n;
+			salary = s;
+		}
+		public String getName()
+		{
+			return name;
+		}
+		public double getSalary()
+		{
+			return salary;
+		}
+		public void raiseSalary(double byPercent)
+		{
+			double raise = salary * byPercent / 100;
+			salary += raise;
+		}
+}
+```
+
 ### 5.2 基本数据类型参数的传值
 ```
 package test1;
