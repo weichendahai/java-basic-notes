@@ -436,9 +436,9 @@ double percent = 10;
 tripieValue(percent)
 ```
 不过，并没有做到这一点调用这个方法之后，percent的值还是10。下面看一下具体的执行过程：
-- x 被初始化为percent 值的一个拷贝（也就是10)
-- x 被乘以3后等于30。但是percent 仍然是10 (如图4-6 所示)。
-- 这个方法结束之后，参数变量X不再使用。
+- x被初始化为percent 值的一个拷贝（也就是10)
+- x被乘以3后等于30。但是percent 仍然是10(如图4-6 所示)。
+- 这个方法结束之后，参数变量x不再使用。
 
 然而，方法参数共有两种类型：
 - 基本数据类型（数字、布尔值）
@@ -446,7 +446,7 @@ tripieValue(percent)
 
 读者已经看到，一个方法不可能修改一个基本数据类型的参数。而对象引用作为参数就不同了，可以很容易地利用下面这个方法实现将一个雇员的薪金提高两倍的操作：
 ```
-public static void tri pi eSal ary(Employee x) // works
+public static void tripieSalary(Employee x) // works
 {
 	x.raiseSa1ary(200) ;
 }
@@ -454,7 +454,7 @@ public static void tri pi eSal ary(Employee x) // works
 当调用
 ```
 harry = new Employee(...);
-tri pi eSal ary(harry);
+tri pieSalary(harry);
 ```
 时，具体的执行过程为：
 - X 被初始化为harry值的拷贝，这里是一个对象的引用。
