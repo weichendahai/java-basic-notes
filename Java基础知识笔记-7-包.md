@@ -141,6 +141,33 @@ import payroll.Employee;
 ##### 注意：
 
 类文件中可以包含任意数量的import声明。import声明必须在包声明之后，类声明之前。
+
+在大多数情况下，只导入所需的包，并不必过多地理睬它们。但在发生命名冲突的时候，就不能不注意包的名字了。例如，java.util 和java.sql 包都有日期（ Date) 类。如果在程序中导入了这两个包：
+```
+import java.util .*;
+import java.sql .*;
+```
+在程序使用Date类的时候，就会出现一个编译错误：
+```
+Date today; // Error java.util .Date or java.sql .Date?
+```
+此时编译器无法确定程序使用的是哪一个Date类。可以采用增加一个特定的import语句来解决这个问题
+```
+import java.util .*;
+import java.sql .*;
+import java.util .Date;
+```
+如果这两个Date 类都需要使用，又该怎么办呢？ 答案是，在每个类名的前面加上完整的包名。
+```
+java.util .Date deadline = new java.util .Date() ;
+java.sql .Date today = new java.sql .Date(...) ;
+```
+在包中定位类是编译器（ compiler) 的工作。类文件中的字节码肯定使用完整的包名来引用其他类。
+
+> C++注释：C++程序员经常将import与#include弄混。实际上，这两者之间并没有共同之处。在C++中，必须使用include将外部特性的声明加栽进来，这是因为C++编译器无法查看任何文件的内部， 除了正在编译的文件以及在头文件中明确包含的文件。Java编译器可以查看其他文件的内部， 只要告诉它到哪里去查看就可以了
+> 在Java中，通过显式地给出包名，如java.util.Date，就可以不使用import; 而在C++中，无法避免使用include指令。Import语句的唯一的好处是简捷。可以使用简短的名字而不是完整的包名来引用一个类。例如，在import java.util.* ( 或import java.util.Date) 语句之后，可以仅仅用Date引用java.util.Date类。
+> 在C++中，与包机制类似的是命名空间(namespace)。在Java中，package与import语句类似于C++中的namespace和using指令。
+
 ## 5 package的目录结构
 
 类放在包中会有两种主要的结果：
