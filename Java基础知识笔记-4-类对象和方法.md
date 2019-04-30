@@ -457,7 +457,7 @@ harry = new Employee(...);
 tri pieSalary(harry);
 ```
 时，具体的执行过程为：
-- X 被初始化为harry值的拷贝，这里是一个对象的引用。
+- x被初始化为harry值的拷贝，这里是一个对象的引用。
 - raiseSalary方法应用于这个对象引用。x和harry同时引用的那个Employee 对象的薪金提高了200%。
 - 方法结束后，参数变量x不再使用。当然，对象变量harry继续引用那个薪金增至3倍的雇员对象。
 
@@ -471,7 +471,7 @@ public static void swap(Employee x , Employee y) // doesn't work
 	y = temp;
 }
 ```
-如果Java 对对象采用的是按引用调用，那么这个方法就应该能够实现交换数据的效果：
+如果Java对对象采用的是按引用调用，那么这个方法就应该能够实现交换数据的效果：
 ```
 Employee a = new Employee("Alice", . . .);
 Employee b = new Employee("Bob", . . .);
@@ -527,14 +527,12 @@ After: b=Bob
 * ©version 1.00 2000-01-27
 * author Cay Horstmann
 **/
-public class ParamTest
-{
-	public static void main(String[] args)
-	{
+public class ParamTest {
+	public static void main(String[] args) {
 	/*
 	* Test 1: Methods can't modify numeric parameters
 	*/
-	System.out.println("Testing tri pi eValue:") ;
+	System.out.println("Testing tripieValue:") ;
 	double percent = 10;
 	System.out.println("Before: percent " + percent) ;
 	tripieValue(percent) ;
@@ -560,42 +558,34 @@ public class ParamTest
 	swap(a, b);
 	System,out.println("After: a=" + a.getNameO) ;
 	System.out.println("After: b=" + b.getNameO) ;
-	public static void tripieValue(double x) // doesn't work
-	{
-		x = 3 * x; -
+	public static void tripieValue(double x) // doesn't work {
+		x = 3 * x;
 		System.out.println('End of method: x=" + x);
 	}
-	public static void tripieSalary(Employee x) // works
-	{
+	public static void tripieSalary(Employee x) // works {
 		x.raiseSalary(200);
 		System.out.println("End of method: salary=" + x.getSalary()) ;
-	public static void swap(Employee x , Employee y)
-	{
+	public static void swap(Employee x , Employee y) {
 		Employee temp = x;
 		x = y;
 		y = temp;
 		System, out.println("End of method: x=" + x.getName()) ;
 		System.out.println("End of method: y=" + y.getName());
-		}
-	class Employee // simplified Employee class
-	{
+	}
+	class Employee // simplified Employee class {
 		private String name;
 		private double salary;
-		public Employee(String n, double s)
-		{
+		public Employee(String n, double s) {
 			name = n;
 			salary = s;
 		}
-		public String getName()
-		{
+		public String getName() {
 			return name;
 		}
-		public double getSalary()
-		{
+		public double getSalary() {
 			return salary;
 		}
-		public void raiseSalary(double byPercent)
-		{
+		public void raiseSalary(double byPercent) {
 			double raise = salary * byPercent / 100;
 			salary += raise;
 		}
