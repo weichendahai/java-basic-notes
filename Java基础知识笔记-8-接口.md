@@ -1,6 +1,11 @@
 Java基础知识笔记-8-接口
 
+首先，介绍一下接口(interface)技术，这种技术主要用来描述类具有什么功能，而并不给出每个功能的具体实现。一个类可以实现(implement)一个或多个接口，并在需要接口的地方，随时使用实现了相应接口的对象。了解接口以后，再继续介绍而表达式，这是一种表示可以在将来某个时间点执行的代码块的简洁方法。使用lambda表达式，可以用一种精巧而简洁的方式表示使用回调或变量行为的代码。
+
+接下来，讨论内部类(inner class)机制。理论上讲，内部类有些复杂，内部类定义在另外一个类的内部，其中的方法可以访问包含它们的外部类的域。内部类技术主要用于设计具有相互协作关系的类集合。
+
 # 接口
+在Java程序设计语言中， 接口不是类，而是对类的一组需求描述，这些类要遵从接口描述的统一格式进行定义。
 
 &emsp;&emsp;在Java语言中，接口有两种意思
 - 一是指概念性的接口，即指系统对外提供的所有服务，类的所有能被外部使用者访问的方法构成了类的接口
@@ -85,6 +90,10 @@ Photographable t=new Camera();
 
 ## 2 实现接口
 &emsp;&emsp;在Java语言中，**接口由类去实现以便使用接口中的方法，一个类可以实现多个接口，类通过使用关键字implements声明自己实现一个或者多个接口。** 如果实现多个接口，用逗号隔开接口名。  
+
+为了让类实现一个接口， 通常需要下面两个步骤：
+- 1)将类声明为实现给定的接口。
+- 2)对接口中的所有方法进行定义。
 
 &emsp;&emsp;如A类实现Printable和Addable接口
 ```
@@ -226,6 +235,7 @@ public class exercise{
 ```
 ---
 ## 7 接口变量做参数
+
 ---
 ## 8 abstract类与接口的比较
 &emsp;&emsp;接口和abstract类的比较如下：
@@ -236,3 +246,29 @@ public class exercise{
 &emsp;&emsp;在设计程序时，应当根据具体的分析方法来确定是使用抽象类还是接口。abstract类除了提供重要的需要子类重写的abstract方法外，也提供了子类需要继承的变量和非abstract方法，如果子类需要重写父类的abstract方法，还需要从父类继承一些变量或继承一些重要的非abstract方法，就可以考虑用abstract。  
 
 &emsp;&emsp;如果某个问题不需要继承，只是需要若干个类给出某些重要的abstract方法的实现细节，就可以考虑使用接口。
+
+## 9 接口与抽象类
+可能会产生这样一个疑问：为什么Java程序设计语言还要不辞辛苦地引入接口概念？为什么不将Comparable直接设计成如下所示的
+抽象类。
+```
+abstract class Comparable // why not?{
+	public abstract int compareTo(Object other);
+}
+```
+然后，Employee类再直接扩展这个抽象类，并提供compareTo方法的实现：
+```
+class Employee extends Comparable // why not?{
+	public int compareTo(Object other) { . . . }
+}
+```
+非常遗憾，使用抽象类表示通用属性存在这样一个问题：每个类只能扩展于一个类。假设Employee类已经扩展于一个类，例如Person,它就不能再像下面这样扩展第二个类了：
+```
+class Employee extends Person, Comparable // Error
+```
+但每个类可以像下面这样实现多个接口：
+```
+class Employee extends Person implements Comparable // OK
+```
+有些程序设计语言允许一个类有多个超类，例如C++。我们将此特性称为多重继承(multiple inheritance)。而Java的设计者选择了不支持多继承，其主要原因是多继承会让语言本身变得非常复杂（如同C++)，效率也会降低（如同Eiffel)。
+
+实际上，接口可以提供多重继承的大多数好处，同时还能避免多重继承的复杂性和低效性
