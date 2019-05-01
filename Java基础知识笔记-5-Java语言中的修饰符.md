@@ -35,6 +35,62 @@ private class Sample{...};
 ---
 
 ## 2 abstract 修饰符
+如果自下而上在类的继承层次结构中上移，位于上层的类更具有通用性，甚至可能更加抽象。从某种角度看，祖先类更加通用，人们只将它作为派生其他类的基类，而不作为想使用的特定的实例类。例如，考虑一下对Employee 类层次的扩展。一名雇员是一个人，一名学生也是一个人。下面将类Person和类Student添加到类的层次结构中。
+
+为什么要花费精力进行这样高层次的抽象呢？每个人都有一些诸如姓名这样的属性。学生与雇员都有姓名属性， 因此可以将getName 法放置在位于继承关系较高层次的通用超类中。
+
+现在，再增加一个getDescription方法，它可以返回对一个人的简短描述。例如：
+```
+an employee with a salary of $50,000.00
+a student majoring in computer science
+```
+在Employee类和Student类中实现这个方法很容易。但是在Person类中应该提供什么内容呢？除了姓名之外，Person类一无所知。当然，可以让Person.getDescription()返回一个空字符串。然而，还有一个更好的方法，就是使用abstract关键字，这样就完全不需要实现这个方法了。
+```
+public abstract String getDescriptionO;
+// no implementation required
+```
+为了提高程序的清晰度，包含一个或多个抽象方法的类本身必须被声明为抽象的。
+```
+public abstract class Person
+{
+    public abstract String getDescriptionO；
+}
+```
+除了抽象方法之外 抽象类还可以包含具体数据和具体方法。例如，Person类还保存着姓名和一个返回姓名的具体方法。
+```
+public abstract class Person
+{
+    private String name;
+    public Person(String name)
+    {
+        this.name = name ;
+    }
+    public abstract String getDescription()；
+    public String getName()
+    {
+        return name;
+    }
+}
+```
+抽象方法充当着占位的角色，它们的具体实现在子类中。扩展抽象类可以有两种选择。一种是在抽象类中定义部分抽象类方法或不定义抽象类方法，这样就必须将子类也标记为抽象类；另一种是定义全部的抽象方法，这样一来，子类就不是抽象的了。
+
+例如，通过扩展抽象Person类，并实现getDescription方法来定义Student类。由于在Student类中不再含有抽象方法，所以不必将这个类声明为抽象的。
+
+类即使不含抽象方法，也可以将类声明为抽象类。
+
+抽象类不能被实例化。也就是说，如果将一个类声明为abstract,就不能创建这个类的对象。例如，表达式
+```
+new Person("Vinee Vu")
+```
+是错误的，但可以创建一个具体子类的对象。
+
+需要注意，可以定义一个抽象类的对象变量，但是它只能引用非抽象子类的对象。例如，
+```
+Person p = new Student("Vinee Vu" , "Economics") ;
+```
+这里的p是一个抽象类Person的变量，Person引用了一个非抽象子类Student的实例
+
+
 &emsp;&emsp;abstract修饰符可用来修饰类和成员方法;
 - 用abstract修饰的类表示抽象类，抽象类位于继承树的抽象层，抽象类不能被实例化，既不允许创建抽象类本身的实例。
 - 用abstract修饰的方法表示抽象方法，抽象方法没有方法体，抽象方法用来描述系统具有什么功能，但不提供具体的实现，没有用abstract修饰的方法称为具体方法，具体方法具有方法体。
@@ -61,7 +117,7 @@ abstract int min(int x,int y);
 
 #### 4.抽象类及抽象方法不能被final修饰符修饰，abstract修饰符与final修饰符不能连用，因为抽象类只允许创建其子类，他的抽象方法才能被实现，并且只有他的具体子类才能被实例化，而用final修饰的类不允许拥有子类，用final修饰的方法不允许被子类方法覆盖，因此两者连用，会自相矛盾。
 
-&emsp;&emsp;抽象类的一个重要特征是不允许实例化，比如苹果香蕉是具体类，而水果是抽象类一样。在自然界中并不存在水果类本身的实例，只存在它的具体子类的实例：
+&emsp;&emsp;**抽象类的一个重要特征是不允许实例化，比如苹果香蕉是具体类，而水果是抽象类一样。在自然界中并不存在水果类本身的实例，只存在它的具体子类的实例：**
 ```
 Fruit fruit=new Apple();
 ```
