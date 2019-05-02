@@ -271,7 +271,7 @@ public class Boss implements JieKou{
 - （3）定义一个员工Employee类
 ```
 package JieKouHuiDiao;
-	public class Employee {
+public class Employee {
 	//接口属性，方便后边注册
 	JieKou jiekou;
 	//注册一个接口属性，等需要调用的时候传入一个接口类型的参数，即本例中的Boss和Employee，
