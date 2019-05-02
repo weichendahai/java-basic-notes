@@ -393,17 +393,17 @@ class Worker implements ActionListener
 ```
 想要反复执行这个代码时， 可以构造Worker类的一个实例。然后把这个实例提交到一个Timer对象。这里的重点是actionPerformed方法包含希望以后执行的代码。
 
-或者可以考虑如何用一个定制比较器完成排序。如果想按长度而不是默认的字典顺序对字符串排序，可以向sort方法传人一个Comparator对象：
+或者可以考虑如何用一个定制比较器完成排序。如果想按长度而不是默认的字典顺序对字符串排序，可以向sort方法传入一个Comparator对象：
 ```
 class LengthComparator implements Comparator<String>
 {
 	public int compare(String first, String second)
 	{
-		return first.lengthQ - second.lengthO;
+		return first.length() - second.length();
 	}
 }
 ...
-Arrays.sort(strings, new LengthComparatorO) ;
+Arrays.sort(strings, new LengthComparator()) ;
 ```
 compare方法不是立即调用。实际上，在数组完成排序之前，sort方法会一直调用compare方法，只要元素的顺序不正确就会重新排列元素。将比较元素所需的代码段放在sort方法中，这个代码将与其余的排序逻辑集成（你可能并不打算重新实现其余的这部分逻辑）
 
@@ -418,12 +418,12 @@ compare方法不是立即调用。实际上，在数组完成排序之前，sort
 ## 2 lambda 表达式的语法
 再来考虑上一节讨论的排序例子。我们传入代码来检查一个字符串是否比另一个字符串短。这里要计算：
 ```
-first.lengthO - second.lengthO
+first.length() - second.length()
 ```
 first和second是什么？它们都是字符串。Java是一种强类型语言，所以我们还要指定它们的类型：
 ```
 (String first, String second)
-	-> first.lengthO - second.lengthO
+	-> first.length() - second.length()
 ```
 这就是你看到的第一个表达式。lambda 表达式就是一个代码块，以及必须传入代码的变量规范。
 
@@ -464,7 +464,7 @@ ActionListener listener = event ->
 ```
 可以在需要int类型结果的上下文中使用。
 
-> 注释：如果一个lambda表达式只在某些分支返回一个值，而在另外一些分支不返回值，这是不合法的。例如，(`int x)-> { if (x >= 0) return 1; } `就不合法。
+> 注释：如果一个lambda表达式只在某些分支返回一个值，而在另外一些分支不返回值，这是不合法的。例如，`(int x)-> { if (x >= 0) return 1; } `就不合法。
 
 程序清单6-6中的程序显示了如何在一个比较器和一个动作监听器中使用lambda表达式。
 ```
@@ -488,7 +488,7 @@ public class LambdaTest
 	System.out.println (Arrays.toString(planets)) ;
 	System.out.println ("Sorted by length:");
 	Arrays.sort(planets, (first , second) -> first .length() - second .length()) ;
-	System.out.println(Arrays.toString(pi anets)) ;
+	System.out.println(Arrays.toString(planets)) ;
 	Timer t = new Timer(1000, event ->
 		System.out.println ("The time is " + new Date())) ;
 	t.start() ;
