@@ -140,8 +140,8 @@ abstract class A implements Computable{
 
 ---
 ## 3 理解接口
-&emsp;&emsp;不同的类可以实现相同的接口，同一个类也可以实现多个接口。  
 
+&emsp;&emsp;不同的类可以实现相同的接口，同一个类也可以实现多个接口。  
 &emsp;&emsp;**当不希望某些类通过继承使得他们具有一些相同的方法时，就可以考虑让这些类去实现相同的接口而不是把他们声明为同一个类的子类。**  
 
 ---
@@ -192,11 +192,114 @@ class IFExtends{
 		ob.meth1();
 		ob.meth2();
 		ob.meth3();
+		}
 	}
-}
 }
 
 ```
+### 5.3 接口回调实例1
+回调(callback)是一种常见的程序设计模式。在这种模式中，可以指出某个特定事件发生时应该采取的动作。例如，可以指出在按下鼠标或选择某个菜单项时应该采取什么行动。然而， 由于至此还没有介绍如何实现用户接口， 所以只能讨论一些与上述操作类似，但比较简单的情况。
+
+在java.swing包中有一个Timer类，可以使用它在到达给定的时间间隔时发出通告。例如，假如程序中有一个时钟，就可以请求每秒钟获得一个通告，以便更新时钟的表盘。在构造定时器时，需要设置一个时间间隔，并告之定时器，当到达时间间隔时需要做些什么操作。
+
+如何告之定时器做什么呢？ 在很多程序设计语言中，可以提供一个函数名，定时器周期性地调用它。但是，在Java 标准类库中的类采用的是面向对象方法。它将某个类的对象传递给定时器，然后，定时器调用这个对象的方法。由于对象可以携带一些附加的信息，所以传递一个对象比传递一个函数要灵活得多。
+
+当然，定时器需要知道调用哪一个方法，并要求传递的对象所属的类实现了java.awt.event包的ActionListener接口。下面是这个接口：
+```
+public interface ActionListener {
+	void actionPerfonned(ActionEvent event);
+}
+```
+当到达指定的时间间隔时，定时器就调用actionPerformed 方法。
+
+假设希望每隔10秒钟打印一条信息“ At the tone, the time is...”， 然后响一声，就应该定义一个实现ActionListener接口的类，然后将需要执行的语句放在actionPerformed方法中。
+```
+class TinePrinter implements ActionListener {
+	public void actionPerformed(ActionEvent event) {
+		System.out.printlnf At the tone, the time is " + new OateO)；
+		Toolkit.getDefaultToolkit().beep();
+	}
+}
+```
+需要注意actionPerformed方法的ActionEvent参数。这个参数提供了事件的相关信息，例如，产生这个事件的源对象。有关这方面的详细内容请参看第8章。在这个程序中，事件的详细信息并不重要，因此，可以放心地忽略这个参数。
+
+接下来，构造这个类的一个对象，并将它传递给Timer构造器。
+```
+ActionListener listener = new TimePrinter();
+Timer t = new Timer(10000, listener) ;
+```
+Timer构造器的第一个参数是发出通告的时间间隔，它的单位是毫秒。这里希望每隔10秒钟通告一次。第二个参数是监听器对象。
+
+最后，启动定时器：
+```
+t.start();
+```
+每隔10秒钟，下列信息显示一次，然后响一声铃。
+```
+At the tone, the time is Wed Apr 13 23:29:08 PDT 2016
+```
+程序清单6-3给出了定时器和监听器的操作行为。在定时器启动以后，程序将弹出一个消息对话框，并等待用户点击Ok按钮来终止程序的执行。在程序等待用户操作的同时，每隔10秒显示一次当前的时间。
+
+运行这个程序时要有一些耐心。程序启动后，将会立即显示一个包含“Quit program?”字样的对话框，10秒钟之后，第1条定时器消息才会显示出来。
+
+需要注意，这个程序除了导入javax.swing.* 和java.util.\*外，还通过类名导入了javax.swing.Timer。这就消除了javax.swing.Timer与java.util.Timer之间产生的二义性。这里的java.util.Timer是一个与本例无关的类，它主要用于调度后台任务。
+### 5.4 接口回调实例2
+
+举例：老板分派给员工做事，员工做完事情后需要给老板回复，老板对其做出反应。
+
+上面是个比较经典的例子，下面用代码实现上述例子：
+
+- （1）先定义一个接口
+```
+package JieKouHuiDiao;
+//定义一个接口
+public interface JieKou {
+	public void show();
+}
+```
+- （2）定义一个Boss类实现接口
+```
+package JieKouHuiDiao;
+public class Boss implements JieKou{
+//定义一个老板实现接口
+	@Override
+	public void show() {
+		System.out.println("知道了");
+	} 
+}
+```
+- （3）定义一个员工Employee类
+```
+package JieKouHuiDiao;
+	public class Employee {
+	//接口属性，方便后边注册
+	JieKou jiekou;
+	//注册一个接口属性，等需要调用的时候传入一个接口类型的参数，即本例中的Boss和Employee，
+	public Employee zhuce(JieKou jiekou,Employee e){
+		this.jiekou=jiekou;
+		return e;
+	}
+	public void dosomething(){
+		System.out.println("拼命做事，做完告诉老板");
+		//接口回调，如果没有注册调用，接口中的抽象方法也不会影响dosomething
+		jiekou.show();
+	}
+}
+```
+- （4）测试类
+```
+复制代码
+package JieKouHuiDiao;
+public class Test {
+	public static void main(String[] args) {
+    	Employee e=new Employee();
+    	//需要调用的时候先注册,传入Boss类型对象和员工参数
+    	Employee e1=e.zhuce(new Boss(),e);
+    	e1.dosomething();
+		}
+}
+```
+通过上面的例子和代码应该有个比较初步的了解了，接口回调还有使用匿名内部类来实现
 
 ---
 ## 6 接口与多态
