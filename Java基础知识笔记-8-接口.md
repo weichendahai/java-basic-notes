@@ -296,7 +296,7 @@ public class Test {
     	//需要调用的时候先注册,传入Boss类型对象和员工参数
     	Employee e1=e.zhuce(new Boss(),e);
     	e1.dosomething();
-		}
+	}
 }
 ```
 通过上面的例子和代码应该有个比较初步的了解了，接口回调还有使用匿名内部类来实现
