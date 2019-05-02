@@ -1,4 +1,4 @@
-Java基础知识笔记-8-接口
+Java基础知识笔记-8-接口，lambda表达式与内部类
 
 首先，介绍一下接口(interface)技术，这种技术主要用来描述类具有什么功能，而并不给出每个功能的具体实现。一个类可以实现(implement)一个或多个接口，并在需要接口的地方，随时使用实现了相应接口的对象。了解接口以后，再继续介绍而表达式，这是一种表示可以在将来某个时间点执行的代码块的简洁方法。使用lambda表达式，可以用一种精巧而简洁的方式表示使用回调或变量行为的代码。
 
@@ -375,3 +375,126 @@ class Employee extends Person implements Comparable // OK
 有些程序设计语言允许一个类有多个超类，例如C++。我们将此特性称为多重继承(multiple inheritance)。而Java的设计者选择了不支持多继承，其主要原因是多继承会让语言本身变得非常复杂（如同C++)，效率也会降低（如同Eiffel)。
 
 实际上，接口可以提供多重继承的大多数好处，同时还能避免多重继承的复杂性和低效性
+# lambda表达式
+现在可以来学习lambda表达式，这是这些年来Java语言最让人激动的一个变化。你会了解如何使用lambda表达式采用一种简洁的语法定义代码块，以及如何编写处理lambda表达式的代码。
+
+## 1 为什么引入lambda 表达式
+lambda表达式是一个可传递的代码块，可以在以后执行一次或多次。具体介绍语法（以及解释这个让人好奇的名字）之前，下面先退一步，观察一下我们在Java 中的哪些地方用过这种代码块。
+
+已经了解了如何按指定时间间隔完成工作。将这个工作放在一个ActionListener的actionPerformed方法中：
+```
+class Worker implements ActionListener
+{
+	public void actionPerformed(ActionEvent event)
+	{
+		// do some work
+	}
+}
+```
+想要反复执行这个代码时， 可以构造Worker类的一个实例。然后把这个实例提交到一个Timer对象。这里的重点是actionPerformed方法包含希望以后执行的代码。
+
+或者可以考虑如何用一个定制比较器完成排序。如果想按长度而不是默认的字典顺序对字符串排序，可以向sort方法传人一个Comparator对象：
+```
+class LengthComparator implements Comparator<String>
+{
+	public int compare(String first, String second)
+	{
+		return first.lengthQ - second.lengthO;
+	}
+}
+...
+Arrays.sort(strings, new LengthComparatorO) ;
+```
+compare方法不是立即调用。实际上，在数组完成排序之前，sort方法会一直调用compare方法，只要元素的顺序不正确就会重新排列元素。将比较元素所需的代码段放在sort方法中，这个代码将与其余的排序逻辑集成（你可能并不打算重新实现其余的这部分逻辑）
+
+这两个例子有一些共同点，都是将一个代码块传递到某个对象（一个定时器，或者一个sort方法)。这个代码块会在将来某个时间调用。
+
+到目前为止，在Java中传递一个代码段并不容易，不能直接传递代码段，Java是一种面向对象语言，所以必须构造一个对象这个对象的类需要有一个方法能包含所需的代码。
+
+在其他语言中，可以直接处理代码块。Java设计者很长时间以来一直拒绝增加这个特性。毕竟，Java的强大之处就在于其简单性和一致性。如果只要一个特性能够让代码稍简洁一些，就把这个特性增加到语言中， 这个语言很快就会变得一团糟，无法管理。不过，在另外那些语言中，并不只是创建线程或注册按钮点击事件处理器更容易；它们的大部分API都更简单、更一致而且更强大。在Java中，也可以编写类似的API利用类对象实现特定的功能，不过这种API使用可能很不方便。
+
+就现在来说，问题已经不是是否增强Java来支持函数式编程，而是要如何做到这一点。设计者们做了多年的尝试，终于找到一种适合Java的设计。下一节中，你会了解Java SE8中如何处理代码块。
+
+## 2 lambda 表达式的语法
+再来考虑上一节讨论的排序例子。我们传入代码来检查一个字符串是否比另一个字符串短。这里要计算：
+```
+first.lengthO - second.lengthO
+```
+first和second是什么？它们都是字符串。Java是一种强类型语言，所以我们还要指定它们的类型：
+```
+(String first, String second)
+	-> first.lengthO - second.lengthO
+```
+这就是你看到的第一个表达式。lambda 表达式就是一个代码块，以及必须传入代码的变量规范。
+
+为什么起这个名字呢？ 很多年前，那时还没有计算机，逻辑学家Alonzo Church想要形式化地表示能有效计算的数学函数。（奇怪的是，有些函数已经知道是存在的，但是没有人知道该如何计算这些函数的值。）他使用了希腊字母lambda(λ)来标记参数如果他知道Java API, 可能就会写为
+```
+λfirst.λsecond.first.length() - second.length()
+```
+你已经见过Java中的一种lambda表达式形式：参数， 箭头（->) 以及一个表达式。如果代码要完成的计算无法放在一个表达式中，就可以像写方法一样，把这些代码放在{丨中，并包含显式的return语句。例如：
+```
+(String first, String second) ->
+	{
+		if (first.length() < second.length()) return -1;
+		else if (first.length() > second.length()) return 1;
+		else return 0;
+	}
+```
+即使lambda表达式没有参数，仍然要提供空括号，就像无参数方法一样：
+```
+0 -> { for (int i = 100; i >= 0;i ) System.out.println(i); }
+```
+如果可以推导出一个lambda表达式的参数类型，则可以忽略其类型。例如：
+```
+Comparator<String> comp
+	= (first, second) // Same as (String first, String second)
+		-> first.length() - second.length();
+```
+在这里，编译器可以推导出first和second必然是字符串，因为这个lambda表达式将赋给一个字符串比较器。（下一节会更详细地分析这个赋值。）
+
+如果方法只有一参数， 而且这个参数的类型可以推导得出，那么甚至还可以省略小括号：
+```
+ActionListener listener = event ->
+	System.out.println("The time is " + new Date()");
+	// Instead of (event) -> . . . or (ActionEvent event) -> . . .
+```
+无需指定lambda 表达式的返回类型。lambda表达式的返回类型总是会由上下文推导得出。例如，下面的表达式
+```
+(String first, String second) -> first.length() - second.length()
+```
+可以在需要int类型结果的上下文中使用。
+
+> 注释：如果一个lambda表达式只在某些分支返回一个值，而在另外一些分支不返回值，这是不合法的。例如，(`int x)-> { if (x >= 0) return 1; } `就不合法。
+
+程序清单6-6中的程序显示了如何在一个比较器和一个动作监听器中使用lambda表达式。
+```
+程序清单6-6 lambda/LambdaTest.java
+package lambda;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.Timer;
+/**
+* This program demonstrates the use of lambda expressions.
+* ©version 1.0 2015-05-12
+* ©author Cay Horstmann
+public class LambdaTest
+{
+	public static void main(String[] args)
+	{
+	String[] planets = new String[] { "Mercury" , "Venus", "Earth" , "Mars" , "Jupiter" , "Saturn", "Uranus", "Neptune" };
+	System.out.println(Arrays.toString(planets));
+	System.out.println("Sorted in dictionary order:") ;
+	Arrays.sort(planets) ;
+	System.out.println (Arrays.toString(planets)) ;
+	System.out.println ("Sorted by length:");
+	Arrays.sort(planets, (first , second) -> first .length() - second .length()) ;
+	System.out.println(Arrays.toString(pi anets)) ;
+	Timer t = new Timer(1000, event ->
+		System.out.println ("The time is " + new Date())) ;
+	t.start() ;
+	// keep program running until user selects "0k"
+	JOptionPane.showMessageDialog (nul1 , "Quit program?")；
+	System.exit (O) ;
+	}
+}
+```
