@@ -144,6 +144,36 @@ abstract class A implements Computable{
 &emsp;&emsp;不同的类可以实现相同的接口，同一个类也可以实现多个接口。  
 &emsp;&emsp;**当不希望某些类通过继承使得他们具有一些相同的方法时，就可以考虑让这些类去实现相同的接口而不是把他们声明为同一个类的子类。**  
 
+## 4 接口实例之Comparator接口
+我们已经了解了如何对一个对象数组排序，前提是这些对象是实现了Comparable接口的类的实例, 例如，可以对一个字符串数组排序，因为String类实现了
+Comparable<String>,而且String.compareTo方法可以按字典顺序比较字符串。
+
+现在假设我们希望按长度递增的顺序对字符串进行排序，而不是按字典顺序进行排序。肯定不能让String类用两种不同的方式实现compareTo方法---更何况，String类也不应由我们来修改。
+
+要处理这种情况，ArrayS.Sort方法还有第二个版本，有一个数组和一个比较器(comparator)作为参数，比较器是实现了Comparator接口的类的实例。
+```
+public interface Comparators
+{
+	int compare(T first, T second);
+}
+```
+要按长度比较字符串，可以如下定义一个实现Comparator<String>的类：
+
+```
+class LengthComparator implements Comparator<String>
+{
+	public int compare(String first, String second) {
+	return first.length() - second.length()；
+	}
+}
+```
+具体完成比较时，需要建立一个实例：
+```
+Comparator<String> comp = new LengthComparator。；
+if (conp.compare(words[i], words[j]) > 0)...
+```
+将这个调用与words[i].compareTo(words[j]) 做比较。这个compare方法要在比较器对象上调用，而不是在字符串本身上调用。
+
 ---
 ## 5接口回调
 &emsp;&emsp;和类一样，接口也是Java中重要的一种数据类型，用接口声明的变量称为接口变量。  
@@ -498,3 +528,26 @@ public class LambdaTest
 	}
 }
 ```
+## 3 函数式接口
+前面已经讨论过，Java中已经有很多封装代码块的接口，如ActionListener或Comparator，lambda 表达式与这些接口是兼容的，
+
+对于只有一个抽象方法的接口，需要这种接口的对象时，就可以提供一个lambda表达式。这种接口称为函数式接口(functional interface)。
+
+> 你可能想知道为什么函数式接口必须有一个抽象方法。不是接口中的所有方法都是抽象的吗？实际上，接口完全有可能重新声明Object类的方法，如toString 或clone,这些声明有可能会让方法不再是抽象的。（Java API中的一些接口会重新声明Object方法来附加javadoc注释Comparator AP丨就是这样一个例子。）更重要的是，在JavaSE 8中，接口可以声明非抽象方法。
+
+为了展示如何转换为函数式接口，下面考虑Arrays.sort方法。它的第二个参数需要一个Comparator实例，Comparator就是只有一个方法的接口，所以可以提供一个lambda表达式：
+```
+Arrays.sort (words ,
+	(first , second) -> first.length() - second.length()) ;
+```
+在底层，Arrays.sort方法会接收实现了Comparator<String>的某个类的对象。在这个对象上调用compare方法会执行这个lambda表达式的体。这些对象和类的管理完全取决于具体实现，与使用传统的内联类相比，这样可能要高效得多。最好把lambda表达式看作是一个函数，而不是一个对象，另外要接受lambda表达式可以传递到函数式接口
+	
+lambda表达式可以转换为接口，这一点让lambda表达式很有吸引力。具体的语法很简短。下面再来看一个例子：
+```
+Timer t = new Timer(1000, event ->
+	{
+		System.out.println("At the tone, the time is " + new DateO);
+		Toolkit.getDefaultToolkit().beep();
+	})；
+```
+
