@@ -55,7 +55,7 @@ public class exercise{
 ```
 setJMenuBar(JMenuBar bar);
 ```
-==该方法将菜单条添加到窗口的顶端，需要注意的是，只能向窗口中添加一个菜单条。==
+该方法将菜单条添加到窗口的顶端，需要注意的是，只能向窗口中添加一个菜单条。
 ##### 2.菜单
 JComponent类的子类`JMenu`负责创建菜单，即JMenu的一个实例就是一个菜单。
 ##### 3.菜单项
@@ -404,7 +404,7 @@ public class exercise extends JFrame{
 能够产生事件的对象都可以成为事件源，如文本框、按钮、下拉式列表等。
 也就是说，事件源必须是一个对象，而且这个对象必须是Java认为能够发生事件的对象。
 ##### 2.监视器
-==我们需要一个对象对事件源进行监视，以便对发生的事件作出处理。==
+我们需要一个对象对事件源进行监视，以便对发生的事件作出处理。
 事件源通过调用相应的方法将某个对象注册为自己的监视器。例如，对于文本框,这个方法是:
 ```
 addActionListener(监视器);
@@ -713,51 +713,51 @@ public char getKeyChar();
 ```
 判断哪个键被按下，敲击或释放，getKeyChar()方法返回键上的字符。
 
-键码 | 键
+键码|键
 ---|---
-VK_F1-VK_F12 | 功能键F1~F12
-VK LEFT | 向左箭头键
-VK_ RIGHT | 向右箭头键
-VK_ UP | 向上箭头键
-VK_ DOWN | 向下箭头键
-VK KP UP | 小键盘的向上箭头键
-VK_ KP DOWN | 小键盘的向下箭头键
-VK_ KP LEFT | 小键盘的向左箭头键
-VK_ KP_ RIGHT | 小键盘的向右箭头键
-VK_ END | END键
-VK_ HOME | HOME键
-VK_ PAGE DOWN | 向后题页键
-VK_ PAGE UP|  向前距页键
-VK_ PRINTSCREEN | 打印屏幕键
-VK_ SCROLL LOCK  |滚动锁定键
-VK_ CAPS LOCK | 大写锁定键
-VK NUM LOCK | 数字锁定键
-PAUSE | 暂停键
-VK_ INSERT | 插人键
-VK_ DELETE | 删除键  
-VK_ ENTER | 回车键
-VK_ TAB | 制表符键  
-VK_ BACK_ SPACE |退格键  
-VK_ ESCAPE |Esc键  
-VK_ CANCEL |取消键  
-VK_ CLEAR |清除键 
-VK_ SHIFT |Shift键  
-VK_ CONTROL |Ctrl键
-VK_ ALT  |Alt键
-VK_ PAUSE  |暂停键
-VK_ SPACE  |空格键
-VK_ COMMA  |逗号键
-VK_ SEMICOLON  |分号键
-VK_ PERIOD |.键
-VK_ SLASH  |/键
-VK_ BACK SLASH  |\键
-VK_ 0~VK_9 |  0~9键
-VK_ A~VK_Z |  A~z健
-VK_OPEN_BRACKET | [键
-VK_CLOSE_BRACKET | ]键
-VK_UNMPAD0-VK_NUMPAD9  |小健盘上的0至9键
-VK_QUOTE | 单引号'键
-VK_BACK_QUOTE | 单引号'健
+VK_F1-VK_F12|功能键F1~F12
+VK LEFT|向左箭头键
+VK_ RIGHT|向右箭头键
+VK_ UP|向上箭头键
+VK_ DOWN|向下箭头键
+VK KP UP|小键盘的向上箭头键
+VK_ KP DOWN|小键盘的向下箭头键
+VK_ KP LEFT|小键盘的向左箭头键
+VK_ KP_ RIGHT|小键盘的向右箭头键
+VK_ END|END键
+VK_ HOME|HOME键
+VK_ PAGE DOWN|向后题页键
+VK_ PAGE UP|向前距页键
+VK_ PRINTSCREEN|打印屏幕键
+VK_ SCROLL LOCK|滚动锁定键
+VK_ CAPS LOCK|大写锁定键
+VK NUM LOCK|数字锁定键
+PAUSE|暂停键
+VK_ INSERT|插人键
+VK_ DELETE|删除键  
+VK_ ENTER|回车键
+VK_ TAB|制表符键  
+VK_ BACK_ SPACE|退格键  
+VK_ ESCAPE|Esc键  
+VK_ CANCEL|取消键  
+VK_ CLEAR|清除键 
+VK_ SHIFT|Shift键  
+VK_ CONTROL|Ctrl键
+VK_ ALT|Alt键
+VK_ PAUSE|暂停键
+VK_ SPACE|空格键
+VK_ COMMA|逗号键
+VK_ SEMICOLON|分号键
+VK_ PERIOD|.键
+VK_ SLASH|/键
+VK_ BACK SLASH |\键
+VK_ 0~VK_9|0~9键
+VK_ A~VK_Z|A~z健
+VK_OPEN_BRACKET|\[键
+VK_CLOSE_BACKET|]\键
+VK_UNMPAD0-VK_NUMPAD9 |小健盘上的0至9键
+VK_QUOTE|单引号'键
+VK_BACK_QUOTE|单引号'健
 当安装某些软件时，经常要求输人序列号码，并且要在几个文本框中依次输入。每个文本框中输入的字符数目都是固定的，当在第一个文本框输入了恰好的字符个数后,输人光标会自动转移到下一个文本框。例11. 11通过处理键盘事件来实现软件序列号的输入。当文本框获得输入焦点后，用户敲击键盘将使得当前文本框输入序列号触发KeyEvent事件，在处理事件时，程序检查文本框中光标的位置，如果光标已经到达指定位置，就将输入焦点转移到下一个文本框。程序运行效果如图11.12所示.
 ```
 import java.awt.event.*;
