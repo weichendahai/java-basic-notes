@@ -1,22 +1,8 @@
 # 1 Java Swing概述
 Java的java.awt包，即抽象窗口工具包JDK1.2推出后，增加了一个新的javax.swing包，该包提供了更为强大的GUI类，这两个包中一部分类的层次关系的UML类如下图所示
 
-```
-graph LR
-JButton-->JComponent
-JTextField-->JComponent
-JTeatArea-->JComponent
-JTree-->JComponent
-JTable-->JComponent
-JPanel-->JComponent
-JFrame-->Frame
-JDialog-->Dialog
-Frame-->Windows
-Dialog-->Windows
-JComponent-->Container
-Windows-->Container
-Container-->Component
-```
+![avatar](
+https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/Component%E7%9A%84%E7%B1%BB%E5%B1%82%E6%AC%A1%E7%BB%93%E6%9E%84.jpg?raw=true)
 >Component类的部分子类
 
 学习GUI编程时，必须很好的了解两个概念：容器类(Container)和组建类(Component)。javax.swing包中JComponent类是java.awt包中Container类的一个直接子类，是Component类的一个间接子类，学习GUI编程主要是学习掌握使用Component类的一些重要的子类。  
