@@ -1,6 +1,8 @@
-# 4 事件处理
+Java基础知识笔记-10-事件处理
+
+# 事件处理
 学习组件除了要熟悉组建的属性和功能外，一个更重要的方面是学习怎样处理组建上发生的界面事件，当用户在文本框中输入文本后按回车，单击按钮，在一个下拉式列表中选择一个条目进行一个条目等操作时，都发生界面事件，例如，用户单击一个确定或者取消的按钮，程序可能需要做出不同的处理。
-## 4.1 事件处理模式
+## 1 事件处理模式
 在学习处理事件时,必须很好地掌握事件源、监视器、处理事件的接口这三个概念。
 ##### 1.事件源
 能够产生事件的对象都可以成为事件源，如文本框、按钮、下拉式列表等。
@@ -22,7 +24,7 @@ B[XXX事件]-->|通知|A
 A-->|监视器回调接口方法|D[class A implements XXXListener 接口方法]
 E[类A负责创建监视器,A必须实现XXXListener接口]---A[事件源.addXXXListener]
 ```
-## 4.2 ActionEvent事件
+## 2 ActionEvent事件
 ##### 1.ActionEvent事件源
 文本框、按钮、菜单项、密码框和单选按钮都可以触发ActionEvent事件，即都可以成为ActionEvent事件的事件源。例如，对于注册了监视器的文本框，在文本框获得输人焦点后，如果用户按回车键，Java运行环境就自动用ActionEvent类创建一个对象，即触发ActionEvent事件;对于注册了监视器的按钮，如果用户单击按钮，就会触发ActionEvent事件;对于注册了监视器的菜单项，如果用户选中该菜单项，就会触发ActionEvent事件;如果用户选择了某个单选按钮，就会触发ActionEvent事件。
 ##### 2.注册监视器
@@ -149,7 +151,7 @@ public class exercise{
 ```
 Java的事件处理是基于授权模式，即事件源调用方法将某个对象注册为自己的监视器。
 **处理相应的事件调用相应的接口**
-## 4.3ItemEvent事件
+## 3 ItemEvent事件
 ##### 1.ItemEvent事件源
 选择框，下拉列表都可以触发ItemEvent事件。选择框提供两种状态，一种是选中，另一种是未选中。对于注册了监视器的选择框，当用户的操作使得选择框从未选中状态变成选中状态，或是相反变化的时候就会触发ItemEvent事件，同样，对于注册了监视器的下拉列表，如果用户选中下拉列表中的某个选项，就会触发ItemEvent事件。
 ##### 2.注册监视器
@@ -169,7 +171,7 @@ itemStateChange(ItemEvent e);
 ```
 对发生的事件做出处理。当监视器调用itemStateChange(ItemEvent e)方法时，ItemEvent类事先创建的事件对象就会传递给该方法的参数e。  
 ItemEvent事件对象除了可以使用getSource()方法返回发生ItemEvent事件的事件源外，也可以使用getItemSelectable()方法返回发生ItemEvent事件的事件源。  
-## 4.4 DocumentEvent事件
+## 4 DocumentEvent事件
 ##### 1.DocumentEvent事件源
 文本区中含有一个实现Document接口的实例，该实例被称作文本区维护的文档，文本区调用getDocument()方法返回维护的文档。文本区维护的文档能触发DocumentEvent事件。需要注意的是，DocumentEvent不在java.awt.event包中，而是在javax.swing.event包中。用户在文本区中进行文本编辑操作，使得文本区中的文本区内容发生变化，将导致文本区维护的文档模型中的数据发生变化，从而导致文本区维护的文档触发DocumentEvent事件。
 ##### 2.注册监视器
@@ -245,7 +247,7 @@ public class exercise{
 }
 ```
 
-## 4.5 MouseEvent事件
+## 5 MouseEvent事件
 任何组件都可以发生鼠标事件，如鼠标进入组件，退出组件，在组建上方单击鼠标，拖动鼠标等都可以触发鼠标事件，即导致MouseEvent类自动创建一个事件对象。
 ##### 1.使用MouseEvent接口处理鼠标事件
 使用MouseListener接口可以处理以下5种操作触发的鼠标事件。
@@ -280,7 +282,7 @@ mouseExited(MouseEvent);//负责处理鼠标离开组件触发的鼠标事件。
 mouseClicked(MouseEvent);//负责处理在组件上单击鼠标键触发的鼠标事件。即
 当单击鼠标时，监视器调用接口中的这个方法对事件做出处理。
 ```
-## 4.6焦点事件
+## 6 焦点事件
 组件可以触发焦点事件。组件可以使用
 ```
 addFocusListener(FocusListener listener);
@@ -296,7 +298,7 @@ public void focusLost(FocusEvnet e);//监视器从有焦点输入变成无焦点
 public boolean requestFocusInWindow();
 ```
 方法可以获得输入焦点。
-## 4.7键盘事件
+## 7 键盘事件
 当按下，释放或敲击键盘上一个键时就就触发了键盘事件，在Java事件模式中，必须要有发生事件的事件源。当一个组件处于激活状态时，敲击键盘上一个键就导致这个组件触发键盘事件。当使用KeyListener接口处理键盘事件，有如下3个方法：
 ```
 public void keyPessed(KeyEvent e);
@@ -414,8 +416,9 @@ public class exercise{
 	}
 }
 ```
-## 4.8匿名类实例或窗口做监视器
-# 5.使用MVC结构
+## 8 匿名类实例或窗口做监视器
+
+## 9 使用MVC结构
 模型-视图-控制器，简称MVC，MVC是一种先进的设计结构，是TrygveReenskaug教授于1978年最早开发的一个基本结构，其目的是以会话形式提供方便的GUI支持，MVC首先出现在Smalltalk编程语言中。
 MVC是一种通过三个不同部分构造一个软件或组件的理想办法。
 - 模型，用于储存数据的对象
@@ -525,11 +528,11 @@ public class exercise{
 	}
 }
 ```
-# 6.对话框
+## 10 对话框
 JDialog类和JFrame类都是window的子类，二者的实例都是底层容器，但是二者有相似之处也有不同的地方，主要区别是，JDialog类创建的对话框必须要依赖某个窗口。  
 对话框分为无模式和有模式两种。如果一个对话框是有模式的对话框，那么当这个对话框处于激活状态时，只让程序响应对话框内部的事件，而且将堵塞其他线程的执行，用户不能再激活对话框所在程序中的其他窗口，知道该对话框消失不可见。无模式对话框处于激活状态时，能再激活其他窗口，也不阻塞其他线程的执行。  
 **注意：进行一个重要的操作之前，通过弹出一个有模式的对话框表明操作的重要性**
-## 6.1 消息对话框
+### 10.1 消息对话框
 消息对话框是有模式对话框，进行一个重要的操作之前，最好能弹出一个消息对话框。可以用javax.swing包中的JOptionPane类的静态方法：
 ```
 public static void showMessageDialog(Component parentComponent,String message,String title,int messageType);
@@ -588,7 +591,7 @@ public class exercise{
 	}
 }
 ```
-## 6.2 输入对话框
+### 10.2 输入对话框
 输入对话框包含供公户输入文本的文本框，一个确认和取消按钮，是有模式对话框。当对话框可见时，要求用户输入一个字符串。javax.swing包中的JOptionPane类的静态方法：
 ```
 public static String showInputDialog(Component parentComponent,Object message,String title,int messageType);
@@ -653,7 +656,7 @@ public class exercise{
 	}
 }
 ```
-## 6.3确认对话框
+### 10.3确认对话框
 确认对话框是有模式对话框，可以用javax.swing包中的JOptionPane类的静态方法：
 ```
 public static int showConfirmDialog(Component parentComponent,Object message,String title,int optionType);
@@ -710,7 +713,7 @@ public class exercise{
 	}
 }
 ```
-## 6.4颜色对话框
+### 10.4 颜色对话框
 可以用javax.swing包中的JColorChooser类的静态方法：
 ```
 public static Color showDialog(Component component,String title,Color initialColor);
@@ -747,7 +750,7 @@ public class exercise{
 	}
 }
 ```
-## 6.5 文件对话框
+### 10.5 文件对话框
 文件对话框是一个从文件中选择文件的界面，javax.swing包中的JFileChooser类可以创建文件对话框，使用该类的构造方法JFileChooser()创建初始不可见的有模式的文件对话框。然后用文件对话框调用下述两个方法：
 ```
 showSaveDialog(Component a);
@@ -759,7 +762,7 @@ showOpenDialog(Component a);
 JFileChooser.APPROVE_OPTION
 JFileChooser.CANCEL_OPTION
 ```
-## 6.6 自定义对话框
+### 10.6 自定义对话框
 创建对话框与创建窗口类似，通过建立JDialog的子类来建立一个对话框类，然后这个类的一个实例，即这个子类创建的一个对象，就是一个对话框。对话框是一个容器，它的默认布局是BorderLayout，对话框可以添加组件，实现与用户的交互操作。需要注意的是，对话框可见时，默认的被系统添加到显示器屏幕上，因此不允许将一个对话框添加到另一个容器中。以下是构造对话框的2个常用构造方法。  
 - JDialog()构造一个无标题的初始不可见的对话框，对话框依赖一个默认的不可见的窗口，该窗口由Java运行环境提供。
 - JDialog(JFrame owner)构造一个无标题的初始不可见的无模式的对话框，owner时对话框依赖的窗口，如果owner取null，对话框依赖一个不可见的窗口，该窗口由Java运行环境支持。
