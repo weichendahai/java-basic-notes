@@ -108,7 +108,9 @@ Runtime ec;
 ec=Runtime.getRuntime();
 ```
 # 2 字节流和字符流简介&概要
+
 ![image](http://www.runoob.com/wp-content/uploads/2013/12/iostream2xx.png)
+
 java.io包提供了大量的流类，其中
 - Java把InputStream抽象类的子类创建的流对象称作字节输入流，Outputstrem抽象类的子类创建的流对象称作字节输出流
 - Java把Reader抽象类的子类创建的流对象称作字符输入流，Writer抽象类的子类创建的流对象称作字符输出流。  
@@ -635,28 +637,30 @@ DataInpustream(InputStream in);创建的数据输入流指向一个由参数in�
 DataOutputStream(OutputStream out);创建的数据输出流指向一个由参数out指定的底层输出流。
 ```
 表10.2  DatalnpulStream及DataOutputStcam 类的部分方法
+
 方法|描述
 ---|---
-close()|	关闭流
-readBoolean()| 	读取一个布尔值
-readByte()|	读取一个字节
-readChar()|	读取一个字符
-readDouble()| 	读取一个双精度浮点值
-readFloat()|	读取个单精度浮点值
-readInt()|	读取一个int值
-readlong()|	读取一个长型值
-readShort()|	读取一个短型值
-readUnsignedByte()|	读取一个无符号字节
-readUnsignedShort()|	读取一个无符号短型值
-readUTF()|	读取一个UTF字符串
-skipBytes(int n)|	跳过给定数量的字节
-writeBoolean(boolean v)|	写入一个布尔值
-writeBytes(String s)|	写入一个字符串
-writeChars(String s)|	写入字符串
-writeDouble(double v)|	写入一个双精度浮点值
-writeFloat(float v)| 	写入一个单精度浮点值
-writeInt(int v)|	写入一个一个int值
-writeLong(long v)|	写入一个一个长型值
-writeShort(int v)|	写入一个一个短型值
-writeUTF(String s)|	写入一个UTF字符串
+close()|关闭流
+readBoolean()|读取一个布尔值
+readByte()|读取一个字节
+readChar()|读取一个字符
+readDouble()|读取一个双精度浮点值
+readFloat()|读取个单精度浮点值
+readInt()|读取一个int值
+readlong()|读取一个长型值
+readShort()|读取一个短型值
+readUnsignedByte()|读取一个无符号字节
+readUnsignedShort()|读取一个无符号短型值
+readUTF()|读取一个UTF字符串
+skipBytes(int n)|跳过给定数量的字节
+writeBoolean(boolean v)|写入一个布尔值
+writeBytes(String s)|写入一个字符串
+writeChars(String s)|写入字符串
+writeDouble(double v)|写入一个双精度浮点值
+writeFloat(float v)| 写入一个单精度浮点值
+writeInt(int v)|写入一个一个int值
+writeLong(long v)|写入一个一个长型值
+writeShort(int v)|写入一个一个短型值
+writeUTF(String s)|写入一个UTF字符串
+
 # 9 对象流
