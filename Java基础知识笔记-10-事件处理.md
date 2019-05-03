@@ -15,7 +15,7 @@ Java程序设计环境折中了Visual Basic与原始C的事件处理方式，因
 不同的事件源可以产生不同类别的事件。例如，按钮可以发送一个ActionEvent对象,而窗口可以发送WindowEvent对象。
 
 综上所述，下面给出AWT事件处理机制的概要：
-- 监听器对象是一个实现了特定监听器接口（listener interface)的类的实例。
+- 监听器对象是一个实现了特定监听器接口(listener interface)的类的实例。
 - 事件源是一个能够注册监听器对象并发送事件对象的对象。
 - 当事件发生时，事件源将事件对象传递给所有注册的监听器。
 - 监听器对象将利用事件对象中的信息决定如何对事件做出响应。
@@ -229,7 +229,7 @@ public void actionPerformed(ActionEvent event)
 class ColorAction implements ActionListener
 {
 	private Color backgroundColor ;
-	public ColorAction(Colorc)
+	public ColorAction(Color c)
 	{
 		backgroundedor = c;
 	}
@@ -242,12 +242,12 @@ class ColorAction implements ActionListener
 ```
 然后，为每种颜色构造一个对象，并将这些对象设置为按钮监听器。
 ```
-ColorAction yellowAction = new ColorAction(Col or.YELLOW) :
-ColorAction blueAction = new ColorAction(Col or .BLUE) ;
-ColorAction redAction = new Colo「Action(Col or.RED) ;
+ColorAction yellowAction = new ColorAction(Color.YELLOW) :
+ColorAction blueAction = new ColorAction(Color .BLUE) ;
+ColorAction redAction = new ColorAction(Color.RED) ;
 yellowButton.addActionListener (yellowAction) ;
-blueButton.addActionListener (bl ueAction) ;
-redButton . addActionListener (redAction) ;
+blueButton.addActionListener (blueAction) ;
+redButton.addActionListener (redAction) ;
 ```
 例如，如果一个用户在标有“Yellow” 的按钮上点击了一下，yellowAction对象的actionPerformed方法就会被调用。这个对象的backgroundColor实例域被设置为Color.YELLOW，现在就将面板的背景色设置为黄色了。
 
@@ -255,7 +255,7 @@ redButton . addActionListener (redAction) ;
 ```
 class ButtonFrame extends JFrame
 {
-	private ]Panel buttonPanel ;
+	private JPanel buttonPanel ;
 	...
 	private class ColorAction implements ActionListener
 	{
@@ -346,7 +346,7 @@ public void makeButton(String name, Color backgroundedor)
 		buttonPanel.setBackground(backgroundColor));
 }
 ```
-需要说明， lambda 表达式指示参数变量backgroundColor。
+需要说明， lambda表达式指示参数变量backgroundColor。
 然后只需要调用：
 ```
 makeButton("yellow", Color.YELLOW):
@@ -354,6 +354,52 @@ makeButton("blue", Color.BLUE);
 makeButton("red", Color.RED);
 ```
 在这里，我们构造了3个监听器对象，分别对应一种颜色，但并没有显式定义一个类。每次调用这个辅助方法时，它会建立实现了ActionListener接口的一个类的实例它的actionPerformed动作会引用实际上随监听器对象存储的backGroundColor值。不过，所有这些会自动完成，而无需显式定义监听器类、实例变量或设置这些变量的构造器。
+
+> 注释：在较老的代码中，通常可能会看到使用匿名类：
+```
+exitButton.addActionListener(new ActionListener()
+{
+	public void actionPerformed(new ActionEvent)
+	{
+		System.exit(0);
+	}
+})；
+```
+当然，已经不再需要这种繁琐的代码。使用lambda表达式更简单，也更简洁。
+> 注释：有些程序员不习惯使用内部类或lambda表达式，而更喜欢创建实现了ActionListener接口的事件源容器，然后这个容器再设置自身作为监听器。如下所示：
+```
+yellowButton.addActionListener(this);
+blueButton.addActionListener(this);
+redButton.addActionListener(this);
+```
+现在这3个按钮不再有单独的监听器。它们共享一个监听器对象， 具体来讲就是框架(frame)。因此，actionPerformed方法必须明确点击了哪个按钮。
+```
+class ButtonFrame extends JFrame implements ActionListener
+{
+	public void actionPerformed(ActionEvent event)
+	{
+		Object source = event.getSourceO;
+		if (source == yellowButton) . . .
+		else if (source = blueButton) . . .
+		else if (source = redButton ) . . .
+		else . . .
+	}
+}
+```
+我们并不建议采用这种策略。
+> 注释：lambda表达式出现之前，还可以采用一种机制来指定事件监听器，其事件处理器包含一个方法调用。例如，假设一个按钮监听器需要执行以下调用：
+```
+frame.1oadData() ;
+```
+EventHandler类可以用下面的调用创建这样一个监听器：
+```
+EventHandler.create(ActionListener.class, frame , "loadData")
+```
+这种方法现在已经成为历史。利用lambda表达式，可以更容易地使用以下调用：
+```
+event -> frame.loadData() ;
+```
+EventHandler机制的效率也不高，而且比较容易出错。它使用反射来调用方法。出于这个原因，EventHandler.create调用的第二个参数必须属于一个公有类。否则，反射机制就无法确定和调用目标方法
 
 ## 3 ItemEvent事件
 ##### 1.ItemEvent事件源
