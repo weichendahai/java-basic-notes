@@ -716,45 +716,45 @@ public char getKeyChar();
 键码|键
 ---|---
 VK_F1-VK_F12|功能键F1~F12
-VK LEFT|向左箭头键
-VK_ RIGHT|向右箭头键
-VK_ UP|向上箭头键
-VK_ DOWN|向下箭头键
-VK KP UP|小键盘的向上箭头键
-VK_ KP DOWN|小键盘的向下箭头键
-VK_ KP LEFT|小键盘的向左箭头键
-VK_ KP_ RIGHT|小键盘的向右箭头键
-VK_ END|END键
-VK_ HOME|HOME键
-VK_ PAGE DOWN|向后题页键
-VK_ PAGE UP|向前距页键
-VK_ PRINTSCREEN|打印屏幕键
-VK_ SCROLL LOCK|滚动锁定键
-VK_ CAPS LOCK|大写锁定键
+VK_LEFT|向左箭头键
+VK_RIGHT|向右箭头键
+VK_UP|向上箭头键
+VK_DOWN|向下箭头键
+VK_KP_UP|小键盘的向上箭头键
+VK_KP_DOWN|小键盘的向下箭头键
+VK_KP_LEFT|小键盘的向左箭头键
+VK_KP_RIGHT|小键盘的向右箭头键
+VK_END|END键
+VK_HOME|HOME键
+VK_PAGE DOWN|向后题页键
+VK_PAGE UP|向前距页键
+VK_PRINTSCREEN|打印屏幕键
+VK_SCROLL LOCK|滚动锁定键
+VK_CAPS LOCK|大写锁定键
 VK NUM LOCK|数字锁定键
 PAUSE|暂停键
-VK_ INSERT|插人键
-VK_ DELETE|删除键  
-VK_ ENTER|回车键
-VK_ TAB|制表符键  
-VK_ BACK_ SPACE|退格键  
-VK_ ESCAPE|Esc键  
-VK_ CANCEL|取消键  
-VK_ CLEAR|清除键 
-VK_ SHIFT|Shift键  
-VK_ CONTROL|Ctrl键
-VK_ ALT|Alt键
-VK_ PAUSE|暂停键
-VK_ SPACE|空格键
-VK_ COMMA|逗号键
-VK_ SEMICOLON|分号键
-VK_ PERIOD|.键
-VK_ SLASH|/键
-VK_ BACK SLASH |\键
-VK_ 0~VK_9|0~9键
-VK_ A~VK_Z|A~z健
+VK_INSERT|插人键
+VK_DELETE|删除键  
+VK_ENTER|回车键
+VK_TAB|制表符键  
+VK_BACK_SPACE|退格键  
+VK_ESCAPE|Esc键  
+VK_CANCEL|取消键  
+VK_CLEAR|清除键 
+VK_SHIFT|Shift键  
+VK_CONTROL|Ctrl键
+VK_ALT|Alt键
+VK_PAUSE|暂停键
+VK_SPACE|空格键
+VK_COMMA|逗号键
+VK_SEMICOLON|分号键
+VK_PERIOD|.键
+VK_SLASH|/键
+VK_BACK SLASH |\键
+VK_0~VK_9|0~9键
+VK_A~VK_Z|A~z健
 VK_OPEN_BRACKET|\[键
-VK_CLOSE_BACKET|]\键
+VK_CLOSE_BACKET|]键
 VK_UNMPAD0-VK_NUMPAD9 |小健盘上的0至9键
 VK_QUOTE|单引号'键
 VK_BACK_QUOTE|单引号'健
