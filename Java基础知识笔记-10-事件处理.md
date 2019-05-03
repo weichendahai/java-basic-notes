@@ -2,8 +2,24 @@ Java基础知识笔记-10-事件处理
 
 # 事件处理
 学习组件除了要熟悉组建的属性和功能外，一个更重要的方面是学习怎样处理组建上发生的界面事件，当用户在文本框中输入文本后按回车，单击按钮，在一个下拉式列表中选择一个条目进行一个条目等操作时，都发生界面事件，例如，用户单击一个确定或者取消的按钮，程序可能需要做出不同的处理。
+
+Java程序设计环境折中了Visual Basic与原始C的事件处理方式，因此，它既有着强大的功能， 又具有一定的复杂性。在AWT 所知的事件范围内， 完全可以控制事件从事件源(event source)例如，按钮或滚动条，到事件监听器(event listener)的传递过程，并将任何对象指派给事件监听器。不过事实上，应该选择一个能够便于响应事件的对象。这种事件委托模型(event delegation model)与Visual Basic那种预定义监听器模型比较起来更加灵活。
+
+事件源有一些向其注册事件监听器的方法。当某个事件源产生事件时，事件源会向为事件注册的所有事件监听器对象发送一个通告。
+
+像Java这样的面向对象语言，都将事件的相关信息封装在一个事件对象(event object)中。在Java中，所有的事件对象都最终派生于java.util.EventObject 类。当然，每个事件类型还有子类，例如，ActionEvent和WindowEvent。
+
 ## 1 事件处理模式
 在学习处理事件时,必须很好地掌握事件源、监视器、处理事件的接口这三个概念。
+
+不同的事件源可以产生不同类别的事件。例如，按钮可以发送一个ActionEvent对象,而窗口可以发送WindowEvent对象。
+
+综上所述，下面给出AWT事件处理机制的概要：
+- 监听器对象是一个实现了特定监听器接口（listener interface)的类的实例。
+- 事件源是一个能够注册监听器对象并发送事件对象的对象。
+- 当事件发生时，事件源将事件对象传递给所有注册的监听器。
+- 监听器对象将利用事件对象中的信息决定如何对事件做出响应。
+
 ##### 1.事件源
 能够产生事件的对象都可以成为事件源，如文本框、按钮、下拉式列表等。
 也就是说，事件源必须是一个对象，而且这个对象必须是Java认为能够发生事件的对象。
@@ -15,8 +31,31 @@ addActionListener(监视器);
 ```
 对于注册了监视器的文本框，在文本框获得输人焦点后,如果用户按回车键,Java运行环境就自动用Actionven类创建一个对象，即发生了ActionEvent事件。也就是说，事件源注册监视器之后，相应的操作就会导致相应的事件地发生，并通知监视器，监视器就会出相应的处理。
 ##### 3.处理事件的接口
+
 监视器负责处理事件源发生的事件。监视器是一个对象，为了处理事件源发生的事件，监视器这个对象会自动调用一个方法来处理事件。那么监视器去调用哪个方法呢?我们我知道，对象可以调用创建它的那个类中的方法，那么它到底调用该类中的哪个方法呢？Java规定为了让监视器这个对象能对事件源发生的事件进行处理，创建该监视器对象的以面市明实现相应的接口，即必须在类体中重写接口中的所有方法，那么当事件源发生事，监视器就自动调用被类重写的某个接口方法。事件处理模式如图11.6所示。
 
+> 下面是监听器的一个示例：
+```
+ActionListener listener = . .
+3Button button = new ]Button("0KH)；
+button.addActionListenerGistener);
+```
+现在，只要按钮产生了一个“动作事件”，listener对象就会得到通告。对于按钮来说，正像我们所想到的，动作事件就是点击按钮。
+
+为了实现ActionListener接口，监听器类必须有一个被称为actionPerformed的方法，该方法接收一个ActionEvent对象参数。
+```
+class MyListener iipleaents ActionListener
+{
+	public void actionPerforied(ActionEvent event)
+	{
+		// reaction to button click goes here
+		...
+	}
+}
+```
+只要用户点击按钮，JButton对象就会创建一个ActionEvent对象，然后调用listener,action Performed (event)传递事件对象。可以将多个监听器对象添加到一个像按钮这样的事件源中。这样一来，只要用户点击按钮，按钮就会调用所有监听器的actionPerformed方法。
+
+如下图所示：
 ```
 graph LR
 A[事件源.addXXXListener]-->|发生|B[XXX事件]
@@ -24,6 +63,7 @@ B[XXX事件]-->|通知|A
 A-->|监视器回调接口方法|D[class A implements XXXListener 接口方法]
 E[类A负责创建监视器,A必须实现XXXListener接口]---A[事件源.addXXXListener]
 ```
+
 ## 2 ActionEvent事件
 ##### 1.ActionEvent事件源
 文本框、按钮、菜单项、密码框和单选按钮都可以触发ActionEvent事件，即都可以成为ActionEvent事件的事件源。例如，对于注册了监视器的文本框，在文本框获得输人焦点后，如果用户按回车键，Java运行环境就自动用ActionEvent类创建一个对象，即触发ActionEvent事件;对于注册了监视器的按钮，如果用户单击按钮，就会触发ActionEvent事件;对于注册了监视器的菜单项，如果用户选中该菜单项，就会触发ActionEvent事件;如果用户选择了某个单选按钮，就会触发ActionEvent事件。
@@ -46,13 +86,10 @@ actionPerformed(ActionEvent e);
 ##### 4.ActionEvent类中的方法
 ActionEvent类有如下常用的方法。
 ```
-public ObeceSurce();该方法是从Enentobiect继承的方法，ActionEvent事件对象调用
-该方法可以获取发生ActionEvent事件的事件源对象的引用，即BetSource()方法将事件
-源上转型为Object对象，并返回这个上转型对象的引用，
-public String getActionCommand();ActionEvent对象调用该方法可以获取发生
-ActionEvent事件时，和该事件相关的一个命令字符串，对于文本框，当发生ActionEvent
-事件时，文本框中的文本字符串就是和该事件相关的一个命令字符串.
+public ObeceSurce();该方法是从Enentobiect继承的方法，ActionEvent事件对象调用该方法可以获取发生ActionEvent事件的事件源对象的引用，即BetSource()方法将事件源上转型为Object对象，并返回这个上转型对象的引用，
+public String getActionCommand();ActionEvent对象调用该方法可以获取发生ActionEvent事件时，和该事件相关的一个命令字符串，对于文本框，当发生ActionEvent事件时，文本框中的文本字符串就是和该事件相关的一个命令字符串.
 ```
+### 实例1
 例11.5处理文本框上触发的ActionEvent事件。在文本框text中输人字符串回车，监视器负责计算字符串的长度，并在命令行窗口显示字符串的长度。例11.5程序运行效果如图11.7和图11.8所示。
 ```
 import java.awt.*;
@@ -151,6 +188,173 @@ public class exercise{
 ```
 Java的事件处理是基于授权模式，即事件源调用方法将某个对象注册为自己的监视器。
 **处理相应的事件调用相应的接口**
+
+### 实例2
+为了加深对事件委托模型的理解，下面以一个响应按钮点击事件的简单示例来说明所需要知道的所有细节。在这个示例中，想要在一个面板中放置三个按钮，添加三个监听器对象用来作为按钮的动作监听器。
+
+在这个情况下，只要用户点击面板上的任何一个按钮，相关的监听器对象就会接收到一个Action Event对象，它表示有个按钮被点击了。在示例程序中，监听器对象将改变面板的背景颜色。
+
+在演示如何监听按钮点击事件之前，首先需要解释如何创建按钮以及如何将它们添加到面板中(有关GUI 元素更加详细的内容请参看第12章)。
+可以通过在按钮构造器中指定一个标签字符串、一个图标或两项都指定来创建一个按钮。下面是两个示例：
+```
+3Button yellowButton = new ]Button("Yellow") ;
+]Button blueButton = new 3Button(new Imagelcon("blue-ball .gif')) ;
+```
+将按钮添加到面板中需要调用add方法：
+```
+JButton yellowButton = new JButton("Yellow") ;
+JButton blueButton = new JButton("Blue")；
+JButton redButton = new JButton("Red")；
+buttonPanel .add (yellowButton) ;
+buttonPanel .add (blueButton) ;
+buttonPanel .add (redButton) ;
+```
+
+接下来需要增加让面板监听这些按钮的代码。这需要一个实现了ActionListener接口的类。如前所述，应该包含一个actionPerformed方法，其签名为：
+```
+public void actionPerformed(ActionEvent event)
+```
+> 注释：在按钮示例中，使用的ActionListener接口并不仅限于按钮点击事件。它可以应用于很多情况：
+- 当采用鼠标双击的方式选择了列表框中的一个选项时；
+- 当选择一个菜单项时；
+- 当在文本域中按回车键时；
+- 对于一个Timer 组件来说，当达到指定的时间间隔时。
+
+在本章和下一章中，读者将会看到更加详细的内容。
+
+在所有这些情况下，使用ActionListener接口的方式都是一样的：actionPerformed方法（ActionListener 中的唯一方法）将接收一个ActionEvent类型的对象作为参数。这个事件对象包含了事件发生时的相关信息。
+
+当按钮被点击时， 希望将面板的背景颜色设置为指定的颜色。这个颜色存储在监听器类中：
+```
+class ColorAction implements ActionListener
+{
+	private Color backgroundColor ;
+	public ColorAction(Colorc)
+	{
+		backgroundedor = c;
+	}
+	public void actionPerformed (ActionEvent event)
+	{
+		// set panel background color
+		...
+	}
+}
+```
+然后，为每种颜色构造一个对象，并将这些对象设置为按钮监听器。
+```
+ColorAction yellowAction = new ColorAction(Col or.YELLOW) :
+ColorAction blueAction = new ColorAction(Col or .BLUE) ;
+ColorAction redAction = new Colo「Action(Col or.RED) ;
+yellowButton.addActionListener (yellowAction) ;
+blueButton.addActionListener (bl ueAction) ;
+redButton . addActionListener (redAction) ;
+```
+例如，如果一个用户在标有“Yellow” 的按钮上点击了一下，yellowAction对象的actionPerformed方法就会被调用。这个对象的backgroundColor实例域被设置为Color.YELLOW，现在就将面板的背景色设置为黄色了。
+
+这里还有一个需要考虑的问题。CobrAction对象不能访问buttonpanel变量。可以采用两种方式解决这个问题。一个是将面板存储在ColorAction对象中，并在ColorAction的构造器中设置它；另一个是将ColorAction作为ButtonFrame类的内部类，这样一来，它的方法就自动地拥有访问外部面板的权限了（有关内部类的详细介绍请参看第6章)。这里使用第二种方法。下面说明一下如何将ColorAction类放置在ButtonFrame类内。
+```
+class ButtonFrame extends JFrame
+{
+	private ]Panel buttonPanel ;
+	...
+	private class ColorAction implements ActionListener
+	{
+		private Color backgroundColor;
+		...
+		public void actionPerformed(ActionEvent event)
+		{
+			buttonPanel .setBackground(backgroundColor);
+		}
+	}
+}
+```
+下面仔细地研究actionPerformed方法。在ColorAction类中没有buttonPanel域，但在外部ButtonFrame类中却有
+
+这种情形经常会遇到。事件监听器对象通常需要执行一些对其他对象可能产生影响的操作。可以策略性地将监听器类放置在需要修改状态的那个类中。
+
+程序清单11-1包含了完整的框架类。无论何时点击任何一个按钮，对应的动作监听器就会修改面板的背景颜色。
+```
+程序清单i11-1
+package button;
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+/**
+* A frame with a button panel
+*/
+public class ButtonFrame extends ]Frame
+{
+	private JPanel buttonPanel;
+	private static final int DEFAULT_WIDTH = 300;
+	private static final int DEFAULT_HEICHT = 200;
+
+	public ButtonFrame()
+	{
+
+		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+		// create buttons
+		]Button yellowButton = new JButton("Yellow")；
+		3Button blueButton = new JButton("Blue")；
+		JButton redButton = new JButton("Red");
+		buttonPanel = new JPanel () ;
+		// add buttons to panel
+		buttonPanel .add(yellowButton) ;
+		buttonPanel .add(blueButton) ;
+		buttonPanel .add(redButton) ;
+		// add panel to frame
+		add(buttonPanel);
+		// create button actions
+		ColorAction yellowAction = new ColorAction(Color.YELLOW);
+		ColorAction blueAction = new ColorAction(Color.BLUE) ;
+		ColorAction redAction = new ColorAction(Color.RED) ;
+		// associate actions with buttons
+		yellowButton.addActionListener(yel1owAction);
+		blueButton.addActionListener(blueAction) ;
+		redButton.addActionListener(redAction);
+	}
+		/**
+		* An action listener that sets the panel ' s background color.
+		*/
+	private class ColorAction implements ActionListener
+	{
+		private Color backgroundColor;
+		public ColorAction(Color c)
+		{
+			backgroundedor = c;
+		}
+		public void actionPerformed(ActionEvent event)
+		{
+			buttonPanel .setBackground(backgroundColor);
+		}
+	}
+}
+```
+### 2.2 简洁的指定监听器
+在上一节中，我们为事件监听器定义了一个类并构造了这个类的3个对象。一个监听器类有多个实例的情况并不多见。更常见的情况是： 每个监听器执行一个单独的动作。在这种情况下，没有必要分别建立单独的类。只需要使用一个lambda表达式：
+```
+exitButton.addActionListener(event -> Systeu.exit(O));
+```
+现在考虑这样一种情况： 有多个相互关联的动作， 如上一节中的彩色按钮。在这种情况
+下， 可以实现一个辅助方法：
+```
+public void makeButton(String name, Color backgroundedor)
+{
+	JButton button = new JButton(name);
+	buttonPanel.add(button);
+	button.addActionListener(event ->
+		buttonPanel.setBackground(backgroundColor));
+}
+```
+需要说明， lambda 表达式指示参数变量backgroundColor。
+然后只需要调用：
+```
+makeButton("yellow", Color.YELLOW):
+makeButton("blue", Color.BLUE);
+makeButton("red", Color.RED);
+```
+在这里，我们构造了3个监听器对象，分别对应一种颜色，但并没有显式定义一个类。每次调用这个辅助方法时，它会建立实现了ActionListener接口的一个类的实例它的actionPerformed动作会引用实际上随监听器对象存储的backGroundColor值。不过，所有这些会自动完成，而无需显式定义监听器类、实例变量或设置这些变量的构造器。
+
 ## 3 ItemEvent事件
 ##### 1.ItemEvent事件源
 选择框，下拉列表都可以触发ItemEvent事件。选择框提供两种状态，一种是选中，另一种是未选中。对于注册了监视器的选择框，当用户的操作使得选择框从未选中状态变成选中状态，或是相反变化的时候就会触发ItemEvent事件，同样，对于注册了监视器的下拉列表，如果用户选中下拉列表中的某个选项，就会触发ItemEvent事件。
