@@ -159,11 +159,11 @@ JFrame的结构相当复杂。在图10-8中给出了JFrame的结构。可以看�
 
 Swing程序员最关心的是内容窗格（contentpane)。在设计框架的时候，要使用下列代码将所有的组件添加到内容窗格中：
 ```
-Container contentPane = frame.getContentPaneO ;
+Container contentPane = frame.getContentPane() ;
 Component c = ...;
 contentPane.add(c) ;
 ```
-在Java SE 1.4及以前的版本中，JFrame 类中的add 方法抛出了一个异常信息`“Do not use JFrame.add().Use JFrame.getContentPaneQ.add instead”`。如今，JFrame.add方法不再显示
+在Java SE 1.4及以前的版本中，JFrame 类中的add 方法抛出了一个异常信息`“Do not use JFrame.add().Use JFrame.getContentPane().add instead”`。如今，JFrame.add方法不再显示
 
 这些提示信息， 只是简单地调用内容窗格的add，因此，可以直接调用
 ```
