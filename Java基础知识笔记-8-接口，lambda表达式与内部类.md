@@ -592,4 +592,61 @@ Timer t = new Timer(1000, event ->
 ```
 与使用实现了ActionListener接口的类相比，这个代码可读性要好得多。实际上，在Java 中，对lambda表达式所能做的也只是能转换为函数式接口。在其他支
 持函数字面量的程序设计语言中，可以声明函数类型(如（String, String) -> int )、声明这些类型的变量，还可以使用变量保存函数表达式。不过，Java设计者还是决定保持我们熟悉的接口概念，没有为Java语言增加函数类型。
+
 *lambda表达式未完待续*
+
+# 内部类
+## 内部类的简单实例
+前面已经知道，类可以有两种重要的成员：变量成员和方法，实际上Java还允许类可以有另一种成员：内部类。
+
+Java支持在一个类中声明另一个类，这样的类叫做内部类。而包含内部类的类称为内部类的外嵌类。内部类的外嵌类的成员变量在内部类中仍然有效，内部类中的方法也可以调用外嵌类中的方法。  
+
+内部类中的类体不可以声明类变量和类方法，外嵌类的类体中可以用内部类声明对象，作为外嵌类的成员。
+
+内部类仅供它的外嵌类使用，其他类不可以用某个类的内部类声明对象。另外，由于内部类的外嵌类的成员变量在内部类中仍然有效，使得内部类和外嵌类的交互更加方便。 
+
+例如某种类型的农场饲养了一种特殊种类的牛，但不希望其他农场饲养这种特殊种类的牛，那么这种类型的农场就可以创建这总特殊牛的类作为自己的内部类。
+```
+class RedCowFrom{
+	String fromName;
+	RedCow cow;
+	RedCowFrom(){
+	}
+	RedCowFrom(String s){
+		cow=new RedCow(150,112,5000);
+		fromName=s;
+	}
+	public void showCowMess(){
+		cow.speak();
+	}
+	class RedCow{
+		String cowName="hongniu";
+		int height,weight,price;
+		RedCow(int h,int w,int p){
+			heigh=h;
+			weight=w;
+			price=p;
+		}
+		void speak() {
+			System.out.println(cowName+"height is:"+height+"height is:"+height+"price is:"+price);
+		}
+	}
+}
+public class exercise{
+	public static void main(String args[]){
+		RedCowFrom from=new RedCowFrom("cow1");
+		from.showCowMess();
+	}
+}
+```
+内部类(inner class)是定义在另一个类中的类。为什么需要使用内部类呢？其主要原因有以下三点：
+- 内部类方法可以访问该类定义所在的作用域中的数据， 包括私有的数据。
+- 类可以对同一个包中的其他类隐藏起来。
+
+要定义一个回调函数且不想编写大量代码时，使用匿名(anonymous)内部类比较便捷。我们将这个比较复杂的内容分几部分介绍。
+- 在6.4.1 节中，给出一个简单的内部类， 它将访问外围类的实例域。
+- 在6.4.2 节中，给出内部类的特殊语法规则。
+- 在6.4.3 节中，领略一下内部类的内部，探讨一下如何将其转换成常规类。过于拘谨的读者可以跳过这一节。
+- 在6.4.4 节中，讨论局部内部类，它可以访问外围作用域中的局部变量。
+- 在6.4.5 节中，介绍匿名内部类，说明在Java有lambda表达式之前用于实现回调的基本方法。
+- 最后在6.4.6 节中，介绍如何将静态内部类嵌套在辅助类中。
