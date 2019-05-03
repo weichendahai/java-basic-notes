@@ -163,16 +163,26 @@ public interface Comparators
 class LengthComparator implements Comparator<String>
 {
 	public int compare(String first, String second) {
-	return first.length() - second.length()；
+	return first.length() - second.length();
 	}
 }
 ```
 具体完成比较时，需要建立一个实例：
 ```
-Comparator<String> comp = new LengthComparator。；
-if (conp.compare(words[i], words[j]) > 0)...
+Comparator<String> comp = new LengthComparator();
+if (comp.compare(words[i], words[j]) > 0)...
 ```
 将这个调用与words[i].compareTo(words[j]) 做比较。这个compare方法要在比较器对象上调用，而不是在字符串本身上调用。
+> 注释：尽管LengthComparator 对象没有状态，不过还是需要建立这个对象的一个实例。我们需要这个实例来调用compare方法---它不是一个静态方法。
+
+要对一个数组排序，需要为Arrays.sort方法传入一个LengthComparator对象：
+```
+String[] friends = { "Peter", "Paul", "Mary" };
+Arrays,sort(friends, new LengthComparatorO):
+```
+现在这个数组可能是["Paul", "Mary", "Peter"] 或["Mary", "Paul", "Peter"]。
+
+以后我们会了解，利用lambda表达式可以更容易地使用Comparator。
 
 ---
 ## 5接口回调
@@ -408,6 +418,36 @@ class Employee extends Person implements Comparable // OK
 # lambda表达式
 现在可以来学习lambda表达式，这是这些年来Java语言最让人激动的一个变化。你会了解如何使用lambda表达式采用一种简洁的语法定义代码块，以及如何编写处理lambda表达式的代码。
 
+## 学习lambda表达式之前：一些简单的例子
+### Lambda表达式的语法
+
+基本语法:
+```
+(parameters) -> expression
+```
+或
+```
+(parameters) ->{ statements; }
+```
+下面是Java lambda表达式的简单例子:
+```
+// 1. 不需要参数,返回值为 5  
+() -> 5  
+  
+// 2. 接收一个参数(数字类型),返回其2倍的值  
+x -> 2 * x  
+  
+// 3. 接受2个参数(数字),并返回他们的差值  
+(x, y) -> x – y  
+  
+// 4. 接收2个int型整数,返回他们的和  
+(int x, int y) -> x + y  
+  
+// 5. 接受一个 string 对象,并在控制台打印,不返回任何值(看起来像是返回void)  
+(String s) -> System.out.print(s)  
+```
+更多外链到：https://www.cnblogs.com/franson-2016/p/5593080.html
+
 ## 1 为什么引入lambda 表达式
 lambda表达式是一个可传递的代码块，可以在以后执行一次或多次。具体介绍语法（以及解释这个让人好奇的名字）之前，下面先退一步，观察一下我们在Java 中的哪些地方用过这种代码块。
 
@@ -550,4 +590,6 @@ Timer t = new Timer(1000, event ->
 		Toolkit.getDefaultToolkit().beep();
 	})；
 ```
-
+与使用实现了ActionListener接口的类相比，这个代码可读性要好得多。实际上，在Java 中，对lambda表达式所能做的也只是能转换为函数式接口。在其他支
+持函数字面量的程序设计语言中，可以声明函数类型(如（String, String) -> int )、声明这些类型的变量，还可以使用变量保存函数表达式。不过，Java设计者还是决定保持我们熟悉的接口概念，没有为Java语言增加函数类型。
+*lambda表达式未完待续*
