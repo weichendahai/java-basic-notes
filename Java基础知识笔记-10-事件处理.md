@@ -35,15 +35,15 @@ addActionListener(监视器);
 
 > 下面是监听器的一个示例：
 ```
-ActionListener listener = . .
-3Button button = new ]Button("0KH)；
-button.addActionListenerGistener);
+ActionListener listener = ...
+JButton button = new JButton("0K);
+button.addActionListener(listener);
 ```
 现在，只要按钮产生了一个“动作事件”，listener对象就会得到通告。对于按钮来说，正像我们所想到的，动作事件就是点击按钮。
 
 为了实现ActionListener接口，监听器类必须有一个被称为actionPerformed的方法，该方法接收一个ActionEvent对象参数。
 ```
-class MyListener iipleaents ActionListener
+class MyListener implements ActionListener
 {
 	public void actionPerforied(ActionEvent event)
 	{
@@ -75,7 +75,7 @@ addActionListener(ActionListener listen);
 ##### 3.ActionListener 接口
 ActionListener接口在java.awt.event包中，该接口中只有一个方法:
 ```
-public void actionPerforned(ActionEvente);
+public void actionPerformed(ActionEvente);
 ```
 事件源触发ActionEvent事件后，监视器将发现触发的ActionEvent事件，然后调用接口中的方法:
 ```
@@ -197,16 +197,16 @@ Java的事件处理是基于授权模式，即事件源调用方法将某个对�
 可以通过在按钮构造器中指定一个标签字符串、一个图标或两项都指定来创建一个按钮。下面是两个示例：
 ```
 JButton yellowButton = new JButton("Yellow") ;
-JButton blueButton = new JButton(new Imagelcon("blue-ball .gif')) ;
+JButton blueButton = new JButton(new Imagelcon("blue-ball.gif')) ;
 ```
 将按钮添加到面板中需要调用add方法：
 ```
 JButton yellowButton = new JButton("Yellow") ;
 JButton blueButton = new JButton("Blue")；
 JButton redButton = new JButton("Red")；
-buttonPanel .add (yellowButton) ;
-buttonPanel .add (blueButton) ;
-buttonPanel .add (redButton) ;
+buttonPanel.add(yellowButton) ;
+buttonPanel.add(blueButton) ;
+buttonPanel.add(redButton) ;
 ```
 
 接下来需要增加让面板监听这些按钮的代码。这需要一个实现了ActionListener接口的类。如前所述，应该包含一个actionPerformed方法，其签名为：
@@ -273,7 +273,7 @@ class ButtonFrame extends JFrame
 
 程序清单11-1包含了完整的框架类。无论何时点击任何一个按钮，对应的动作监听器就会修改面板的背景颜色。
 ```
-程序清单i11-1
+程序清单11-1
 package button;
 
 import java.awt.*;
@@ -290,7 +290,6 @@ public class ButtonFrame extends ]Frame
 
 	public ButtonFrame()
 	{
-
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		// create buttons
 		]Button yellowButton = new JButton("Yellow")；
@@ -387,7 +386,7 @@ class ButtonFrame extends JFrame implements ActionListener
 我们并不建议采用这种策略。
 > 注释：lambda表达式出现之前，还可以采用一种机制来指定事件监听器，其事件处理器包含一个方法调用。例如，假设一个按钮监听器需要执行以下调用：
 ```
-frame.1oadData() ;
+frame.loadData() ;
 ```
 EventHandler类可以用下面的调用创建这样一个监听器：
 ```
