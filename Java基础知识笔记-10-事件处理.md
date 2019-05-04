@@ -311,9 +311,9 @@ public class ButtonFrame extends ]Frame
 		blueButton.addActionListener(blueAction) ;
 		redButton.addActionListener(redAction);
 	}
-		/**
-		* An action listener that sets the panel ' s background color.
-		*/
+	/**
+	* An action listener that sets the panel ' s background color.
+	*/
 	private class ColorAction implements ActionListener
 	{
 		private Color backgroundColor;
@@ -584,9 +584,9 @@ public void mouseMoved(MouseEvent event)
 ```
 > 注释：还可以利用Toolkit类中的`createCustomCursor`方法自定义光标类型：
 ```
-Toolkit tk = Toolkit .getDefaultToolkit () :
-Image img = tk.getlmage("dynamite.gif"):
-Cursor dynamiteCursor = tk.createCustomCijrsor(inig, new Point (10 , 10) , "dynamite stick") ;
+Toolkit tk = Toolkit.getDefaultToolkit();
+Image img = tk.getImage("dynamite.gif");
+Cursor dynamiteCursor = tk.createCustomCursor(img, new Point (10 , 10) , "dynamite stick");
 ```
 createCustomCursor的第一个参数指向光标图像。第二个参数给出了光标的“热点”偏移。第三个参数是一个描述光标的字符串。这个字符串可以用于访问性支持，例如，可以将光标形式读给视力受损或没有在屏幕前面的人。
 
@@ -734,19 +734,23 @@ public class MouseComponent extends JComponent
 	}
 }
 ```
-```
-java awt.event.MouseEvent 1.1
 
+> java awt.event.MouseEvent 1.1
+```
 int getX()
+
 int getY()
+
 Point getPoint()//返回事件发生时， 事件源组件左上角的坐标x(水平)和y(竖直)，或点信息。
+
 int getClickCount()//返回与事件关联的鼠标连击次数(“连击” 所指定的时间间隔与具体系统有关)。
 ```
+> java awt.event.InputEvent 1.1
 ```
-java awt.event.InputEvent 1.1
-
 int getModifiersEx() 1.4
-//返回事件扩展的或“ 按下”（down) 的修饰符。使用下面的掩码值检测返回值：
+//返回事件扩展的或“ 按下”（down) 的修饰符。
+
+使用下面的掩码值检测返回值：
 BUTT0N1_D0WN_MASK
 BUTT0N2_D0WN_MASK
 BUn0N3_D0WN_MASK
@@ -755,22 +759,22 @@ CTRL_DOWN_MASK
 ALT_DOWN_MASK
 ALT_GRAPH_DOWN_MASK
 META.DOWN.MASK
+
 static String getModifiersExText(int modifiers ) 1.4
 //返回用给定标志集描述的扩展或“ 按下” （down) 的修饰符字符串， 例如“Shift+Buttonl” 
 ```
+> java.awt.Toolkit 1.0
 ```
-java.awt.Toolkit 1.0
-
 public Cursor createCustomCursor(Image image,Point hotSpot,String name) 1.2
 //创建一个新的定制光标对象。
+
 参数:
 image 光标活动时显示的图像
 hotSpot 光标热点（箭头的顶点或十字中心）
 name 光标的描述， 用来支持特殊的访问环境
 ```
+> java.awtComponent 1.0
 ```
-java.awtComponent 1.0
-
 public void setCursor(Cursor cursor)//用光标图像设置给定光标
 ```
 ## 6 焦点事件
