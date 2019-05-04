@@ -784,7 +784,7 @@ public void setCursor(Cursor cursor)//用光标图像设置给定光标
 
 事件对象封装了事件源与监听器彼此通信的事件信息。在必要的时候，可以对传递给监听器对象的事件对象进行分析。在按钮例子中，是借助getSource和getActionCommand方法实现对象分析的。
 
-![AWT事件类的继承关系图]("https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/AWT%E4%BA%8B%E4%BB%B6%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg?raw=true")
+> ![AWT事件类的继承关系图](https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/AWT%E4%BA%8B%E4%BB%B6%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg?raw=true)
 
 对于有些AWT事件类来说，Java程序员并不会实际地使用它们。例如，AWT将会把PaintEvent对象插入事件队列中，但这些对象并没有传递给监听器。Java程序员并不监听绘图事件，如果希望控制重新绘图操作，就需要覆盖paintComponent方法。另外，AWT还可以生成许多只对系统程序员有用的事件，用于提供表义语言的输人系统以及自动检测机器人等。在此，将不讨论这些特殊的事件类型。
 
@@ -825,7 +825,7 @@ MouseAdapter
 ```
 表11-4显示了最重要的AWT监听器接口、事件和事件源。
 
-> 表11-4 事件处理总结
+> 表11-4事件处理总结
 ![事件处理总结表1](https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%80%BB%E7%BB%93%E8%A1%A81.jpg?raw=true)
 ![事件处理总结表2](https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%80%BB%E7%BB%93%E8%A1%A82.jpg?raw=true)
 
