@@ -777,6 +777,58 @@ name 光标的描述， 用来支持特殊的访问环境
 ```
 public void setCursor(Cursor cursor)//用光标图像设置给定光标
 ```
+## AWT事件继承层次
+弄清了事件处理的工作过程之后，作为本章的结束，总结一下AWT事件处理的体系架构。前面已经提到，Java事件处理采用的是面向对象方法，所有的事件都是由java.util包中的EventObject类扩展而来的（公共超类不是Event, 它是旧事件模型中的事件类名。尽管现在不赞成使用旧的事件模型，但这些类仍然保留在Java库中)。
+
+有些Swing组件将生成其他事件类型的事件对象；它们都直接扩展于EventObject, 而不是AWTEvent。
+
+事件对象封装了事件源与监听器彼此通信的事件信息。在必要的时候，可以对传递给监听器对象的事件对象进行分析。在按钮例子中，是借助getSource和getActionCommand方法实现对象分析的。
+
+![AWT事件类的继承关系图]("https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/AWT%E4%BA%8B%E4%BB%B6%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg?raw=true")
+
+对于有些AWT事件类来说，Java程序员并不会实际地使用它们。例如，AWT将会把PaintEvent对象插入事件队列中，但这些对象并没有传递给监听器。Java程序员并不监听绘图事件，如果希望控制重新绘图操作，就需要覆盖paintComponent方法。另外，AWT还可以生成许多只对系统程序员有用的事件，用于提供表义语言的输人系统以及自动检测机器人等。在此，将不讨论这些特殊的事件类型。
+
+### .1语义事件和底层事件
+AWT将事件分为底层(low-level)事件和语义(semantic)事件。语义事件是表示用户动作的事件，例如，点击按钮；因此，ActionEvent是一种语义事件。底层事件是形成那些事件的事件。在点击按钮时，包含了按下鼠标、连续移动鼠标、抬起鼠标（只有鼠标在按钮区中抬起才引发）事件。或者在用户利用TAB键选择按钮，并利用空格键激活它时，发生的敲击键盘事件。同样，调节滚动条是一种语义事件，但拖动鼠标是底层事件。
+
+下面是java.awt.event包中最常用的语义事件类：
+- ActionEvent (对应按钮点击、菜单选择、选择列表项或在文本框中ENTER);
+- AdjustmentEvent (用户调节滚动条)；
+- ItemEvem (用户从复选框或列表框中选择一项）。
+
+常用的5个底层事件类是：
+- KeyEvent (一个键被按下或释放)；
+- MouseEvent (鼠标键被按下、释放、移动或拖动)；
+- MouseWheelEvent (鼠标滚轮被转动)；
+- FocusEvent (某个组件获得焦点或失去焦点)；
+- WindowEvent (窗口状态被改变）。
+
+下列接口将监听这些事件。
+```
+ActionListener
+AdjustmentListener
+FocusListener
+ItemListener
+KeyListener
+MouseListener
+MouseMoti onListener
+MouseWheelListener
+WindowListener
+WindowFocusListener
+WindowStateListener
+```
+有几个AWT 监听器接口包含多个方法，它们都配有一个适配器类，在这个类中实现了相应接口中的所有方法，但每个方法没有做任何事情（有些接口只包含一个方法，因此，就没有必要为它们定义适配器类了）。下面是常用的适配器类：
+```
+FocusAdapter	MouseMotionAdapter
+KeyAdapte	WindowAdapter
+MouseAdapter
+```
+表11-4显示了最重要的AWT监听器接口、事件和事件源。
+
+> 表11-4 事件处理总结
+![事件处理总结表1](https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%80%BB%E7%BB%93%E8%A1%A81.jpg?raw=true)
+![事件处理总结表2](https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%80%BB%E7%BB%93%E8%A1%A82.jpg?raw=true)
+
 ## 6 焦点事件
 组件可以触发焦点事件。组件可以使用
 ```
