@@ -36,7 +36,7 @@ addActionListener(监视器);
 > 下面是监听器的一个示例：
 ```
 ActionListener listener = ...
-JButton button = new JButton("0K);
+JButton button = new JButton("0K");
 button.addActionListener(listener);
 ```
 现在，只要按钮产生了一个“动作事件”，listener对象就会得到通告。对于按钮来说，正像我们所想到的，动作事件就是点击按钮。
