@@ -3,7 +3,7 @@ Java基础知识笔记-10-事件处理
 # 事件处理
 学习组件除了要熟悉组建的属性和功能外，一个更重要的方面是学习怎样处理组建上发生的界面事件，当用户在文本框中输入文本后按回车，单击按钮，在一个下拉式列表中选择一个条目进行一个条目等操作时，都发生界面事件，例如，用户单击一个确定或者取消的按钮，程序可能需要做出不同的处理。
 
-Java程序设计环境折中了Visual Basic与原始C的事件处理方式，因此，它既有着强大的功能， 又具有一定的复杂性。在AWT 所知的事件范围内， 完全可以控制事件从事件源(event source)例如，按钮或滚动条，到事件监听器(event listener)的传递过程，并将任何对象指派给事件监听器。不过事实上，应该选择一个能够便于响应事件的对象。这种事件委托模型(event delegation model)与Visual Basic那种预定义监听器模型比较起来更加灵活。
+Java程序设计环境折中了Visual Basic与原始C的事件处理方式，因此，它既有着强大的功能，又具有一定的复杂性。在AWT所知的事件范围内，完全可以控制事件从事件源(event source)例如，按钮或滚动条，到事件监听器(event listener)的传递过程，并将任何对象指派给事件监听器。不过事实上，应该选择一个能够便于响应事件的对象。这种事件委托模型(event delegation model)与Visual Basic那种预定义监听器模型比较起来更加灵活。
 
 事件源有一些向其注册事件监听器的方法。当某个事件源产生事件时，事件源会向为事件注册的所有事件监听器对象发送一个通告。
 
@@ -31,7 +31,7 @@ addActionListener(监视器);
 对于注册了监视器的文本框，在文本框获得输人焦点后,如果用户按回车键,Java运行环境就自动用Actionven类创建一个对象，即发生了ActionEvent事件。也就是说，事件源注册监视器之后，相应的操作就会导致相应的事件地发生，并通知监视器，监视器就会出相应的处理。
 ##### 3.处理事件的接口
 
-监视器负责处理事件源发生的事件。监视器是一个对象，为了处理事件源发生的事件，监视器这个对象会自动调用一个方法来处理事件。那么监视器去调用哪个方法呢?我们我知道，对象可以调用创建它的那个类中的方法，那么它到底调用该类中的哪个方法呢？Java规定为了让监视器这个对象能对事件源发生的事件进行处理，创建该监视器对象的以面市明实现相应的接口，即必须在类体中重写接口中的所有方法，那么当事件源发生事，监视器就自动调用被类重写的某个接口方法。事件处理模式如图11.6所示。
+监视器负责处理事件源发生的事件。监视器是一个对象，为了处理事件源发生的事件，监视器这个对象会自动调用一个方法来处理事件。那么监视器去调用哪个方法呢？我们我知道，对象可以调用创建它的那个类中的方法，那么它到底调用该类中的哪个方法呢？Java规定为了让监视器这个对象能对事件源发生的事件进行处理，创建该监视器对象的以实现相应的接口，即必须在类体中重写接口中的所有方法，那么当事件源发生事，监视器就自动调用被类重写的某个接口方法。事件处理模式如图11.6所示。
 
 > 下面是监听器的一个示例：
 ```
@@ -65,7 +65,7 @@ E[类A负责创建监视器,A必须实现XXXListener接口]---A[事件源.addXXX
 
 ## 2 ActionEvent事件
 ##### 1.ActionEvent事件源
-文本框、按钮、菜单项、密码框和单选按钮都可以触发ActionEvent事件，即都可以成为ActionEvent事件的事件源。例如，对于注册了监视器的文本框，在文本框获得输人焦点后，如果用户按回车键，Java运行环境就自动用ActionEvent类创建一个对象，即触发ActionEvent事件;对于注册了监视器的按钮，如果用户单击按钮，就会触发ActionEvent事件;对于注册了监视器的菜单项，如果用户选中该菜单项，就会触发ActionEvent事件;如果用户选择了某个单选按钮，就会触发ActionEvent事件。
+文本框、按钮、菜单项、密码框和单选按钮都可以触发ActionEvent事件，即都可以成为ActionEvent事件的事件源。例如，对于注册了监视器的文本框，在文本框获得输入焦点后，如果用户按回车键，Java运行环境就自动用ActionEvent类创建一个对象，即触发ActionEvent事件;对于注册了监视器的按钮，如果用户单击按钮，就会触发ActionEvent事件;对于注册了监视器的菜单项，如果用户选中该菜单项，就会触发ActionEvent事件;如果用户选择了某个单选按钮，就会触发ActionEvent事件。
 ##### 2.注册监视器
 能触发ActionEvent事件的组件使用
 ```
@@ -85,8 +85,8 @@ actionPerformed(ActionEvent e);
 ##### 4.ActionEvent类中的方法
 ActionEvent类有如下常用的方法。
 ```
-public ObeceSurce();该方法是从Enentobiect继承的方法，ActionEvent事件对象调用该方法可以获取发生ActionEvent事件的事件源对象的引用，即BetSource()方法将事件源上转型为Object对象，并返回这个上转型对象的引用，
-public String getActionCommand();ActionEvent对象调用该方法可以获取发生ActionEvent事件时，和该事件相关的一个命令字符串，对于文本框，当发生ActionEvent事件时，文本框中的文本字符串就是和该事件相关的一个命令字符串.
+public ObeceSurce();//该方法是从Enentobiect继承的方法，ActionEvent事件对象调用该方法可以获取发生ActionEvent事件的事件源对象的引用，即BetSource()方法将事件源上转型为Object对象，并返回这个上转型对象的引用，
+public String getActionCommand();//ActionEvent对象调用该方法可以获取发生ActionEvent事件时，和该事件相关的一个命令字符串，对于文本框，当发生ActionEvent事件时，文本框中的文本字符串就是和该事件相关的一个命令字符串.
 ```
 ### 实例1
 例11.5处理文本框上触发的ActionEvent事件。在文本框text中输人字符串回车，监视器负责计算字符串的长度，并在命令行窗口显示字符串的长度。例11.5程序运行效果如图11.7和图11.8所示。
@@ -202,8 +202,8 @@ JButton blueButton = new JButton(new Imagelcon("blue-ball.gif')) ;
 将按钮添加到面板中需要调用add方法：
 ```
 JButton yellowButton = new JButton("Yellow") ;
-JButton blueButton = new JButton("Blue")；
-JButton redButton = new JButton("Red")；
+JButton blueButton = new JButton("Blue") ;
+JButton redButton = new JButton("Red") ;
 buttonPanel.add(yellowButton) ;
 buttonPanel.add(blueButton) ;
 buttonPanel.add(redButton) ;
