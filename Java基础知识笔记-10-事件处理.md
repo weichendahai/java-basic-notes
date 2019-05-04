@@ -495,7 +495,7 @@ public class exercise{
 ```
 
 ## 5 MouseEvent事件
-任何组件都可以发生鼠标事件，如鼠标进入组件，退出组件，在组建上方单击鼠标，拖动鼠标等都可以触发鼠标事件，即导致MouseEvent类自动创建一个事件对象。
+任何组件都可以发生鼠标事件，如鼠标进入组件，退出组件，在组建上方单击鼠标，拖动鼠标等都可以触发鼠标事件，即导致`MouseEvent`类自动创建一个事件对象。
 ##### 1.使用MouseEvent接口处理鼠标事件
 使用MouseListener接口可以处理以下5种操作触发的鼠标事件。
 - 在事件源上按下鼠标键
@@ -503,6 +503,7 @@ public class exercise{
 - 在事件源上单击鼠标键
 - 鼠标进入事件源
 - 鼠标退出事件源
+
 MouseEvent中有下列几个重要方法：
 ```
 getX();//获取鼠标指针在事件源坐标系中的x坐标
@@ -511,9 +512,11 @@ getModifiers();//获取鼠标的左键或右键。鼠标的左键和右键分别
 getClickCount();//获取鼠标被单击的次数
 getSource();//获取鼠标事件的事件源
 ```
-事件源注册监视器的方法是addMouseListener(MouseListener listener) 
-
-当用户点击鼠标按钮时，将会调用三个监听器方法：鼠标第一次被按下时调用mousePressed；鼠标被释放时调用mouseReleased；最后调用mouseClicked。如果只对最终的点击事件感兴趣， 就可以忽略前两个方法。用MouseEvent类对象作为参数，调用getX和getY方法可以获得鼠标被按下时鼠标指针所在的x和y坐标。要想区分单击、双击和三击(!)，需要使用getClickCount方法。
+事件源注册监视器的方法是
+```
+addMouseListener(MouseListener listener) 
+```
+当用户点击鼠标按钮时，将会调用三个监听器方法：鼠标第一次被按下时调用`mousePressed`；鼠标被释放时调用`mouseReleased`；最后调用`mouseClicked`。如果只对最终的点击事件感兴趣， 就可以忽略前两个方法。用`MouseEvent`类对象作为参数，调用getX和getY方法可以获得鼠标被按下时鼠标指针所在的x和y坐标。要想区分单击、双击和三击(!)，需要使用`getClickCount`方法。
 
 有些用户界面设计者喜欢让用户采用鼠标点击与键盘修饰符组合(例如，CONTROL+SHIFT+CLICK)的方式进行操作。我们感觉这并不是一种值得赞许的方式。如果对此持有不同的观点，可以看一看同时检测鼠标按键和键盘修饰符所带来的混乱。
 
@@ -535,7 +538,7 @@ META_DOWN_MASK
 ```
 getModifiersEx方法能够准确地报告鼠标事件的鼠标按钮和键盘修饰符。
 
-需要注意，在Windows环境下，使用BUTT0N3_D0WN_MASK 检测鼠标右键（非主要的）的状态。例如，可以使用下列代码检测鼠标右键是否被按下：
+需要注意，在Windows环境下，使用`BUTT0N3_D0WN_MASK`检测鼠标右键（非主要的）的状态。例如，可以使用下列代码检测鼠标右键是否被按下：
 ```
 if ((event.getModifiersEx() & InputEvent.BUTT0N3_D0WN_MASK) != 0)
 ... // code for right click
@@ -543,23 +546,14 @@ if ((event.getModifiersEx() & InputEvent.BUTT0N3_D0WN_MASK) != 0)
 
 MouseListener接口中有如下方法：
 ```
-mousePressed(MouseEvent);//负责处理在组件上按下鼠标键触发的鼠标事件。即
-当你在事件源按下鼠标键时监视器调用接口中的这个方法对事件作出处理。
-
-mouseReleased(MouseEvent);//负责处理在组件上释放鼠标键触发的鼠标事件。即
-当你在事件源释放鼠标键时，监视器调用接口中的这个方法对事件作出处理。
-
-mouseEntered(MouseEvent);//负责处理鼠标进人组件触发的鼠标事件。即
-当鼠标指针进人组件时，监视器调用接口中的这个方法对事件作出处理。
-
-mouseExited(MouseEvent);//负责处理鼠标离开组件触发的鼠标事件。即
-当鼠标指针离开容器时，监视器调用接口中的这个方法对事件作出处理。
-
-mouseClicked(MouseEvent);//负责处理在组件上单击鼠标键触发的鼠标事件。即
-当单击鼠标时，监视器调用接口中的这个方法对事件做出处理。
+mousePressed(MouseEvent);//负责处理在组件上按下鼠标键触发的鼠标事件。即当你在事件源按下鼠标键时监视器调用接口中的这个方法对事件作出处理。
+mouseReleased(MouseEvent);//负责处理在组件上释放鼠标键触发的鼠标事件。即当你在事件源释放鼠标键时，监视器调用接口中的这个方法对事件作出处理。
+mouseEntered(MouseEvent);//负责处理鼠标进人组件触发的鼠标事件。即当鼠标指针进人组件时，监视器调用接口中的这个方法对事件作出处理。
+mouseExited(MouseEvent);//负责处理鼠标离开组件触发的鼠标事件。即当鼠标指针离开容器时，监视器调用接口中的这个方法对事件作出处理。
+mouseClicked(MouseEvent);//负责处理在组件上单击鼠标键触发的鼠标事件。即当单击鼠标时，监视器调用接口中的这个方法对事件做出处理。
 ```
 ### 实例
-在列举的简单示例中， 提供了mousePressed和mouseClicked方法。当鼠标点击在所有小方块的像素之外时，就会绘制一个新的小方块。这个操作是在mousePressed方法中实现的，这样可以让用户的操作立即得到响应，而不必等到释放鼠标按键。如果用户在某个小方块中双击鼠标，就会将它擦除。由于需要知道点击次数，所以这个操作将在mouseClicked方法中实现。
+在列举的简单示例中， 提供了`mousePressed`和`mouseClicked`方法。当鼠标点击在所有小方块的像素之外时，就会绘制一个新的小方块。这个操作是在`mousePressed`方法中实现的，这样可以让用户的操作立即得到响应，而不必等到释放鼠标按键。如果用户在某个小方块中双击鼠标，就会将它擦除。由于需要知道点击次数，所以这个操作将在`mouseClicked`方法中实现。
 ```
 public void mousePressed (MouseEvent event)
 {
@@ -574,11 +568,11 @@ public void mouseClicked(MouseEvent event)
 		remove(current):
 }
 ```
-当鼠标在窗口上移动时，窗口将会收到一连串的鼠标移动事件。请注意：有两个独立的接口MouseListener,MouseMotionListener。这样做有利于提高效率。
+当鼠标在窗口上移动时，窗口将会收到一连串的鼠标移动事件。请注意：有两个独立的接口`MouseListener`,`MouseMotionListener`。这样做有利于提高效率。
 
-当用户移动鼠标时，只关心鼠标点击(clicks)的监听器就不会被多余的鼠标移动(moves)所困扰。这里给出的测试程序将捕获鼠标动作事件，以便在光标位于一个小方块之上时变成另外一种形状（十字)。实现这项操作需要使用Cursor类中的getPredefinedCursor方法。表11-3列出了在Windows环境下鼠标的形状和方法对应的常量。
+当用户移动鼠标时，只关心鼠标点击(clicks)的监听器就不会被多余的鼠标移动(moves)所困扰。这里给出的测试程序将捕获鼠标动作事件，以便在光标位于一个小方块之上时变成另外一种形状（十字)。实现这项操作需要使用Cursor类中的`getPredefinedCursor`方法。表11-3列出了在Windows环境下鼠标的形状和方法对应的常量。
 
-下面是示例程序中MouseMotionListener类的mouseMoved方法：
+下面是示例程序中`MouseMotionListener`类的`mouseMoved`方法：
 ```
 public void mouseMoved(MouseEvent event)
 {
@@ -588,7 +582,7 @@ public void mouseMoved(MouseEvent event)
 		setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURS0R)) ;
 }
 ```
-> 注释：还可以利用Toolkit类中的createCustomCursor方法自定义光标类型：
+> 注释：还可以利用Toolkit类中的`createCustomCursor`方法自定义光标类型：
 ```
 Toolkit tk = Toolkit .getDefaultToolkit () :
 Image img = tk.getlmage("dynamite.gif"):
@@ -596,7 +590,7 @@ Cursor dynamiteCursor = tk.createCustomCijrsor(inig, new Point (10 , 10) , "dyna
 ```
 createCustomCursor的第一个参数指向光标图像。第二个参数给出了光标的“热点”偏移。第三个参数是一个描述光标的字符串。这个字符串可以用于访问性支持，例如，可以将光标形式读给视力受损或没有在屏幕前面的人。
 
-如果用户在移动鼠标的同时按下鼠标，就会调用mouseMoved而不是调用mouseDmgged。在测试应用程序中，用户可以用光标拖动小方块。在程序中，仅仅用拖动的矩形更新当前光标位置。然后，重新绘制画布，以显示新的鼠标位置。
+如果用户在移动鼠标的同时按下鼠标，就会调用`mouseMoved`而不是调用`mouseDmgged`。在测试应用程序中，用户可以用光标拖动小方块。在程序中，仅仅用拖动的矩形更新当前光标位置。然后，重新绘制画布，以显示新的鼠标位置。
 ```
 public void mouseDragged(MouseEvent event)
 {
@@ -609,11 +603,11 @@ public void mouseDragged(MouseEvent event)
 	}
 }
 ```
-> 注释：只有鼠标在一个组件内部停留才会调用mouseMoved方法。然而，即使鼠标拖动到组件外面，mouseDragged方法也会被调用。
+> 注释：只有鼠标在一个组件内部停留才会调用`mouseMoved`方法。然而，即使鼠标拖动到组件外面，`mouseDragged`方法也会被调用。
 
-还有两个鼠标事件方法：mouseEntered和mouseExited。这两个方法是在鼠标进入或移出组件时被调用。最后， 解释一下如何监听鼠标事件。鼠标点击由mouseClicked过程报告，它是MouseListener接口的一部分。由于大部分应用程序只对鼠标点击感兴趣，而对鼠标移动并不感兴趣，但鼠标移动事件发生的频率又很高，因此将鼠标移动事件与拖动事件定义在一个称为MouseMotionListener的独立接口中。
+还有两个鼠标事件方法：`mouseEntered`和`mouseExited`。这两个方法是在鼠标进入或移出组件时被调用。最后， 解释一下如何监听鼠标事件。鼠标点击由`mouseClicked`过程报告，它是MouseListener接口的一部分。由于大部分应用程序只对鼠标点击感兴趣，而对鼠标移动并不感兴趣，但鼠标移动事件发生的频率又很高，因此将鼠标移动事件与拖动事件定义在一个称为`MouseMotionListener`的独立接口中。
 
-在示例程序中，对两种鼠标事件类型都感兴趣。这里定义了两个内部类：MouseHandler和MouseMotionHandler。MouseHandler类扩展于MouseAdapter类，这是因为它只定义了5个MouseListener方法中的两个方法。MouseMotionHandler实现了MouseMotionListener接口，并定义了这个接口中的两个方法。程序清单11-4是这个程序的清单。
+在示例程序中，对两种鼠标事件类型都感兴趣。这里定义了两个内部类：`MouseHandler`和`MouseMotionHandler`。`MouseHandler`类扩展于`MouseAdapter`类，这是因为它只定义了5个`MouseListener`方法中的两个方法。`MouseMotionHandler`实现了`MouseMotionListener`接口，并定义了这个接口中的两个方法。程序清单11-4是这个程序的清单。
 ```
 程序清单11*4 mouse/MouseFrame.java
 package mouse;
