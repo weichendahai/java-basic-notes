@@ -94,4 +94,4 @@ while (!Thread.currentThread().islnterrupted() && more work todo)
 	domorework 
 }
 ```
-但是，如果线程被阻塞，就无法检测中断状态。这是产生InterruptedException异常的地方。当在一个被阻塞的线程(调用sleep或wait)上调用interrupt方法时，阻塞调用将会被Interrupted Exception异常中断。（存在不能被中断的阻塞 I/O 调用，应该考虑选择可中断的调 用。有关细节请参看卷n的第1章和第3章。）
+但是，如果线程被阻塞，就无法检测中断状态。这是产生InterruptedException异常的地方。当在一个被阻塞的线程(调用sleep或wait)上调用interrupt方法时，阻塞调用将会被Interrupted Exception异常中断。（存在不能被中断的阻塞I/O调用，应该考虑选择可中断的调用。有关细节请参看卷2的第1章和第3章。）
