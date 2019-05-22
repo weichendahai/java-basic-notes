@@ -152,7 +152,7 @@ void mySubTask() {
 
 - 在catch子句中调用Thread.currentThread().interrupt()来设置中断状态。于是，调用者可以对其进行检测。 
 ```
-void mySubTaskO {
+void mySubTask() {
 try { sleep(delay); } catch (InterruptedException e) { Thread.currentThreadO-interruptO; }
 ```
 - 或者，更好的选择是，用throws InterruptedException标记你的方法，不采用try语句块捕获异常。于是，调用者（或者，最终的run方法）可以捕获这一异常。
@@ -178,7 +178,7 @@ void mySubTask() throws InterruptedException
 下一节对每一种状态进行解释。要确定一个线程的当前状态，可调用getState方法。 
 
 ### 3.1 新创建线程
-当用 new 操作符创建一个新线程时，如 newThread(r)，该线程还没有开始运行。这意味 着它的状态是 new。当一个线程处于新创建状态时，程序还没有开始运行线程中的代码。在线程运行之前还有一些基础工作要做。 
+当用 new 操作符创建一个新线程时，如newThread(r)，该线程还没有开始运行。这意味 着它的状态是new。当一个线程处于新创建状态时，程序还没有开始运行线程中的代码。在线程运行之前还有一些基础工作要做。 
 
 ### 3.2 可运行线程
 一旦调用start方法，线程处于runnable状态。一个可运行的线桿可能正在运行也可能没有运行，这取决于操作系统给线程提供运行的时间。（Java的规范说明没有将它作为一个单独状态。一个正在运行中的线程仍然处于可运行状态。）
@@ -198,7 +198,9 @@ void mySubTask() throws InterruptedException
 
 - 当线程等待另一个线程通知调度器一个条件时，它自己进入等待状态。我们在第14.5.4节来讨论条件。在调用Object.wait方法或Thread.join方法，或者是等待java.util.concurrent库中的Lock或Condition时，就会出现这种情况。实际上，被阻塞状态与等待状态是有很大不同的。 
 
-- 有几个方法有一个超时参数。调用它们导致线程进入计时等待(timed waiting) 状态。这一状态将一直保持到超时期满或者接收到适当的通知。带有超时参数的方法有Thread.sleep和Object.wait、Thread.join、Lock,tryLock以及Condition.await的计时版。图14-3展示了线程可以具有的状态以及从一个状态到另一个状态可能的转换。当一个线程被阻塞或等待时（或终止时)，另一个线程被调度为运行状态。当一个线程被重新激活（例如，因为超时期满或成功地获得了一个锁)，调度器检查它是否具有比当前运行线程更高的优先级。如果是这样，调度器从当前运行线程中挑选一个，剥夺其运行权，选择一个新的线程运行。
+- 有几个方法有一个超时参数。调用它们导致线程进入计时等待(timed waiting) 状态。这一状态将一直保持到超时期满或者接收到适当的通知。带有超时参数的方法有Thread.sleep和Object.wait、Thread.join、Lock,tryLock以及Condition.await的计时版。
+
+图14-3展示了线程可以具有的状态以及从一个状态到另一个状态可能的转换。当一个线程被阻塞或等待时（或终止时)，另一个线程被调度为运行状态。当一个线程被重新激活（例如，因为超时期满或成功地获得了一个锁)，调度器检查它是否具有比当前运行线程更高的优先级。如果是这样，调度器从当前运行线程中挑选一个，剥夺其运行权，选择一个新的线程运行。
 
 ### 3.4 被终止的线程
 线程因如下两个原因之一而被终止：
@@ -262,5 +264,122 @@ ThreadGroup类实现Thread.UncaughtExceptionHandler接口。它的uncaughtExcept
 - 4)否则，线程的名字以及Throwable的栈轨迹被输出到System.err上。这是你在程序中肯定看到过许多次的栈轨迹。 
 ## 5 同步
 在大多数实际的多线程应用中，两个或两个以上的线程需要共享对同一数据的存取。如果两个线程存取相同的对象，并且每一个线程都调用了一个修改该对象状态的方法，将会发生什么呢？可以想象，线程彼此踩了对方的脚。根据各线程访问数据的次序，可能会产生讹误的对象。这样一个情况通常称为竞争条件(race condition)。
+### 5.1 竞争条件的一个例子
+为了避免多线程引起的对共享数据的说误，必须学习如何同步存取。在本节中，你会看到如果没有使用同步会发生什么。在下一节中，将会看到如何同步数据存取。在下面的测试程序中，模拟一个有若干账户的银行。随机地生成在这些账户之间转移钱 款的交易。每一个账户有一个线程。每一笔交易中，会从线程所服务的账户中随机转移一定数目的钱款到另一个随机账户。模拟代码非常直观。我们有具有transfer方法的Bank类。该方法从一个账户转移一定数目的钱款到另一个账户（还没有考虑负的账户余额)。如下是Bank类的transfer方法的代码。 
+```
+public void transfer(int from, int to, double amount) 
+// CAUTION: unsafe when called from multiple threads 
+{
+	System.out.print(Thread,currentThread()); 
+	accounts[from] -= amount; 
+	System.out.printf("%10.2f from %d to %d", amount, from, to);
+	accounts[to] += amount;
+	System.out.printf('Total Balance: %10.2fXn", getTotalBalance());
+} 
+```
+这里是Runnable类的代码。它的run方法不断地从一个固定的银行账户取出钱款。在每一次迭代中，run方法随机选择一个目标账户和一个随机账户，调用bank对象的transfer方法，然后睡眠。
+```
+Runnable r = () -> { 
+	try
+	{
+		while (true)
+		{
+			int toAccount = (int) (bank.size() * Math.random());
+			double amount = MAX_AMOUNT * Math.random();
+			bank.transfer(fromAccount, toAccount, amount);
+			Thread.sleep((int) (DELAY * Math.random()));
+		}
+	}
+	catch (InterruptedExeeption e)
+	{
+	}
+};
+```
+当这个模拟程序运行时，不清楚在某一时刻某一银行账户中有多少钱。但是，知道所有账户的总金额应该保持不变，因为所做的一切不过是从一个账户转移钱款到另一个账户。在每一次交易的结尾，transfer方法重新计算总值并打印出来。本程序永远不会结束。只能按CTRL+C来终止这个程序。
 
+下面是典型的输出: 
+```
+Thread[Thread-11,5,main] 588.48 from 11to 44 Total Balance: 100000.00
+Thread[Thread-12,5,main] 976.11from 12 to 22 Total Balance: 100000.00
+Thread[Thread-14,5,main] 521.51 from 14 to 22 Total Balance: 100000.00
+Thread[Thread-13,5,main] 359.89 from 13 to 81Total Balance: 100000.00
+...
+Thread[Thread-36,5,main] 401.71from 36 to 73 Total Balance: 99291.06
+Thread[Thread-35,5,main] 691.46 from 35 to 77 Total Balance: 99291.06
+Thread[Thread-37,5,main] 78.64 from 37 to 3 Total Balance: 99291.06
+Thread[Thread-34,5,main] 197.11from 34 to 69 Total Balance: 99291.06
+Thread[Thread-36,5,main] 85.96 from 36 to 4 Total Balance: 99291.06 
+Thread[Thread-4,5,main]Thread[Thread-33,5,main] 7.31 from 31to 32 Total Balance: 99979.24 
+	627.50 from 4 to 5 Total Balance: 99979.24
 
+```
+正如前面所示，出现了错误。在最初的交易中，银行的余额保持在$100000, 这是正确的，因为共100个账户，每个账户$1000。但是，过一段时间，余额总量有轻微的变化。当运行这个程序的时候，会发现有时很快就出错了，有时很长的时间后余额发生混乱。这样的状态不会带来信任感，人们很可能不愿意将辛苦挣来的钱存到这个银行。程序清单14-5和程序清单14-6中的程序提供了完整的源代码。看看是否可以从代码中找出问题。下一节将解说其中奥秘。
+
+### 5.2 竞争条件详解
+上一节中运行了一个程序，其中有几个线程更新银行账户余额。一段时间之后，错误不知不觉地出现了，总额要么增加，要么变少。当两个线程试图同时更新同一个账户的时候，这个问题就出现了。假定两个线程同时执行指令`accounts[to] += amount`; 问题在于这不是原子操作。该指令可能被处理如下：
+
+- 1)将accounts\[to]加载到寄存器。
+- 2)增加amount。
+- 3)将结果写回accounts\[to]。
+
+现在，假定第1个线程执行步骤1和2, 然后，它被剥夺了运行权。假定第2个线程被唤醒并修改了accounts数组中的同一项。然后，第1个线程被唤醒并完成其第3步。这样，这一动作擦去了第二个线程所做的更新。于是，总金额不再正确。（见图 14-4J 我们的测试程序检测到这一讹误。（当然，如果线程在运行这一测试时被中断，也有可能会出现失败警告！） 
+
+出现这一讹误的可能性有多大呢？这里通过将打印语句和更新余额的语句交织在一起执行，增加了发生这种情况的机会。
+
+如果删除打印语句，讹误的风险会降低一点，因为每个线程在再次睡眠之前所做的工作很少，调度器在计算过程中剥夺线程的运行权可能性很小。但是，讹误的风险并没有完全消失。如果在负载很重的机器上运行许多线程，那么，即使删除了打印语句，程序依然会出错。这种错误可能会几分钟、几小时或几天出现一次。坦白地说，对程序员而言，很少有比无规律出现错误更糟的事情了。
+
+真正的问题是transfer方法的执行过程中可能会被中断。如果能够确保线程在失去控制之前方法运行完成，那么银行账户对象的状态永远不会出现讹误。
+
+### 5.3 锁对象
+有两种机制防止代码块受并发访问的干扰。Java语言提供一个synchronized关键字达 到这一目的，并且Java SE 5.0引入了ReentrantLock类。synchronized 关键字自动提供一个锁以及相关的“条件”，对于大多数需要显式锁的情况，这是很便利的。但是，我们相信在读者分別阅读了锁和条件的内容之后，理解 synchronized关键字是很轻松的事情。java.util.concurrent框架为这些基础机制提供独立的类，在此以及第14.5.4节加以解释这个内容。读者理解了这些构建块之后，将讨论第14.5.5节。 
+
+用ReentrantLock保护代码块的基本结构如下： 
+```
+myLock.lock(); // a ReentrantLock object 
+try 
+{
+	critical section
+}
+finally
+{
+	myLock.unlock();// make sure the lock is unlocked even if an exception is thrown
+} 
+```
+这一结构确保任何时刻只有一个线程进人临界区。一旦一个线程封锁了锁对象，其他任何线程都无法通过lock语句。当其他线程调用lock时，它们被阻塞，直到第一个线程释放锁对象。
+
+> 警告：把解锁操作括在finally子句之内是至关重要的。如果在临界区的代码抛出异常，锁必须被释放。否则，其他线程将永远阻塞。 
+
+> 注释：如果使用锁，就不能使用带资源的try语句。首先，解锁方法名不是close。不过，即使将它重命名，带资源的try语句也无法正常工作。它的首部希望声明一个新变量。但是如果使用一个锁，你可能想使用多个线程共享的那个变量（而不是新变量）。 
+
+让我们使用一个锁来保护Bank类的transfer方法。
+```
+public class Bank
+{
+	private Lock bankLock = new ReentrantLock();// ReentrantLock implements the Lock interface
+	public void transfer(int from, int to, int amount)
+	{
+		bankLock.lock();
+		try
+		{
+			System.out.print(Thread.currentThread());
+			accounts[from] -= amount;
+			System.out.printf(" %10.2f from %A to %d", amount, from, to);
+			accounts[to] += amount;
+			System.out.printf(" Total Balance: %10.2f%n", getTotalBalance());
+		}
+		finally
+		{
+			banklock.unlock();
+		}
+	}
+} 
+```
+假定一个线程调用transfer,在执行结束前被剥夺了运行权。假定第二个线程也调用transfer,由于第二个线程不能获得锁，将在调用lock方法时被阻塞。它必须等待第一个线程完成transfer方法的执行之后才能再度被激活。当第一个线程释放锁时，那么第二个线程才能开始运行(见图 14-5)。
+
+尝试一下。添加加锁代码到transfer方法并且再次运行程序。你可以永远运行它，而银行的余额不会出现讹误。 
+
+注意每一个Bank对象有自己的ReentrantLock对象。如果两个线程试图访问同一个Bank对象，那么锁以串行方式提供服务。但是，如果两个线程访问不同的Bank 对象，每一个线程得到不同的锁对象，两个线程都不会发生阻塞。本该如此，因为线程在操纵不同的Bank实例的时候，线程之间不会相互影响。
+
+锁是可重入的，因为线程可以重复地获得已经持有的锁。锁保持一个持有计数(hold count)来跟踪对lock方法的嵌套调用。线程在每一次调用lock都要调用unlock来释放锁。由于这一特性，被一个锁保护的代码可以调用另一个使用相同的锁的方法。 
+
+例如，transfer方法调用getTotalBalance方法，这也会封锁bankLock对象，此时bankLock对象的持有计数为2。当getTotalBalance方法退出的时候，持有计数变回1。当transfer方法退出的时候，持有计数变为0。线程释放锁。通常，可能想要保护需若干个操作来更新或检查共享对象的代码块。要确保这些操作完成后，另一个线程才能使用相同对象。
