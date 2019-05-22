@@ -20,7 +20,7 @@ https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/Comp
 # 2 窗口
 一个基于GUI的应用程序应当提供一个能和操作系统直接交互的容器，该容器可以被直接显示、绘制在操作系统控制的平台上，例如显示器上,这样的容器被称作GUI设计中的底层容器。  
 
-==Java提供的JFrame类的实例就是一个底层容器==
+Java提供的JFrame类的实例就是一个底层容器
 (JDialog类的实例也是一个底层容器，见后面的11.6节)，即通常所说的窗口。其他组件必须被添加到底层容器中,以便借助这个底层容器和操作系统进行信息交互。简单地讲，如果应用程序需要一个按钮，并希望用户和按钮交互，即用户单击按钮使程序做出某种相应的操作，那么这个按钮必须出现在底层容器中，否则用户无法看见按钮,更无法让用户和按钮交互。  
 
 **JFrame类是Container类的间接子类。当需要一个窗口时，可使用JFrame或其子类创建个对象。** 窗口也是个容器,可以向窗口添加组件。需要注意的是，窗口默认地被系统添加到显示器屏幕上,因此不允许将一个窗口添加到另一个容器中。
@@ -29,9 +29,9 @@ https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/Comp
 - `JFrame(Strings)`: 创建标题为s的窗口。  
 - `public void setisble(boolean b)`:设置窗口是否可见。窗口默认是不可见的。  
 - `public void dispose()`:撒销当前窗口，并释放当前窗口所使用的资源。
-- `public void setDefaultCloseOperation(int operation)`:该方法用来设置单机窗体右上角的关闭图标后，程序会做出怎样的处理，其中的参数operation取JFrame类中的下列int型static常量，程序根据参数operation取值做出不同的处理。  
-`HIDE_ON_CLOSE`：什么也不做  
-`DISPOSE_ON_CLOSE`：隐藏当前窗口，并释放窗体占有的其他资源。  
+- `public void setDefaultCloseOperation(int operation)`:该方法用来设置单机窗体右上角的关闭图标后，程序会做出怎样的处理，其中的参数operation取JFrame类中的下列int型static常量，程序根据参数operation取值做出不同的处理。 
+`HIDE_ON_CLOSE`：什么也不做 
+`DISPOSE_ON_CLOSE`：隐藏当前窗口，并释放窗体占有的其他资源。 
 `EXIT_ON_CLOSE`：结束窗口所在的应用程序  
 ```
 import javax.swing.*;
@@ -52,7 +52,7 @@ public class exercise{
 }
 ```
 注意两次单击关闭窗口，程序运行效果不同。
-## 2.2菜单条，菜单，菜单项
+## 2.2 菜单条，菜单，菜单项
 窗口中的菜单项放在菜单里，菜单放在菜单条里。
 ##### 1.菜单条
 **JComponent类的子类`JMenubar`负责创建菜单条，即JMenubar的一个实例就是一个菜单条，JFrame类有一个将菜单条放置到窗口的方法;**
@@ -65,14 +65,15 @@ JComponent类的子类`JMenu`负责创建菜单，即JMenu的一个实例就是�
 ##### 3.菜单项
 JComponent类的子类`JMenuItem`负责创建菜单项，即JMenuItem的一个实例就是一个菜单项。
 ##### 4.嵌入子菜单
-JMenu是`JMenuItem`的子类，*因此菜单本身也是一个菜单项，当把一个菜单看作菜单项添加到某个菜单中，称这样的菜单为子菜单*
+JMenu是`JMenuItem`的子类，因此菜单本身也是一个菜单项，当把一个菜单看作菜单项添加到某个菜单中，称这样的菜单为子菜单
 ##### 5.菜单上的图标
 我们先用Icon声明一个图标，然后使用其子类ImageIcon类创建一个图标，如：
 ```
 Icon icon=new ImageIcon("a.gif");
 ```
-然后菜单项调用`setlcon(Icon icon)`方法将图标设置为icon.  
+然后菜单项调用`setlcon(Icon icon)`方法将图标设置为icon. 
 例11.2中在主类Examplell_ 2的main 方法中，用Frame的子类WindowMenu创建一个含有菜单的窗口，效果如图11.3所示。
+
 ```
 import javax.swing.*;
 import java.awt.event.InputEvent;
@@ -202,12 +203,13 @@ public class exercise{
 	}
 }
 ```
-## 3.2常用容器
-JComponent是Container的子类，因此JComponent子类创建的组建也都是容器，但是我们很少将`JButton,JTeseField,JCheckBox`等组件当容器来使用。JComponent专门提供了一些经常用来添加组件的容器，，相对于JFrame底层容器，本节提到的容器习惯性被称为中间容器，==中间容器必须被添加到底层容器中才会发生作用==
+## 3.2 常用容器
+JComponent是Container的子类，因此JComponent子类创建的组建也都是容器，但是我们很少将`JButton,JTeseField,JCheckBox`等组件当容器来使用。JComponent专门提供了一些经常用来添加组件的容器，相对于JFrame底层容器，本节提到的容器习惯性被称为中间容器，中间容器必须被添加到底层容器中才会发生作用
+
 ##### 1.JPanel面板
-我们经常会使用JPlanel创建一个面板，然后再向这个面板添加组件，然后把这个面板添加到其他的容器中，。JPlanel面板的默认布局是FlowLayout布局。
+我们经常会使用JPlanel创建一个面板，然后再向这个面板添加组件，然后把这个面板添加到其他的容器中。JPlanel面板的默认布局是FlowLayout布局。
 ##### 2.滚动窗格JSrollPane
-滚动窗格只可以添加一个组件，可以把一个组件放到一个滚动窗格中，然后通过滚动条来操作该组件，==JTextArea不自带滚动条，因此我们需要把文本区放入到一个滚动窗格中==，例如：
+滚动窗格只可以添加一个组件，可以把一个组件放到一个滚动窗格中，然后通过滚动条来操作该组件，JTextArea不自带滚动条，因此我们需要把文本区放入到一个滚动窗格中，例如：
 ```
 JScrollPane scroll=new JScrollPane(new JTextArea());
 ```
@@ -271,7 +273,7 @@ setAliginmen(int aligin);
 
 FlowLayout布局对象调用`setHgap(int hgap)`方法和`setVgap(intvgap)`可以重新设置水平间隙和垂直间隙。
 ##### 2.BorderLayout布局
-Border layout布局是window型容器的默认布局,例如JFrame、JDialog都是Window类的子类,它们的默认布局都是BorderLayout布局,Borderlayout也是一种简单的布局策略,如果一个容器使用这种布局,那么容器空间简单地划分为东、西、南、北、中5个区域,中间的区域最大。每加入一个组件都应该指明把这个组件加在哪个区域中,区域由Borderlayout中的静态常量CENTER、NORTH、SOUTH、WEST、EAST表示,例如,一个使用BorderLayout布局的容器con,可以使用add方法将一个组件b添加到中心区域
+Borderlayout布局是window型容器的默认布局,例如JFrame、JDialog都是Window类的子类,它们的默认布局都是BorderLayout布局,Borderlayout也是一种简单的布局策略,如果一个容器使用这种布局,那么容器空间简单地划分为东、西、南、北、中5个区域,中间的区域最大。每加入一个组件都应该指明把这个组件加在哪个区域中,区域由Borderlayout中的静态常量CENTER、NORTH、SOUTH、WEST、EAST表示,例如,一个使用BorderLayout布局的容器con,可以使用add方法将一个组件b添加到中心区域
 ```
 con.add(b,BorderLayout.CENTER);
 或者：
@@ -281,7 +283,8 @@ on.add(BorderLayour.CENTER,b);
 ##### 3.CardLayout布局
 使用CardLayout的容器可以容纳多个组件,这些组件被层叠放入容器中,最先加入容器的是第一张(在最上面),依次向下排序,使用该布局的特点是,同一时刻容器只能从这些件中选出一个来显示,就像叠“扑克牌”,每次只能显示其中的一张,这个被显示的组件将占据所有的容器空间  
 
-假设有一个容器con,那么,使用Cardlayout的一般步骤如下  
+假设有一个容器con,那么,使用Cardlayout的一般步骤如下 
+
 - 创建 CardLayout对象作为布局,如
 ```
 Cardlayout card=new Cardlayout();
@@ -293,10 +296,14 @@ con.setLayout(card);
 - 容器调用`add(String s,Component b)`将组件b加入容器,并给出了显示该组件的代号s。组件的代号是一个字符串,和组件的名没有必然联系,但是,不同的组件代号必须互不相同。最先加入con的是第一张,依次排序.
 - 创建的布局card用Cardlayout类提供的`show()`方法,显示容器con中组件代号为s的组件`card.show(con,s)`;
 
-也可以按组件加入容器的顺序显示组件:  
-`card.first(con)`显示con中的第一个组件;  
-`card.last(con)`显示con中最后一个组件;  
-`card.next(con)`显示当前正在被显示的组件的下个组件;  
+也可以按组件加入容器的顺序显示组件: 
+
+`card.first(con)`显示con中的第一个组件; 
+
+`card.last(con)`显示con中最后一个组件; 
+
+`card.next(con)`显示当前正在被显示的组件的下个组件; 
+
 `card.previous(con)`显示当前正在被显示的组件的前一个组件
 
 ##### 4.GridLayout布局
@@ -318,7 +325,7 @@ Gridlayout grid= new Gridlayout(10,8);
 
 由于Gridlayout布局中每个网格都是相同大小并且强制组件与网格的大小相同,使得容器中的每个组件也都是相同的大小,显得很不自然。为了克服这个缺点,你可以使用容器套,如,一个容器使用GridLayout布局,将容器分为三行一列的网格,那么你可以把另个容器添加到某个网格中,而添加的这个容器又可以设置为GridLayout布局、FlowLayout布局、CarderLayout布局或BorderLayout布局等,利用这种嵌套方法,可以设计出符合定需要的布局.
 
-## 3.4选项卡窗格
+## 3.4 选项卡窗格
 JTabbedPane创建的对象也是一个容器,由于JTabbedPane在设计GUl程序时比较方便实用,所以单独列出一小节来讲解。  
 
 JTabbedPane创建的对象称为选项卡窗格。JTabbedPane窗格的默认布局是CardLayour布局,并且自带一些选项卡(不需用户添加),这些选项卡与用户添加到JTabbedPane窗格中的组件相对应,也就是说,当用户向JTabbedPane窗格添加一个组件时,JTabbedPane窗格就会自动指定给该组件一个选项卡,单击该选项卡,JTabbedPane窗格将显示对应的组件,选项卡窗格自带的选项卡默认地在该选项卡窗格的顶部,从左向右依次排列,选项卡的顺序和对应的组件的顺序相同。  
@@ -404,9 +411,9 @@ public class exercise extends JFrame{
 
 上一章主要介绍了如何使用Java中的事件模式。通过学习读者已经初步知道了构造图形用户界面的基本方法。本章将介绍构造功能更加齐全的图形用户界面(GUI) 所需要的一些重要工具。下面，首先介绍Swing的基本体系结构。要想弄清如何有效地使用一些更高级的组件，必须了解底层的东西。然后，再讲述Swing中各种常用的用户界面组件，如文本框、单选按钮以及菜单等。接下来，介绍在不考虑特定的用户界面观感时，如何使用Java中的布局管理 器排列在窗口中的这些组件。最后，介绍如何在Swing中实现对话框。本章囊括了基本的Swing组件，如文本组件、按钮和滑块等，这些都是基本的用户界面组件，使用十分频繁。Swing中的高级组件将在卷n中讨论。
 
-# 12.1 Swing 和模型-视图-控制器设计模式
+# 1 Swing 和模型-视图-控制器设计模式
 前面说过，本章将从Swing组件的体系结构开始。首先，我们讨论设计模式的概念，然后再看一下Swing框架中最具影响力的“模型-视图-控制器”模式。
-## 12.1.1 设计模式
+## 1.1 设计模式
 在“模型-视图-控制器”模式中，背景是显示信息和接收用户输人的用户界面系统。有关“模型-视图-控制器”模式将在接下来的章节中讲述。这里有几个冲突因素。对于同一数据来说，可能需要同时更新多个可视化表示。例如，为了适应各种观感标准，可能需要 改变可视化表示形式；又例如，为了支持语音命令，可能需要改变交互机制。解决方案是将这些功能分布到三个独立的交互组件：模型、视图和控制器。模型-视图-控制器模式并不是AWT和Swing设计中使用的唯一模式。下列是应用的 另外几种模式： 
 
 - 容器和组件是“组合(composite)” 模式
@@ -415,7 +422,7 @@ public class exercise extends JFrame{
 
 设计模式的另外一个最重要的特点是它们已经成为文化的一部分。只要谈论起模型-视图-控制器或“装饰器” 模式，遍及世界各地的程序员就会明白。因此，模式已经成为探讨设计方案的一种有效方法。
 
-## 12.1.2 模型-视图-控制器模式
+## 1.2 模型-视图-控制器模式
 
 让我们稍稍停顿一会儿，回想一下构成用户界面组件的各个组成部分，例如，按钮、复选框、文本框或者复杂的树形组件等。每个组件都有三个要素： 
 - 内容，如：按钮的状态（是否按下)，或者文本框的文本。 

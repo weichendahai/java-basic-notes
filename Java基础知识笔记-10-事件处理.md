@@ -7,7 +7,7 @@ Java程序设计环境折中了Visual Basic与原始C的事件处理方式，因
 
 事件源有一些向其注册事件监听器的方法。当某个事件源产生事件时，事件源会向为事件注册的所有事件监听器对象发送一个通告。
 
-像Java这样的面向对象语言，都将事件的相关信息封装在一个事件对象(event object)中。在Java中，所有的事件对象都最终派生于java.util.EventObject 类。当然，每个事件类型还有子类，例如，ActionEvent和WindowEvent。
+像Java这样的面向对象语言，都将事件的相关信息封装在一个事件对象(event object)中。在Java中，所有的事件对象都最终派生于java.util.EventObject类。当然，每个事件类型还有子类，例如，ActionEvent和WindowEvent。
 
 ## 1 事件处理模式
 在学习处理事件时,必须很好地掌握事件源、监视器、处理事件的接口这三个概念。
@@ -416,8 +416,10 @@ public void itemStateChanged(itemEvent e);
 ```
 itemStateChange(ItemEvent e);
 ```
-对发生的事件做出处理。当监视器调用itemStateChange(ItemEvent e)方法时，ItemEvent类事先创建的事件对象就会传递给该方法的参数e。  
+对发生的事件做出处理。当监视器调用itemStateChange(ItemEvent e)方法时，ItemEvent类事先创建的事件对象就会传递给该方法的参数e。
+
 ItemEvent事件对象除了可以使用getSource()方法返回发生ItemEvent事件的事件源外，也可以使用getItemSelectable()方法返回发生ItemEvent事件的事件源。  
+
 ## 4 DocumentEvent事件
 ##### 1.DocumentEvent事件源
 文本区中含有一个实现Document接口的实例，该实例被称作文本区维护的文档，文本区调用getDocument()方法返回维护的文档。文本区维护的文档能触发DocumentEvent事件。需要注意的是，DocumentEvent不在java.awt.event包中，而是在javax.swing.event包中。用户在文本区中进行文本编辑操作，使得文本区中的文本区内容发生变化，将导致文本区维护的文档模型中的数据发生变化，从而导致文本区维护的文档触发DocumentEvent事件。
@@ -973,7 +975,7 @@ MVC是一种通过三个不同部分构造一个软件或组件的理想办法�
 - 控制器，处理用户的交互操作，对于用户的操作做出响应，让模型和视图进行必要的交互，即通过视图修改，获取模型中的数据；当模型中的数据变化时，让视图更新显示。  
 
 从面向对象的角度看，MVC结构可以使程序更具有对象化特性，也更容易维护，
-**==在设计程序时，可以将某个对象看作模型，然后为模型提供恰当的显示组件，即视图，为了对用户的操作做出响应，可以选择某个组件做控制器，当组件发生事件后，通过视图修改得到模型中维护着的数据，并让视图更新显示。==**  
+**在设计程序时，可以将某个对象看作模型，然后为模型提供恰当的显示组件，即视图，为了对用户的操作做出响应，可以选择某个组件做控制器，当组件发生事件后，通过视图修改得到模型中维护着的数据，并让视图更新显示。**  
 
 如下例：首先编写一个封装三角形的类，然后再编写一个窗口。要求窗口使用三个文本框和一个文本区域为三角形对象中的数据提供视图，其中三个文本框用来显示和更新三角形对象的三个边的长度；文本区对象用来显示三角形的面积。窗口中有一个按钮，用户单击该按钮后，程序用三个文本框中的数据分别作为三角形的三个边的长度，并将计算结果显示在文本区。
 ```
@@ -1303,8 +1305,10 @@ public class exercise{
 showSaveDialog(Component a);
 showOpenDialog(Component a);
 ```
-都可以使对话框可见，只是呈现的外观有所不同，showSaveDialog方法提供保存文件的界面，showOpenDialog方法提供打开文件的界面。上述两个方法中的参数a指定对话框可见时的位置，当a是null时，文件对话框出现在屏幕的中央；如果组件a不为空，文件对话框在组件a的正前面居中显示。  
+都可以使对话框可见，只是呈现的外观有所不同，showSaveDialog方法提供保存文件的界面，showOpenDialog方法提供打开文件的界面。上述两个方法中的参数a指定对话框可见时的位置，当a是null时，文件对话框出现在屏幕的中央；如果组件a不为空，文件对话框在组件a的正前面居中显示。
+
 用户单击文件对话框上的 确定，取消按钮或关闭图标，文件对话框将消失。ShowSaveDialog()或showOpenDialog()方法返回下列常量之一：
+
 ```
 JFileChooser.APPROVE_OPTION
 JFileChooser.CANCEL_OPTION

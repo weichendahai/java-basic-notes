@@ -150,7 +150,7 @@ Comparable<String>,而且String.compareTo方法可以按字典顺序比较字符
 
 现在假设我们希望按长度递增的顺序对字符串进行排序，而不是按字典顺序进行排序。肯定不能让String类用两种不同的方式实现compareTo方法---更何况，String类也不应由我们来修改。
 
-要处理这种情况，ArrayS.Sort方法还有第二个版本，有一个数组和一个比较器(comparator)作为参数，比较器是实现了Comparator接口的类的实例。
+要处理这种情况，Arrays.Sort方法还有第二个版本，有一个数组和一个比较器(comparator)作为参数，比较器是实现了Comparator接口的类的实例。
 ```
 public interface Comparators
 {
@@ -173,7 +173,7 @@ Comparator<String> comp = new LengthComparator();
 if (comp.compare(words[i], words[j]) > 0)...
 ```
 将这个调用与words[i].compareTo(words[j]) 做比较。这个compare方法要在比较器对象上调用，而不是在字符串本身上调用。
-> 注释：尽管LengthComparator 对象没有状态，不过还是需要建立这个对象的一个实例。我们需要这个实例来调用compare方法---它不是一个静态方法。
+> 注释：尽管LengthComparator对象没有状态，不过还是需要建立这个对象的一个实例。我们需要这个实例来调用compare方法---它不是一个静态方法。
 
 要对一个数组排序，需要为Arrays.sort方法传入一个LengthComparator对象：
 ```
@@ -185,10 +185,11 @@ Arrays,sort(friends, new LengthComparatorO):
 以后我们会了解，利用lambda表达式可以更容易地使用Comparator。
 
 ---
-## 5接口回调
-&emsp;&emsp;和类一样，接口也是Java中重要的一种数据类型，用接口声明的变量称为接口变量。  
-**接口属于引用型变量，接口变量中可以存放实现该接口的类的实例的引用，即存放对象的引用**  
+## 5 接口回调
+&emsp;&emsp;和类一样，接口也是Java中重要的一种数据类型，用接口声明的变量称为接口变量。 **接口属于引用型变量，接口变量中可以存放实现该接口的类的实例的引用，即存放对象的引用** 
+
 &emsp;&emsp;假如，假设Com是一个接口，那么就可以用Com声明一个变量:
+
 ```
 Com com;
 ```
@@ -247,16 +248,16 @@ class IFExtends{
 当然，定时器需要知道调用哪一个方法，并要求传递的对象所属的类实现了java.awt.event包的ActionListener接口。下面是这个接口：
 ```
 public interface ActionListener {
-	void actionPerfonned(ActionEvent event);
+	void actionPerformed(ActionEvent event);
 }
 ```
-当到达指定的时间间隔时，定时器就调用actionPerformed 方法。
+当到达指定的时间间隔时，定时器就调用actionPerformed方法。
 
 假设希望每隔10秒钟打印一条信息“ At the tone, the time is...”， 然后响一声，就应该定义一个实现ActionListener接口的类，然后将需要执行的语句放在actionPerformed方法中。
 ```
-class TinePrinter implements ActionListener {
+class TimePrinter implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
-		System.out.printlnf At the tone, the time is " + new OateO)；
+		System.out.println("At the tone, the time is " + new Date())；
 		Toolkit.getDefaultToolkit().beep();
 	}
 }
@@ -433,23 +434,19 @@ class Employee extends Person implements Comparable // OK
 ```
 // 1. 不需要参数,返回值为 5  
 () -> 5  
-  
 // 2. 接收一个参数(数字类型),返回其2倍的值  
 x -> 2 * x  
-  
 // 3. 接受2个参数(数字),并返回他们的差值  
 (x, y) -> x – y  
-  
 // 4. 接收2个int型整数,返回他们的和  
 (int x, int y) -> x + y  
-  
 // 5. 接受一个 string 对象,并在控制台打印,不返回任何值(看起来像是返回void)  
 (String s) -> System.out.print(s)  
 ```
 更多外链到：https://www.cnblogs.com/franson-2016/p/5593080.html
 
 ## 1 为什么引入lambda 表达式
-lambda表达式是一个可传递的代码块，可以在以后执行一次或多次。具体介绍语法（以及解释这个让人好奇的名字）之前，下面先退一步，观察一下我们在Java 中的哪些地方用过这种代码块。
+lambda表达式是一个可传递的代码块，可以在以后执行一次或多次。具体介绍语法（以及解释这个让人好奇的名字）之前，下面先退一步，观察一下我们在Java中的哪些地方用过这种代码块。
 
 已经了解了如何按指定时间间隔完成工作。将这个工作放在一个ActionListener的actionPerformed方法中：
 ```
@@ -485,7 +482,7 @@ compare方法不是立即调用。实际上，在数组完成排序之前，sort
 
 就现在来说，问题已经不是是否增强Java来支持函数式编程，而是要如何做到这一点。设计者们做了多年的尝试，终于找到一种适合Java的设计。下一节中，你会了解Java SE8中如何处理代码块。
 
-## 2 lambda 表达式的语法
+## 2 lambda表达式的语法
 再来考虑上一节讨论的排序例子。我们传入代码来检查一个字符串是否比另一个字符串短。这里要计算：
 ```
 first.length() - second.length()
@@ -495,13 +492,13 @@ first和second是什么？它们都是字符串。Java是一种强类型语言�
 (String first, String second)
 	-> first.length() - second.length()
 ```
-这就是你看到的第一个表达式。lambda 表达式就是一个代码块，以及必须传入代码的变量规范。
+这就是你看到的第一个表达式。lambda表达式就是一个代码块，以及必须传入代码的变量规范。
 
 为什么起这个名字呢？ 很多年前，那时还没有计算机，逻辑学家Alonzo Church想要形式化地表示能有效计算的数学函数。（奇怪的是，有些函数已经知道是存在的，但是没有人知道该如何计算这些函数的值。）他使用了希腊字母lambda(λ)来标记参数如果他知道Java API, 可能就会写为
 ```
 λfirst.λsecond.first.length() - second.length()
 ```
-你已经见过Java中的一种lambda表达式形式：参数， 箭头（->) 以及一个表达式。如果代码要完成的计算无法放在一个表达式中，就可以像写方法一样，把这些代码放在{丨中，并包含显式的return语句。例如：
+你已经见过Java中的一种lambda表达式形式：参数，箭头（->) 以及一个表达式。如果代码要完成的计算无法放在一个表达式中，就可以像写方法一样，把这些代码放在括号中，并包含显式的return语句。例如：
 ```
 (String first, String second) ->
 	{
@@ -528,7 +525,7 @@ ActionListener listener = event ->
 	System.out.println("The time is " + new Date()");
 	// Instead of (event) -> . . . or (ActionEvent event) -> . . .
 ```
-无需指定lambda 表达式的返回类型。lambda表达式的返回类型总是会由上下文推导得出。例如，下面的表达式
+无需指定lambda表达式的返回类型。lambda表达式的返回类型总是会由上下文推导得出。例如，下面的表达式
 ```
 (String first, String second) -> first.length() - second.length()
 ```
