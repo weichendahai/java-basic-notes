@@ -312,7 +312,6 @@ Thread[Thread-34,5,main] 197.11from 34 to 69 Total Balance: 99291.06
 Thread[Thread-36,5,main] 85.96 from 36 to 4 Total Balance: 99291.06 
 Thread[Thread-4,5,main]Thread[Thread-33,5,main] 7.31 from 31to 32 Total Balance: 99979.24 
 	627.50 from 4 to 5 Total Balance: 99979.24
-
 ```
 正如前面所示，出现了错误。在最初的交易中，银行的余额保持在$100000, 这是正确的，因为共100个账户，每个账户$1000。但是，过一段时间，余额总量有轻微的变化。当运行这个程序的时候，会发现有时很快就出错了，有时很长的时间后余额发生混乱。这样的状态不会带来信任感，人们很可能不愿意将辛苦挣来的钱存到这个银行。程序清单14-5和程序清单14-6中的程序提供了完整的源代码。看看是否可以从代码中找出问题。下一节将解说其中奥秘。
 
@@ -485,3 +484,166 @@ sufficientFunds.signalAll();
 > while (I(ok to proceed))
 > 	condition.await(); 
 > ```
+
+至关重要的是最终需要某个其他线程调用signalAll方法。当一个线程调用await时，它没有办法重新激活自身。它寄希望于其他线程。如果没有其他线程来重新激活等待的线程，它就永远不再运行了。这将导致令人不快的死锁(deadlock) 现象。如果所有其他线程被阻塞，最后一个活动线程在解除其他线程的阻塞状态之前就调用await方法，那么它也被阻塞。没有任何线程可以解除其他线程的阻塞，那么该程序就挂起了。
+
+应该何时调用signalAll呢？ 经验上讲，在对象的状态有利于等待线程的方向改变时调用signalAll。例如，当一个账户余额发生改变时，等待的线程会应该有机会检查余额。在例子中，当完成了转账时，调用signalAll方法。 
+
+```
+public void transfer(int from, int to, int amount) 
+{
+	bankLock.lock()；
+	try
+	{
+		while (accounts[from] < amount)
+			sufficientFunds.await()；
+			// transfer funds sufficientFunds.signalAll()；
+	}
+	finally
+	{
+		bankLock.unlock();
+	}
+} 
+```
+
+注意调用signalAll不会立即激活一个等待线程。它仅仅解除等待线程的阻塞，以便这些线程可以在当前线程退出同步方法之后，通过竞争实现对对象的访问。 
+
+另一个方法signal, 则是随机解除等待集中某个线程的阻塞状态。这比解除所有线程的 阻塞更加有效，但也存在危险。如果随机选择的线程发现自己仍然不能运行，那么它再次被阻塞。如果没有其他线程再次调用signal, 那么系统就死锁了。
+
+> 警告：当一个线程拥有某个条件的锁时，它仅仅可以在该条件上调用await、signalAll或signal方法。
+
+如果你运行程序清单14-7中的程序，会注意到没有出现任何错误。总余额永远是$100 000。
+
+没有任何账户曾出现负的余额（但是，你还是需要按下CTRL+C键来终止程序）。你可能还注意到这个程序运行起来稍微有些慢---这是为同步机制中的簿记操作所付出的代价。
+
+实际上，正确地使用条件是富有挑战性的。在开始实现自己的条件对象之前，应该考虑使用14.10节中描述的结构。 
+
+```
+package synch;
+import java.util.*;
+import java.util.concurrent.locks.*;
+
+/**
+* A bank with a number of bank accounts that uses locks for serializing access.
+* ©version 1.30 2004-08-01
+* ©author Cay Horstmann
+*/
+
+public class Bank
+{
+	private final double[] accounts;
+	private Lock bankLock;
+	private Condition sufficientFunds;
+
+	/**
+    * Constructs the bank. 
+	* @param n the number of accounts 
+	* @param initialBalance the initial balance for each account
+	*/
+
+	public Bank(int n, double initialBalance)
+	{
+		accounts = new double[n];
+		Arrays.fill(accounts, initialBalance);
+		bankLock = new ReentrantLock();
+		sufficientFunds = bankLock.newCondition()；
+		/** 
+		* Transfers money from one account to another. 
+		* @param from the account to transfer from
+		* @param to the account to transfer to
+		* @paran amount the amount to transfer
+		*/
+		public void transfer(int from, int to, double amount) throws InterruptedException
+		{
+			bankLock.lock()；
+			try 
+			{
+				while (accounts[from] < amount)
+				sufficientFunds.await()；
+				System.out.print(Thread.currentThread());
+				accounts[from] -= amount;
+				System.out.printf(" %10.2f from %6 to %d", amount, from, to);
+				accounts[to] += amount;
+				System.out.printf("Total Balance: %10.2f%n", getTotalBalance());
+				sufficientFunds.signalAll();
+			}
+			finally
+			{
+				bankLock.unlock();
+			}
+		}
+		/**
+		* Gets the sum of all account balances.
+		* ©return the total balance 
+		*/ 
+		public double getTotalBalance()
+		{
+			bankLock.lock();
+			try
+			{
+				double sum = 0;
+				for (double a : accounts)
+					sum += a;
+				return sum;
+			}
+			finally
+			{
+				bankLock.unlock();
+			}
+		}
+		/**
+		* Gets the number of accounts in the bank.
+		* ©return the number of accounts
+		*/
+		public int size()
+		{
+			return accounts.length;
+		}
+}
+```
+
+### 5.5 synchronized关键字
+
+在前面一节中，介绍了如何使用Lock和Condition对象。在进一步深入之前，总结一下有关锁和条件的关键之处：
+
+- 锁用来保护代码片段，任何时刻只能有一个线程执行被保护的代码。
+- 锁可以管理试图进入被保护代码段的线程。
+- 锁可以拥有一个或多个相关的条件对象。
+- 每个条件对象管理那些已经进入被保护的代码段但还不能运行的线程。 
+
+Lock和Condition接口为程序设计人员提供了高度的锁定控制。然而，大多数情况下，并不需要那样的控制，并且可以使用一种嵌入到Java语言内部的机制。从1.0版开始，Java中的每一个对象都有一个内部锁。如果一个方法用synchronized关键字声明，那么对象的锁将保护整个方法。也就是说，要调用该方法，线程必须获得内部的对象锁。 
+
+换句话说，
+
+```
+public synchronized void method()
+{
+	method body
+}
+```
+
+等价于
+
+```
+public void method()
+{
+	this.intrinsidock.lock();
+	try
+	{
+		method body
+	}
+	finally
+	{
+		this.intrinsicLock.unlock();
+	}
+} 
+```
+
+例如，可以简单地声明Bank类的transfer方法为synchronized, 而不是使用一个显式的锁。内部对象锁只有一个相关条件。wait方法添加一个线程到等待集中，notifyAll/notify方法解除等待线程的阻塞状态。换句话说，调用wait或notityAll等价于 
+
+```
+intrinsicCondition.await();
+intrinsicCondition.signalAll();
+```
+
+> 注释：wait、notifyAll以及notify方法是Object类的final方法。Condition方法必须被命名为await、signalAll和 signal以便它们不会与那些方法发生冲突。 
