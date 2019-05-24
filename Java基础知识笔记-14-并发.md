@@ -487,7 +487,7 @@ sufficientFunds.signalAll();
 
 至关重要的是最终需要某个其他线程调用signalAll方法。当一个线程调用await时，它没有办法重新激活自身。它寄希望于其他线程。如果没有其他线程来重新激活等待的线程，它就永远不再运行了。这将导致令人不快的死锁(deadlock) 现象。如果所有其他线程被阻塞，最后一个活动线程在解除其他线程的阻塞状态之前就调用await方法，那么它也被阻塞。没有任何线程可以解除其他线程的阻塞，那么该程序就挂起了。
 
-应该何时调用signalAll呢？ 经验上讲，在对象的状态有利于等待线程的方向改变时调用signalAll。例如，当一个账户余额发生改变时，等待的线程会应该有机会检查余额。在例子中，当完成了转账时，调用signalAll方法。 
+应该何时调用signalAll呢？经验上讲，在对象的状态有利于等待线程的方向改变时调用signalAll。例如，当一个账户余额发生改变时，等待的线程会应该有机会检查余额。在例子中，当完成了转账时，调用signalAll方法。 
 
 ```
 public void transfer(int from, int to, int amount) 
@@ -647,3 +647,173 @@ intrinsicCondition.signalAll();
 ```
 
 > 注释：wait、notifyAll以及notify方法是Object类的final方法。Condition方法必须被命名为await、signalAll和 signal以便它们不会与那些方法发生冲突。 
+
+例如，可以用Java实现Bank类如下：
+
+```
+class Bank
+{
+	private double[] accounts;
+	public synchronized void transfer(int from，int to, int amount) throws InterruptedException
+	{
+		while (accounts[from] < amount)
+		wait(); // wait on intrinsic object lock's single condition
+		accounts[from] -= amount;
+		accounts[to] += amount;
+		notifyAll()；// notify all threads waiting on the condition
+	}
+	public synchronized double getTotalBalance() { ... }
+}
+```
+
+可以看到，使用synchronized关键字来编写代码要简洁得多。当然，要理解这一代码，你必须了解每一个对象有一个内部锁， 并且该锁有一个内部条件。由锁来管理那些试图进入synchronized方法的线程，由条件来管理那些调用wait的线程。
+
+> 提示：Synchronized方法是相对简单的。但是，初学者常常对条件感到困惑。在使用wait/notifyAll之前，应该考虑使用第14.10节描述的结构之一。 
+
+将静态方法声明为synchronized也是合法的。如果调用这种方法，该方法获得相关的类对象的内部锁。例如，如果Bank类有一个静态同步的方法，那么当该方法被调用时，Bankxlass对象的锁被锁住。因此，没有其他线程可以调用同一个类的这个或任何其他的同步静态方法。
+
+内部锁和条件存在一些局限。包括： 
+
+- 不能中断一个正在试图获得锁的线程。
+- 试图获得锁时不能设定超时。
+- 每个锁仅有单一的条件， 可能是不够的。
+
+在代码中应该使用哪一种？Lock和Condition对象还是同步方法？下面是一些建议：
+
+- 最好既不使用Lock/Condition也不使用synchronized关键字。在许多情况下你可以使 用java.util.concurrent包中的一种机制，它会为你处理所有的加锁。例如，在14.6节，你会看到如何使用阻塞队列来同步完成一个共同任务的线程。还应当研究一下并行流，有关内容参见卷n第1章。
+- 如果synchronized关键字适合你的程序，那么请尽量使用它，这样可以减少编写的代码数量，减少出错的几率。程序清单14-8给出了用同步方法实现的银行实例。
+- 如果特别需要Lock/Condition结构提供的独有特性时，才使用Lock/Condition。
+
+> 程序清单14-8 synch2/Bank.java
+
+```
+package synch2;
+import java.util.*;
+/** 
+* A bank with a number of bank accounts that uses synchronization primitives. 
+* ©version 1.30 2004-08-01 s * ©author Cay Horstmann 
+*/
+public class Bank
+{
+	private final doublet[] accounts;
+	/**
+	* Constructs the bank.
+	* @parain n the number of accounts
+	* @param initialBalance the initial balance for each account
+	*/
+	public Bank(int n, double initialBalance)
+	{
+			accounts = new double[n];
+		Arrays.fill (accounts, initialBalance);
+	}
+	/** Transfers money from one account to another.
+	* @param from the account to transfer from
+	* @param to the account to transfer to
+	* @param amount the amount to transfer
+	*/
+	public synchronized void transfer(int from, int to, double amount) throws InterruptedException
+	{
+		while (accounts[from] < amount)
+			wait();
+		System.out.print(Thread.currentThread());
+		accounts[from] -= amount;
+		System.out.printf(" %10.2f from %d to %d", amount, from, to);
+		accounts[to] += amount;
+        System.out.printf(" Total Balance: %10.2f%n", getTotalBalanceO);
+		notifyAll();
+	}
+	/**
+	* Gets the sum of all account balances.
+	* return the total balance
+	*/
+	public synchronized double getTotalBalance()
+	{
+		double sum = 0;
+		for (double a : accounts)
+			sum += a;
+		return sum;
+	}
+	/**
+	* Gets the number of accounts in the bank.
+	* ©return the number of accounts
+	*/
+	public int size()
+	{
+		return accounts.length;
+	}
+}
+```
+
+> java.lang.Object 1.0 
+
+```
+void notify Al()  解除那些在该对象上调用wait方法的线程的阻塞状态。该方法只能在同步方法或同步块内部调用。如果当前线程不是对象锁的持有者，该方法拋出一个IllegalMonitorStateException异常。
+
+void notify()  随机选择一个在该对象上调用wait方法的线程，解除其阻塞状态。该方法只能在一个同步方法或同步块中调用。如果当前线程不是对象锁的持有者，该方法抛出一个IllegalMonitorStateException异常。
+
+void wait()  导致线程进入等待状态直到它被通知。该方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者，该方法拋出一个IllegalMonitorStateException异常。
+
+void wait(long millis)
+void wait(long millIs, int nanos)  导致线程进入等待状态直到它被通知或者经过指定的时间。这些方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者该方法拋出一个IllegalMonitorStateException异常。
+	参数	millis	毫秒数
+		nanos	纳秒数，<1 000 000 
+```
+
+### 5.6 同步阻塞
+
+正如刚刚讨论的，每一个Java对象有一个锁。线程可以通过调用同步方法获得锁。还有另一种机制可以获得锁，通过进入一个同步阻塞。当线程进入如下形式的阻塞：
+
+```
+synchronized (obj) // this is the syntax for a synchronized block 
+{
+	critical section
+}
+```
+
+ 于是它获得Obj的锁。有时会发现“特殊的”锁，例如：
+
+```
+public class Bank
+{
+	private doublet[] accounts;
+	private Object lock = new Object();
+	public void transfer(int from, int to, int amount)
+	{
+		synchronized (lock) // an ad-hoc lock
+		{
+			accounts[from] -= amount;
+			accounts[to] += amount;
+		}
+		System.out.println(...)
+	}
+}
+```
+
+在此，lock对象被创建仅仅是用来使用每个Java对象持有的锁。 
+
+有时程序员使用一个对象的锁来实现额外的原子操作，实际上称为客户端锁定(clientside locking)  例如，考虑Vector类，一个列表，它的方法是同步的。现在，假定在Vector<Double>中存储银行余额。这里有一个transfer方法的原始实现：
+
+```
+public void transfer(Vector<Double> accounts, int from, int to, int amount)// Error
+{
+	accounts.set(from, accounts.get(from)-amount);
+	accounts.set(to, accounts.get(to)+ amount);
+	System.out.println(...);
+} 
+```
+
+Vector 类的get和set方法是同步的，但是，这对于我们并没有什么帮助。在第一次对get的调用已经完成之后，一个线程完全可能在transfer方法中被剥夺运行权。于是，另一个线程可能在相同的存储位置存入不同的值。但是，我们可以截获这个锁： 
+
+```
+public void transfer(Vector<Double> accounts, int from, int to, int amount)
+{
+	synchronized(accounts)
+	{
+		accounts.set(from, accounts.get(from)- amount);
+		accounts.set(to, accounts.get(to)+ amount);
+}
+	System.out.println(...);
+} 
+```
+
+这个方法可以工作，但是它完全依赖于这样一个事实，Vector类对自己的所有可修改方法都使用内部锁。然而，这是真的吗？Vector类的文档没有给出这样的承诺。不得不仔细研究源代码并希望将来的版本能介绍非同步的可修改方法。如你所见，客户端锁定是非常脆弱的，通常不推荐使用。
