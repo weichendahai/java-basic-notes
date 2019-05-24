@@ -29,6 +29,8 @@ for (int i = 1 ;i <= STEPS;i++)
 
 这里用球弹跳代码作为示例，让大家对并发处理有一个视觉印象。通常，人们总会提防长时间的计算。这个计算很可能是某个大框架的一个组成部分，例如，GUI或web框架。无论何时框架调用自身的方法都会很快地返回一个异常。如果需要执行一个比较耗时的任务，应当并发地运行任务。
 
+#### 推荐使用实现Runable接口的方式来创建多线程
+
 下面是在一个单独的线程中执行一个任务的简单过程：
 
 - 1)将任务代码移到实现了Runnable接口的类的run方法中。这个接口非常简单，只有一个方法：
@@ -46,7 +48,7 @@ Runnable r = () -> { taskcode };
 ```
 Thread t = new Thread(r);
 ```
-- 3)启动线程：t.start();
+- 3)启动线程：`t.start()`;
 要想将弹跳球代码放在一个独立的线程中，只需要实现一个类BallRunnable，然后，将动画代码放在run方法中，如同下面这段代码：
 ```
 Runnable r = () -> {
@@ -66,7 +68,14 @@ t.start();
 ```
 同样地，需要捕获sleep方法可能抛出的异常InterruptedException。下一节将讨论这个异常。在一般情况下，线程在中断时被终止。因此，当发生 InterruptedException异常时，run方法将结束执行。无论何时点击Start按钮，球会移入一个新线程，仅此而已！现在应该知道如何并行运行多个任务了。本章其余部分将阐述如何控制线程之间的交互。
 
-> 注释：也可以通过构建一个Thread类的子类定义一个线程，如下所示
+> Runnable对象仅仅作为Thread对象的target，Runable实现类里包含的run()方法仅作为线程执行体。而实际的线程对象仍然是Thread实例，只是该Thread线程负责执行其target的run()方法。
+
+#### 也可以通过构建一个Thread类的子类定义一个线程，如下所示
+
+- 定义Thread类的子类 ，并重写该类的run()方法，该run()方法的方法体就体现了线程需要完成的任务。因此把run()方法称为线程执行体.。
+- 创建Thread子类的实例，即创建了线程对象。
+- 调用线程对象的start()方法来启动该线程。
+
 ```
 class MyThread extends Thread
 {
@@ -208,6 +217,11 @@ void mySubTask() throws InterruptedException
 
 - 因为run方法正常退出而自然死亡。
 - 因为一个没有捕获的异常终止了run方法而意外死亡。特别是，可以调用线程的stop方法杀死一个线程。该方法抛出ThreadDeath错误对象,由此杀死线程。但是，stop方法已过时，不要在自己的代码中调用这个方法。
+- 直接调用该线程的stop()方法来结束线程----该方法容易导致死锁，通常不推荐使用。
+
+> 注意：当主线程结束时，其他线程不受任何影响，可以调用线程对象的isAlive()方法，当线程处于就绪，运行，阻塞三种状态时，该方法将返回true，当线程处于新建，死亡两种状态时，该方法将返回false
+
+不要试图对一个已近死亡的线程调用start()方法使它重新启动。会抛出异常
 
 ## 4 线程属性
 ### 4.1 线程优先级
@@ -220,25 +234,21 @@ void mySubTask() throws InterruptedException
 > 警告：如果确实要使用优先级，应该避免初学者常犯的一个错误。如果有几个高优先级的线程没有进入非活动状态，低优先级的线程可能永远也不能执行。每当调度器决定运行一个新线程时，首先会在具有高优先级的线程中进行选择，尽管这样会使低优先级的线程完全饿死。
 
 ```
-void setPriority(int newPriority)
-设置线程的优先级。优先级必须在Thread.MIN_PRIORITY与Thread.MAX_PRIORITY之间。一般使用Thread.NORMJ»RIORITY优先级
-
-static int MIN_PRIORITY 
-线程的最小优先级。最小优先级的值为1。 
-
-static int N0RM_PRI0RITY 线程的默认优先级。默认优先级为5
-
-static int MAX_PRIORITY 线程的最高优先级。最高优先级的值为10
-
-static void yield()
-导致当前执行线程处于让步状态。如果有其他的可运行线程具有至少与此线程同样高 的优先级，那么这些线程接下来会被调度。注意，这是一个静态方法
+void setPriority(int newPriority)  //设置线程的优先级。优先级必须在Thread.MIN_PRIORITY与Thread.MAX_PRIORITY之间。一般使用Thread.NORMJ»RIORITY优先级
+static int MIN_PRIORITY  //线程的最小优先级。最小优先级的值为1。 
+static int N0RM_PRI0RITY  //线程的默认优先级。默认优先级为5
+static int MAX_PRIORITY  //线程的最高优先级。最高优先级的值为10
+static void yield()  //导致当前执行线程处于让步状态。如果有其他的可运行线程具有至少与此线程同样高 的优先级，那么这些线程接下来会被调度。注意，这是一个静态方法
 ```
 ### 4.2 守护线程
+有一种线程，他是在后台运行的，他的任务就是为其他的线程提供服务，这种线程被称为守护线程，比如JVM的垃圾回收线程。
+
 可以通过调用
+
 ```
 t.setDaemon(true);
 ```
-将线程转换为守护线程（daemon thread)。这样一个线程没有什么神奇。守护线程的唯一用途是为其他线程提供服务。计时线程就是一个例子，它定时地发送“计时器嘀嗒”信号给其他 线程或清空过时的高速缓存项的线程。当只剩下守护线程时，虚拟机就退出了，由于如果只剩下守护线程，就没必要继续运行程序了。
+将线程转换为守护线程(daemon thread)。这样一个线程没有什么神奇。守护线程的唯一用途是为其他线程提供服务。计时线程就是一个例子，它定时地发送“计时器嘀嗒”信号给其他 线程或清空过时的高速缓存项的线程。当只剩下守护线程时，虚拟机就退出了，由于如果只剩下守护线程，就没必要继续运行程序了。
 
 守护线程有时会被初学者错误地使用， 他们不打算考虑关机(shutdown) 动作。但是，这是很危险的。守护线程应该永远不去访问固有资源，如文件、数据库，因为它会在任何时候甚至在一个操作的中间发生中断。
 
@@ -263,6 +273,17 @@ ThreadGroup类实现Thread.UncaughtExceptionHandler接口。它的uncaughtExcept
 - 2)否则，如果Thread.getDefaultExceptionHandler方法返回一个非空的处理器，则调用该处理器。 
 - 3)否则，如果Throwable 是ThreadDeath的一个实例，什么都不做。 
 - 4)否则，线程的名字以及Throwable的栈轨迹被输出到System.err上。这是你在程序中肯定看到过许多次的栈轨迹。 
+### 4.4线程睡眠
+
+如果需要让当前正在执行的线程暂停一段时间，进入阻塞状态，则可以通过调用Thread类的静态sleep()方法来实现。sleep()方法有两种重载方式。
+
+```
+static void sleep(long millis)  //让当前正在执行的线程暂停millis毫秒，并进入阻塞状态
+static void sleep(long millis,int nanos)  ////让当前正在执行的线程暂停millis毫秒+nanos毫秒，并进入阻塞状态
+```
+
+当当前线程调用sleep()方法进入阻塞状态后，在睡眠时间段内，该线程不会获得执行的机会，即使系统中没有其他可执行的线程，处于sleep()中的线程也不会执行，因此sleep()方法常用来暂停程序的执行。
+
 ## 5 同步
 在大多数实际的多线程应用中，两个或两个以上的线程需要共享对同一数据的存取。如果两个线程存取相同的对象，并且每一个线程都调用了一个修改该对象状态的方法，将会发生什么呢？可以想象，线程彼此踩了对方的脚。根据各线程访问数据的次序，可能会产生讹误的对象。这样一个情况通常称为竞争条件(race condition)。
 ### 5.1 竞争条件的一个例子
@@ -559,7 +580,7 @@ public class Bank
 			try 
 			{
 				while (accounts[from] < amount)
-				sufficientFunds.await()；
+					sufficientFunds.await()；
 				System.out.print(Thread.currentThread());
 				accounts[from] -= amount;
 				System.out.printf(" %10.2f from %6 to %d", amount, from, to);
@@ -639,14 +660,14 @@ public void method()
 } 
 ```
 
-例如，可以简单地声明Bank类的transfer方法为synchronized, 而不是使用一个显式的锁。内部对象锁只有一个相关条件。wait方法添加一个线程到等待集中，notifyAll/notify方法解除等待线程的阻塞状态。换句话说，调用wait或notityAll等价于 
+例如，可以简单地声明Bank类的transfer方法为synchronized, 而不是使用一个显式的锁。内部对象锁只有一个相关条件。wait方法添加一个线程到等待集中，`notifyAll/notify`方法解除等待线程的阻塞状态。换句话说，调用`wait`或`notityAll`等价于 
 
 ```
 intrinsicCondition.await();
 intrinsicCondition.signalAll();
 ```
 
-> 注释：wait、notifyAll以及notify方法是Object类的final方法。Condition方法必须被命名为await、signalAll和 signal以便它们不会与那些方法发生冲突。 
+> 注释：`wait`、`notifyAll`以及`notify`方法是Object类的final方法。Condition方法必须被命名为`await`、`signalAll`和`signal`以便它们不会与那些方法发生冲突。 
 
 例如，可以用Java实现Bank类如下：
 
@@ -747,14 +768,14 @@ public class Bank
 > java.lang.Object 1.0 
 
 ```
-void notify Al()  解除那些在该对象上调用wait方法的线程的阻塞状态。该方法只能在同步方法或同步块内部调用。如果当前线程不是对象锁的持有者，该方法拋出一个IllegalMonitorStateException异常。
+void notifyAll()  //解除那些在该对象上调用wait方法的线程的阻塞状态。该方法只能在同步方法或同步块内部调用。如果当前线程不是对象锁的持有者，该方法拋出一个IllegalMonitorStateException异常。
 
-void notify()  随机选择一个在该对象上调用wait方法的线程，解除其阻塞状态。该方法只能在一个同步方法或同步块中调用。如果当前线程不是对象锁的持有者，该方法抛出一个IllegalMonitorStateException异常。
+void notify()  //随机选择一个在该对象上调用wait方法的线程，解除其阻塞状态。该方法只能在一个同步方法或同步块中调用。如果当前线程不是对象锁的持有者，该方法抛出一个IllegalMonitorStateException异常。
 
-void wait()  导致线程进入等待状态直到它被通知。该方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者，该方法拋出一个IllegalMonitorStateException异常。
+void wait()  //导致线程进入等待状态直到它被通知。该方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者，该方法拋出一个IllegalMonitorStateException异常。
 
 void wait(long millis)
-void wait(long millIs, int nanos)  导致线程进入等待状态直到它被通知或者经过指定的时间。这些方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者该方法拋出一个IllegalMonitorStateException异常。
+void wait(long millis, int nanos)  //导致线程进入等待状态直到它被通知或者经过指定的时间。这些方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者该方法拋出一个IllegalMonitorStateException异常。
 	参数	millis	毫秒数
 		nanos	纳秒数，<1 000 000 
 ```
@@ -789,9 +810,9 @@ public class Bank
 }
 ```
 
-在此，lock对象被创建仅仅是用来使用每个Java对象持有的锁。 
+在此，`lock`对象被创建仅仅是用来使用每个Java对象持有的锁。 
 
-有时程序员使用一个对象的锁来实现额外的原子操作，实际上称为客户端锁定(clientside locking)  例如，考虑Vector类，一个列表，它的方法是同步的。现在，假定在Vector<Double>中存储银行余额。这里有一个transfer方法的原始实现：
+有时程序员使用一个对象的锁来实现额外的原子操作，实际上称为客户端锁定(clientside locking)  例如，考虑Vector类，一个列表，它的方法是同步的。现在，假定在`Vector<Double>`中存储银行余额。这里有一个`transfer`方法的原始实现：
 
 ```
 public void transfer(Vector<Double> accounts, int from, int to, int amount)// Error
@@ -802,7 +823,7 @@ public void transfer(Vector<Double> accounts, int from, int to, int amount)// Er
 } 
 ```
 
-Vector 类的get和set方法是同步的，但是，这对于我们并没有什么帮助。在第一次对get的调用已经完成之后，一个线程完全可能在transfer方法中被剥夺运行权。于是，另一个线程可能在相同的存储位置存入不同的值。但是，我们可以截获这个锁： 
+Vector类的get和set方法是同步的，但是，这对于我们并没有什么帮助。在第一次对get的调用已经完成之后，一个线程完全可能在transfer方法中被剥夺运行权。于是，另一个线程可能在相同的存储位置存入不同的值。但是，我们可以截获这个锁： 
 
 ```
 public void transfer(Vector<Double> accounts, int from, int to, int amount)
@@ -817,3 +838,201 @@ public void transfer(Vector<Double> accounts, int from, int to, int amount)
 ```
 
 这个方法可以工作，但是它完全依赖于这样一个事实，Vector类对自己的所有可修改方法都使用内部锁。然而，这是真的吗？Vector类的文档没有给出这样的承诺。不得不仔细研究源代码并希望将来的版本能介绍非同步的可修改方法。如你所见，客户端锁定是非常脆弱的，通常不推荐使用。
+
+### 5.7 监视器概念
+
+锁和条件是线程同步的强大工具，但是，严格地讲，它们不是面向对象的。多年来，研究人员努力寻找一种方法，可以在不需要程序员考虑如何加锁的情况下，就可以保证多线程的安全性。最成功的解决方案之一是监视器(monitor), 这一概念最早是由PerBrinchHansen和TonyHoare在20世纪70年代提出的。用Java的术语来讲，监视器具有如下特性： 
+
+- 监视器是只包含私有域的类。
+- 每个监视器类的对象有一个相关的锁。
+- 使用该锁对所有的方法进行加锁。换句话说，如果客户端调用`obj.method()`, 那么obj对象的锁是在方法调用开始时自动获得，并且当方法返回时自动释放该锁。因为所有的域是私有的，这样的安排可以确保一个线程在对对象操作时， 没有其他线程能访问该域。 
+- 该锁可以有任意多个相关条件
+
+监视器的早期版本只有单一的条件，使用一种很优雅的句法。可以简单地调用await accounts[from] >= balance而不使用任何显式的条件变量。然而，研究表明盲目地重新测试条件是低效的。显式的条件变量解决了这一问题。每一个条件变量管理一个独立的线程集。 
+
+Java设计者以不是很精确的方式采用了监视器概念，Java中的每一个对象有一个内部的锁和内部的条件。如果一个方法用synchronized关键字声明，那么，它表现的就像是一个监视器方法。通过调用`wait/notifyAll/notify`来访问条件变量。
+
+ 然而，在下述的3个方面Java对象不同于监视器，从而使得线程的安全性下降：
+
+- 域不要求必须是 private。
+- 方法不要求必须是 synchronized。
+- 内部锁对客户是可用的。 
+
+这种对安全性的轻视激怒了Per Brinch Hansen。他在一次对原始Java中的多线程的严厉评论中，写道：“这实在是令我震惊，在监视器和并发Pascal出现四分之一个世纪后，Java的这种不安全的并行机制被编程社区接受。这没有任何益处。” [Java’ s Insecure Parallelism, ACM SIGPLANNotices 34:38-45, April 1999.]
+
+### 5.8 Volatile 域
+有时，仅仅为了读写一个或两个实例域就使用同步，显得开销过大了。毕竟，什么地方能出错呢？遗憾的是，使用现代的处理器与编译器，出错的可能性很大。 
+
+- 多处理器的计算机能够暂时在寄存器或本地内存缓冲区中保存内存中的值。结果是，运行在不同处理器上的线程可能在同一个内存位置取到不同的值。
+- 编译器可以改变指令执行的顺序以使吞吐量最大化。这种顺序上的变化不会改变代码语义，但是编译器假定内存的值仅仅在代码中有显式的修改指令时才会改变。然而，内存的值可以被另一个线程改变！ 
+
+如果你使用锁来保护可以被多个线程访问的代码， 那么可以不考虑这种问题。编译 器被要求通过在必要的时候刷新本地缓存来保持锁的效应，并且不能不正当地重新排序 指令。详细的解释见JSR 133的Java内存模型和线程规范（参看http://www.jcp.org/en/jsr/detail?id=133）该规范的大部分很复杂而且技术性强，但是文档中也包含了很多解释得很清晰的例子。在http://www-106.ibm.com/developerworks/java/library/j-jtp02244_html有Brian Goetz写的一个更易懂的概要介绍。 
+
+> 注释：Brian Goetz给出了下述 “同步格言”：“如果向一个变量写入值，而这个变量接下来可能会被另一个线程读取，或者，从一个变量读值，而这个变量可能是之前被另一个线程写入的，此时必须使用同步”。 
+
+volatile关键字为实例域的同步访问提供了一种免锁机制。如果声明一个域为volatile, 那么编译器和虚拟机就知道该域是可能被另一个线程并发更新的。
+
+例如，假定一个对象有一个布尔标记done, 它的值被一个线程设置却被另一个线程査询，如同我们讨论过的那样，你可以使用锁：
+
+```
+private boolean done;
+public synchronized boolean isDone(){
+	return done;
+}
+public synchronized void setDone() {
+	done = true;
+}
+```
+
+或许使用内部锁不是个好主意。如果另一个线程已经对该对象加锁，isDone和setDone方法可能阻塞。如果注意到这个方面，一个线程可以为这一变量使用独立的Lock。但是，这也会带来许多麻烦。
+
+在这种情况下，将域声明为volatile是合理的： 
+
+```
+private volatile boolean done;
+public boolean isDone(){
+	return done;
+}
+public void setDone(){
+	done = true;
+} 
+```
+
+> 警告：Volatile 变量不能提供原子性。例如，方法 
+>
+> ```
+> public void flipDone()
+> {
+> 	done = !done;
+> } // not atomic
+> ```
+>
+>  不能确保翻转域中的值。不能保证读取、翻转和写入不被中断。 
+
+### 5.9 final 变置
+上一节已经了解到，除非使用锁或volatile修饰符，否则无法从多个线程安全地读取一个域。
+
+还有一种情况可以安全地访问一个共享域，即这个域声明为final时。考虑以下声明：
+
+```
+final Map<String, Double〉accounts = new HashKap<>()；
+```
+
+其他线程会在构造函数完成构造之后才看到这个accounts变量。
+
+如果不使用 final，就不能保证其他线程看到的是accounts更新后的值，它们可能都只是看到null, 而不是新构造的 HashMap。
+
+当然，对这个映射表的操作并不是线程安全的。如果多个线程在读写这个映射表，仍然需要进行同步。
+
+### 5.11 死锁
+锁和条件不能解决多线程中的所有问题。考虑下面的情况：
+
+```
+账户 1: $200
+账户 2: $300
+线程 1: 从账户 1 转移 $300 到账户 2
+线程 2: 从账户 2 转移 $400 到账户 1
+```
+
+如图14-6所示，线程1和线程2都被阻塞了。因为账户1以及账户2中的余额都不足以进行转账，两个线程都无法执行下去。
+
+有可能会因为每一个线程要等待更多的钱款存入而导致所有线程都被阻塞。这样的状态称为死锁(deadlock)。
+
+在这个程序里，死锁不会发生，原因很简单。每一次转账至多$1 000。因为有100个账户，而且所有账户的总金额是 $100 000, 在任意时刻，至少有一个账户的余额髙于$1 000。从该账户取钱的线程可以继续运行。
+
+但是，如果修改run方法，把每次转账至多$1 000的限制去掉，死锁很快就会发生。试试看。将`NACCOUNTS`设为10。每次交易的金额上限设置为`2*INITIAL_BALANCE`, 然后运行该程序。程序将运行一段时间后就会挂起。
+
+导致死锁的另一种途径是让第i个线程负责向第i个账户存钱，而不是从第i个账户取钱。 这样一来，有可能将所有的线程都集中到一个账户上，每一个线程都试图从这个账户中取出大于该账户余额的钱。试试看。在SynchBankTest程序中，转用TransferRunnable类的run方法。在调用transfer时，交换fromAccount和toAccount。运行该程序并查看它为什么会立即死锁。 
+
+还有一种很容易导致死锁的情况： 在SynchBankTest程序中， 将signalAll方法转换为signal, 会发现该程序最终会挂起（将 NACCOUNTS设为10可以更快地看到结果）。signalAll通知所有等待增加资金的线程，与此不同的是signal方法仅仅对一个线程解锁。如果该线程不能继续运行，所有的线程可能都被阻塞。考虑下面这个会发生死锁的例子。
+
+```
+账户1 ：$1990 
+所有其他账户：每一个 $990
+线程 1: 从账户 1 转移 $995 到账户 2
+所有其他线程： 从他们的账户转移 $995 到另一个账户
+```
+
+显然，除了线程 1, 所有的线程都被阻塞，因为他们的账户中没有足够的余额。
+
+线程1继续执行，运行后出现如下状况:
+
+```
+账户 1: $995 账户 2: $1985 所有其他账户：每个 $990
+```
+
+然后，线程1调用signal。signal方法随机选择一个线程为它解锁。假定它选择了线程3。该线程被唤醒，发现在它的账户里没有足够的金额，它再次调用await。但是，线程1仍在运行，将随机地产生一个新的交易，例如，
+
+```
+线程1 ：从账户 1 转移 $997 到账户 2 
+```
+
+现在，线程1也调用await, 所有的线程都被阻塞。系统死锁。 问题的起因在于调用signal。它仅仅为一个线程解锁， 而且，它很可能选择一个不能继续运行的线程（在我们的例子中，线程2必须把钱从账户2中取出）遗憾的是，Java编程语言中没有任何东西可以避免或打破这种死锁现象。必须仔细设计程序，以确保不会出现死锁。 
+
+### 5.12 线程局部变量
+
+### 5.13 锁测试与超时
+
+线程在调用lock方法来获得另一个线程所持有的锁的时候，很可能发生阻塞。应该更加谨慎地申请锁。tryLock方法试图申请一个锁，在成功获得锁后返回true, 否则，立即返回 false, 而且线程可以立即离开去做其他事情。 
+
+```
+if (myLock.tryLock())
+{
+	// now the thread owns the lock
+	try {
+		... 
+	}
+	finally {
+		myLock.unlock();
+	}
+}
+else
+	// do something else
+```
+
+可以调用tryLock时，使用超时参数，像这样：
+
+```
+if (myLock.tryLock(100, TineUnit.MILLISECONDS)) ... 
+```
+
+TimeUnit是一 枚举类型，可以取的值包括`SECONDS`、`MILLISECONDS`,` MICROSECONDS`和`NANOSECONDS`。
+
+lock方法不能被中断。如果一个线程在等待获得一个锁时被中断，中断线程在获得锁之前一直处于阻塞状态。如果出现死锁，那么，lock方法就无法终止。
+
+然而，如果调用带有用超时参数的tryLock, 那么如果线程在等待期间被中断，将抛出InterruptedException异常。这是一个非常有用的特性，因为允许程序打破死锁。
+
+也可以调用locklnterruptibly方法。它就相当于一个超时设为无限的tryLock方法。 
+
+在等待一个条件时，也可以提供一个超时： 
+
+```
+myCondition.await(100, TineUniBILLISECONDS)) 
+```
+
+如果一个线程被另一个线程通过调用signalAU或signal激活，或者超时时限已达到，或者线程被中断，那么await方法将返回。
+
+如果等待的线程被中断，await方法将抛出一个InterruptedException异常。在你希望出现这种情况时线程继续等待（可能不太合理)，可以使用awaitUninterruptibly方法代替 await。 
+
+> java.util.concurrent.locks.Lock 5.0 
+
+```
+boolean tryLock() //尝试获得锁而没有发生阻塞；如果成功返回真。这个方法会抢夺可用的锁，即使该锁有公平加锁策略，即便其他线程已经等待很久也是如此。
+boolean tryLock(long time, TimeUnit unit) //尝试获得锁，阻塞时间不会超过给定的值；如果成功返回 true。 
+void lockInterruptibly() //获得锁，但是会不确定地发生阻塞。如果线程被中断，抛出一个InterruptedException异常。
+```
+
+> java.util.concurrent.locks.Condition 5.0
+
+```
+boolean await(long time, TimeUnit unit) //进入该条件的等待集，直到线程从等待集中移出或等待了指定的时间之后才解除阻塞。如果因为等待时间到了而返回就返回false, 否则返回true。
+void awaitUninterruptibly() //进入该条件的等待集，直到线程从等待集移出才解除阻塞。如果线程被中断，该方法 不会抛出InterruptedException异常。
+```
+
+## 6  阻塞队列
+
+现在，读者已经看到了形成Java并发程序设计基础的底层构建块。然而，对于实际编程来说，应该尽可能远离底层结构。使用由并发处理的专业人士实现的较高层次的结构要方便得多、要安全得多。
+
+对于许多线程问题，可以通过使用一个或多个队列以优雅且安全的方式将其形式化。生产者线程向队列插入元素， 消费者线程则取出它们。使用队列，可以安全地从一个线程向另 一个线程传递数据。例如，考虑银行转账程序，转账线程将转账指令对象插入一个队列中，而不是直接访问银行对象。另一个线程从队列中取出指令执行转账。只有该线程可以访问该银行对象的内部。因此不需要同步。（当然，线程安全的队列类的实现者不能不考虑锁和条件，但是， 那是他们的问题而不是你的问题。
+
+当试图向队列添加元素而队列已满，或是想从队列移出元素而队列为空的时候，阻塞队列(blocking queue)导致线程阻塞。在协调多个线程之间的合作时，阻塞队列是一个有用的工具。工作者线程可以周期性地将中间结果存储在阻塞队列中。其他的工作者线程移出中间结果并进一步加以修改。队列会自动地平衡负载。如果第一个线程集运行得比第二个慢， 第二个线程集在等待结果时会阻塞。如果第一个线程集运行得快，它将等待第二个队列集赶上 来。表14-1给出了阻塞队列的方法
