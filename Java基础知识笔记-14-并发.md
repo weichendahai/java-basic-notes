@@ -657,7 +657,7 @@ class Bank
 	public synchronized void transfer(int from，int to, int amount) throws InterruptedException
 	{
 		while (accounts[from] < amount)
-		wait(); // wait on intrinsic object lock's single condition
+			wait(); // wait on intrinsic object lock's single condition
 		accounts[from] -= amount;
 		accounts[to] += amount;
 		notifyAll()；// notify all threads waiting on the condition
@@ -703,7 +703,7 @@ public class Bank
 	*/
 	public Bank(int n, double initialBalance)
 	{
-			accounts = new double[n];
+		accounts = new double[n];
 		Arrays.fill (accounts, initialBalance);
 	}
 	/** Transfers money from one account to another.
@@ -719,7 +719,7 @@ public class Bank
 		accounts[from] -= amount;
 		System.out.printf(" %10.2f from %d to %d", amount, from, to);
 		accounts[to] += amount;
-        System.out.printf(" Total Balance: %10.2f%n", getTotalBalanceO);
+		System.out.printf(" Total Balance: %10.2f%n", getTotalBalanceO);
 		notifyAll();
 	}
 	/**
@@ -811,7 +811,7 @@ public void transfer(Vector<Double> accounts, int from, int to, int amount)
 	{
 		accounts.set(from, accounts.get(from)- amount);
 		accounts.set(to, accounts.get(to)+ amount);
-}
+	}
 	System.out.println(...);
 } 
 ```
