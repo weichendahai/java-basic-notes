@@ -409,7 +409,7 @@ public class Bank
 
 ```
  if (bank.getBalance(from) >= amount) 
- 	bank.transfer(fro«, to, amount);
+ 	bank.transfer(from, to, amount);
 ```
 
  当前线程完全有可能在成功地完成测试，且在调用transfer方法之前将被中断。
@@ -436,10 +436,10 @@ public void transfer(int from, int to,int amount)
 		// transfer funds
 		...
 	}
-		finally 
-		{ 
-			bankLock.unlock();
-		}
+	finally 
+	{ 
+		bankLock.unlock();
+	}
 } 
 ```
 
