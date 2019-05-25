@@ -357,12 +357,10 @@ Thread[Thread-4,5,main]Thread[Thread-33,5,main] 7.31 from 31to 32 Total Balance:
 用ReentrantLock保护代码块的基本结构如下： 
 ```java
 myLock.lock(); // a ReentrantLock object 
-try 
-{
+try {
 	critical section
 }
-finally
-{
+finally {
 	myLock.unlock();// make sure the lock is unlocked even if an exception is thrown
 } 
 ```
@@ -388,8 +386,7 @@ public class Bank
 			accounts[to] += amount;
 			System.out.printf(" Total Balance: %10.2f%n", getTotalBalance());
 		}
-		finally
-		{
+		finally {
 			banklock.unlock();
 		}
 	}
@@ -457,8 +454,7 @@ public void transfer(int from, int to,int amount)
 		// transfer funds
 		...
 	}
-	finally 
-	{ 
+	finally { 
 		bankLock.unlock();
 	}
 } 
@@ -520,8 +516,7 @@ public void transfer(int from, int to, int amount)
 			sufficientFunds.await()；
 			// transfer funds sufficientFunds.signalAll()；
 	}
-	finally
-	{
+	finally {
 		bankLock.unlock();
 	}
 } 
@@ -637,8 +632,7 @@ Lock和Condition接口为程序设计人员提供了高度的锁定控制。然�
 换句话说，
 
 ```java
-public synchronized void method()
-{
+public synchronized void method() {
 	method body
 }
 ```
@@ -649,12 +643,10 @@ public synchronized void method()
 public void method()
 {
 	this.intrinsidock.lock();
-	try
-	{
+	try {
 		method body
 	}
-	finally
-	{
+	finally {
 		this.intrinsicLock.unlock();
 	}
 } 
@@ -769,11 +761,8 @@ public class Bank
 
 ```java
 void notifyAll();  //解除那些在该对象上调用wait方法的线程的阻塞状态。该方法只能在同步方法或同步块内部调用。如果当前线程不是对象锁的持有者，该方法拋出一个IllegalMonitorStateException异常。
-
 void notify();  //随机选择一个在该对象上调用wait方法的线程，解除其阻塞状态。该方法只能在一个同步方法或同步块中调用。如果当前线程不是对象锁的持有者，该方法抛出一个IllegalMonitorStateException异常。
-
 void wait();  //导致线程进入等待状态直到它被通知。该方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者，该方法拋出一个IllegalMonitorStateException异常。
-
 void wait(long millis);
 void wait(long millis, int nanos);  //导致线程进入等待状态直到它被通知或者经过指定的时间。这些方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者该方法拋出一个IllegalMonitorStateException异常。
 	参数	millis	毫秒数
@@ -826,10 +815,8 @@ public void transfer(Vector<Double> accounts, int from, int to, int amount)// Er
 Vector类的get和set方法是同步的，但是，这对于我们并没有什么帮助。在第一次对get的调用已经完成之后，一个线程完全可能在transfer方法中被剥夺运行权。于是，另一个线程可能在相同的存储位置存入不同的值。但是，我们可以截获这个锁： 
 
 ```java
-public void transfer(Vector<Double> accounts, int from, int to, int amount)
-{
-	synchronized(accounts)
-	{
+public void transfer(Vector<Double> accounts, int from, int to, int amount) {
+	synchronized(accounts) {
 		accounts.set(from, accounts.get(from)- amount);
 		accounts.set(to, accounts.get(to)+ amount);
 	}
@@ -901,13 +888,12 @@ public void setDone(){
 > 警告：Volatile 变量不能提供原子性。例如，方法 
 >
 > ```java
-> public void flipDone()
-> {
+> public void flipDone() {
 > 	done = !done;
 > } // not atomic
 > ```
->
->  不能确保翻转域中的值。不能保证读取、翻转和写入不被中断。 
+> 
+>不能确保翻转域中的值。不能保证读取、翻转和写入不被中断。 
 
 ### 5.9 final 变置
 上一节已经了解到，除非使用锁或volatile修饰符，否则无法从多个线程安全地读取一个域。
