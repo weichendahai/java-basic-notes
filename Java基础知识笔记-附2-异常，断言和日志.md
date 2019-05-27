@@ -98,3 +98,199 @@ public FilelnputStream(String name) throws FileNotFoundException
 - 4)Java 虚拟机和运行时库出现的内部错误。
 
 如果出现前两种情况之一，则必须告诉调用这个方法的程序员有可能抛出异常。为什么？ 因为任何一个抛出异常的方法都有可能是一个死亡陷阱。如果没有处理器捕获这个异常，当前执行的线程就会结束。
+
+对于那些可能被他人使用的Java方法，应该根据异常规范(exception specification),在方法的首部声明这个方法可能抛出的异常。
+
+```java
+class MyAnimation {
+	...
+	public Image loadlmage(String s) throws IOException {
+		...
+	}
+}
+```
+
+如果一个方法有可能抛出多个受查异常类型，那么就必须在方法的首部列出所有的异常 类。每个异常类之间用逗号隔开。如下面这个例子所示： 
+
+```java
+class MyAnimation {
+	...
+	public Image loadlmage(String s) throws FileNotFoundException,EOFException
+	{
+		...
+	}
+}
+```
+
+但是，不需要声明Java的内部错误，即从Error继承的错误。任何程序代码都具有抛出那些 异常的潜能， 而我们对其没有任何控制能力。
+
+同样，也不应该声明从RuntimeException继承的那些非受查异常
+
+ ```java
+class MyAnimation {
+	...
+	void drawlmage(int i) throws ArraylndexOutOfBoundsException // bad style
+	{
+		...
+	}
+}
+ ```
+
+这些运行时错误完全在我们的控制之下。如果特别关注数组下标引发的错误，就应该将更多的时间花费在修正程序中的错误上，而不是说明这些错误发生的可能性上。 
+
+总之，一个方法必须声明所有可能抛出的受查异常，而非受查异常要么不可控制(Error), 要么就应该避免发生(RuntimeException)。如果方法没有声明所有可能发生的受查异常，编 译器就会发出一个错误消息。
+
+当然，从前面的示例中可以知道：除了声明异常之外，还可以捕获异常。这样会使异常不被抛到方法之外，也不需要throws规范。稍后，将会讨论如何决定一个异常是被捕获，还是被抛出让其他的处理器进行处理。
+
+> 警告：如果在子类中覆盖了超类的一个方法，子类方法中声明的受查异常不能比超类方法中声明的异常更通用（也就是说，子类方法中可以抛出更特定的异常，或者根本不抛 出任何异常）特别需要说明的是，如果超类方法没有抛出任何受查异常，子类也不能抛出任何受查异常。例如，如果覆盖JComponent.paintComponent方法，由于超类中这个方法没有抛出任何异常，所以，自定义的paintComponent也不能抛出任何受查异常。 
+
+如果类中的一个方法声明将会抛出一个异常，而这个异常是某个特定类的实例时，则这个方法就有可能抛出一个这个类的异常，或者这个类的任意一个子类的异常。例如，FilelnputStream构造器声明将有可能抛出一个IOExcetion异常，然而并不知道具体是哪种 IOException异常。它既可能是IOException异常，也可能是其子类的异常，例如， FileNotFoundException
+
+### 1.3 如何抛出异常
+
+假设在程序代码中发生了一些很糟糕的事情。一个名为readData的方法正在读取一个首部具有下列信息的文件：
+
+```
+Content-length: 1024
+```
+
+然而，读到 733个字符之后文件就结束了。我们认为这是一种不正常的情况，希望抛出一个异常。 
+
+首先要决定应该抛出什么类型的异常。将上述异常归结为IOException是一种很好的选择。仔细地阅读Java API文档之后会发现：EOFException异常描述的是“在输入过程中，遇到了一个未预期的EOF后的信号”。这正是我们要抛出的异常。下面是抛出这个异常的语句：
+
+```java
+throw new EOFException();
+```
+
+或者
+
+```java
+EOFException e = new EOFException();
+throw e;
+```
+
+
+
+```java
+String readData(Scanner in) throws EOFException
+{
+	...
+	while(...） 
+	{
+    	if (!in.hasNext()) // EOF encountered
+    	{
+    		if (n < len)
+            	throw new EOFException();
+    	}
+    	...
+	}
+	return s;
+}
+```
+
+EOFException类还有一个含有一个字符串型参数的构造器。这个构造器可以更加细致的描述异常出现的情况。
+
+```java
+String gripe = "Content-length: " + len + ", Received: " + n;
+throw new EOFException(gripe);
+```
+
+在前面已经看到，对于一个已经存在的异常类，将其抛出非常容易，这种情况下：
+
+- 1)找到一个合适的异常类。
+- 2)创建这个类的一个对象。 
+- 3)将对象抛出。 
+
+一旦方法抛出了异常，这个方法就不可能返回到调用者。也就是说，不必为返回的默认值或错误代码担忧。 
+
+### 1.4 创建异常类
+
+在程序中，可能会遇到任何标准异常类都没有能够充分地描述清楚的问题。在这种情况下，创建自己的异常类就是一件顺理成章的事情了。我们需要做的只是定义一个派生于Exception的类，或者派生于Exception子类的类。例如，定义一个派生于IOException的类。习惯上，定义的类应该包含两个构造器，一个是默认的构造器；另一个是带有详细描述信息的构造器（超类Throwable的toString方法将会打印出这些详细信息，这在调试中非常有用)。
+
+```java
+class FileFormatException extends IOException
+{
+	public FileFormatException() {}
+	public FileFormatException(String gripe)
+	{
+		super(gripe);
+	}
+} 
+```
+
+现在，就可以抛出自己定义的异常类型了。
+
+```java
+String readData(BufferedReader in) throws FileFormatException
+{
+	while (...)
+	{
+		if (ch == -1 ) // EOF encountered
+		{
+			if (n < len) 
+				throw new FileFornatException();
+		}
+		...
+	}
+	return s;
+}
+```
+
+```java
+Throwable();   //构造一个新的Throwabie对象，这个对象没有详细的描述信息。
+Throwable(String message);  //构造一个新的throwabie对象，这个对象带有特定的详细描述信息。习惯上，所有派生的异常类都支持一个默认的构造器和一个带有详细描述信息的构造器。 
+String getMessage();  //获得Throwabie对象的详细描述信息
+```
+
+## 2 捕获异常
+
+到目前为止，已经知道如何抛出一个异常。这个过程十分容易。只要将其抛出就不用理踩了。当然，有些代码必须捕获异常。捕获异常需要进行周密的计划。这正是下面几节要介 绍的内容。
+
+### 2.1 捕获异常
+如果某个异常发生的时候没有在任何地方进行捕获，那程序就会终止执行，并在控制台上打印出异常信息，其中包括异常的类型和堆栈的内容。对于图形界面程序（applet和应用 程序)，在捕获异常之后，也会打印出堆桟的信息，但程序将返回到用户界面的处理循环中 (在调试GUI程序时， 最好保证控制台窗口可见，并且没有被最小化)。
+
+要想捕获一个异常，必须设置try/catch语句块。最简单的try语句块如下所示：
+
+```java
+try
+{
+	code
+	more code
+	more code
+}
+catch (ExceptionType e)
+{
+	handlerfor this type
+}
+```
+
+ 如果在try语句块中的任何代码抛出了一个在catch子句中说明的异常类，那么 
+
+- 1)程序将跳过try语句块的其余代码。
+- 2)程序将执行catch子句中的处理器代码。
+
+如果在try语句块中的代码没有拋出任何异常，那么程序将跳过catch子句。
+
+如果方法中的任何代码拋出了一个在catch子句中没有声明的异常类型，那么这个方法就会立刻退出（希望调用者为这种类型的异常设计了catch子句)。
+
+为了演示捕获异常的处理过程，下面给出一个读取数据的典型程序代码： 
+
+```java
+public void read(String filename)
+{
+	try
+	{
+		InputStream in = new FileInputStream(filename);
+		int b;
+		while ((b = in.read()3 != -1 )
+		{
+			process input
+		}
+	}
+	catch (IOException exception)
+	{
+		exception.printStackTrace();
+	}
+} 
+```
+
