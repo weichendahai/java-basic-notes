@@ -316,4 +316,223 @@ public void read(String filename) throws IOException
 
 如果想传递一个异常，就必须在方法的首部添加一个throws说明符，以便告知调用者这个方法可能会抛出异常。 
 
-仔细阅读一下Java API文档，以便知道每个方法可能会抛出哪种异常，然后再决定是自
+仔细阅读一下Java API文档，以便知道每个方法可能会抛出哪种异常，然后再决定是自己处理，还是添加到throws列表中。对于后一种情况，也不必犹豫。将异常直接交给能够胜 任的处理器进行处理要比压制对它的处理更好。
+
+同时请记住，这个规则也有一个例外。前面曾经提到过：如果编写一个覆盖超类的方法， 而这个方法又没有抛出异常（如JComponent中的paintComponent), 那么这个方法就必须捕获方法代码中出现的每一个受查异常。不允许在子类的throws说明符中出现超过超类方法所 列出的异常类范围。
+
+### 2.2 捕获多个异常
+在一个try语句块中可以捕获多个异常类型，并对不同类型的异常做出不同的处理。可以按照下列方式为每个异常类型使用一个单独的catch子句： 
+
+```java
+try
+{
+	code that might throw exceptions
+}
+catch (FileNotFoundException e)
+{
+	emergency action for missing files
+}
+catch (UnknownHostException e)
+{
+	emergency action for unknown hosts
+}
+catch (IOException e)
+{
+	emergency action for allother I/Oproblems
+}
+```
+
+异常对象可能包含与异常本身有关的信息。要想获得对象的更多信息，可以试着使用 
+
+```
+e.getHessage()
+```
+
+得到详细的错误信息（如果有的话)，或者使用
+
+```
+e.getClassO.getName()
+```
+
+得到异常对象的实际类型。
+
+在 Java SE 7中，同一个catch子句中可以捕获多个异常类型。例如，假设对应缺少文件和未知主机异常的动作是一样的，就可以合并catch子句：
+
+```java
+try
+{
+	code that might throw exceptions
+}
+catch (FileNotFoundException|UnknownHostException e)
+{
+	emergency action for missing filesand unknown hosts
+}
+catch (IOException e)
+{
+	emergency action for all other I/O problems
+} 
+```
+
+只有当捕获的异常类型彼此之间不存在子类关系时才需要这个特性。 
+
+> 注释：捕获多个异常时，异常变量隐含为final变量。例如，不能在以下子句体中为e赋不同的值： 
+>
+> ```
+> catch (FileNotFoundException|UnknownHostException e) {...}
+> ```
+
+> 注释：捕获多个异常不仅会让你的代码看起来更简单，还会更高效。生成的字节码只包含一个对应公共catch子句的代码块。
+
+### 2.3 再次抛出异常与异常链
+
+### 2.4 finally 子句
+
+当代码抛出一个异常时，就会终止方法中剩余代码的处理，并退出这个方法的执行。如果方法获得了一些本地资源，并且只有这个方法自己知道，又如果这些资源在退出方法之前 必须被回收，那么就会产生资源回收问题。一种解决方案是捕获并重新抛出所有的异常。但是，这种解决方案比较乏味，这是因为需要在两个地方清除所分配的资源。一个在正常的代码中；另一个在异常代码中。
+
+Java有一种更好的解决方案，这就是finally子句。下面将介绍Java中如何恰当地关闭一个文件。如果使用Java编写数据库程序，就需要使用同样的技术关闭与数据库的连接。在卷Ⅱ的第4章中可以看到更加详细的介绍。当发生异常时，恰当地关闭所有数据库的连接是非常重要的。
+
+不管是否有异常被捕获，finally子句中的代码都被执行。在下面的示例中，程序将在所有情况下关闭文件。
+
+```java
+InputStream in = new FileInputStream(...); 
+try
+{
+	//1
+	code that might throwexceptions
+	//2
+}
+catch (IOException e)
+{
+	// 3
+	show error message 
+	// 4 
+}
+finally
+{
+	// 5
+	in.close();
+}
+//6
+```
+
+在上面这段代码中，有下列3种情况会执行finally子句：
+
+- 1)代码没有抛出异常。在这种情况下，程序首先执行try语句块中的全部代码，然后执 行finally子句中的代码。随后，继续执行try语句块之后的第一条语句。也就是说，执行标注的1、2、5、6处。 
+
+- 2)抛出一个在catch子句中捕获的异常。在上面的示例中就是IOException异常。在这种 情况下，程序将执行try语句块中的所有代码，直到发生异常为止。此时，将跳过try语句块中的剩余代码，转去执行与该异常匹配的catch子句中的代码，最后执行finally子句中的代码。如果catch子句没有抛出异常，程序将执行try语句块之后的第一条语句。在这里，执行标注1、3、4、5、6处的语句。如果catch子句抛出了一个异常，异常将被抛回这个方法的调用者。在这里，执行标注1、3、5处的语句。
+- 3)代码抛出了一个异常，但这个异常不是由catch子句捕获的。在这种情况下，程序将 执行try语句块中的所有语句，直到有异常被抛出为止。此时，将跳过try语句块中的剩余代码，然后执行finally子句中的语句，并将异常抛给这个方法的调用者。在这里，执行标注1、5处的语句。
+
+try语句可以只有finally子句，而没有catch子句。例如，下面这条try语句：
+
+```java
+InputStream in = ...;
+try
+{
+	code that might throw exceptions
+}
+finally
+{
+	in.close();
+} 
+```
+
+无论在try语句块中是否遇到异常，finally子句中的in.close()语句都会被执行。当然, 如果真的遇到一个异常，这个异常将会被重新抛出，并且必须由另一个catch子句捕获。
+
+事实上，我们认为在需要关闭资源时，用这种方式使用finally子句是一种不错的选择。
+
+下面的提示将给出具体的解释。
+
+
+> 提示： 这里， 强烈建议解搞合try/catch和try/finally语句块。这样可以提高代码的清晰度。例如：
+>
+> ```java
+> InputStrean in = ...;
+> try
+> {
+> 	try
+> 	{
+> 		code that might throw exceptions
+> 	}
+> 	finally
+> 	{
+> 		in.close();
+> 	}
+> }
+> catch (IOException e)
+> {
+> 	show error message
+> }
+> ```
+>
+> 内层的try语句块只有一个职责，就是确保关闭输入流。外层的try语句块也只有一个职责，就是确保报告出现的错误。这种设计方式不仅清楚，而且还具有一个功能，就是将会报告finally子句中出现的错误。
+
+> 警告：当finally子句包含return语句时，将会出现一种意想不到的结果„ 假设利用return语句从try语句块中退出。在方法返回前，finally子句的内容将被执行。如果finally子句中也有一个return语句，这个返回值将会覆盖原始的返回值。请看一个复杂的例子：
+>
+> ```
+> public static int f(int n)
+> {
+> 	try
+> 	{
+> 		int r = n * n;
+> 		return r;
+> 	}
+> 	finally
+> 	{
+> 		if (n = 2)
+> 			return 0;
+> 	}
+> } 
+> ```
+>
+> 如果调用f(2), 那么try语句块的计算结果为r=4,并执行return语句然而，在方法真正返回前，还要执行finally子句。finally子句将使得方法返回0, 这个返回值覆盖了原 始的返回值4。
+
+有时候，finally子句也会带来麻烦。例如，清理资源的方法也有可能抛出异常。假设希望能够确保在流处理代码中遇到异常时将流关闭。
+
+```
+InputStreai in = ...;
+try
+{
+	code that might throw exceptions
+}
+finally
+{
+	in.close();
+}
+```
+
+现在，假设在try语句块中的代码抛出了一些非IOException的异常，这些异常只有这个方法的调用者才能够给予处理。执行finally语句块，并调用close方法。而clos 方法本身也有可能抛出IOException异常。当出现这种情况时，原始的异常将会丢失，转而抛出close方法的异常。 
+
+这会有问题，因为第一个异常很可能更有意思。如果你想做适当的处理，重新抛出原来的异常，代码会变得极其繁琐。如下所示：
+
+```
+InputStream in = ...;
+Exception ex = null;
+try
+{
+	try
+	{
+		code that might throw exceptions
+	}
+	catch (Exception e)
+	{
+		ex=e;
+		throw e;
+	}
+}
+finally
+{
+	try
+	{
+		in.close()；
+	}
+	catch (Exception e)
+	{
+		if (ex = null)
+			throw e;
+	}
+}
+```
+
+
+幸运的是，下一节你将了解到，Java SE 7中关闭资源的处理会容易得多。
+
