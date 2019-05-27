@@ -294,3 +294,26 @@ public void read(String filename)
 } 
 ```
 
+需要注意的是，try语句中的大多数代码都很容易理解：读取并处理字节，直到遇到文件结束符为止。正如在Java API中看到的那样，read方法有可能拋出一个IOException异常。在这种情况下，将跳出整个while循环，进入catch子句，并生成一个栈轨迹。对于一个普通 的程序来说，这样处理异常基本上合乎情理。还有其他的选择吗？
+
+通常，最好的选择是什么也不做，而是将异常传递给调用者。如果read方法出现了错误, 就让read方法的调用者去操心！如果采用这种处理方式，就必须声明这个方法可能会拋出一个 IOException。 
+
+```
+public void read(String filename) throws IOException
+{
+	inputStream in = new FileinputStream(filename);
+	int b;
+	while ((b = in.readO) != -1 )
+	{
+		process input
+	}
+} 
+```
+
+请记住，编译器严格地执行throws说明符。如果调用了一个抛出受查异常的方法，就必须对它进行处理，或者继续传递。 
+
+哪种方法更好呢？ 通常，应该捕获那些知道如何处理的异常，而将那些不知道怎样处理的异常继续进行传递。
+
+如果想传递一个异常，就必须在方法的首部添加一个throws说明符，以便告知调用者这个方法可能会抛出异常。 
+
+仔细阅读一下Java API文档，以便知道每个方法可能会抛出哪种异常，然后再决定是自
