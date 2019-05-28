@@ -15,7 +15,7 @@ Java基础知识笔记-4-类对象和方法
 类体分为两种：一部份是变量的声明，另一部分是方法的定义。
 #### 1.变量的声明
 > 在声明变量的时候可以赋值，但是不可以这样赋值
-```
+```java
 class A {
 	int a;
 	a=5;
@@ -25,7 +25,7 @@ class A {
 
 #### 2.方法的定义
 实例代码：
-```
+```java
 Class Lader{
 	float above;
 	float bottom;
@@ -53,7 +53,7 @@ Class Lader{
 
 一下重点讲new方法
 ### 1.对象的声明
-```
+```java
 Lader lader;
 ```
 &emsp;&emsp;**在Java中，对象总是作为引用来储存的，这意味着分配给变量lader的空间只够持有一个Lader对象的地址，**
@@ -63,7 +63,7 @@ Lader lader;
 
 使用new运算符和类的构造方法为声明的对象分配变量。**储存在lader中的值是一个指向内存中该数据结构的引用，而不是该数据结构自身，在Java中，对象总是作为引用来储存的**
 上面两步可以写作这样的一步：
-```
+```java
 Lader lader=new Lader();
 ```
 
@@ -80,7 +80,7 @@ Lader lader=new Lader();
 - 不能被static final abstract native修饰，构造方法不能被子类继承，所以用final和abstract修饰没有意义。构造方法用于初始化一个新建的对象，所以用static修饰没有意义，Java语言不支持native类型的构造方法
 
 例如：
-```
+```java
 class Myclass(){
     int x;
     Myclass(){
@@ -89,12 +89,11 @@ class Myclass(){
     public int Myclass(){
     }//不是构造方法，有返回值
 }
-
 ```
 > 上面这个构造函数不带参数，但需要注意的是，构造函数还可以带形参
 
 例如：
-```
+```java
 class MyClass(){
 	int x;
 	MyClass(int i){
@@ -116,18 +115,18 @@ class ParmConsDemo{
 构造函数定义了一个名为i的形参，用于初始化实例变量x.
 
 例如，当使用下面这条代码创建Employee类实例时：
-```
-new Eraployee("]ames Bond", 100000, 1950, 1, 1)
+```java
+new Eraployee("]ames Bond", 100000, 1950, 1, 1);
 ```
 将会把实例域设置为：
-```
+```java
 name = "James Bond";
 salary = 100000;
 hireDay = LocalDate.of(1950, 1, 1); // January 1, 1950
 ```
 构造器与其他的方法有一个重要的不同。构造器总是伴随着new操作符的执行被调用，而不能对一个已经存在的对象调用构造器来达到重新设置实例域的目的。例如，
-```
-janes.EmployeeCJames Bond", 250000, 1950, 1, 1) // ERROR
+```java
+janes.Employee("James Bond", 250000, 1950, 1, 1); // ERROR
 ```
 将产生编译错误。
 
@@ -142,7 +141,7 @@ janes.EmployeeCJames Bond", 250000, 1950, 1, 1) // ERROR
 当通过new语句创建一个对象时，在不同的条件下，对象可能会有不同的初始化行为，例如，对于公司新进来的一个雇员，在开始的时候，有可能他的名字和年龄都是未知的，也有可能仅仅他的名字是已知的，也有可能两者都是已知的。如果姓名是未知的，那么就把姓名改为 无名氏，如果年龄是未知的，就把年龄设为-1
 
 可通过重载构造函数来表达对象的多种初始化行为，比如下面的例子的构造方法有三种重载形式，在一个类的多个构造方法中，可能会出现一些重复操作。为了提高代码的可重用性，Java语言允许在一个构造方法中，用this语句来调用另一个构造方法。
-```
+```java
 public class Employee{
 	private String name;
 	private int age;
@@ -173,14 +172,14 @@ public class Employee{
 }
 ```
 以下程序分别通过3个构造方法创建了3个Employee对象:
-```
+```java
 Employee zhangsan=new Employee("张三",25);
 Employee zhang=new Employee("张三");
 Employee zh=new Employee();
 ```
 #### 3.1.1 关于无参数的构造器
 很多类都包含一个无参数的构造函数，对象由无参数构造函数创建时，其状态会设置为适当的默认值。例如，以下是Employee类的无参数构造函数：
-```
+```java
 public Employee()
 {
 	name = " "
@@ -191,21 +190,21 @@ public Employee()
 如果在编写一个类时没有编写构造器， 那么系统就会提供一个无参数构造器。这个构造器将所有的实例域设置为默认值。于是， 实例域中的数值型数据设置为0、布尔型数据设置为false、所有对象变量将设置为null。
 
 如果类中提供了至少一个构造器，但是没有提供无参数的构造器，则在构造对象时如果没有提供参数就会被视为不合法。例如，在程序清单4-2中的Employee类提供了一个简单的构造器：
-```
+```java
 Employee(String name, double salary, int y, int ra, int d)
 ```
 对于这个类，构造默认的雇员属于不合法。也就是，调用
-```
+```java
 e = new Eraployee();
 ```
 将会产生错误。
 
 > 警告：请记住，仅当类没有提供任何构造器的时候，系统才会提供一个默认的构造器如果在编写类的时候，给出了一个构造器，哪怕是很简单的，要想让这个类的用户能够采用下列方式构造实例：
-```
-new ClassName()
+```java
+new ClassName();
 ```
 就必须提供一个默认的构造器（即不带参数的构造器）。当然，如果希望所有域被赋予默认值，可以采用下列格式：
-```
+```java
 public ClassName()
 {
 }
@@ -214,18 +213,19 @@ public ClassName()
 用this语句来调用其他构造方法时，必须遵循以下语法规则：
 
 - 假如在一个构造方法中使用了this语句，那么它必须作为构造方法的第一条语句，比如下面的构造方法是错误的
-```
-public Employee(){
+```java
+public Employee() {
 	String name="无名氏";
 	this(name);//编译错误，this语句必须作为第一条语句
 }
 ```
 - 只能在一个构造方法中使用this语句来调用类的其他构造方法，而不能在实例方法中用this语句来调用类的其他构造方法
 - 只能用this语句来调用其他构造方法，而不能通过方法名来直接调用构造方法。以下对构造方法的调用是非法的
-```
+```java
 public Employee(){
 	String name="无名氏";
 	Employee(name);//编译错误，不能通过方法名来直接调用构造方法
+}
 ```
 
 ### 3.2 默认构造方法(默认域初始化)
@@ -264,7 +264,7 @@ public Employee(){
 在前面给出的示例程序中， main方法都被标记为static修饰符。下面讨论一下这个修饰符的含义。
 #### 3.6.1 静态域
 如果将域定义为static, 每个类中只有一个这样的域。而每一个对象对于所有的实例域却都有自己的一份拷贝。例如，假定需要给每一个雇员賦予唯一的标识码。这里给Employee类添加一个实例域id和一个静态域nextld:
-```
+```java
 class Employee
 {
 	private static int nextld = 1;
@@ -276,7 +276,7 @@ class Employee
 > 注释：在绝大多数的面向对象程序设计语言中， 静态域被称为类域。术语“static”只是沿用了C++的叫法，并无实际意义。
 
 下面实现一个简单的方法：
-```
+```java
 public void setld()
 {
 	id = nextld;
@@ -284,17 +284,17 @@ public void setld()
 }
 ```
 假定为harry设定雇员标识码：
-```
+```java
 harry.setld();
 ```
 harry 的id域被设置为静态域nextld当前的值，并且静态域nextld的值加1:
-```
+```java
 harry.id = Employee.nextld;
 Eip1oyee.nextId++;
 ```
 #### 3.6.2静态常量
 静态变量使用得比较少，但静态常量却使用得比较多。例如，在Math类中定义了一个静态常量：
-```
+```java
 public class Hath
 {
 	public static final double PI = 3.14159265358979323846;
@@ -305,7 +305,7 @@ public class Hath
 如果关键字static被省略，PI就变成了Math类的一个实例域。需要通过Math类的对象访问PI，并且每一个Math对象都有它自己的一份PI拷贝。
 
 另一个多次使用的静态常量是System.out。它在System 类中声明：
-```
+```java
 public class System
 {
 	public static final PrintStream out = ...;
@@ -313,7 +313,7 @@ public class System
 ...
 ```
 前面曾经提到过，由于每个类对象都可以对公有域进行修改，所以，最好不要将域设计为public。然而，公有常量（即final域）却没问题。因为out被声明为final,所以，不允许再将其他打印流陚给它：
-```
+```java
 System.out = new PrintStrean(...); // Error out is final
 ```
 > 注释： 如果查看一下System 类，就会发现有一个setOut方法，它可以将System.out设置为不同的流。读者可能会感到奇怪，为什么这个方法可以修改final 变量的值。原因在于，setOut方法是一个本地方法，而不是用Java语言实现的。本地方法可以绕过Java语言的存取控制机制。这是一种特殊的方法，在自己编写程序时，不应该这样处理。
@@ -325,14 +325,14 @@ Math.pow(x, a)
 ```
 不使用任何Math对象。换句话说，没有隐式的参数。可以认为静态方法是没有this参数的方法（非静态的方法中，this参数表示这个方法的隐式参数)。
 Employee类的静态方法不能访问Id实例域，因为它不能操作对象。但是，静态方法可以访问自身类中的静态域。下面是使用这种静态方法的一种示例：
-```
+```java
 public static int getNextldO
 {
 	return nextld; // returns static field
 }
 ```
 可以通过类名调用这个方法：
-```
+```java
 int n = Employee.getNextldO;
 ```
 这个方法可以省略关键字字static? 答案是肯定的。但是，需要通过Employee对象的引用调用这个方法。
@@ -361,7 +361,7 @@ int n = Employee.getNextldO;
 ### 4.3 体现封装
 
 当对象调用方法时，方法中出现的成员变量就是指分配给该对象的变量。在讲述类的时候我们讲过类中的方法可以操作成员变量。当对象调用方法时，方法中出现的成员变量就是指分配给该对象的变量。
-```
+```java
 class XiyoujiRenwu{
 	float height,weight;  
 	String head,ear,hand,foot,nouth;
@@ -402,7 +402,7 @@ public class Example5_3 {
 没有实体的对象称作空对象，空对象不能使用。
 #### 2.垃圾收集
 例如
-```
+```java
 Point p1=new Point(5,15);
 Point p2=new Point(8,18);
 P1=p2;
@@ -417,21 +417,21 @@ Java中，方法所有的参数都是传值的，也就是说，方法中参数�
 
 Java程序设计语言总是采用按值调用。也就是说， 方法得到的是所有参数值的一个拷贝，特别是，方法不能修改传递给它的任何参数变量的内容。
 例如， 考虑下面的调用：
-```
+```java
 double percent = 10;
 harry.raiseSalary(percent);
 ```
 不必理睬这个方法的具体实现，在方法调用之后，percent的值还是10。
 
 下面再仔细地研究一下这种情况。假定一个方法试图将一个参数值增加至3倍：
-```
+```java
 public static void tripieValue(double x) // doesn't work
 {
 	x = 3 * x;
 }
 ```
 然后调用这个方法：
-```
+```java
 double percent = 10;
 tripieValue(percent)
 ```
@@ -445,14 +445,14 @@ tripieValue(percent)
 - 对象引用。
 
 读者已经看到，一个方法不可能修改一个基本数据类型的参数。而对象引用作为参数就不同了，可以很容易地利用下面这个方法实现将一个雇员的薪金提高两倍的操作：
-```
+```java
 public static void tripieSalary(Employee x) // works
 {
-	x.raiseSa1ary(200) ;
+	x.raiseSalary(200) ;
 }
 ```
 当调用
-```
+```java
 harry = new Employee(...);
 tri pieSalary(harry);
 ```
@@ -464,7 +464,7 @@ tri pieSalary(harry);
 读者已经看到，实现一个改变对象参数状态的方法并不是一件难事。理由很简单， 方法得到的是对象引用的拷贝，对象引用及其他的拷贝同时引用同一个对象。很多程序设计语言（特别是，C++ 和Pascal）提供了两种参数传递的方式：值调用和引用调用。有些程序员（甚至本书的作者）认为Java程序设计语言对对象采用的是引用调用，实际上，这种理解是不对的。由于这种误解具有一定的普遍性， 所以下面给出一个反例来详细地阐述一下这个问题。
 
 首先， 编写一个交换两个雇员对象的方法：
-```
+```java
 public static void swap(Employee x , Employee y) // doesn't work
 	Employee temp = x;
 	x = y;
@@ -472,14 +472,14 @@ public static void swap(Employee x , Employee y) // doesn't work
 }
 ```
 如果Java对对象采用的是按引用调用，那么这个方法就应该能够实现交换数据的效果：
-```
+```java
 Employee a = new Employee("Alice", . . .);
 Employee b = new Employee("Bob", . . .);
 swap(a, b);
 // does a now refer to Bob, b to Alice?
 ```
 但是，方法并没有改变存储在变量a和b中的对象引用。swap方法的参数x和y被初始化为两个对象引用的拷贝，这个方法交换的是这两个拷贝。
-```
+```java
 // x refers to Alice, y to Bob
 Employee temp = x;
 x = y;
@@ -520,7 +520,7 @@ After: a=Alice
 After: b=Bob
 ```
 可以看出，参数变量x和y交换了，但是变量a和b没有受到影响。
-```
+```java
 程序清单4-4 ParamTest/ParamTest.java
 /**
 * This program demonstrates parameter passing in Java.
@@ -593,7 +593,7 @@ public class ParamTest {
 ```
 
 ### 5.2 基本数据类型参数的传值
-```
+```java
 package test1;
 import java.util.Scanner;
 
@@ -666,7 +666,7 @@ public class exercise {
 ---
 ## 6 深入介绍new运算符
 new运算符的基本形式如下：
-```
+```java
 class-var=new class-name(arg-list);
 ```
 这里，class-var是要创建的类类型的变量，class-name是被初始化的类的类名。圆括号包含的实参列表（可以为空）前面的类名指定了类的构造函数。如果类不定义自己的构造函数，那么new将使用java默认的构造函数。因此，new可以创建任何类型的对象。new对象返回对新创建对象的引用。
@@ -683,7 +683,7 @@ class-var=new class-name(arg-list);
 没有实体的对象称作空对象，空对象不能使用。
 ### 7.2 垃圾收集
 例如
-```
+```java
 Point p1=new Point(5,15);
 Point p2=new Point(8,18);
 P1=p2;
@@ -696,7 +696,7 @@ P1=p2;
 类体中包括变量的声明和方法的定义
 
 成员变量又分为实例变量和类变量，在声明成员变量时，用关键字static修饰的称作类变量（也被称为静态变量）
-```
+```java
 class Dog{
 	float x;
 	static int y;
@@ -727,7 +727,7 @@ class Dog{
 对于类中的类方法，在该类被加载到内存时，就分配了相应的入口地址，从而类方法不仅可以被类创建的任何对象调用执行，也可以被类名调用执行，**类方法的入口地址直到程序退出才被取消。**  
 
 **和实例方法不同的是，类方法不可以操作实例变量，这是因为在类创建对象之前，实例成员变量还没有分配内存。**
-```
+```java
 class Village{
 	static int treeAmount;
 	int peopleNumber;
@@ -792,7 +792,7 @@ public class exercise{
 > Java中存在两种多态，重载和重写，重写是与继承有关的多态，下一章讨论。    
 
 实例：
-```
+```java
 class Overload{
 	void ovlDemo(){
 		System.out.println("No parameters");
@@ -826,7 +826,7 @@ this是Java中的一个关键字，表示某个对象。
 **this可以出现在实例方法和构造方法中，但是不可以出现在类方法中。**
 
 方法用于操作对象以及存取它们的实例域。例如，方法：
-```
+```java
 public void raiseSalary(double byPercent)
 {
 	double raise = salary * byPercent / 100;
@@ -834,18 +834,18 @@ public void raiseSalary(double byPercent)
 }
 ```
 将调用这个方法的对象的salary实例域设置为新值。看看下面这个调用：
-```
+```java
 number007. raiseSalary(5) ;
 ```
 它的结果将number007.salary域的值增加5%。具体地说，这个调用将执行下列指令：
-```
+```java
 double raise = nuaber007.salary * 5 / 100;
 nuiber007.salary += raise;
 ```
 raiseSalary方法有两个参数。第一个参数称为隐式(implicit)参数，是出现在方法名前的Employee类对象。第二个参数位于方法名后面括号中的数值，这是一个显式(eplicit)参数（有些人把隐式参数称为方法调用的目标或接收者。）
 
 可以看到，显式参数是明显地列在方法声明中的，例如double byPercent。隐式参数没有出现在方法声明中。在每一个方法中，关键字this表示隐式参数。如果需要的话，可以用下列方式编写raiseSalary方法：
-```
+```java
 public void raiseSalary(double byPercent)
 {
 	double raise = this.salary * byPercent / 100;
@@ -854,7 +854,7 @@ public void raiseSalary(double byPercent)
 ```
 
 ### 10.1 在构造方法中使用this
-```
+```java
 public class People{
 	int leg,hand;
 	String name;
@@ -884,7 +884,7 @@ this.成员变量
 类名.成员变量
 ```
 如：
-```
+```java
 clsaa A{
 	int a;
 	static int y;
@@ -905,7 +905,7 @@ this.方法
 类名.方法；
 ```
 例如：
-```
+```java
 class B{
 	void f(){
 		this.g();
@@ -921,7 +921,7 @@ class B{
 ```
 在上述B类方法中出现了this，this代表调用方法f的当前对象，所以，方法f的方法体中this.g()就是当前对象调用方法g，也就是说，当某个对象调用方法f的过程中，又调用了方法g。由于这种逻辑关系非常明确，一个实例方法调用另一个方法时可以省略方法名字前面的"this."或"类名."  
 例如：
-```
+```java
 class B{
 	void f(){
 		.g();
@@ -960,7 +960,7 @@ javadoc 实用程序(utility)从下面几个特性中抽取信息：
 类注释必须放在import语句之后，类定义之前。
 
 下面是一个类注释的例子：
-```
+```java
 /**
 * A {©code Card} object represents a playing card , such
 * as "Queen of Hearts". A card has a suit (Diamond, Heart ,
@@ -973,7 +973,7 @@ public class Card
 }
 ```
 > 注释： 没有必要在每一行的开始用星号\*， 例如， 以下注释同样是合法的：
-```
+```java
 /**
 A <code>Card< / code> object represents a playing card , such
 as "Queen of Hearts". A card has a suit (Diamond， Heart ,
@@ -993,7 +993,7 @@ Spade or Club) and a value (1 = Ace, 2 . . . 10, 11 = jack ,
 这个标记将添加一个注释，用于表示这个方法有可能抛出异常。
 ### 11.4 域注释
 只需要对公有域（通常指的是静态常量）建立文档。例如,
-```
+```java
 /**
 * The "Hearts" card suit
 */
@@ -1015,13 +1015,13 @@ public static final int HEARTS = 1;
 部文档。
 - @see引用
 这个标记将在“see also”部分增加一个超级链接。它可以用于类中，也可以用于方法中。这里的引用可以选择下列情形之一：
-```
+```java
 package, class#feature label
 <a href="...n>lable/a>
 "test"
 ```
 第一种情况是最常见的。只要提供类、方法或变量的名字，javadoc就在文档中插入一个超链接。例如，
-```
+```java
 @see com.horstraann.corejava.Employee#raiseSalary(double)
 ```
 建立一个链接到com.horstmann.corejava.Employee类的raiseSalary(double)方法的超链接。可以省略包名，甚至把包名和类名都省去，此时，链接将定位于当前包或当前类
@@ -1029,19 +1029,19 @@ package, class#feature label
 需要注意，一定要使用井号（#)，而不要使用句号（.）分隔类名与方法名，或类名与变量名。Java编译器本身可以熟练地断定句点在分隔包、子包、类、内部类与方法和变量时的不同含义。但是javadoc 实用程序就没有这么聪明了，因此必须对它提供帮助。
 
 如果@see 标记后面有一个<字符，就需要指定一个超链接。可以超链接到任何URL。例如：
-```
-@see <a href="m«w.horstmann .com/corejava.htinl">The Core ]ava home page</a>
+```java
+@see <a href="m«w.horstmann .com/corejava.html">The Core ]ava home page</a>
 ```
 在上述各种情况下， 都可以指定一个可选的标签(label)作为链接锚(link anchor)如果省略了label,用户看到的锚的名称就是目标代码名或URL。
 如果@see 标记后面有一个双引号（"）字符， 文本就会显示在“ see also” 部分。
 
 例如，
-```
+```java
 Isee "Core Java 2 volume 2"
 ```
 可以为一个特性添加多个@see标记，但必须将它们放在一起。
 - 如果愿意的话， 还可以在注释中的任何位置放置指向其他类或方法的超级链接， 以及插入一个专用的标记，例如，
-```
+```java
 {@link package, classifeature label}
 ```
 这里的特性描述规则与@see标记规则一样。
@@ -1069,7 +1069,7 @@ javadoc -d docDirectory *. java
 如果省略了-d docDirectory 选项，那HTML 文件就会被提取到当前目录下。这样有可能会带来混乱，因此不提倡这种做法。
 
 可以使用多种形式的命令行选项对javadoc程序进行调整。例如，可以使用-author和-version选项在文档中包含@author和@version标记（默认情况下，这些标记会被省略)。另一个很有用的选项是-link, 用来为标准类添加超链接。例如，如果使用命令
-```
+```j
 javadoc -link http://docs.oracle.eom/:javase/8/docs/api *.java
 ```
 那么，所有的标准类库类都会自动地链接到Oracle 网站的文档。如果使用-linksource 选项，则每个源文件被转换为HTML (不对代码着色，但包含行编
