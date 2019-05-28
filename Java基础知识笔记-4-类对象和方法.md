@@ -1115,7 +1115,7 @@ javadoc -link http://docs.oracle.eom/:javase/8/docs/api *.java
 
    就是说，用其他的类代替多个相关的基本类型的使用。这样会使类更加易于理解且易于修改。例如，用一个称为Address的新的类替换一个Customer类中以下的实例域： 
 
-   ```
+   ```java
    private String street;
    private String city;
    private String state;
@@ -1134,7 +1134,7 @@ javadoc -link http://docs.oracle.eom/:javase/8/docs/api *.java
    
    下面是一个反面的设计示例。 
    
-   ```
+   ```java
    public class CardDeck // bad design 
    {
    	private int[] value;
@@ -1149,7 +1149,7 @@ javadoc -link http://docs.oracle.eom/:javase/8/docs/api *.java
    
    实际上，这个类实现了两个独立的概念：一副牌（含有 shuffle 方法和 draw方法）和一 张牌（含有查看面值和花色的方法)。另外，引入一个表示单张牌的 Card类。现在有两个类， 每个类完成自己的职责：
    
-   ```
+   ```java
    public class CardDeck
    {
    	private Card[] cards;
