@@ -572,7 +572,8 @@ public class ParamTest {
 		System, out.println("End of method: x=" + x.getName()) ;
 		System.out.println("End of method: y=" + y.getName());
 	}
-	class Employee // simplified Employee class {
+	class Employee // simplified Employee class 
+	{
 		private String name;
 		private double salary;
 		public Employee(String n, double s) {
@@ -589,6 +590,7 @@ public class ParamTest {
 			double raise = salary * byPercent / 100;
 			salary += raise;
 		}
+	}
 }
 ```
 
@@ -597,10 +599,10 @@ public class ParamTest {
 package test1;
 import java.util.Scanner;
 
-class Circle{
+class Circle {
 	double radius,area;
 	Circle(){
-}
+	}
 	Circle(double r){
 		radius=r;
 	}
@@ -686,7 +688,7 @@ class-var=new class-name(arg-list);
 ```java
 Point p1=new Point(5,15);
 Point p2=new Point(8,18);
-P1=p2;
+p1=p2;
 ```
 这个时候输出p1.x是8而不是5，与C++不同，这里的类有构方法，没有析构方法，JAVA默认有垃圾收集机制。
 
@@ -950,11 +952,11 @@ javadoc 实用程序(utility)从下面几个特性中抽取信息：
 
 应该为上面几部分编写注释、注释应该放置在所描述特性的前面。注释以/** 开始，并以*/结束。
 
-每个/** ...\*/文档注释在标记之后紧跟着自由格式文本(free-form text)。标记由@开始，如@author或@param。
+每个/** ...\*/文档注释在标记之后紧跟着自由格式文本(free-form text)。标记由@开始，如`@author`或`@param`。
 
 自由格式文本的第一句应该是一个概要性的句子。javadoc实用程序自动地将这些句子抽取出来形成概要页。
 
-在自由格式文本中， 可以使用HTML修饰符，例如，用于强调的\<em>...\</eitf>、用于着重强调的\<strong>...\</strong>以及包含图像的\<img...>等。不过，一定不要使用\<hl>或\<hr>, 因为它们会与文档的格式产生冲突。若要键入等宽代码，需使用{@code...} 而不是\<code>...\</code>—这样一来，就不用操心对代码中的<字符转义>了。
+在自由格式文本中， 可以使用HTML修饰符，例如，用于强调的`<em>...</eitf>`、用于着重强调的`<strong>...</strong>`以及包含图像的`<img...>`等。不过，一定不要使用`<hl>`或`<hr>`, 因为它们会与文档的格式产生冲突。若要键入等宽代码，需使用`{@code...}`而不是`<code>...</code>`—这样一来，就不用操心对代码中的`<字符转义>`了。
 
 ### 11.2 类注释
 类注释必须放在import语句之后，类定义之前。
@@ -969,7 +971,7 @@ javadoc 实用程序(utility)从下面几个特性中抽取信息：
 */
 public class Card
 {
-...
+	...
 }
 ```
 > 注释： 没有必要在每一行的开始用星号\*， 例如， 以下注释同样是合法的：
@@ -981,15 +983,16 @@ Spade or Club) and a value (1 = Ace, 2 . . . 10, 11 = jack ,
 12 = Queen, 13 = King) .
 */
 ```
-然而， 大部分IDE 提供了自动添加星号*, 并且当注释行改变时， 自动重新排列这
+然而， 大部分IDE提供了自动添加星号*, 并且当注释行改变时， 自动重新排列这
 些星号的功能。
+
 ### 11.3 方法注释
 每一个方法注释必须放在所描述的方法之前。除了通用标记之外，还可以使用下面的标记：
-- @param 变量描述
+- `@param`变量描述
 这个标记将对当前方法的“param ”（参数）部分添加一个条目。这个描述可以占据多行，并可以使用HTML标记。一个方法的所有@param标记必须放在一起。
-- @return 描述
+- `@return`描述
 这个标记将对当前方法添加“return”（返回）部分。这个描述可以跨越多行，并可以使用HTML标记。
-- ©throws 类描述
+- `@throws`类描述
 这个标记将添加一个注释，用于表示这个方法有可能抛出异常。
 ### 11.4 域注释
 只需要对公有域（通常指的是静态常量）建立文档。例如,
@@ -1001,56 +1004,74 @@ public static final int HEARTS = 1;
 ```
 ### 11.5 通用注释
 下面的标记可以用在类文档的注释中。
-- @author 姓名
-这个标记将产生一个"author"（作者）条目。可以使用多个@author标记，每个@author标记对应一个作者
-- @version
-这个标记将产生一个"version"（版本）条目。这里的文本可以是对当前版本的任何描述。
-下面的标记可以用于所有的文档注释中。
-- @sinee 文本
-这个标记将产生一个"since"（始于）条目。这里的text 可以是对引人特性的版本描述。例如，©since version 1.7.10
-- @deprecated
-这个标记将对类、方法或变量添加一个不再使用的注释。文本中给出了取代的建议。
+- `@author`姓名
+  这个标记将产生一个"author"（作者）条目。可以使用多个`@author`标记，每个`@author`标记对应一个作者
 
-例如，`@deprecated Use <code> setVIsible(true)</code> instead`通过@see和@link标记，可以使用超级链接，链接到javadoc文档的相关部分或外
-部文档。
-- @see引用
-这个标记将在“see also”部分增加一个超级链接。它可以用于类中，也可以用于方法中。这里的引用可以选择下列情形之一：
-```java
-package, class#feature label
-<a href="...n>lable/a>
-"test"
-```
-第一种情况是最常见的。只要提供类、方法或变量的名字，javadoc就在文档中插入一个超链接。例如，
-```java
-@see com.horstraann.corejava.Employee#raiseSalary(double)
-```
-建立一个链接到com.horstmann.corejava.Employee类的raiseSalary(double)方法的超链接。可以省略包名，甚至把包名和类名都省去，此时，链接将定位于当前包或当前类
+- `@version`
 
-需要注意，一定要使用井号（#)，而不要使用句号（.）分隔类名与方法名，或类名与变量名。Java编译器本身可以熟练地断定句点在分隔包、子包、类、内部类与方法和变量时的不同含义。但是javadoc 实用程序就没有这么聪明了，因此必须对它提供帮助。
+  这个标记将产生一个"version"（版本）条目。这里的文本可以是对当前版本的任何描述。
+  下面的标记可以用于所有的文档注释中。
 
-如果@see 标记后面有一个<字符，就需要指定一个超链接。可以超链接到任何URL。例如：
-```java
-@see <a href="m«w.horstmann .com/corejava.html">The Core ]ava home page</a>
-```
-在上述各种情况下， 都可以指定一个可选的标签(label)作为链接锚(link anchor)如果省略了label,用户看到的锚的名称就是目标代码名或URL。
-如果@see 标记后面有一个双引号（"）字符， 文本就会显示在“ see also” 部分。
+- `@sinee` 文本
+  这个标记将产生一个"since"（始于）条目。这里的text可以是对引人特性的版本描述。例如，`@since version 1.7.10`
 
-例如，
-```java
-Isee "Core Java 2 volume 2"
-```
-可以为一个特性添加多个@see标记，但必须将它们放在一起。
+- `@deprecated`
+  这个标记将对类、方法或变量添加一个不再使用的注释。文本中给出了取代的建议。
+
+  例如，
+
+  `@deprecated Use <code> setVIsible(true)</code> instead`通过`@see`和`@link`标记，可以使用超级链接，链接到javadoc文档的相关部分或外
+  部文档。
+
+- `@see`引用
+  这个标记将在“see also”部分增加一个超级链接。它可以用于类中，也可以用于方法中。这里的引用可以选择下列情形之一：
+
+  ```html
+  package.class#feature label
+  <a href="...">lable</a>
+  "test"
+  ```
+
+  第一种情况是最常见的。只要提供类、方法或变量的名字，javadoc就在文档中插入一个超链接。例如，
+
+  ```java
+  @see com.horstraann.corejava.Employee#raiseSalary(double)
+  ```
+
+  建立一个链接到`com.horstmann.corejava.Employee`类的`raiseSalary(double)`方法的超链接。可以省略包名，甚至把包名和类名都省去，此时，链接将定位于当前包或当前类
+
+  需要注意，一定要使用井号（#)，而不要使用句号（.）分隔类名与方法名，或类名与变量名。Java编译器本身可以熟练地断定句点在分隔包、子包、类、内部类与方法和变量时的不同含义。但是javadoc实用程序就没有这么聪明了，因此必须对它提供帮助。
+
+  如果@see标记后面有一个<字符，就需要指定一个超链接。可以超链接到任何URL。例如：
+
+  ```java
+  @see <a href="m«w.horstmann .com/corejava.html">The Core Java home page</a>
+  ```
+
+  在上述各种情况下， 都可以指定一个可选的标签(label)作为链接锚(link anchor)如果省略了label,用户看到的锚的名称就是目标代码名或URL。
+
+  如果@see 标记后面有一个双引号（"）字符， 文本就会显示在“ see also” 部分。
+
+  例如，
+
+  ```java
+  @see "Core Java 2 volume 2"
+  ```
+
+  可以为一个特性添加多个`@see`标记，但必须将它们放在一起。
 - 如果愿意的话， 还可以在注释中的任何位置放置指向其他类或方法的超级链接， 以及插入一个专用的标记，例如，
-```java
-{@link package, classifeature label}
-```
-这里的特性描述规则与@see标记规则一样。
+
+  ```java
+  {@link package.class#feature label}
+  ```
+
+  这里的特性描述规则与`@see`标记规则一样。
 ### 11.6 包与概述注释
 可以直接将类、方法和变量的注释放置在Java源文件中，只要用/** ...\*/ 文档注释界定就可以了。但是，要想产生包注释，就需要在每一个包目录中添加一个单独的文件。可以有如下两个选择：
-- 1)提供一个以package.html 命名的HTML 文件。在标记<body>—</body>之间的所有文本都会被抽取出来。
-- 2)提供一个以package-info.java 命名的Java 文件。这个文件必须包含一个初始的以/** 和*/ 界定的Javadoc 注释，跟随在一个包语句之后。它不应该包含更多的代码或注释。
+- 1)提供一个以`package.html`命名的HTML文件。在标记`<body>...</body>`之间的所有文本都会被抽取出来。
+- 2)提供一个以`package-info.java`命名的Java 文件。这个文件必须包含一个初始的以`/**` 和`*/`界定的Javadoc注释，跟随在一个包语句之后。它不应该包含更多的代码或注释。
 
-还可以为所有的源文件提供一个概述性的注释。这个注释将被放置在一个名为overview,html的文件中，这个文件位于包含所有源文件的父目录中。标记<body>... </body>2间的所有文本将被抽取出来。当用户从导航栏中选择“ Overview” 时，就会显示出这些注释内容。
+还可以为所有的源文件提供一个概述性的注释。这个注释将被放置在一个名为overview.html的文件中，这个文件位于包含所有源文件的父目录中。标记`<body>... </body>`之间的所有文本将被抽取出来。当用户从导航栏中选择“Overview” 时，就会显示出这些注释内容。
 ### 11.7 注释的抽取
 这里，假设HTML文件将被存放在目录docDirectory下。执行以下步骤：
 - 1)切换到包含想要生成文档的源文件目录。如果有嵌套的包要生成文档，例如com.horstmann.corejava, 就必须切换到包含子目录com的目录（如果存在overview.html文件的话，这也是它的所在目录)。
@@ -1066,15 +1087,101 @@ javadoc -d docDirectory nameOfPackage\ nameOfPackage . . .
 ```
 javadoc -d docDirectory *. java
 ```
-如果省略了-d docDirectory 选项，那HTML 文件就会被提取到当前目录下。这样有可能会带来混乱，因此不提倡这种做法。
+如果省略了`-d docDirectory`选项，那HTML文件就会被提取到当前目录下。这样有可能会带来混乱，因此不提倡这种做法。
 
-可以使用多种形式的命令行选项对javadoc程序进行调整。例如，可以使用-author和-version选项在文档中包含@author和@version标记（默认情况下，这些标记会被省略)。另一个很有用的选项是-link, 用来为标准类添加超链接。例如，如果使用命令
+可以使用多种形式的命令行选项对javadoc程序进行调整。例如，可以使用-author和-version选项在文档中包含`@author`和`@version`标记（默认情况下，这些标记会被省略)。另一个很有用的选项是-link, 用来为标准类添加超链接。例如，如果使用命令
 ```j
 javadoc -link http://docs.oracle.eom/:javase/8/docs/api *.java
 ```
-那么，所有的标准类库类都会自动地链接到Oracle 网站的文档。如果使用-linksource 选项，则每个源文件被转换为HTML (不对代码着色，但包含行编
-号)，并且每个类和方法名将转变为指向源代码的超链接。
+那么，所有的标准类库类都会自动地链接到Oracle网站的文档。如果使用-linksource选项，则每个源文件被转换为HTML (不对代码着色，但包含行编号)，并且每个类和方法名将转变为指向源代码的超链接。
 
 有关其他的选项， 请查阅javadoc实用程序的联机文档，http://docs.orade.eom/javase/8/docs/guides/javadoc
 
-> 注释：如果需要进一步的定制，例如，生成非HTML 格式的文档， 可以提供自定义的doclet, 以便生成想要的任何输出形式。显然， 这是一种特殊的需求， 有关细节内容请查阅 http://docs.oracle.com/javase/8/docs/guides/javadoc/doclet/overview.html 的联机文档。
+> 注释：如果需要进一步的定制，例如，生成非HTML 格式的文档，可以提供自定义的doclet, 以便生成想要的任何输出形式。显然，这是一种特殊的需求，有关细节内容请查阅 http://docs.oracle.com/javase/8/docs/guides/javadoc/doclet/overview.html 的联机文档。
+
+## 11 类设计技巧
+
+我们不会面面俱到，也不希望过于沉闷，所以这一章结束之前，简单地介绍几点技巧。应用这些技巧可以使得设计出来的类更具有OOP的专业水准。 
+
+1. 一定要保证数据私有
+
+    这是最重要的；绝对不要破坏封装性。有时候，需要编写一个访问器方法或更改器方法，但是最好还是保持实例域的私有性。很多惨痛的经验告诉我们，数据的表示形式很可能会改变，但它们的使用方式却不会经常发生变化。当数据保持私有时，它们的表示形式的变化不会对类的使用者产生影响，即使出现bug也易于检测。
+
+2. 一定要对数据初始化
+
+   Java不对局部变量进行初始化，但是会对对象的实例域进行初始化。最好不要依赖于系统的默认值，而是应该显式地初始化所有的数据，具体的初始化方式可以是提供默认值，也可以是在所有构造器中设置默认值。
+
+3. 不要在类中使用过多的基本类型
+
+   就是说，用其他的类代替多个相关的基本类型的使用。这样会使类更加易于理解且易于修改。例如，用一个称为Address的新的类替换一个Customer类中以下的实例域： 
+
+   ```
+   private String street;
+   private String city;
+   private String state;
+   private int zip;
+   ```
+
+    这样，可以很容易处理地址的变化，例如，需要增加对国际地址的处理。 
+
+4. 不是所有的域都需要独立的域访问器和域更改器
+
+   或许，需要获得或设置雇员的薪金。而一旦构造了雇员对象，就应该禁止更改雇用日 期，并且在对象中，常常包含一些不希望别人获得或设置的实例域，例如，在Address类中，存放州缩写的数组。 
+
+5. 将职责过多的类进行分解
+
+   这样说似乎有点含糊不清，究竟多少算是“过多” ？每个人的看法不同。但是，如果明 显地可以将一个复杂的类分解成两个更为简单的类，就应该将其分解（但另一方面，也不要走极端。设计10个类，每个类只有一个方法，显然有些矫枉过正了）
+   
+   下面是一个反面的设计示例。 
+   
+   ```
+   public class CardDeck // bad design 
+   {
+   	private int[] value;
+   	private int[] suit;
+   	public CardDeck(){. . .}
+   	public void shuffle() { ... }
+   	public int getTopValue() { ...}
+   	public int getTopSuit() { ... }
+   	public void draw() { ... }
+   } 
+   ```
+   
+   实际上，这个类实现了两个独立的概念：一副牌（含有 shuffle 方法和 draw方法）和一 张牌（含有查看面值和花色的方法)。另外，引入一个表示单张牌的 Card类。现在有两个类， 每个类完成自己的职责：
+   
+   ```
+   public class CardDeck
+   {
+   	private Card[] cards;
+   	public CardDeck() { ... }
+   	public void shuffle() { ... }
+   	public Card getTopO { ... }
+   	public void draw() { ...}
+   }
+   public class Card
+   {
+   	private int value;
+   	private int suit;
+   	public Card(int aValue, int aSuit){ ... }
+   	public int getValue() { ... }
+   	public int getSuit() { ... }
+   }
+   ```
+   
+6. 类名和方法名要能够体现它们的职责
+
+   与变量应该有一个能够反映其含义的名字一样，类也应该如此（在标准类库中，也存在着一些含义不明确的例子，如：Date类实际上是一个用于描述时间的类)。 
+
+   命名类名的良好习惯是采用一个名词(Order)、前面有形容词修饰的名词(RushOrder) 或动名词（有“ -ing” 后缀）修饰名词（例如，BillingAddress)。对于方法来说，习惯是访问器方法用小写get开头(getSalary), 更改器方法用小写的set开头(setSalary) 
+
+7. 优先使用不可变的类
+
+    LocalDate类以及java.time包中的其他类是不可变的----没有方法能修改对象的状态。类似plusDays的方法并不是更改对象，而是返回状态已修改的新对象。 
+
+    更改对象的问题在于，如果多个线程试图同时更新一个对象，就会发生并发更改。其结果是不可预料的。如果类是不可变的，就可以安全地在多个线程间共享其对象。
+
+    因此，要尽可能让类是不可变的，这是一个很好的想法。对于表示值的类，如一个字符串或一个时间点，这尤其容易。计算会生成新值，而不是更新原来的值。 
+
+    当然，并不是所有类都应当是不可变的。如果员工加薪时让raiseSalary方法返回一个新的Employee对象，这会很奇怪。
+
+    本章介绍了Java这种面向对象语言的有关对象和类的基础知识。为了真正做到面向对 象，程序设计语言还必须支持继承和多态。Java提供了对这些特性的支持，具体内容将在下一章中介绍。
