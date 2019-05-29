@@ -135,7 +135,9 @@ java.io包提供了大量的流类，其中
 ### 2.1 InputStream类与OutputStream类
 
 InputStream类提供的read方法以字节为单位顺序地读取源中的数据，只要不关闭流，每次调用read方法就顺序地读取源中的其余内容.直到源的末尾或输入流被关闭。
+
 InputStream类有如下常用的方法。
+
 ```java
 int read();//输入流调用该方法从源中读取单个字节的数据，该方法返回字节值(0~255之间的一个整数),如果未读出字节就返回-1.
 int read(byte b[]);//输入流调用该方法从源中试图读取b.length个字节到b中,返回实际读取的字节数目。如果到达文件的末尾，则返回一1。
@@ -144,7 +146,9 @@ void close();//输入流调用该方法关闭输入流。
 long skip(long numBytes);//输入流调用该方法跳过numByes个字节，并返回实际跳过的字节数目。
 ```
 OutStrem流以字节为单位顺序地写文件，只要不关闭流，每次调用write方法顺序地向目的地写入内容，直到流被关闭。
+
 OutputStream类有如下常用的方法
+
 ```java
 void write(int n);  //输出流调用该方法向输出流写入单个字节。
 void write(byte b[]);  //输出流调用该方法向输出流写入一个字节数组。
@@ -206,7 +210,7 @@ public class Test11 {
 }
 ```
 >来自 <https://blog.csdn.net/qq_25827845/article/details/51525270> 
-## 2.2 Reader类与Writer类
+### 2.2 Reader类与Writer类
 Reader类提供的read方法以字符为单位顺序地读取源中的数据，只要不关闭流，每次调用read方法就顺序地读取源中的其余内容，直到源的末尾或输入流被关闭。  
 
 Reader类有如下常用的方法。
@@ -237,9 +241,9 @@ void close();  //关闭输出流。
 - InputStream/OutputStream:是基类，它们是抽象类
 
 由于应用程序经常需要和文件打交道,所以InputStream专门提供了读写文件的子类:FileInputStream和FileOutputSream类。如果程序对文件的操作比较简单，例如只是顺序地读写文件,那么就可以使用FilelnputStream和FileOutputSream类创建的流对文件进行读写操作。
-### 3.1文件字节输入流
+### 3.1文件字节输入流 (FileInputStream)
 
-如果需要以字节为单位去读文件，就可以使用FilelnputStream类来创建指向该文件的文件字节输人流。下面是FilelnputStream类的两个构造方法。
+如果需要以字节为单位去读文件，就可以使用FilelnputStream类来创建指向该文件的文件字节输入流。下面是FilelnputStream类的两个构造方法。
 ```java
 FileInputStream(String name);
 FileInputStream(File file);
@@ -247,6 +251,14 @@ FileInputStream(File file);
 第一个构造方法使用给定的文件名name创建一个FilelnputStream对象，第二个构造方法使用File对象创建FilelnputStream对象。参数name和file指定的文件称作输入流的源,输入流通过调用read方法读出源中的数据。  
 
 FileInputStream输入流打开一个到达文件的输入流（源就是这个文件，输入流指向这个文件）。当使用文件输入流构造方法建立通往文件的输入流时,可能会出现错误(也被称为异常)。例如，试图要打开的文件可能不存在。当出现I/O错误，Java生成一个出错信号，它使用一个IOException(IO异常)对象来表示这个出错信号。程序必须在try-catch语句中的try块创建输入流对象，在catch(捕获)块检测并处理这个异常。  
+
+InputStream有如下方法：
+
+```java
+int read();//输入流调用该方法从源中读取单个字节的数据，该方法返回字节值(0~255之间的一个整数),如果未读出字节就返回-1.
+int read(byte b[]);//输入流调用该方法从源中试图读取b.length个字节到b中,返回实际读取的字节数目。如果到达文件的末尾，则返回一1。
+int read(byte b[],intoff,intlen);//输入流调用该方法从课中试图读取len个字节到b中,并返回实际读取的字节数目，如果到达文件的末尾，则返回一1,参数ff指定从字节数组的某个位置开始存放读取的数据。
+```
 
 例如，为了读取一个名为hello.txt的文件,建立一个文件输入流对象，如下所示。
 ```java
@@ -281,7 +293,7 @@ public class Example10_4{
 	}
 }
 ```
-### 3.2文件字节输出流
+### 3.2文件字节输出流  (FileOutputStream)
 下面是FileOutputStream类的两个构造方法：
 ```java
 FileOutputStream(String name);
@@ -300,7 +312,16 @@ FileOutputStream(File file,boolean append);
 ```
 当用构造方法创建指向一个文件的输出流时，如果参数append取值true，输出流不会训新指向的文件(假如文件已存在),输出流的write的方法将从文件的末尾开始向文件写入数据，参数append取值false, 输出流将刷新指向的文件(假如文件已存在)。  
 
+OutputStream类有如下方法：
+
+```java
+void write(int n);  //输出流调用该方法向输出流写入单个字节。
+void write(byte b[]);  //输出流调用该方法向输出流写入一个字节数组。
+void wite(byte b[],int off,int len);  //输出流从给定字节数组中起始于偏移量off处取len个字节写到输出流。 
+```
+
 例10.5使用文件字节输出流写文件,将“国庆60周年”和“十一快乐”写入到名字为happy.txt的文件中。
+
 ```java
 //Example10.5
 
@@ -321,7 +342,10 @@ public class Example10_5 {
 	}
 }
 ```
-## 4 文件字符流
+## 4 文件字符流 (FileReader/FileWriter)
+
+> Reader/Writer:是基类，它们是抽象类
+
 字节输入流和输出流的read和write方法使用字节数组读写数据，即以字节为基本位处理数据。因此，字节流不能很好地操作Unicode字符，例如，一个汉字在文件中占个字节，如果使用字节流，读取不当会出现“乱码”现象。  
 
 > 与FilelnputStream、FileOutputStream字节流相对应的是FileReader,FileWriter
@@ -337,7 +361,24 @@ FileWriter(File filenane,boolean append);
 ```
 字符输入流和输出流的read和write方法使用字符数组读写数据，即以字符为基本位处理数据。  
 
+Reader类里面包含如下三个方法
+
+```java
+int read();  //从输入流中读取单个字符，返回所读取的字符数据（字符数据可直接转换成int类型）
+int read(char[] cbuf); //从输入流中最多读取cbuf.length个字符的数据，并将其储存在字符数组cbuf中，返回实际读取的字符数
+int read(char[] cbuf,int off,int len);  //从输入类中读取len个字符的数据，并将其储存在字符数组cbuf中，放入cbuf中时，并不是从数组起点开始，而是从off位置开始，返回实际读取的字符数
+```
+
+Write类有如下方法：
+
+```java
+void write(int n);  //向输人流写入一个字符。
+void write(byte b[]);  //向输入流写人一个字符数组。
+void write(byte b[],int off,int length);  //从给定字符数组中起始于偏移量off处取len个字符写到输出流。
+```
+
 例10.6使用字符输出流将一段文字存入文件，然后再使用字符输入流去读文件。
+
 ```java
 //[例10.6]
 //Example10_6.java
@@ -368,14 +409,14 @@ public class Example10_6 {
 	}
 }
 ```
-注意：
-对于Writer流，write方法将数据首先写入到缓冲区，每当缓冲区溢出时，缓冲区的内容被自动写入到目的地，如果关闭流，缓冲区的内容会直接被写入到目的地。流调用flush()方法可以立刻冲洗当前缓冲区，即将当前缓冲区的内容写入到目的地。
+> 注意：对于Writer流，write方法将数据首先写入到缓冲区，每当缓冲区溢出时，缓冲区的内容被自动写入到目的地，如果关闭流，缓冲区的内容会直接被写入到目的地。流调用flush()方法可以立刻冲洗当前缓冲区，即将当前缓冲区的内容写入到目的地。
 
 ## 5 缓冲流(属于字符流)
 
 BufferedReader和 BufferedWriter类创建的对象称作缓冲输入输出流，二者增强了读写文件的能力。例如Student.txt是一个学生名单，每个姓名占一行。如果我们想读取名字，那么每次必须读取一行，使用FileReader流很难完成这样的任务，因为，我们不清楚一行有多少个字符，FileReader类没有提供读取一行的方法。  
 
-Java提供了更高级的流：  
+Java提供了更高级的流： 
+
 BufferedReader流和BufferedWriter，二者的源和目的地必须是字符输入流和字符输出流。因此，如果把字符输入流作为BufferedReader流的源，把字符输出流作为BufferedWriter流的目的地，那么, BufferedReader和Bufferedwriter类创建的流将比字符输入流和字符输出流有更强的读写能力，例如，BufferedReader流就可以按行读取文件。  
 
 BufferedReader类和BufferedWriter的构造方法分别是:
@@ -459,7 +500,10 @@ RandomAccessFile类中有一个方法:
 ```java
 seek(long a);
 ```
-用来定位RandomAccessFile流的读写位置，其中参数a确定读写位置距离文件开头的字节个数。另外流还可以调用`getFilePointer()`方法获取流的当前读写位置。RandomAccessFile流对文件的读写比顺序读写更为灵活。
+用来定位RandomAccessFile流的读写位置，其中参数a确定读写位置距离文件开头的字节个数。另外流还可以调用`getFilePointer()`方法获取流的当前读写位置
+
+RandomAccessFile流对文件的读写比顺序读写更为灵活。
+
 ```java
 //例10.8中把几个int型整数写人到一个名字为tom.dat文件中，然后按相反顺序读出这些数据。
 //[例10.8]
@@ -563,8 +607,10 @@ public class Example10_9 {
 ## 7 数据流
 流的源和目标除了可以是文件外，还可以是计算机内存。
 ### 1.字节数组流
-字节数组输入流ByteArrayInputStream和字节数组输出流ByteArrayOutputStream分别使用字节数组作为流的源和目标。  
+字节数组输入流ByteArrayInputStream和字节数组输出流ByteArrayOutputStream分别使用字节数组作为流的源和目标。
+
 ByteArraylnputStream的构造方法如下。
+
 ```java
 ByteArrayInputStrean(byte[] buf);
 ByteArrayInputStrean(byte[] buf,int offset,int length);
@@ -605,7 +651,9 @@ pablic byte[] toByteArray();
 
 与数组字节流对应的是字符数组流CharArrayReader和CharArrayWriter类，
 字符组流分别使用字符数组作为流的源和目标。   
+
 例10.10使用数组流向内存(输出流的缓冲区)写入“国庆60周年”和“中秋快乐”,然后从内存读取曾写入的数据。
+
 ```java
 import java.io.*
 public class exercise{
