@@ -78,7 +78,8 @@ public class FileAccept implements FilenameFilter {
 	public void setExtendName(String s){
 		extendName="."+s;
 	}
-	public boolean accept(File dir,String name){//重写接口中的方法
+	public boolean accept(File dir,String name){
+		//重写接口中的方法
 		return name.endWith(extendName);
 	}
 }
