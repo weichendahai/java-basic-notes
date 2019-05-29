@@ -901,7 +901,7 @@ public void setDone(){
 还有一种情况可以安全地访问一个共享域，即这个域声明为final时。考虑以下声明：
 
 ```java
-final Map<String, Double〉accounts = new HashKap<>()；
+final Map<String, Double> accounts = new HashKap<>()；
 ```
 
 其他线程会在构造函数完成构造之后才看到这个accounts变量。
@@ -1044,15 +1044,15 @@ void awaitUninterruptibly(); //进入该条件的等待集，直到线程从等�
 > boolean success = q.offer(x, 100, TimeUnit.MILLISECONDS);
 > ```
 
-尝试在100毫秒的时间内在队列的尾部插入一个元素。如果成功返回true;否则，达到超时 时，返回false。类似地，下面的调用：
+尝试在100毫秒的时间内在队列的尾部插入一个元素。如果成功返回true;否则，达到超时时，返回false。类似地，下面的调用：
 
 ```java
-Object head = q.poll(100, TimeUnit.MILLISECONDS)；
+Object head = q.poll(100, TimeUnit.MILLISECONDS);
 ```
 
 尝试用100毫秒的时间移除队列的头元素；如果成功返回头元素，否则，达到在超时时，返回null。
 
-如果队列满， 则put方法阻塞；如果队列空，则take方法阻塞。在不带超时参数时，offer和poll方法等效。
+如果队列满，则put方法阻塞；如果队列空，则take方法阻塞。在不带超时参数时，offer和poll方法等效。
 
 java.util.concurrent包提供了阻塞队列的几个变种。默认情况下，LinkedBlockingQueue的容量是没有上边界的，但是，也可以选择指定最大容量。LinkedBlockingDeque是一个双端的版本。ArrayBlockingQueue在构造时需要指定容量，并且有一个可选的参数来指定是否需要公平性。若设置了公平参数，则那么等待了最长时间的线程会优先得到处理。通常，公平性会降低性能，只有在确实非常需要时才使用它。 
 
