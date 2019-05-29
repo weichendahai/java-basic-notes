@@ -29,7 +29,7 @@ final |Y|Y|-|Y|Y
 私有 |Private|Y|-|-|-
 
 &emsp;&emsp;成员变量，成员方法和构造方法可以处于4个访问级别中的一个：公开，受保护，默认或者私有。顶层类只可以处于公开或默认访问级别，因此顶层类不能用private和protected来修饰，以下代码会导致编译错误：
-```
+```java
 private class Sample{...};
 ```
 ---
@@ -45,19 +45,19 @@ an employee with a salary of $50,000.00
 a student majoring in computer science
 ```
 在Employee类和Student类中实现这个方法很容易。但是在Person类中应该提供什么内容呢？除了姓名之外，Person类一无所知。当然，可以让Person.getDescription()返回一个空字符串。然而，还有一个更好的方法，就是使用abstract关键字，这样就完全不需要实现这个方法了。
-```
+```java
 public abstract String getDescriptionO;
 // no implementation required
 ```
 为了提高程序的清晰度，包含一个或多个抽象方法的类本身必须被声明为抽象的。
-```
+```java
 public abstract class Person
 {
     public abstract String getDescriptionO；
 }
 ```
 除了抽象方法之外 抽象类还可以包含具体数据和具体方法。例如，Person类还保存着姓名和一个返回姓名的具体方法。
-```
+```java
 public abstract class Person
 {
     private String name;
@@ -79,13 +79,13 @@ public abstract class Person
 类即使不含抽象方法，也可以将类声明为抽象类。
 
 抽象类不能被实例化。也就是说，如果将一个类声明为abstract,就不能创建这个类的对象。例如，表达式
-```
+```java
 new Person("Vinee Vu")
 ```
 是错误的，但可以创建一个具体子类的对象。
 
 需要注意，可以定义一个抽象类的对象变量，但是它只能引用非抽象子类的对象。例如，
-```
+```java
 Person p = new Student("Vinee Vu" , "Economics") ;
 ```
 这里的p是一个抽象类Person的变量，Person引用了一个非抽象子类Student的实例
@@ -99,12 +99,12 @@ Person p = new Student("Vinee Vu" , "Economics") ;
 
 &emsp;&emsp;用关键字abstract修饰的类称为abstract类（抽象类）  
 如：
-```
+```java
 abstract class A{
 }
 ```
 &emsp;&emsp;用关键字abstract修饰的方法称为abstract方法（抽象方法），例如
-```
+```java
 abstract int min(int x,int y);
 ```
 &emsp;&emsp;对于abstract方法，只允许声明，不允许实现（没有方法体），而且不允许使用abstract和final同时修饰一个方法和类。
@@ -118,7 +118,7 @@ abstract int min(int x,int y);
 #### 4.抽象类及抽象方法不能被final修饰符修饰，abstract修饰符与final修饰符不能连用，因为抽象类只允许创建其子类，他的抽象方法才能被实现，并且只有他的具体子类才能被实例化，而用final修饰的类不允许拥有子类，用final修饰的方法不允许被子类方法覆盖，因此两者连用，会自相矛盾。
 
 &emsp;&emsp;**抽象类的一个重要特征是不允许实例化，比如苹果香蕉是具体类，而水果是抽象类一样。在自然界中并不存在水果类本身的实例，只存在它的具体子类的实例：**
-```
+```java
 Fruit fruit=new Apple();
 ```
 &emsp;&emsp;在继承树上，总可以把子类的对象看作父类的对象。当父类是具体类，父类的对象包括父类本身的对象，以及所有具体子类的对象;当父类是抽象类，父类的对象包括所有具体子类的对象，因此，所谓的抽象类不能实例化，是指不能创建抽象类本身的实例，尽管如此，可以创建一苹果对象，并把它看作是水果对象。
@@ -148,7 +148,7 @@ Fruit fruit=new Apple();
 - 处于安全的原因，类的实现细节不允许有任何改动
 - 在创建对象模型时，确信这个类不会再被扩展
 例如，JDK中的java.lang.String类被定义为final类：
-```
+```java
 public final class String{
     ···
 }
@@ -157,7 +157,7 @@ public final class String{
 
 ### 3.2 final方法
 &emsp;&emsp;在某些情况下，处于安全的原因，子类不允许子类覆盖某个方法，此时可以把这个方法声明为final类型。例如在java.lang.Object类中，getClass()方法为final类型，而equals()方法不是final类型的：
-```
+```java
 public class Object{
     public final Class getClass(){
         ...
@@ -172,7 +172,7 @@ public class Object{
 &emsp;&emsp;用final修饰的变量表示取值不会改变的常量。
 
 &emsp;&emsp;例如在java.lang.Integer类中定义了两个常量：
-```
+```java
 public static final int MAX_VALUE=2147483647;
 public staric final int MIN_VALUE=-2147483647;
 ```
@@ -181,7 +181,7 @@ public staric final int MIN_VALUE=-2147483647;
 #### 2.在成员变量的初始化那一节，曾经提到类的成员变量可以不必显式初始化，但是这不适用于final类型的成员变量。final类型的成员变量必须显式初始化，否则会导致编译错误。
 
 例如：
-```
+```java
 public class Sample{
     static final int a=1;
     static final int b;
@@ -192,7 +192,7 @@ public class Sample{
 ```
 #### 3.final变量只能赋一次值
 例如：
-```
+```java
 public class Sample{
     private final int var1=1
     public Sample(){
@@ -206,7 +206,7 @@ public class Sample{
 }
 ```
 &emsp;&emsp;以下Sample类的var1实例常量分别在Samlpe()和Sample(int x)这两个构造方法中初始化，这是合法的。因为在创建Sample对象时，只会执行一个构造方法，所以var1实例常量不会被初始化两次：
-```
+```java
 class Sample{
     final int var1;//定义实例常量
     final int var2=0;//定义并初始化var2实例常量
@@ -219,7 +219,7 @@ class Sample{
 }
 ```
 #### 4.如果将引用类型的变量用final修饰，那么该变量只能始终引用一个对象，但可以改变对象的内容，例如：
-```
+```java
 public class Sample{
     public int var;
     public Sample(int var){
@@ -260,7 +260,7 @@ public class Sample{
 
 例如：
 
-```
+```java
 public class Sample{
     public static int number;//定义一个静态变量
     public void method(){
@@ -280,7 +280,7 @@ public class Sample{
 
 ### 4.2 static方法
 &emsp;&emsp;成员方法分为静态方法和实例方法，用static修饰的方法叫做静态方法或者类方法。静态方法和静态变量一样，不需要创建类的实例，可以直接通过类名来访问，例如：
-```
+```java
 public class Sample{
     public static int add(int x,int y){//静态方法
         return x+y;
@@ -306,7 +306,7 @@ public class Sample{
 
 #### 3.静态方法必须被实现
 &emsp;&emsp;静态方法用来表示某个类所特有的功能，这种功能的实现不依赖于类的具体实例，也不依赖于它的子类。既然如此，当前类必须为静态方法提供实现。换句话说，一个静态方法不能被定义为抽象方法。以下方法的定义是非法的：
-```
+```java
 static abstract void method();//编译出错，不能连用
 ```
 &emsp;&emsp;如果一个方法是静态的，它就必须自己实现该方法；如果一个方法是抽象的，那么它就只表示类所具有的功能，但不会实现它，在子类中才会实现它。
@@ -316,7 +316,7 @@ static abstract void method();//编译出错，不能连用
 &emsp;&emsp;这样使得java虚拟机只要加载了main()方法所属的类，就能执行main方法，而无须先创建这个类的实例。
 
 &emsp;&emsp;在main()静态方法中不能直接访问实例变量和实例方法。比如如下编译错误：
-```
+```java
 public class Sample{
     int x;
     void method(){
@@ -330,7 +330,7 @@ public class Sample{
 }
 ```
 正确的做法是通过Sample实例的引用来访问实例方法和实例变量
-```
+```java
 public class Sample{
     int x;
     public static void main(String args[]){

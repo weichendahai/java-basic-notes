@@ -28,7 +28,7 @@ Swing采用了一种很巧妙的方式来解决这个问题。在程序员编写
 > 警告：绝大多数Swing 组件类都以“J”开头，例如，JButton、JFrame等。在Java中有Button和Frame这样的类，但它们属于AWT组件。如果偶然地忘记书写“ J”，程序仍然可以进行编译和运行，但是将Swing和AWT组件混合在一起使用将会导致视觉和行为的不一致。
 
 在本节中，将介绍有关Swing的JFrame的常用方法。程序清单10-1给出了一个在屏幕中显示一个空框架的简单程序
-```
+```java
 程序清单10-1 simpleframe/SimpleFrameTest.java
 package simpleFrame;
 import java.awt.*;
@@ -70,7 +70,7 @@ SimpleFrame和JFrame之间唯一的差别。
 在每个Swing程序中，有两个技术问题需要强调。
 
 首先，所有的Swing组件必须由事件分派线程(event dispatch thread)进行配置，线程将鼠标点击和按键控制转移到用户接口组件。下面的代码片断是事件分派线程中的执行代码：
-```
+```java
 EventQueue.invokeLater(() ->
 	{
 		statements
@@ -120,7 +120,7 @@ JPanel		Frame
 对Component类（是所有GUI对象的祖先）和Window类(是Frame类的超类）需要仔细地研究一下，从中找到缩放和改变框架的方法。例如，在Component类中的setLocation方法是重定位组件的一个方法。如果调用`setLocation(x, y)`则窗口将放置在左上角水平x 像素，垂直y像素的位置，坐标(0, 0)位于屏幕的左上角。
 
 同样地，Component中的setBounds方法可以实现一步重定位组件(特别是JFrame)大小和位置的操作，例如：
-```
+```java
 setBounds(x, y, width, height);
 ```
 可以让窗口系统控制窗口的位置， 如果在显示窗口之前调用
@@ -133,22 +133,22 @@ setLocationByPlatform(true);
 
 ### 3.1 框架属性
 组件类的很多方法是以获取/设置方法对形式出现的，例如，Frame类的下列方法：
-```
-public String getTitle()
-public void setTitle(String title)
+```java
+public String getTitle();
+public void setTitle(String title);
 ```
 这样的一个获取/设置方法对被称为一种属性。属性包含属性名和类型。将get或set之后的第一个字母改为小写字母就可以得到相应的属性名。例如，Frame类有一个名为title且类型为String的属性。
 
 从概念上讲，title是框架的一个属性。当设置这个属性时，希望这个标题能够改变用户屏幕上的显示。当获取这个属性时，希望能够返回已经设置的属性值。
 
 我们并不清楚（也不关心）Frame类是如何实现这个属性的。或许只是简单的利用对等框架存储标题。或许有一个实例域：
-```
+```java
 private String title; // not required for property
 ```
 如果类没有匹配的实例域，我们将不清楚（也不关心）如何实现获取和设置方法。或许只是读、写实例域， 或许还执行了很多其他的操作。例如，当标题发生变化时，通知给窗口系统。
 
 针对get/set约定有一个例外：对于类型为boolean的属性，获取方法由is开头。例如，下面两个方法定义了locationByPlatform属性：
-```
+```java
 public boolean islocationByPIatforn()
 public void setLocationByPIatforra(boolean b)
 ```
@@ -158,7 +158,7 @@ public void setLocationByPIatforra(boolean b)
 JFrame的结构相当复杂。在图10-8中给出了JFrame的结构。可以看到，在JFrame中有四层面板。其中的根面板、层级面板和玻璃面板人们并不太关心；它们是用来组织菜单栏和内容窗格以及实现观感的。
 
 Swing程序员最关心的是内容窗格（contentpane)。在设计框架的时候，要使用下列代码将所有的组件添加到内容窗格中：
-```
+```java
 Container contentPane = frame.getContentPane() ;
 Component c = ...;
 contentPane.add(c) ;
@@ -166,7 +166,7 @@ contentPane.add(c) ;
 在Java SE 1.4及以前的版本中，JFrame 类中的add 方法抛出了一个异常信息`“Do not use JFrame.add().Use JFrame.getContentPane().add instead”`。如今，JFrame.add方法不再显示
 
 这些提示信息， 只是简单地调用内容窗格的add，因此，可以直接调用
-```
+```java
 frame.add(c) ;
 ```
 在这里， 打算将一个绘制消息的组件添加到框架中。绘制一个组件，需要定义一个扩展JAComponent的类，并覆盖其中的paintComponent方法。

@@ -298,7 +298,7 @@ public void read(String filename)
 
 通常，最好的选择是什么也不做，而是将异常传递给调用者。如果read方法出现了错误, 就让read方法的调用者去操心！如果采用这种处理方式，就必须声明这个方法可能会拋出一个 IOException。 
 
-```
+```java
 public void read(String filename) throws IOException
 {
 	inputStream in = new FileinputStream(filename);
@@ -468,7 +468,7 @@ finally
 
 > 警告：当finally子句包含return语句时，将会出现一种意想不到的结果„ 假设利用return语句从try语句块中退出。在方法返回前，finally子句的内容将被执行。如果finally子句中也有一个return语句，这个返回值将会覆盖原始的返回值。请看一个复杂的例子：
 >
-> ```
+> ```java
 > public static int f(int n)
 > {
 > 	try
@@ -488,7 +488,7 @@ finally
 
 有时候，finally子句也会带来麻烦。例如，清理资源的方法也有可能抛出异常。假设希望能够确保在流处理代码中遇到异常时将流关闭。
 
-```
+```java
 InputStreai in = ...;
 try
 {
@@ -504,7 +504,7 @@ finally
 
 这会有问题，因为第一个异常很可能更有意思。如果你想做适当的处理，重新抛出原来的异常，代码会变得极其繁琐。如下所示：
 
-```
+```java
 InputStream in = ...;
 Exception ex = null;
 try

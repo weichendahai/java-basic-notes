@@ -10,11 +10,11 @@
 Java使用包（package）这种机制是为了防止命名冲突，访问控制，提供搜索和定位类（class）、接口、枚举（enumerations）和注释（annotation）等。
 
 包语句的语法格式为：
-```
+```java
 package pkg1[．pkg2[．pkg3…]];
 ```
 例如,一个Something.java 文件它的内容
-```
+```java
 package net.java.util;
 public class Something{
    ...
@@ -24,7 +24,7 @@ public class Something{
 一个包（package）可以定义为一组相互联系的类型（类、接口、枚举和注释），为这些类型提供访问保护和命名空间管理的功能。  
 
 以下是一些Java中的包：
-```
+```java
 java.lang-打包基础的类
 java.io-包含输入输出功能的函数
 ```
@@ -44,7 +44,7 @@ java.io-包含输入输出功能的函数
 
 让我们来看一个例子，这个例子创建了一个叫做animals的包。通常使用小写的字母来命名避免与类、接口名字的冲突  
 在 animals 包中加入一个接口（interface）：
-```
+```java
 Animal.java 文件代码：
 /* 文件名: Animal.java */
 package animals;//该文件属于animals包
@@ -55,7 +55,7 @@ interface Animal {
 }
 ```
 接下来，在同一个包中加入该接口的实现：
-```
+```java
 MammalInt.java 文件代码：
 package animals;
 
@@ -104,7 +104,7 @@ Mammal travel
 为了能够使用某一个包的成员，我们需要在Java程序中明确导入该包。使用"import"语句可完成此功能。
 
 在java源文件中import语句应位于package语句之后，所有类的定义之前，可以没有，也可以有多条，其语法格式为：
-```
+```java
 import package1[.package2…].(classname|*);
 ```
 如果在一个包中，一个类想要使用本包中的另一个类，那么该包名可以省略。
@@ -112,8 +112,8 @@ import package1[.package2…].(classname|*);
 > 例子
 
 下面的payroll包已经包含了Employee类，接下来向payroll包中添加一个Boss类。Boss类引用Employee类的时候可以不用使用payroll前缀，Boss类的实例如下。
-```
-Boss.java 文件代码：
+```java
+//Boss.java 文件代码：
 package payroll;
  
 public class Boss
@@ -127,15 +127,15 @@ public class Boss
 如果Boss类不在payroll包中又会怎样？Boss类必须使用下面几种方法之一来引用其他包中的类。
 
 使用类全名描述，例如：
-```
+```java
 payroll.Employee
 ```
 用import关键字引入，使用通配符 "*"
-```
+```java
 import payroll.*;
 ```
 使用import关键字引入 Employee 类:
-```
+```java
 import payroll.Employee;
 ```
 ##### 注意：
@@ -143,7 +143,7 @@ import payroll.Employee;
 类文件中可以包含任意数量的import声明。import声明必须在包声明之后，类声明之前。
 
 在大多数情况下，只导入所需的包，并不必过多地理睬它们。但在发生命名冲突的时候，就不能不注意包的名字了。例如，java.util 和java.sql 包都有日期（ Date) 类。如果在程序中导入了这两个包：
-```
+```java
 import java.util .*;
 import java.sql .*;
 ```
@@ -152,13 +152,13 @@ import java.sql .*;
 Date today; // Error java.util .Date or java.sql .Date?
 ```
 此时编译器无法确定程序使用的是哪一个Date类。可以采用增加一个特定的import语句来解决这个问题
-```
+```java
 import java.util .*;
 import java.sql .*;
 import java.util .Date;
 ```
-如果这两个Date 类都需要使用，又该怎么办呢？ 答案是，在每个类名的前面加上完整的包名。
-```
+如果这两个Date类都需要使用，又该怎么办呢？ 答案是，在每个类名的前面加上完整的包名。
+```java
 java.util .Date deadline = new java.util .Date() ;
 java.sql .Date today = new java.sql .Date(...) ;
 ```
@@ -177,7 +177,7 @@ java.sql .Date today = new java.sql .Date(...) ;
 下面是管理你自己java中文件的一种简单方式：
 
 将类、接口等类型的源码放在一个文本中，这个文件的名字就是这个类型的名字，并以`.java`作为扩展名。例如：
-```
+```java
 // 文件名 :  Car.java
  
 package vehicle;
@@ -200,7 +200,7 @@ public class Car {
 ....\com\runoob\test\Runoob.java
 
 编译的时候，编译器为包中定义的每个类、接口等类型各创建一个不同的输出文件，输出文件的名字就是这个类型的名字，并加上`.class`作为扩展后缀。 例如：
-```
+```java
 // 文件名: Runoob.java
  
 package com.runoob.test;

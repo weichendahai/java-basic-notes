@@ -34,7 +34,7 @@ addActionListener(监视器);
 监视器负责处理事件源发生的事件。监视器是一个对象，为了处理事件源发生的事件，监视器这个对象会自动调用一个方法来处理事件。那么监视器去调用哪个方法呢？我们我知道，对象可以调用创建它的那个类中的方法，那么它到底调用该类中的哪个方法呢？Java规定为了让监视器这个对象能对事件源发生的事件进行处理，创建该监视器对象的以实现相应的接口，即必须在类体中重写接口中的所有方法，那么当事件源发生事，监视器就自动调用被类重写的某个接口方法。事件处理模式如图11.6所示。
 
 > 下面是监听器的一个示例：
-```
+```java
 ActionListener listener = ...
 JButton button = new JButton("0K");
 button.addActionListener(listener);
@@ -42,7 +42,7 @@ button.addActionListener(listener);
 现在，只要按钮产生了一个“动作事件”，listener对象就会得到通告。对于按钮来说，正像我们所想到的，动作事件就是点击按钮。
 
 为了实现ActionListener接口，监听器类必须有一个被称为actionPerformed的方法，该方法接收一个ActionEvent对象参数。
-```
+```java
 class MyListener implements ActionListener
 {
 	public void actionPerforied(ActionEvent event)
@@ -68,29 +68,29 @@ E[类A负责创建监视器,A必须实现XXXListener接口]---A[事件源.addXXX
 文本框、按钮、菜单项、密码框和单选按钮都可以触发ActionEvent事件，即都可以成为ActionEvent事件的事件源。例如，对于注册了监视器的文本框，在文本框获得输入焦点后，如果用户按回车键，Java运行环境就自动用ActionEvent类创建一个对象，即触发ActionEvent事件;对于注册了监视器的按钮，如果用户单击按钮，就会触发ActionEvent事件;对于注册了监视器的菜单项，如果用户选中该菜单项，就会触发ActionEvent事件;如果用户选择了某个单选按钮，就会触发ActionEvent事件。
 ##### 2.注册监视器
 能触发ActionEvent事件的组件使用
-```
+```java
 addActionListener(ActionListener listen);
 ```
 将实现ActionListener接口的类的实例注册为事件源的监视器。
 ##### 3.ActionListener 接口
 ActionListener接口在java.awt.event包中，该接口中只有一个方法:
-```
+```java
 public void actionPerformed(ActionEvente);
 ```
 事件源触发ActionEvent事件后，监视器将发现触发的ActionEvent事件，然后调用接口中的方法:
-```
+```java
 actionPerformed(ActionEvent e);
 ```
 对发生的事件作出处理。当监视器调用actionPerformed(ActionEvent e)方法时，ActionEvent类事先创建的事件对象就会传递给该方法的参数C。
 ##### 4.ActionEvent类中的方法
 ActionEvent类有如下常用的方法。
-```
+```java
 public ObeceSurce();//该方法是从Enentobiect继承的方法，ActionEvent事件对象调用该方法可以获取发生ActionEvent事件的事件源对象的引用，即BetSource()方法将事件源上转型为Object对象，并返回这个上转型对象的引用，
 public String getActionCommand();//ActionEvent对象调用该方法可以获取发生ActionEvent事件时，和该事件相关的一个命令字符串，对于文本框，当发生ActionEvent事件时，文本框中的文本字符串就是和该事件相关的一个命令字符串.
 ```
 ### 实例1
 例11.5处理文本框上触发的ActionEvent事件。在文本框text中输人字符串回车，监视器负责计算字符串的长度，并在命令行窗口显示字符串的长度。例11.5程序运行效果如图11.7和图11.8所示。
-```
+```java
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
@@ -129,7 +129,7 @@ public class exercise{
 }
 ```
 接下来我们改进这个ReaderListener类，在第五章讲过。利用组合可以让一个对象调用另一个对象，级当前对象可以委托它组合另一个对象调用方法产生行为，因此。可以在创建监视器的类中增加JTextArea类型的成员（即组合JTextArea类型的成员），以便引用，操作WindowsActionArea中的文本区。
-```
+```java
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -195,12 +195,12 @@ Java的事件处理是基于授权模式，即事件源调用方法将某个对�
 
 在演示如何监听按钮点击事件之前，首先需要解释如何创建按钮以及如何将它们添加到面板中(有关GUI元素更加详细的内容请参看第12章)。
 可以通过在按钮构造器中指定一个标签字符串、一个图标或两项都指定来创建一个按钮。下面是两个示例：
-```
+```java
 JButton yellowButton = new JButton("Yellow") ;
 JButton blueButton = new JButton(new Imagelcon("blue-ball.gif')) ;
 ```
 将按钮添加到面板中需要调用add方法：
-```
+```java
 JButton yellowButton = new JButton("Yellow") ;
 JButton blueButton = new JButton("Blue") ;
 JButton redButton = new JButton("Red") ;
@@ -210,7 +210,7 @@ buttonPanel.add(redButton) ;
 ```
 
 接下来需要增加让面板监听这些按钮的代码。这需要一个实现了ActionListener接口的类。如前所述，应该包含一个actionPerformed方法，其签名为：
-```
+```java
 public void actionPerformed(ActionEvent event)
 ```
 > 注释：在按钮示例中，使用的ActionListener接口并不仅限于按钮点击事件。它可以应用于很多情况：
@@ -224,7 +224,7 @@ public void actionPerformed(ActionEvent event)
 在所有这些情况下，使用ActionListener接口的方式都是一样的：actionPerformed方法（ActionListener中的唯一方法）将接收一个ActionEvent类型的对象作为参数。这个事件对象包含了事件发生时的相关信息。
 
 当按钮被点击时， 希望将面板的背景颜色设置为指定的颜色。这个颜色存储在监听器类中：
-```
+```java
 class ColorAction implements ActionListener
 {
 	private Color backgroundColor ;
@@ -240,7 +240,7 @@ class ColorAction implements ActionListener
 }
 ```
 然后，为每种颜色构造一个对象，并将这些对象设置为按钮监听器。
-```
+```java
 ColorAction yellowAction = new ColorAction(Color.YELLOW) :
 ColorAction blueAction = new ColorAction(Color.BLUE) ;
 ColorAction redAction = new ColorAction(Color.RED) ;
@@ -251,7 +251,7 @@ redButton.addActionListener(redAction) ;
 例如，如果一个用户在标有“Yellow” 的按钮上点击了一下，yellowAction对象的actionPerformed方法就会被调用。这个对象的backgroundColor实例域被设置为Color.YELLOW，现在就将面板的背景色设置为黄色了。
 
 这里还有一个需要考虑的问题。CobrAction对象不能访问buttonpanel变量。可以采用两种方式解决这个问题。一个是将面板存储在ColorAction对象中，并在ColorAction的构造器中设置它；另一个是将ColorAction作为ButtonFrame类的内部类，这样一来，它的方法就自动地拥有访问外部面板的权限了（有关内部类的详细介绍请参看第6章)。这里使用第二种方法。下面说明一下如何将ColorAction类放置在ButtonFrame类内。
-```
+```java
 class ButtonFrame extends JFrame
 {
 	private JPanel buttonPanel ;
@@ -272,7 +272,7 @@ class ButtonFrame extends JFrame
 这种情形经常会遇到。事件监听器对象通常需要执行一些对其他对象可能产生影响的操作。可以策略性地将监听器类放置在需要修改状态的那个类中。
 
 程序清单11-1包含了完整的框架类。无论何时点击任何一个按钮，对应的动作监听器就会修改面板的背景颜色。
-```
+```java
 程序清单11-1
 package button;
 
@@ -330,11 +330,11 @@ public class ButtonFrame extends ]Frame
 ```
 ### 2.2 简洁的指定监听器
 在上一节中，我们为事件监听器定义了一个类并构造了这个类的3个对象。一个监听器类有多个实例的情况并不多见。更常见的情况是：每个监听器执行一个单独的动作。在这种情况下，没有必要分别建立单独的类。只需要使用一个lambda表达式：
-```
-exitButton.addActionListener(event -> Systeu.exit(O));
+```java
+exitButton.addActionListener(event -> System.exit(O));
 ```
 现在考虑这样一种情况：有多个相互关联的动作，如上一节中的彩色按钮。在这种情况下，可以实现一个辅助方法：
-```
+```java
 public void makeButton(String name, Color backgroundedor)
 {
 	JButton button = new JButton(name);
@@ -345,7 +345,7 @@ public void makeButton(String name, Color backgroundedor)
 ```
 需要说明， lambda表达式指示参数变量backgroundColor。
 然后只需要调用：
-```
+```java
 makeButton("yellow", Color.YELLOW):
 makeButton("blue", Color.BLUE);
 makeButton("red", Color.RED);
@@ -353,7 +353,7 @@ makeButton("red", Color.RED);
 在这里，我们构造了3个监听器对象，分别对应一种颜色，但并没有显式定义一个类。每次调用这个辅助方法时，它会建立实现了ActionListener接口的一个类的实例它的actionPerformed动作会引用实际上随监听器对象存储的backGroundColor值。不过，所有这些会自动完成，而无需显式定义监听器类、实例变量或设置这些变量的构造器。
 
 > 注释：在较老的代码中，通常可能会看到使用匿名类：
-```
+```java
 exitButton.addActionListener(new ActionListener()
 {
 	public void actionPerformed(new ActionEvent)
@@ -364,13 +364,13 @@ exitButton.addActionListener(new ActionListener()
 ```
 当然，已经不再需要这种繁琐的代码。使用lambda表达式更简单，也更简洁。
 > 注释：有些程序员不习惯使用内部类或lambda表达式，而更喜欢创建实现了ActionListener接口的事件源容器，然后这个容器再设置自身作为监听器。如下所示：
-```
+```java
 yellowButton.addActionListener(this);
 blueButton.addActionListener(this);
 redButton.addActionListener(this);
 ```
 现在这3个按钮不再有单独的监听器。它们共享一个监听器对象， 具体来讲就是框架(frame)。因此，actionPerformed方法必须明确点击了哪个按钮。
-```
+```java
 class ButtonFrame extends JFrame implements ActionListener
 {
 	public void actionPerformed(ActionEvent event)
@@ -385,15 +385,15 @@ class ButtonFrame extends JFrame implements ActionListener
 ```
 我们并不建议采用这种策略。
 > 注释：lambda表达式出现之前，还可以采用一种机制来指定事件监听器，其事件处理器包含一个方法调用。例如，假设一个按钮监听器需要执行以下调用：
-```
+```java
 frame.loadData() ;
 ```
 EventHandler类可以用下面的调用创建这样一个监听器：
-```
+```java
 EventHandler.create(ActionListener.class, frame , "loadData")
 ```
 这种方法现在已经成为历史。利用lambda表达式，可以更容易地使用以下调用：
-```
+```java
 event -> frame.loadData() ;
 ```
 EventHandler机制的效率也不高，而且比较容易出错。它使用反射来调用方法。出于这个原因，EventHandler.create调用的第二个参数必须属于一个公有类。否则，反射机制就无法确定和调用目标方法
@@ -403,17 +403,17 @@ EventHandler机制的效率也不高，而且比较容易出错。它使用反�
 选择框，下拉列表都可以触发ItemEvent事件。选择框提供两种状态，一种是选中，另一种是未选中。对于注册了监视器的选择框，当用户的操作使得选择框从未选中状态变成选中状态，或是相反变化的时候就会触发ItemEvent事件，同样，对于注册了监视器的下拉列表，如果用户选中下拉列表中的某个选项，就会触发ItemEvent事件。
 ##### 2.注册监视器
 能触发ItemEvent事件的组件使用
-```
+```java
 addItemListener(ItemListener listen);
 ```
 将实现ItemListener接口的类的实例注册为事件源的监视器。
 ##### 3.ItemListener接口
 ItemListener接口在java.awt.event包中，该接口只有一个方法;
-```
+```java
 public void itemStateChanged(itemEvent e);
 ```
 事件触发ItemEvent事件后，监视器将发现触发的ItemEvent事件，然后调用接口中的方法：
-```
+```java
 itemStateChange(ItemEvent e);
 ```
 对发生的事件做出处理。当监视器调用itemStateChange(ItemEvent e)方法时，ItemEvent类事先创建的事件对象就会传递给该方法的参数e。
@@ -427,7 +427,7 @@ ItemEvent事件对象除了可以使用getSource()方法返回发生ItemEvent事
 能触发DocumentEvent事件的事件源使用addDocumentListener(DocumentListenerlisten)将实现DocumentListener接口的类的实例注册为事件源的监视器。
 ##### 3.DocumentListener接口
 DocumentListener接口在java.swing.event包中，该接口中有三个方法：
-```
+```java
 public void changedUpdate(DocumentEvent e);
 public void removeUpdate(DocumentEvent e);
 public void insertUpdate(DocumentEvent e);
@@ -435,7 +435,7 @@ public void insertUpdate(DocumentEvent e);
 事件源触发DocumentEvent事件后，监视器将发现触发的DocumentEvent事件，然后调用接口中的相应方法对发生的事件做出处理。  
 
 在下面的例子中，在左边输入若干英文单词，另一个文本区会自动对输入的英文单词按照字典顺序排序，也就是说随着用户输入的变化，另一个文本区不断地更新排序。
-```
+```java
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.event.*;
@@ -507,7 +507,7 @@ public class exercise{
 - 鼠标退出事件源
 
 MouseEvent中有下列几个重要方法：
-```
+```java
 getX();//获取鼠标指针在事件源坐标系中的x坐标
 getY();//获取鼠标指针在事件源坐标系中的y坐标
 getModifiers();//获取鼠标的左键或右键。鼠标的左键和右键分别使用InputEvent类中的常量BUTTON1_MASK,BUTTON3_MASK来表示；
@@ -515,7 +515,7 @@ getClickCount();//获取鼠标被单击的次数
 getSource();//获取鼠标事件的事件源
 ```
 事件源注册监视器的方法是
-```
+```java
 addMouseListener(MouseListener listener) 
 ```
 当用户点击鼠标按钮时，将会调用三个监听器方法：鼠标第一次被按下时调用`mousePressed`；鼠标被释放时调用`mouseReleased`；最后调用`mouseClicked`。如果只对最终的点击事件感兴趣， 就可以忽略前两个方法。用`MouseEvent`类对象作为参数，调用getX和getY方法可以获得鼠标被按下时鼠标指针所在的x和y坐标。要想区分单击、双击和三击(!)，需要使用`getClickCount`方法。
@@ -523,7 +523,7 @@ addMouseListener(MouseListener listener)
 有些用户界面设计者喜欢让用户采用鼠标点击与键盘修饰符组合(例如，CONTROL+SHIFT+CLICK)的方式进行操作。我们感觉这并不是一种值得赞许的方式。如果对此持有不同的观点，可以看一看同时检测鼠标按键和键盘修饰符所带来的混乱。
 
 可以采用位掩码来测试已经设置了哪个修饰符。在最初的API中，有两个按钮的掩码与两个键盘修饰符的掩码一样，即
-```
+```java
 BUTT0N2_MASK == ALT_MASK
 BUTT0N3_MASK == META_MASK
 ```
@@ -541,13 +541,13 @@ META_DOWN_MASK
 getModifiersEx方法能够准确地报告鼠标事件的鼠标按钮和键盘修饰符。
 
 需要注意，在Windows环境下，使用`BUTT0N3_D0WN_MASK`检测鼠标右键（非主要的）的状态。例如，可以使用下列代码检测鼠标右键是否被按下：
-```
+```java
 if ((event.getModifiersEx() & InputEvent.BUTT0N3_D0WN_MASK) != 0)
 ... // code for right click
 ```
 
 MouseListener接口中有如下方法：
-```
+```java
 mousePressed(MouseEvent);//负责处理在组件上按下鼠标键触发的鼠标事件。即当你在事件源按下鼠标键时监视器调用接口中的这个方法对事件作出处理。
 mouseReleased(MouseEvent);//负责处理在组件上释放鼠标键触发的鼠标事件。即当你在事件源释放鼠标键时，监视器调用接口中的这个方法对事件作出处理。
 mouseEntered(MouseEvent);//负责处理鼠标进人组件触发的鼠标事件。即当鼠标指针进人组件时，监视器调用接口中的这个方法对事件作出处理。
@@ -556,7 +556,7 @@ mouseClicked(MouseEvent);//负责处理在组件上单击鼠标键触发的鼠�
 ```
 ### 实例
 在列举的简单示例中， 提供了`mousePressed`和`mouseClicked`方法。当鼠标点击在所有小方块的像素之外时，就会绘制一个新的小方块。这个操作是在`mousePressed`方法中实现的，这样可以让用户的操作立即得到响应，而不必等到释放鼠标按键。如果用户在某个小方块中双击鼠标，就会将它擦除。由于需要知道点击次数，所以这个操作将在`mouseClicked`方法中实现。
-```
+```java
 public void mousePressed (MouseEvent event)
 {
 	current = find(event.getPoint());
@@ -575,7 +575,7 @@ public void mouseClicked(MouseEvent event)
 当用户移动鼠标时，只关心鼠标点击(clicks)的监听器就不会被多余的鼠标移动(moves)所困扰。这里给出的测试程序将捕获鼠标动作事件，以便在光标位于一个小方块之上时变成另外一种形状（十字)。实现这项操作需要使用Cursor类中的`getPredefinedCursor`方法。表11-3列出了在Windows环境下鼠标的形状和方法对应的常量。
 
 下面是示例程序中`MouseMotionListener`类的`mouseMoved`方法：
-```
+```java
 public void mouseMoved(MouseEvent event)
 {
 	if (find(event.getPointO) = null )
@@ -585,7 +585,7 @@ public void mouseMoved(MouseEvent event)
 }
 ```
 > 注释：还可以利用Toolkit类中的`createCustomCursor`方法自定义光标类型：
-```
+```java
 Toolkit tk = Toolkit.getDefaultToolkit();
 Image img = tk.getImage("dynamite.gif");
 Cursor dynamiteCursor = tk.createCustomCursor(img, new Point (10 , 10) , "dynamite stick");
@@ -593,7 +593,7 @@ Cursor dynamiteCursor = tk.createCustomCursor(img, new Point (10 , 10) , "dynami
 createCustomCursor的第一个参数指向光标图像。第二个参数给出了光标的“热点”偏移。第三个参数是一个描述光标的字符串。这个字符串可以用于访问性支持，例如，可以将光标形式读给视力受损或没有在屏幕前面的人。
 
 如果用户在移动鼠标的同时按下鼠标，就会调用`mouseMoved`而不是调用`mouseDmgged`。在测试应用程序中，用户可以用光标拖动小方块。在程序中，仅仅用拖动的矩形更新当前光标位置。然后，重新绘制画布，以显示新的鼠标位置。
-```
+```java
 public void mouseDragged(MouseEvent event)
 {
 	if (current != null )
@@ -610,8 +610,8 @@ public void mouseDragged(MouseEvent event)
 还有两个鼠标事件方法：`mouseEntered`和`mouseExited`。这两个方法是在鼠标进入或移出组件时被调用。最后， 解释一下如何监听鼠标事件。鼠标点击由`mouseClicked`过程报告，它是MouseListener接口的一部分。由于大部分应用程序只对鼠标点击感兴趣，而对鼠标移动并不感兴趣，但鼠标移动事件发生的频率又很高，因此将鼠标移动事件与拖动事件定义在一个称为`MouseMotionListener`的独立接口中。
 
 在示例程序中，对两种鼠标事件类型都感兴趣。这里定义了两个内部类：`MouseHandler`和`MouseMotionHandler`。`MouseHandler`类扩展于`MouseAdapter`类，这是因为它只定义了5个`MouseListener`方法中的两个方法。`MouseMotionHandler`实现了`MouseMotionListener`接口，并定义了这个接口中的两个方法。程序清单11-4是这个程序的清单。
-```
-程序清单11*4 mouse/MouseFrame.java
+```java
+//程序清单11*4 mouse/MouseFrame.java
 package mouse;
 import javax.swing.*;
 /**
@@ -626,8 +626,8 @@ public class MouseFrame extends JFrame
 	}
 }
 ```
-```
-程序清单11-5 mouse/MouseComponent.java
+```java
+//程序清单11-5 mouse/MouseComponent.java
 package mouse;
 import java.awt.*;
 import java.awt.event.*;
@@ -642,7 +642,7 @@ public class MouseComponent extends JComponent
 	private static final int DEFAULT.WIDTH = 300;
 	private static final int DEFAULT.HEICHT = 200;
 	private static final int SIDELENCTH = 10;
-	private ArrayList< Rectangle2D> squares;
+	private ArrayList<Rectangle2D> squares;
 	private Rectangle2D current ; // the square containing the mouse cursor
 	public MouseComponent ()
 	{
@@ -683,7 +683,7 @@ public class MouseComponent extends JComponent
 	{
 		double x = p.getX();
 		double y = p.getY();
-		current = new Rectangle2D.Double(x - SIDELENCTH / 2, y - SIDELENCTH / 2, SIDELENCTH, SIDELENCTH);
+		current = new Rectangle2D.Double(x-SIDELENCTH/2, y-SIDELENCTH/2, SIDELENCTH, SIDELENCTH);
 		squares.add(current);
 		repaint();
 	}
@@ -710,7 +710,8 @@ public class MouseComponent extends JComponent
 		{
 			// remove the current square if double clicked
 			current = find(event.getPoint());
-			if (current != null && event.getClickCount() >= 2) remove(current);
+			if (current != null && event.getClickCount() >= 2)
+				remove(current);
 		}
 	}
 	private class MouseMotionHandler implements MouseMotionListener
@@ -719,8 +720,10 @@ public class MouseComponent extends JComponent
 		{
 			// set the mouse cursor to cross hairs if it is inside
 			// a rectangle
-			if (find(event.getPoint()) == null) setCursor(Cursor.getDefaultCursor());
-			else setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
+			if (find(event.getPoint()) == null)
+				setCursor(Cursor.getDefaultCursor());
+			else
+				setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		}
 		public void mouseDragged(MouseEvent event)
 		{
@@ -729,7 +732,7 @@ public class MouseComponent extends JComponent
 				int x = event.getX();
 				int y = event.getY();
 				// drag the current rectangle to center it at (x, y)
-				current.setFrame(x - SIDELENCTH / 2, y - SIDELENGTH / 2, SIDELENCTH, SIDELENGTH);
+				current.setFrame(x-SIDELENCTH/2, y-SIDELENGTH/2, SIDELENCTH, SIDELENGTH);
 				repaint();
 			}
 		}
@@ -738,47 +741,52 @@ public class MouseComponent extends JComponent
 ```
 
 > java awt.event.MouseEvent 1.1
-```
-int getX()
+>
+> ```java
+> int getX();
+> int getY();
+> Point getPoint();//返回事件发生时， 事件源组件左上角的坐标x(水平)和y(竖直)，或点信息。
+> int getClickCount();//返回与事件关联的鼠标连击次数(“连击” 所指定的时间间隔与具体系统有关)。
+> ```
 
-int getY()
-
-Point getPoint()//返回事件发生时， 事件源组件左上角的坐标x(水平)和y(竖直)，或点信息。
-
-int getClickCount()//返回与事件关联的鼠标连击次数(“连击” 所指定的时间间隔与具体系统有关)。
-```
 > java awt.event.InputEvent 1.1
-```
-int getModifiersEx() 1.4
-//返回事件扩展的或“ 按下”（down) 的修饰符。
+>
+> ```java
+> int getModifiersEx() 1.4
+> //返回事件扩展的或“ 按下”（down) 的修饰符。
+> 
+> 使用下面的掩码值检测返回值：
+> BUTT0N1_D0WN_MASK
+> BUTT0N2_D0WN_MASK
+> BUn0N3_D0WN_MASK
+> SHIFT_DOWN_MASK
+> CTRL_DOWN_MASK
+> ALT_DOWN_MASK
+> ALT_GRAPH_DOWN_MASK
+> META.DOWN.MASK
+> 
+> static String getModifiersExText(int modifiers) 1.4
+> //返回用给定标志集描述的扩展或“ 按下” （down) 的修饰符字符串， 例如“Shift+Buttonl” 
+> ```
 
-使用下面的掩码值检测返回值：
-BUTT0N1_D0WN_MASK
-BUTT0N2_D0WN_MASK
-BUn0N3_D0WN_MASK
-SHIFT_DOWN_MASK
-CTRL_DOWN_MASK
-ALT_DOWN_MASK
-ALT_GRAPH_DOWN_MASK
-META.DOWN.MASK
-
-static String getModifiersExText(int modifiers ) 1.4
-//返回用给定标志集描述的扩展或“ 按下” （down) 的修饰符字符串， 例如“Shift+Buttonl” 
-```
 > java.awt.Toolkit 1.0
-```
-public Cursor createCustomCursor(Image image,Point hotSpot,String name) 1.2
-//创建一个新的定制光标对象。
+>
+> ```java
+> public Cursor createCustomCursor(Image image,Point hotSpot,String name) 1.2
+> //创建一个新的定制光标对象。
+> 
+> 参数:
+> image 光标活动时显示的图像
+> hotSpot 光标热点（箭头的顶点或十字中心）
+> name 光标的描述， 用来支持特殊的访问环境
+> ```
 
-参数:
-image 光标活动时显示的图像
-hotSpot 光标热点（箭头的顶点或十字中心）
-name 光标的描述， 用来支持特殊的访问环境
-```
 > java.awtComponent 1.0
-```
-public void setCursor(Cursor cursor)//用光标图像设置给定光标
-```
+>
+> ```java
+> public void setCursor(Cursor cursor);	1.1
+> //用光标图像设置给定光标
+> ```
 ## AWT事件继承层次
 弄清了事件处理的工作过程之后，作为本章的结束，总结一下AWT事件处理的体系架构。前面已经提到，Java事件处理采用的是面向对象方法，所有的事件都是由java.util包中的EventObject类扩展而来的（公共超类不是Event, 它是旧事件模型中的事件类名。尽管现在不赞成使用旧的事件模型，但这些类仍然保留在Java库中)。
 
@@ -833,23 +841,23 @@ MouseAdapter
 
 ## 6 焦点事件
 组件可以触发焦点事件。组件可以使用
-```
+```java
 addFocusListener(FocusListener listener);
 ```
 注册焦点事件监视器，当组件获得焦点监视器后，如果组件从无输入焦点变成有输入焦点或从有输入焦点变成无输入焦点都会触发FocusEvent事件。创建监视器的类必须要实现FocusListener接口，该接口有两个方法：
-```
+```java
 public void focusGained(FocusEvent e);//监视器从无焦点输入变成有焦点输入
 public void focusLost(FocusEvnet e);//监视器从有焦点输入变成无焦点输入
 ```
 用户通过单击组件可以使得组件有输入焦点，同时也使得其他组件变成无输入焦点。
 一个组件也可调用
-```
+```java
 public boolean requestFocusInWindow();
 ```
 方法可以获得输入焦点。
 ## 7 键盘事件
 当按下，释放或敲击键盘上一个键时就就触发了键盘事件，在Java事件模式中，必须要有发生事件的事件源。当一个组件处于激活状态时，敲击键盘上一个键就导致这个组件触发键盘事件。当使用KeyListener接口处理键盘事件，有如下3个方法：
-```
+```java
 public void keyPessed(KeyEvent e);
 public void keyTyped(KeyEvent e);
 public void keyReleased(KeyEvent e);
@@ -857,11 +865,11 @@ public void keyReleased(KeyEvent e);
 某个组件使用addListener方法注册监视器后，当该组件处于激活状态时，用户按下键盘上的某个键时，触发keyEvent事件，监视器调用keyPressed方法；用户释放键盘上按下的键时，触发keyReleased方法。keyTyped方法是keyPressed和keyReleased方法的组合，当键按下又释放时，监视器调用keyTyped方法。  
 
 用KeyEvent类的
-```
+```java
 public int getKeyCode();
 ```
 方法，可以判断哪个键被按下，敲击或释放，getKeyCode方法返回一个键码值，也可以用KeyEvent类的
-```
+```java
 public char getKeyChar();
 ```
 判断哪个键被按下，敲击或释放，getKeyChar()方法返回键上的字符。
@@ -912,7 +920,7 @@ VK_UNMPAD0-VK_NUMPAD9 |小健盘上的0至9键
 VK_QUOTE|单引号'键
 VK_BACK_QUOTE|单引号'健
 当安装某些软件时，经常要求输人序列号码，并且要在几个文本框中依次输入。每个文本框中输入的字符数目都是固定的，当在第一个文本框输入了恰好的字符个数后,输人光标会自动转移到下一个文本框。例11. 11通过处理键盘事件来实现软件序列号的输入。当文本框获得输入焦点后，用户敲击键盘将使得当前文本框输入序列号触发KeyEvent事件，在处理事件时，程序检查文本框中光标的位置，如果光标已经到达指定位置，就将输入焦点转移到下一个文本框。程序运行效果如图11.12所示.
-```
+```java
 import java.awt.event.*;
 import javax.swing.*;
 import java.awt.*;
@@ -978,7 +986,7 @@ MVC是一种通过三个不同部分构造一个软件或组件的理想办法�
 **在设计程序时，可以将某个对象看作模型，然后为模型提供恰当的显示组件，即视图，为了对用户的操作做出响应，可以选择某个组件做控制器，当组件发生事件后，通过视图修改得到模型中维护着的数据，并让视图更新显示。**  
 
 如下例：首先编写一个封装三角形的类，然后再编写一个窗口。要求窗口使用三个文本框和一个文本区域为三角形对象中的数据提供视图，其中三个文本框用来显示和更新三角形对象的三个边的长度；文本区对象用来显示三角形的面积。窗口中有一个按钮，用户单击该按钮后，程序用三个文本框中的数据分别作为三角形的三个边的长度，并将计算结果显示在文本区。
-```
+```java
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -1083,7 +1091,7 @@ JDialog类和JFrame类都是window的子类，二者的实例都是底层容器�
 **注意：进行一个重要的操作之前，通过弹出一个有模式的对话框表明操作的重要性**
 ### 10.1 消息对话框
 消息对话框是有模式对话框，进行一个重要的操作之前，最好能弹出一个消息对话框。可以用javax.swing包中的JOptionPane类的静态方法：
-```
+```java
 public static void showMessageDialog(Component parentComponent,String message,String title,int messageType);
 ```
 创建一个消息对话框，其中参数parentComponent指定对话框可见时的位置，如果parentComponent为null，对话框会在屏幕的正前方显示出来；如果组件parentComponent不空，对话框在组件parentComponent的正前面居中显示。message指定对话框上显示的消息；title指定对话框的标题；
@@ -1097,7 +1105,7 @@ JOptionPane.PLAIN_MESSAGE
 ```
 这些值可以改变对话框的外观  
 **在下面的例子中：要求用户在文本框中只能输入英文字母，在输入非英文字母时，弹出消息提示框。**
-```
+```java
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
@@ -1142,7 +1150,7 @@ public class exercise{
 ```
 ### 10.2 输入对话框
 输入对话框包含供公户输入文本的文本框，一个确认和取消按钮，是有模式对话框。当对话框可见时，要求用户输入一个字符串。javax.swing包中的JOptionPane类的静态方法：
-```
+```java
 public static String showInputDialog(Component parentComponent,Object message,String title,int messageType);
 ```
 参数messageType可取的有效值是JOptionPane中的类常量：
@@ -1154,7 +1162,7 @@ QUESTION_MESSAGE
 PLAIN_MESSAGE
 ```
 **在下面的例子中，用户在输入对话框中输入若干个数字，如果单击输入对话框上的确定按钮，程序将计算这些数字的和。**
-```
+```java
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
@@ -1207,7 +1215,7 @@ public class exercise{
 ```
 ### 10.3确认对话框
 确认对话框是有模式对话框，可以用javax.swing包中的JOptionPane类的静态方法：
-```
+```java
 public static int showConfirmDialog(Component parentComponent,Object message,String title,int optionType);
 ```
 optionType取下列有效值：
@@ -1225,7 +1233,7 @@ JOptionPane.OK_OPTION
 JOptionPane.CLOSED_OPTION
 ```
 在下面的例子中，用户在为文本框中输入账户名字，按回车键后，将弹出一个确认对话框。如果单击确认对话框上的 是，就将名字放入文本区。
-```
+```java
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
@@ -1264,11 +1272,11 @@ public class exercise{
 ```
 ### 10.4 颜色对话框
 可以用javax.swing包中的JColorChooser类的静态方法：
-```
+```java
 public static Color showDialog(Component component,String title,Color initialColor);
 ```
 创建一个有模式的颜色对话框，其中参数component指定颜色对话框可见时的位置，颜色对话框再参数component指定的组件正前方显示出来，如果component为null，颜色对话框在屏幕的正前方显示出来。title指定对话框的标题，initialColor指定颜色对话框返回的初始颜色。用户通过颜色对话框选择颜色后，如果单击“确定”按钮，那么颜色对话框将消失，showDialog()方法返回对话框选择的颜色对象；如果单击“撤销”按钮或关闭图标，那么颜色对话框将消失，showDialog()方法返回null.  
-```
+```java
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
@@ -1301,7 +1309,7 @@ public class exercise{
 ```
 ### 10.5 文件对话框
 文件对话框是一个从文件中选择文件的界面，javax.swing包中的JFileChooser类可以创建文件对话框，使用该类的构造方法JFileChooser()创建初始不可见的有模式的文件对话框。然后用文件对话框调用下述两个方法：
-```
+```java
 showSaveDialog(Component a);
 showOpenDialog(Component a);
 ```
@@ -1309,7 +1317,7 @@ showOpenDialog(Component a);
 
 用户单击文件对话框上的 确定，取消按钮或关闭图标，文件对话框将消失。ShowSaveDialog()或showOpenDialog()方法返回下列常量之一：
 
-```
+```java
 JFileChooser.APPROVE_OPTION
 JFileChooser.CANCEL_OPTION
 ```

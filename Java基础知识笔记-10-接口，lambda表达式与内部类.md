@@ -15,7 +15,7 @@ Java基础知识笔记-8-接口，lambda表达式与内部类
 
 &emsp;&emsp;使用关键字interface来定义一个接口。接口的定义和类的定义很相似，分为接口的声明和接口体
 例如：
-```
+```java
 interface Printable{
 	final int MAX=100;
 	void add();
@@ -29,7 +29,7 @@ interface Printable{
 &emsp;&emsp;接口体包含常量的声明（没有变量）和抽象方法两部分。
 
 #### 接口体中中只有抽象的方法和普通的方法。而且接口体中所有常量的访问权限一定都是public（允许省略public，final修饰符），所有的抽象方法的访问权限一定都是public（允许省略public，abstract修饰符）例如：
-```
+```java
 interface Printable{
 	public final int MAX=100;
 	public abstract void add();
@@ -37,7 +37,7 @@ interface Printable{
 }
 ```
 #### 在JDK8以前的版本中，接口只能包含抽象方法，从JDK8开始，为了提高代码的可重用性，允许在接口中定义默认方法和静态方法。默认方法用default关键字来声明，拥有默认的实现，接口的实现类既可以直接访问默认方法，也可以覆盖它，重新实现该方法，例如下例：
-```
+```java
 public interface MyIFC{
 	default void method1(){
 		System.out.println("default method1");//声明了一个默认方法
@@ -49,7 +49,7 @@ public interface MyIFC{
 }
 ```
 &emsp;&emsp;以下类实现了上面这个接口，Tester类作为非抽象类，必须实现MyIFC接口的抽象method3()方法。tester的实例可以直接访问在接口中定义的method1()默认方法
-```
+```java
 public class Tester implements MyIFC{
 	public void method3(){//实现接口中的method3()方法
 		System.out.println("method3);
@@ -65,23 +65,23 @@ public class Tester implements MyIFC{
 ```
 &emsp;&emsp;接口中的静态方法只能在接口内部被访问，或者其他程序通过接口的名字来访问它的静态方法，如果试图通过实现接口的类的实例来访问该静态方法，会导致编译错误，例如：
 
-```
+```java
 t.method2();//编译出错，Tester实例不能访问MyIFC接口的静态方法
 MyIFC.method2();//合法，可以通过接口的名字来访问它的静态方法
 ```
 &emsp;&emsp;另外，需要注意的是，在接口中为方法提供默认实现虽然可以提高代码的可重用性，但还是要谨慎地使用这一特性。因为在层次关系比较复杂的软件系统中，这一特性会使程序代码导致歧异和混淆。
 
 #### 接口没有构造方法，不能被实例化。在接口中定义构造方法是非法的，例如：
-```
+```java
 public interface A{
 	public A(){//编译出错，接口中不允许定义构造方法
-	...
+		...
 	}
 	void method();
 }
 ```
 #### 虽然不允许创建接口的实例，但是允许定义接口类型的引用变量，该变量引用实现了这个接口的类的实例，例如：
-```
+```java
 //引用变量t被定义为Photographable接口类型，他引用Camera实例
 Photographable t=new Camera();
 ```
@@ -96,15 +96,15 @@ Photographable t=new Camera();
 - 2)对接口中的所有方法进行定义。
 
 &emsp;&emsp;如A类实现Printable和Addable接口
-```
+```java
 class A implements Printable,Addable
 ```
 &emsp;&emsp;再例如Animal的子类Dog实现Eatable和sleepable接口
-```
+```java
 class Dog extends Animal implements Eatable,Sleepable
 ```
 &emsp;&emsp;**如果一个非抽象类实现了某个接口，那么这个类必须重写该接口的所有方法，需要注意的是，由于接口中的方法一定是`public abstract方法`**，所以非抽象类在重写接口方法时不仅要去掉abstract修饰给出的方法体，而且方法的访问权限一定要明显的用public来修饰（否则降低了访问权限，这是不允许的）实现接口的非抽象类一定要重写接口的方法，因此也称这个类实现了接口的方法，Java提供的接口都在相应的包中，通过import语句不仅可以引入包中的类，还可以引入包中的接口，例如:
-```
+```java
 import java.io.*;
 ```
 &emsp;&emsp;类重写的接口方法以及接口中的常量可以直接被类的对象调用，而且常量也可以用接口名直接调用。  
@@ -120,7 +120,7 @@ import java.io.*;
 
 
 例如:
-```
+```java
 interface Computable{
 	final int MAX=100;
 	void speak();
@@ -151,7 +151,7 @@ Comparable<String>,而且String.compareTo方法可以按字典顺序比较字符
 现在假设我们希望按长度递增的顺序对字符串进行排序，而不是按字典顺序进行排序。肯定不能让String类用两种不同的方式实现compareTo方法---更何况，String类也不应由我们来修改。
 
 要处理这种情况，Arrays.Sort方法还有第二个版本，有一个数组和一个比较器(comparator)作为参数，比较器是实现了Comparator接口的类的实例。
-```
+```java
 public interface Comparators
 {
 	int compare(T first, T second);
@@ -159,7 +159,7 @@ public interface Comparators
 ```
 要按长度比较字符串，可以如下定义一个实现Comparator<String>的类：
 
-```
+```java
 class LengthComparator implements Comparator<String>
 {
 	public int compare(String first, String second) {
@@ -168,7 +168,7 @@ class LengthComparator implements Comparator<String>
 }
 ```
 具体完成比较时，需要建立一个实例：
-```
+```java
 Comparator<String> comp = new LengthComparator();
 if (comp.compare(words[i], words[j]) > 0)...
 ```
@@ -176,7 +176,7 @@ if (comp.compare(words[i], words[j]) > 0)...
 > 注释：尽管LengthComparator对象没有状态，不过还是需要建立这个对象的一个实例。我们需要这个实例来调用compare方法---它不是一个静态方法。
 
 要对一个数组排序，需要为Arrays.sort方法传入一个LengthComparator对象：
-```
+```java
 String[] friends = { "Peter", "Paul", "Mary" };
 Arrays,sort(friends, new LengthComparatorO):
 ```
@@ -190,13 +190,13 @@ Arrays,sort(friends, new LengthComparatorO):
 
 &emsp;&emsp;假如，假设Com是一个接口，那么就可以用Com声明一个变量:
 
-```
+```java
 Com com;
 ```
 &emsp;&emsp;内存模型如图所示，此时的com是一个空接口，因为com变量中还没有存放实现该接口的类的实例的引用。  
 
 &emsp;&emsp;假设ImpleCom类是实现Com接口，用ImpleCom创建名字为object的对象，那么object对象不仅可以调用ImpleCom类中原有的方法，还可以调用该类实现的接口方法。
-```
+```java
 ImpleCom object=new ImpleCom();
 ```
 &emsp;&emsp;在Java中，接口回调是指可以把实现某一类接口的类创建的的对象的引用赋给该接口声明的接口变量中，那么该接口变量就可以调用被类实现的接口方法。实际上，当接口变量调用被类实现的接口方法时，就是通知相应的对象调用这个方法。  
@@ -208,7 +208,7 @@ ImpleCom object=new ImpleCom();
 ### 5.2 接口能够扩展
 &emsp;&emsp;使用关键字extends，一个接口可以继承另一个接口。扩展接口的语法与继承类的语法一样，当一个类实现继承了其他接口的接口时，他必须在接口继承链中定义的所有方法提供实现方式。
 实例代码：
-```
+```java
 interface A{
 	void meth1();
 	void meth2();
@@ -246,7 +246,7 @@ class IFExtends{
 如何告之定时器做什么呢？ 在很多程序设计语言中，可以提供一个函数名，定时器周期性地调用它。但是，在Java 标准类库中的类采用的是面向对象方法。它将某个类的对象传递给定时器，然后，定时器调用这个对象的方法。由于对象可以携带一些附加的信息，所以传递一个对象比传递一个函数要灵活得多。
 
 当然，定时器需要知道调用哪一个方法，并要求传递的对象所属的类实现了java.awt.event包的ActionListener接口。下面是这个接口：
-```
+```java
 public interface ActionListener {
 	void actionPerformed(ActionEvent event);
 }
@@ -254,7 +254,7 @@ public interface ActionListener {
 当到达指定的时间间隔时，定时器就调用actionPerformed方法。
 
 假设希望每隔10秒钟打印一条信息“ At the tone, the time is...”， 然后响一声，就应该定义一个实现ActionListener接口的类，然后将需要执行的语句放在actionPerformed方法中。
-```
+```java
 class TimePrinter implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		System.out.println("At the tone, the time is " + new Date())；
@@ -265,14 +265,14 @@ class TimePrinter implements ActionListener {
 需要注意actionPerformed方法的ActionEvent参数。这个参数提供了事件的相关信息，例如，产生这个事件的源对象。有关这方面的详细内容请参看第8章。在这个程序中，事件的详细信息并不重要，因此，可以放心地忽略这个参数。
 
 接下来，构造这个类的一个对象，并将它传递给Timer构造器。
-```
+```java
 ActionListener listener = new TimePrinter();
 Timer t = new Timer(10000, listener) ;
 ```
 Timer构造器的第一个参数是发出通告的时间间隔，它的单位是毫秒。这里希望每隔10秒钟通告一次。第二个参数是监听器对象。
 
 最后，启动定时器：
-```
+```java
 t.start();
 ```
 每隔10秒钟，下列信息显示一次，然后响一声铃。
@@ -291,7 +291,7 @@ At the tone, the time is Wed Apr 13 23:29:08 PDT 2016
 上面是个比较经典的例子，下面用代码实现上述例子：
 
 - （1）先定义一个接口
-```
+```java
 package JieKouHuiDiao;
 //定义一个接口
 public interface JieKou {
@@ -299,7 +299,7 @@ public interface JieKou {
 }
 ```
 - （2）定义一个Boss类实现接口
-```
+```java
 package JieKouHuiDiao;
 public class Boss implements JieKou{
 //定义一个老板实现接口
@@ -310,7 +310,7 @@ public class Boss implements JieKou{
 }
 ```
 - （3）定义一个员工Employee类
-```
+```java
 package JieKouHuiDiao;
 public class Employee {
 	//接口属性，方便后边注册
@@ -328,7 +328,7 @@ public class Employee {
 }
 ```
 - （4）测试类
-```
+```java
 复制代码
 package JieKouHuiDiao;
 public class Test {
@@ -345,7 +345,7 @@ public class Test {
 ---
 ## 6 接口与多态
 &emsp;&emsp;由接口产生多态就是指不同的类在实现同一个接口时可能具有不同的实现方式，那么接口变量在回调接口方法时就可能具有多种形态。
-```
+```java
 interface ComputerAverage{
 	public double average(double a,double b);
 }
@@ -394,23 +394,23 @@ public class exercise{
 ## 9 接口与抽象类
 可能会产生这样一个疑问：为什么Java程序设计语言还要不辞辛苦地引入接口概念？为什么不将Comparable直接设计成如下所示的
 抽象类。
-```
+```java
 abstract class Comparable // why not?{
 	public abstract int compareTo(Object other);
 }
 ```
 然后，Employee类再直接扩展这个抽象类，并提供compareTo方法的实现：
-```
+```java
 class Employee extends Comparable // why not?{
 	public int compareTo(Object other) { . . . }
 }
 ```
 非常遗憾，使用抽象类表示通用属性存在这样一个问题：每个类只能扩展于一个类。假设Employee类已经扩展于一个类，例如Person,它就不能再像下面这样扩展第二个类了：
-```
+```java
 class Employee extends Person, Comparable // Error
 ```
 但每个类可以像下面这样实现多个接口：
-```
+```java
 class Employee extends Person implements Comparable // OK
 ```
 有些程序设计语言允许一个类有多个超类，例如C++。我们将此特性称为多重继承(multiple inheritance)。而Java的设计者选择了不支持多继承，其主要原因是多继承会让语言本身变得非常复杂（如同C++)，效率也会降低（如同Eiffel)。
@@ -423,15 +423,15 @@ class Employee extends Person implements Comparable // OK
 ### Lambda表达式的语法
 
 基本语法:
-```
+```java
 (parameters) -> expression
 ```
 或
-```
+```java
 (parameters) ->{ statements; }
 ```
 下面是Java lambda表达式的简单例子:
-```
+```java
 // 1. 不需要参数,返回值为 5  
 () -> 5  
 // 2. 接收一个参数(数字类型),返回其2倍的值  
@@ -449,7 +449,7 @@ x -> 2 * x
 lambda表达式是一个可传递的代码块，可以在以后执行一次或多次。具体介绍语法（以及解释这个让人好奇的名字）之前，下面先退一步，观察一下我们在Java中的哪些地方用过这种代码块。
 
 已经了解了如何按指定时间间隔完成工作。将这个工作放在一个ActionListener的actionPerformed方法中：
-```
+```java
 class Worker implements ActionListener
 {
 	public void actionPerformed(ActionEvent event)
@@ -461,7 +461,7 @@ class Worker implements ActionListener
 想要反复执行这个代码时， 可以构造Worker类的一个实例。然后把这个实例提交到一个Timer对象。这里的重点是actionPerformed方法包含希望以后执行的代码。
 
 或者可以考虑如何用一个定制比较器完成排序。如果想按长度而不是默认的字典顺序对字符串排序，可以向sort方法传入一个Comparator对象：
-```
+```java
 class LengthComparator implements Comparator<String>
 {
 	public int compare(String first, String second)
@@ -488,18 +488,18 @@ compare方法不是立即调用。实际上，在数组完成排序之前，sort
 first.length() - second.length()
 ```
 first和second是什么？它们都是字符串。Java是一种强类型语言，所以我们还要指定它们的类型：
-```
+```java
 (String first, String second)
 	-> first.length() - second.length()
 ```
 这就是你看到的第一个表达式。lambda表达式就是一个代码块，以及必须传入代码的变量规范。
 
 为什么起这个名字呢？ 很多年前，那时还没有计算机，逻辑学家Alonzo Church想要形式化地表示能有效计算的数学函数。（奇怪的是，有些函数已经知道是存在的，但是没有人知道该如何计算这些函数的值。）他使用了希腊字母lambda(λ)来标记参数如果他知道Java API, 可能就会写为
-```
+```java
 λfirst.λsecond.first.length() - second.length()
 ```
 你已经见过Java中的一种lambda表达式形式：参数，箭头（->) 以及一个表达式。如果代码要完成的计算无法放在一个表达式中，就可以像写方法一样，把这些代码放在括号中，并包含显式的return语句。例如：
-```
+```java
 (String first, String second) ->
 	{
 		if (first.length() < second.length()) return -1;
@@ -508,11 +508,11 @@ first和second是什么？它们都是字符串。Java是一种强类型语言�
 	}
 ```
 即使lambda表达式没有参数，仍然要提供空括号，就像无参数方法一样：
-```
+```java
 0 -> { for (int i = 100; i >= 0;i ) System.out.println(i); }
 ```
 如果可以推导出一个lambda表达式的参数类型，则可以忽略其类型。例如：
-```
+```java
 Comparator<String> comp
 	= (first, second) // Same as (String first, String second)
 		-> first.length() - second.length();
@@ -520,13 +520,13 @@ Comparator<String> comp
 在这里，编译器可以推导出first和second必然是字符串，因为这个lambda表达式将赋给一个字符串比较器。（下一节会更详细地分析这个赋值。）
 
 如果方法只有一参数， 而且这个参数的类型可以推导得出，那么甚至还可以省略小括号：
-```
+```java
 ActionListener listener = event ->
 	System.out.println("The time is " + new Date()");
 	// Instead of (event) -> . . . or (ActionEvent event) -> . . .
 ```
 无需指定lambda表达式的返回类型。lambda表达式的返回类型总是会由上下文推导得出。例如，下面的表达式
-```
+```java
 (String first, String second) -> first.length() - second.length()
 ```
 可以在需要int类型结果的上下文中使用。
@@ -534,7 +534,7 @@ ActionListener listener = event ->
 > 注释：如果一个lambda表达式只在某些分支返回一个值，而在另外一些分支不返回值，这是不合法的。例如，`(int x)-> { if (x >= 0) return 1; } `就不合法。
 
 程序清单6-6中的程序显示了如何在一个比较器和一个动作监听器中使用lambda表达式。
-```
+```java
 程序清单6-6 lambda/LambdaTest.java
 package lambda;
 import java.util.*;
@@ -544,6 +544,7 @@ import javax.swing.Timer;
 * This program demonstrates the use of lambda expressions.
 * ©version 1.0 2015-05-12
 * ©author Cay Horstmann
+*/
 public class LambdaTest
 {
 	public static void main(String[] args)
@@ -573,14 +574,14 @@ public class LambdaTest
 > 你可能想知道为什么函数式接口必须有一个抽象方法。不是接口中的所有方法都是抽象的吗？实际上，接口完全有可能重新声明Object类的方法，如toString 或clone,这些声明有可能会让方法不再是抽象的。（Java API中的一些接口会重新声明Object方法来附加javadoc注释Comparator AP丨就是这样一个例子。）更重要的是，在JavaSE 8中，接口可以声明非抽象方法。
 
 为了展示如何转换为函数式接口，下面考虑Arrays.sort方法。它的第二个参数需要一个Comparator实例，Comparator就是只有一个方法的接口，所以可以提供一个lambda表达式：
-```
+```java
 Arrays.sort (words ,
 	(first , second) -> first.length() - second.length()) ;
 ```
 在底层，Arrays.sort方法会接收实现了Comparator<String>的某个类的对象。在这个对象上调用compare方法会执行这个lambda表达式的体。这些对象和类的管理完全取决于具体实现，与使用传统的内联类相比，这样可能要高效得多。最好把lambda表达式看作是一个函数，而不是一个对象，另外要接受lambda表达式可以传递到函数式接口
 	
 lambda表达式可以转换为接口，这一点让lambda表达式很有吸引力。具体的语法很简短。下面再来看一个例子：
-```
+```java
 Timer t = new Timer(1000, event ->
 	{
 		System.out.println("At the tone, the time is " + new DateO);
@@ -603,7 +604,7 @@ Java支持在一个类中声明另一个类，这样的类叫做内部类。而�
 内部类仅供它的外嵌类使用，其他类不可以用某个类的内部类声明对象。另外，由于内部类的外嵌类的成员变量在内部类中仍然有效，使得内部类和外嵌类的交互更加方便。 
 
 例如某种类型的农场饲养了一种特殊种类的牛，但不希望其他农场饲养这种特殊种类的牛，那么这种类型的农场就可以创建这总特殊牛的类作为自己的内部类。
-```
+```java
 class RedCowFrom{
 	String fromName;
 	RedCow cow;

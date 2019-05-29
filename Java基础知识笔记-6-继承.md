@@ -5,9 +5,9 @@ Java基础知识笔记-6-继承
 **Java中，一个子类只能继承一个父类，不支持多重继承；**
 ## 1 继承的基本语法
 格式如下：
-```
+```java
 class Student extends People{
-…
+	...
 }
 ```
 关键字extends表明正在构造的新类派生于一个已存在的类。已存在的类称为超类(superclass)、基类(base class)或父类(parent class);新类称为子类( subclass)、派生类(derived class)或孩子类(child class)。超类和子类是Java程序员最常用的两个术语，而了解其他语言的程序员可能更加偏爱使用父类和孩子类，这些都是继承时使用的术语。
@@ -28,7 +28,7 @@ class Student extends People{
 覆盖方法必须满足多种约束，下面分别介绍
 
 #### 1.子类方法的名称，参数签名和返回类型必须与父类方法的名称，参数签名和返回类型一致。
-```
+```java
 public class Base{
 	public void method(){
 	}
@@ -46,7 +46,7 @@ public class Base{
 
 #### 5.父类的静态方法不能被子类覆盖为非静态方法。
 例如:
-```
+```java
 public Base{
 	public static void method(){
 	}
@@ -64,7 +64,7 @@ public class Sub extends Base{
 
 #### 9.父类的抽象方法可以被子类通过两种途径覆盖：一是子类实现父类的抽象方法; 二是子类重新声明父类的抽象方法。
 例如以下代码合法：
-```
+```java
 public abstract class Base{
 	abstract void method1();
 	abstract void method2();
@@ -76,7 +76,7 @@ public abstract class Sub extends Base{
 ```
 #### 10.父类的非抽象方法可以被覆盖为抽象方法。
 例如：
-```
+```java
 public class Base{
 	void method(){
 	}
@@ -102,7 +102,7 @@ public abstract class Sub extends Base{
 
 重写方法即可以操作继承的成员变量，调用继承的方法，也可以操作子类新声明的成员变量，调用新定义的其他方法，但无法操作被子类隐藏的方法，如果子类想使用被隐藏的方法或成员变量，必须使用关键字super。
 例：
-```
+```java
 class University{
 	void enterRule(double math,double english,double chinese){
 		double total=math+english+chinese;
@@ -137,7 +137,7 @@ public class exercise{
 }
 ```
 例：
-```
+```java
 class A{
 	float computer(float x,floaty){
 		return x+y;
@@ -163,7 +163,7 @@ public class exercise{
 }
 ```
 但是如果子类重写方法时如下就会出现错误：
-```
+```java
 double computer(float x,float y){
 	return x*y;
 }
@@ -183,7 +183,7 @@ double computer(float x,float y){
 > 子类一旦隐藏了继承的成员变量，那么子类创建的对象就不再拥有该变量，该变量将归关键字super所有，同样子类一旦隐藏了继承的方法，那么子类创建的对象就不能调用被隐藏的方法，该方法的调用由关键字super负责。
 
 因此，如果在子类中想使用被子类隐藏的成员变量或方法就需要使用关键字super。
-```
+```java
 class Bank {
 	int saveMoney;
 	int year;
@@ -237,6 +237,7 @@ public class exercise{
 ```
 运行结果：
 ```
+
 ```
 
 ### 5.2 使用super调用父类的构造方法
@@ -253,7 +254,7 @@ public class exercise{
 super();
 ```
 例如：
-```
+```java
 class Student{
 	int number;String name;
 	Student(){
@@ -285,7 +286,7 @@ public class exercise {
 
 ### 5.3 何时调用构造函数
 现在有这样一个问题：当创建父类对象，首先执行哪一个函数，是子类的构造函数还是父类定义的构造函数？答案是在类的层次结构中，构造函数的调用顺序是从父类到子类来进行的，**不仅如此，因为super()必须是子类构造函数中执行的第一条语句，所以无论是否使用super()，构造函数的调用顺序都是相同的。如果没有使用super(),就会执行每一个父类的默认（无形参）构造函数**
-```
+```java
 class A{
 	A(){
 		System.out.println("Constructing A.");
@@ -346,7 +347,7 @@ graph LR
 1.不要将父类创建的对象和子类对象的上传型对象混淆。  
 2.可以将对象的上传型对象在强制转换到一个子类对象，这时，该子类对象又具备了子类所有属性和功能。  
 3.不能将父类创建的对象的引用赋值给子类声明的对象  
-```
+```java
 class leirenyuan{//类人猿
 	void crySpeak(String s){
 		System.out.println(s);
@@ -387,7 +388,7 @@ monkey.computer(10,10);
 如下面这个例子，显示了饲养员Feeder，食物Feed，动物Animal，以及它的子类的类框图
 
 可以把饲养员 动物和食物看作独立的子系统。Feeder类的定义如下：
-```
+```java
 public class Feeder{
 	public void feed(Animals animal,Food food){
 		animal.eat(food);
@@ -405,7 +406,7 @@ feeder.feed(animal.food);//给猫喂鱼
 以上animal变量被定义为Animal类型，但实际上有可能引用Dog或Cat的实例。可见animal变量有多种状态，一会变成猫，一会变成狗，这就是多态的字面含义。
 
 Java语言允许某个实例的引用变量引用子类的实例，而且可以对这个引用变量进行类型转换：
-```
+```java
 Animal animal=new Dog();
 Dog dog=(Dog)animal;//向下转型，把animal类型转换为Dog类型
 Creature creature=animal;//向上转型，把animal类型转换为Creature类型
@@ -417,7 +418,7 @@ Creature creature=animal;//向上转型，把animal类型转换为Creature类型
 
 当一个类有很多子类时，并且这些子类都重写了父类中的某个方法。那么当我们把子类创建的对象的引用都放到一个父类的对象中，就得到了该对象的一个上传型对象，那么这个上传型对象在调用这个方法时就可能具有多种形态，因为不同的子类在重写父类的方法时可能产生不同的行为。
 
-```
+```java
 class Animal{
 	void cry(){
 	}
@@ -450,7 +451,7 @@ public class exercise{
 
 在设计一个系统时，可以通过abstract类中声明若干个abstract方法，表明这些方法在整个系统设计中的重要性，方法体的内容细节由它的非abstract子类去完成。  
 例如:
-```
+```java
 abstract class Geometry{
 	public abstract double getArea();
 }
@@ -458,7 +459,7 @@ abstract class Geometry{
 Pillar类的设计者可以面向Geometry类编写代码，即Pillar类应当把Geometry对象当作自己的成员，该成员可以调用Geometry的子类重写`getArea()`方法，这样，Pillar类就可以将计算底面积的任务指派给Geometry类的子类的实例；  
 
 以下pillar类的设计不再依赖具体类，而是面向Geometry类，即Pillar类中的bottom对象是抽象类Geometry声明的对象，而不是具体类声明的对象，重新设计的pillar类的代码如下：
-```
+```java
 class Pillar{//柱体
 	Geometry bottom;
 	double height;
@@ -516,23 +517,23 @@ public class exercise{
 - 区分对象的属性与继承
 ## 8 Object类
 Object类是Java中所有类的始祖，在Java中每个类都是由它扩展而来的。但是并不需要这样写：
-```
+```java
 public class Employee extends Object
 ```
 如果没有明确地指出超类，Object就被认为是这个类的超类。由于在Java中，每个类都是由Object类扩展而来的，所以，熟悉这个类提供的所有服务十分重要。本章将介绍一些基本的内容，没有提到的部分请参看后面的章节或在线文档（在Object 中有几个只在处理线程才会被调用的方法，有关线程内容请参见第14章)。
 
 可以使用Object类型的变量引用任何类型的对象：
-```
+```java
 Object obj = new EmployeeC'Harry Hacker", 35000) ;
 ```
 当然，Object类型的变量只能用于作为各种值的通用持有者。要想对其中的内容进行具体的操作，还需要清楚对象的原始类型，并进行相应的类型转换：
-```
+```java
 Employee e = (Employee) obj ;
 ```
 **在Java中，只有基本类型(primitive types)不是对象，例如，数值、字符和布尔类型的值都不是对象。**
 
 所有的数组类塱，不管是对象数组还是基本类型的数组都扩展了Object类。
-```
+```java
 Employee[] staff = new Employee[10];
 obj = staff; // OK
 obj = new int[10]; // OK
