@@ -1097,10 +1097,10 @@ public class BlockingQueueTest
 	private static final File DUMMY = new File("");
 	private static BlockingQueue<File> queue = new ArrayBlockingQueueo(FILE_QUEUE_SIZE);
 	public static void main(String[] args)
-    {
+	{
 		try (Scanner in = new Scanner(System.in))
 		{
-			System,out.print("Enter base directory (e.g. /opt/jdkl.8.0/src): ");
+			System.out.print("Enter base directory (e.g. /opt/jdkl.8.0/src): ");
 			String directory = in.nextline();
 			System.out.print("Enter keyword (e.g. volatile): ");
 			String keyword = in.nextLine();
@@ -1141,9 +1141,9 @@ public class BlockingQueueTest
 					}
 				};
 				new Thread(searcher).start();
-            }
-        }
-    }
+			}
+		}
+	}
 	/**
 	* Recursively enumerates all files in a given directory and its 	subdirectories.
 	* @paran directory the directory in which to start 
@@ -1157,8 +1157,8 @@ public class BlockingQueueTest
 				enumerate(file);
 			else
 				queue.put(file);
-        }
-    }
+		}
+	}
 	/**
 	* Searches a file for a given keyword and prints all matching lines.
 	* @param file the file to search
@@ -1174,10 +1174,10 @@ public class BlockingQueueTest
 				lineNumber++;
 				String line = in.nextLine();
 				if (line,contains(keyword))
-					System.out.printf("%s:%d:%s%n", fi1e.getPath(), lineNumber, line);
-            }
-        }
-    }
+					System.out.printf("%s:%d:%s%n", file.getPath(), lineNumber,line);
+			}
+		}
+	}
 }
 ```
 
