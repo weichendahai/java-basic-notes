@@ -552,7 +552,7 @@ public class Bank
 	private Condition sufficientFunds;
 
 	/**
-    * Constructs the bank. 
+	* Constructs the bank. 
 	* @param n the number of accounts 
 	* @param initialBalance the initial balance for each account
 	*/
@@ -853,7 +853,7 @@ Java设计者以不是很精确的方式采用了监视器概念，Java中的每
 - 多处理器的计算机能够暂时在寄存器或本地内存缓冲区中保存内存中的值。结果是，运行在不同处理器上的线程可能在同一个内存位置取到不同的值。
 - 编译器可以改变指令执行的顺序以使吞吐量最大化。这种顺序上的变化不会改变代码语义，但是编译器假定内存的值仅仅在代码中有显式的修改指令时才会改变。然而，内存的值可以被另一个线程改变！ 
 
-如果你使用锁来保护可以被多个线程访问的代码， 那么可以不考虑这种问题。编译 器被要求通过在必要的时候刷新本地缓存来保持锁的效应，并且不能不正当地重新排序 指令。详细的解释见JSR 133的Java内存模型和线程规范（参看http://www.jcp.org/en/jsr/detail?id=133）该规范的大部分很复杂而且技术性强，但是文档中也包含了很多解释得很清晰的例子。在http://www-106.ibm.com/developerworks/java/library/j-jtp02244_html有Brian Goetz写的一个更易懂的概要介绍。 
+如果你使用锁来保护可以被多个线程访问的代码， 那么可以不考虑这种问题。编译 器被要求通过在必要的时候刷新本地缓存来保持锁的效应，并且不能不正当地重新排序 指令。详细的解释见JSR 133的Java内存模型和线程规范(参看http://www.jcp.org/en/jsr/detail?id=133) 该规范的大部分很复杂而且技术性强，但是文档中也包含了很多解释得很清晰的例子。在http://www-106.ibm.com/developerworks/java/library/j-jtp02244.html 有Brian Goetz写的一个更易懂的概要介绍。 
 
 > 注释：Brian Goetz给出了下述 “同步格言”：“如果向一个变量写入值，而这个变量接下来可能会被另一个线程读取，或者，从一个变量读值，而这个变量可能是之前被另一个线程写入的，此时必须使用同步”。 
 
