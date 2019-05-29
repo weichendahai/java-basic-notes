@@ -70,7 +70,7 @@ public class Example10_2 {
 	}
 }
 ```
-```
+```java
 //FileAccept. java
 
 import java.io.*;
