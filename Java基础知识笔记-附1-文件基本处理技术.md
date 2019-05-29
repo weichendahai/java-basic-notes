@@ -509,7 +509,7 @@ RandomAccessFile流对文件的读写比顺序读写更为灵活。
 //[例10.8]
 //Example10 8. java
 
-import java.io. * ;
+import java.io.* ;
 public class Exanple10{
 	public static void Bain(String args[]) {
 		RandorAccessFile inAndOut= null;
