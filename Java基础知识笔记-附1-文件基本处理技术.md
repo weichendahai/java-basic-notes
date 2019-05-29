@@ -69,7 +69,8 @@ public class Example10_2 {
 		}
 	}
 }
-
+```
+```
 //FileAccept. java
 
 import java.io.*;
