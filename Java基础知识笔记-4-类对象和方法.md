@@ -1090,7 +1090,7 @@ javadoc -d docDirectory *. java
 如果省略了`-d docDirectory`选项，那HTML文件就会被提取到当前目录下。这样有可能会带来混乱，因此不提倡这种做法。
 
 可以使用多种形式的命令行选项对javadoc程序进行调整。例如，可以使用-author和-version选项在文档中包含`@author`和`@version`标记（默认情况下，这些标记会被省略)。另一个很有用的选项是-link, 用来为标准类添加超链接。例如，如果使用命令
-```j
+```
 javadoc -link http://docs.oracle.eom/:javase/8/docs/api *.java
 ```
 那么，所有的标准类库类都会自动地链接到Oracle网站的文档。如果使用-linksource选项，则每个源文件被转换为HTML (不对代码着色，但包含行编号)，并且每个类和方法名将转变为指向源代码的超链接。
