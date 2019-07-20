@@ -89,7 +89,7 @@ public ObeceSurce();//该方法是从Enentobiect继承的方法，ActionEvent事
 public String getActionCommand();//ActionEvent对象调用该方法可以获取发生ActionEvent事件时，和该事件相关的一个命令字符串，对于文本框，当发生ActionEvent事件时，文本框中的文本字符串就是和该事件相关的一个命令字符串.
 ```
 ### 实例1
-例11.5处理文本框上触发的ActionEvent事件。在文本框text中输人字符串回车，监视器负责计算字符串的长度，并在命令行窗口显示字符串的长度。例11.5程序运行效果如图11.7和图11.8所示。
+例11.5处理文本框上触发的ActionEvent事件。在文本框text中输入字符串回车，监视器负责计算字符串的长度，并在命令行窗口显示字符串的长度。例11.5程序运行效果如图11.7和图11.8所示。
 ```java
 import java.awt.*;
 import javax.swing.*;
