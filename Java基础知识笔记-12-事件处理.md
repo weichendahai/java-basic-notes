@@ -1,4 +1,4 @@
-Java基础知识笔记-10-事件处理
+入Java基础知识笔记-10-事件处理
 
 # 事件处理
 学习组件除了要熟悉组建的属性和功能外，一个更重要的方面是学习怎样处理组建上发生的界面事件，当用户在文本框中输入文本后按回车，单击按钮，在一个下拉式列表中选择一个条目进行一个条目等操作时，都发生界面事件，例如，用户单击一个确定或者取消的按钮，程序可能需要做出不同的处理。
@@ -28,7 +28,7 @@ Java程序设计环境折中了Visual Basic与原始C的事件处理方式，因
 ```
 addActionListener(监视器);
 ```
-对于注册了监视器的文本框，在文本框获得输人焦点后,如果用户按回车键,Java运行环境就自动用Actionven类创建一个对象，即发生了ActionEvent事件。也就是说，事件源注册监视器之后，相应的操作就会导致相应的事件地发生，并通知监视器，监视器就会出相应的处理。
+对于注册了监视器的文本框，在文本框获得输入焦点后,如果用户按回车键,Java运行环境就自动用Actionven类创建一个对象，即发生了ActionEvent事件。也就是说，事件源注册监视器之后，相应的操作就会导致相应的事件地发生，并通知监视器，监视器就会出相应的处理。
 ##### 3.处理事件的接口
 
 监视器负责处理事件源发生的事件。监视器是一个对象，为了处理事件源发生的事件，监视器这个对象会自动调用一个方法来处理事件。那么监视器去调用哪个方法呢？我们我知道，对象可以调用创建它的那个类中的方法，那么它到底调用该类中的哪个方法呢？Java规定为了让监视器这个对象能对事件源发生的事件进行处理，创建该监视器对象的以实现相应的接口，即必须在类体中重写接口中的所有方法，那么当事件源发生事，监视器就自动调用被类重写的某个接口方法。事件处理模式如图11.6所示。
@@ -550,7 +550,7 @@ MouseListener接口中有如下方法：
 ```java
 mousePressed(MouseEvent);//负责处理在组件上按下鼠标键触发的鼠标事件。即当你在事件源按下鼠标键时监视器调用接口中的这个方法对事件作出处理。
 mouseReleased(MouseEvent);//负责处理在组件上释放鼠标键触发的鼠标事件。即当你在事件源释放鼠标键时，监视器调用接口中的这个方法对事件作出处理。
-mouseEntered(MouseEvent);//负责处理鼠标进人组件触发的鼠标事件。即当鼠标指针进人组件时，监视器调用接口中的这个方法对事件作出处理。
+mouseEntered(MouseEvent);//负责处理鼠标进入组件触发的鼠标事件。即当鼠标指针进入组件时，监视器调用接口中的这个方法对事件作出处理。
 mouseExited(MouseEvent);//负责处理鼠标离开组件触发的鼠标事件。即当鼠标指针离开容器时，监视器调用接口中的这个方法对事件作出处理。
 mouseClicked(MouseEvent);//负责处理在组件上单击鼠标键触发的鼠标事件。即当单击鼠标时，监视器调用接口中的这个方法对事件做出处理。
 ```
@@ -631,8 +631,8 @@ public class MouseFrame extends JFrame
 package mouse;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt .geom.*;
-import java.util .*;
+import java.awt.geom.*;
+import java.util.*;
 import javax.swing.*;
 /**
 * A component with mouse operations for adding and removing squares.
@@ -646,18 +646,18 @@ public class MouseComponent extends JComponent
 	private Rectangle2D current ; // the square containing the mouse cursor
 	public MouseComponent ()
 	{
-		squares = new ArrayListo() ;
+		squares = new ArrayList() ;
 		current = null ;
 		addMouseListener(new MouseHandler());
 		addMouseMotionListener(new MouseMotionHandler())；
 	}
 	public Dimension getPreferredSize() 
 	{ 
-		return new Dimension(0EFAULT_WIDTH, DEFAULT_HEIGHT); 
+		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT); 
 	}
 	public void paintComponent(Graphics g)
 	{
-		Craphics2D g2 = (Craphics2D) g;
+		Graphics2D g2 = (Graphics2D) g;
 		// draw all squares
 		for (Rectangle2D r : squares)
 			g2.draw(r);
@@ -753,7 +753,7 @@ public class MouseComponent extends JComponent
 >
 > ```java
 > int getModifiersEx() 1.4
-> //返回事件扩展的或“ 按下”（down) 的修饰符。
+> //返回事件扩展的或“按下”（down) 的修饰符。
 > 
 > 使用下面的掩码值检测返回值：
 > BUTT0N1_D0WN_MASK
@@ -796,9 +796,9 @@ public class MouseComponent extends JComponent
 
 > ![AWT事件类的继承关系图](https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/AWT%E4%BA%8B%E4%BB%B6%E7%B1%BB%E7%9A%84%E7%BB%A7%E6%89%BF%E5%85%B3%E7%B3%BB%E5%9B%BE.jpg?raw=true)
 
-对于有些AWT事件类来说，Java程序员并不会实际地使用它们。例如，AWT将会把PaintEvent对象插入事件队列中，但这些对象并没有传递给监听器。Java程序员并不监听绘图事件，如果希望控制重新绘图操作，就需要覆盖paintComponent方法。另外，AWT还可以生成许多只对系统程序员有用的事件，用于提供表义语言的输人系统以及自动检测机器人等。在此，将不讨论这些特殊的事件类型。
+对于有些AWT事件类来说，Java程序员并不会实际地使用它们。例如，AWT将会把PaintEvent对象插入事件队列中，但这些对象并没有传递给监听器。Java程序员并不监听绘图事件，如果希望控制重新绘图操作，就需要覆盖paintComponent方法。另外，AWT还可以生成许多只对系统程序员有用的事件，用于提供表义语言的输入系统以及自动检测机器人等。在此，将不讨论这些特殊的事件类型。
 
-### .1语义事件和底层事件
+### 1语义事件和底层事件
 AWT将事件分为底层(low-level)事件和语义(semantic)事件。语义事件是表示用户动作的事件，例如，点击按钮；因此，ActionEvent是一种语义事件。底层事件是形成那些事件的事件。在点击按钮时，包含了按下鼠标、连续移动鼠标、抬起鼠标（只有鼠标在按钮区中抬起才引发）事件。或者在用户利用TAB键选择按钮，并利用空格键激活它时，发生的敲击键盘事件。同样，调节滚动条是一种语义事件，但拖动鼠标是底层事件。
 
 下面是java.awt.event包中最常用的语义事件类：
@@ -894,7 +894,7 @@ VK_SCROLL LOCK|滚动锁定键
 VK_CAPS LOCK|大写锁定键
 VK NUM LOCK|数字锁定键
 PAUSE|暂停键
-VK_INSERT|插人键
+VK_INSERT|插入键
 VK_DELETE|删除键  
 VK_ENTER|回车键
 VK_TAB|制表符键  
@@ -919,7 +919,11 @@ VK_CLOSE_BACKET|]键
 VK_UNMPAD0-VK_NUMPAD9 |小健盘上的0至9键
 VK_QUOTE|单引号'键
 VK_BACK_QUOTE|单引号'健
-当安装某些软件时，经常要求输人序列号码，并且要在几个文本框中依次输入。每个文本框中输入的字符数目都是固定的，当在第一个文本框输入了恰好的字符个数后,输人光标会自动转移到下一个文本框。例11. 11通过处理键盘事件来实现软件序列号的输入。当文本框获得输入焦点后，用户敲击键盘将使得当前文本框输入序列号触发KeyEvent事件，在处理事件时，程序检查文本框中光标的位置，如果光标已经到达指定位置，就将输入焦点转移到下一个文本框。程序运行效果如图11.12所示.
+
+
+
+当安装某些软件时，经常要求输入序列号码，并且要在几个文本框中依次输入。每个文本框中输入的字符数目都是固定的，当在第一个文本框输入了恰好的字符个数后,输入光标会自动转移到下一个文本框。例11. 11通过处理键盘事件来实现软件序列号的输入。当文本框获得输入焦点后，用户敲击键盘将使得当前文本框输入序列号触发KeyEvent事件，在处理事件时，程序检查文本框中光标的位置，如果光标已经到达指定位置，就将输入焦点转移到下一个文本框。程序运行效果如图11.12所示.
+
 ```java
 import java.awt.event.*;
 import javax.swing.*;
@@ -1086,9 +1090,12 @@ public class exercise{
 }
 ```
 ## 10 对话框
-JDialog类和JFrame类都是window的子类，二者的实例都是底层容器，但是二者有相似之处也有不同的地方，主要区别是，JDialog类创建的对话框必须要依赖某个窗口。  
-对话框分为无模式和有模式两种。如果一个对话框是有模式的对话框，那么当这个对话框处于激活状态时，只让程序响应对话框内部的事件，而且将堵塞其他线程的执行，用户不能再激活对话框所在程序中的其他窗口，知道该对话框消失不可见。无模式对话框处于激活状态时，能再激活其他窗口，也不阻塞其他线程的执行。  
+JDialog类和JFrame类都是window的子类，二者的实例都是底层容器，但是二者有相似之处也有不同的地方，主要区别是，JDialog类创建的对话框必须要依赖某个窗口。 
+
+对话框分为无模式和有模式两种。如果一个对话框是有模式的对话框，那么当这个对话框处于激活状态时，只让程序响应对话框内部的事件，而且将堵塞其他线程的执行，用户不能再激活对话框所在程序中的其他窗口，知道该对话框消失不可见。无模式对话框处于激活状态时，能再激活其他窗口，也不阻塞其他线程的执行。 
+
 **注意：进行一个重要的操作之前，通过弹出一个有模式的对话框表明操作的重要性**
+
 ### 10.1 消息对话框
 消息对话框是有模式对话框，进行一个重要的操作之前，最好能弹出一个消息对话框。可以用javax.swing包中的JOptionPane类的静态方法：
 ```java
@@ -1103,8 +1110,10 @@ JOptionPane.ERROR_MESSAGE
 JOptionPane.QUESTION_MESSAGE
 JOptionPane.PLAIN_MESSAGE
 ```
-这些值可以改变对话框的外观  
+这些值可以改变对话框的外观
+
 **在下面的例子中：要求用户在文本框中只能输入英文字母，在输入非英文字母时，弹出消息提示框。**
+
 ```java
 import java.awt.event.*;
 import java.awt.*;
