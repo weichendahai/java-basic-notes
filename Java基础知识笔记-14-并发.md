@@ -843,8 +843,8 @@ Java设计者以不是很精确的方式采用了监视器概念，Java中的每
 
  然而，在下述的3个方面Java对象不同于监视器，从而使得线程的安全性下降：
 
-- 域不要求必须是 private。
-- 方法不要求必须是 synchronized。
+- 域不要求必须是private。
+- 方法不要求必须是synchronized。
 - 内部锁对客户是可用的。 
 
 这种对安全性的轻视激怒了Per Brinch Hansen。他在一次对原始Java中的多线程的严厉评论中，写道：“这实在是令我震惊，在监视器和并发Pascal出现四分之一个世纪后，Java的这种不安全的并行机制被编程社区接受。这没有任何益处。” [Java’ s Insecure Parallelism, ACM SIGPLANNotices 34:38-45, April 1999.]
@@ -879,10 +879,10 @@ public synchronized void setDone() {
 
 ```java
 private volatile boolean done;
-public boolean isDone(){
+public boolean isDone() {
 	return done;
 }
-public void setDone(){
+public void setDone() {
 	done = true;
 } 
 ```
