@@ -1,18 +1,22 @@
-入Java基础知识笔记-10-事件处理
+Java基础知识笔记-10-事件处理
 
-# 事件处理
 学习组件除了要熟悉组建的属性和功能外，一个更重要的方面是学习怎样处理组建上发生的界面事件，当用户在文本框中输入文本后按回车，单击按钮，在一个下拉式列表中选择一个条目进行一个条目等操作时，都发生界面事件，例如，用户单击一个确定或者取消的按钮，程序可能需要做出不同的处理。
 
-Java程序设计环境折中了Visual Basic与原始C的事件处理方式，因此，它既有着强大的功能，又具有一定的复杂性。在AWT所知的事件范围内，完全可以控制事件从事件源(event source)例如，按钮或滚动条，到事件监听器(event listener)的传递过程，并将任何对象指派给事件监听器。不过事实上，应该选择一个能够便于响应事件的对象。这种事件委托模型(event delegation model)与Visual Basic那种预定义监听器模型比较起来更加灵活。
+## 1 事件处理模式基础
+
+任何支持GUI的操作环境都要不断地监视按键或点击鼠标这样的事件。操作环境将 这些事件报告给正在运行的应用程序。如果有事件产生，每个应用程序将决定如何对它们做出响应。在Visual Basic这样的语言中， 事件与代码之间有着明确的对应关系。程序员对相关的特定事件编写代码， 并将这些代码放置在过程中，通常人们将它们称为事件过程（event procedure) 例如，有一个名为HelpButton的Visual Basic按钮有一个与之关联的HelpButton_Click事件过程。这个过程中的代码将在点击按钮后执行。每个Visual Basic的GUI组件都响应一个固定的事件集，不可能改变Visual Basic组件响应的事件集。
+
+另一方面，如果使用像原始的 C 这样的语言进行事件驱动的程序设计， 那就需要编写代 码来不断地检查事件队列， 以便査询操作环境报告的内容（通常这些代码被放置在包含很多switch语句的循环体中） 。显然，这种方式编写的程序可读性很差，而且在有些情况下，编码的难度也非常大。它的好处在于响应的事件不受限制，而不像 Visual Basic 这样的语言，将 事件队列对程序员隐藏起来。
+
+Java程序设计环境折中了Visual Basic与原始C的事件处理方式，因此，它既有着强 大的功能，又具有一定的复杂性。在AWT所知的事件范围内，完全可以控制事件从事件源 (event source) 例如，按钮或滚动条，到事件监听器（event listener) 的传递过程，并将任何对 象指派给事件监听器。不过事实上，应该选择一个能够便于响应事件的对象。这种事件委托模型（event delegation model) 与Visual Basic那种预定义监听器模型比较起来更加灵活。
 
 事件源有一些向其注册事件监听器的方法。当某个事件源产生事件时，事件源会向为事件注册的所有事件监听器对象发送一个通告。
 
-像Java这样的面向对象语言，都将事件的相关信息封装在一个事件对象(event object)中。在Java中，所有的事件对象都最终派生于java.util.EventObject类。当然，每个事件类型还有子类，例如，ActionEvent和WindowEvent。
-
-## 1 事件处理模式
-在学习处理事件时,必须很好地掌握事件源、监视器、处理事件的接口这三个概念。
+像Java这样的面向对象语言，都将事件的相关信息封装在一个事件对象（event object) 中。在Java中，所有的事件对象都最终派生于java.util.EventObject 类。当然，每个事件类型还有子类，例如，ActionEvent和WindowEvent。
 
 不同的事件源可以产生不同类别的事件。例如，按钮可以发送一个ActionEvent对象,而窗口可以发送WindowEvent对象。
+
+在学习处理事件时,必须很好地掌握事件源、监视器、处理事件的接口这三个概念。
 
 综上所述，下面给出AWT事件处理机制的概要：
 - 监听器对象是一个实现了特定监听器接口(listener interface)的类的实例。
@@ -33,7 +37,8 @@ addActionListener(监视器);
 
 监视器负责处理事件源发生的事件。监视器是一个对象，为了处理事件源发生的事件，监视器这个对象会自动调用一个方法来处理事件。那么监视器去调用哪个方法呢？我们我知道，对象可以调用创建它的那个类中的方法，那么它到底调用该类中的哪个方法呢？Java规定为了让监视器这个对象能对事件源发生的事件进行处理，创建该监视器对象的以实现相应的接口，即必须在类体中重写接口中的所有方法，那么当事件源发生事，监视器就自动调用被类重写的某个接口方法。事件处理模式如图11.6所示。
 
-> 下面是监听器的一个示例：
+- 下面是监听器的一个示例：
+
 ```java
 ActionListener listener = ...
 JButton button = new JButton("0K");
@@ -43,10 +48,8 @@ button.addActionListener(listener);
 
 为了实现ActionListener接口，监听器类必须有一个被称为actionPerformed的方法，该方法接收一个ActionEvent对象参数。
 ```java
-class MyListener implements ActionListener
-{
-	public void actionPerforied(ActionEvent event)
-	{
+class MyListener implements ActionListener {
+	public void actionPerforied(ActionEvent event) {
 		// reaction to button click goes here
 		...
 	}
@@ -101,7 +104,6 @@ class ReaderListen implements ActionListener{
 		System.out.println(str+"'s length is:"+str.length());
 	}
 }
-
 class WindowActionEvent extends JFrame{
 	JTextField text;
 	ReaderListen listener;
@@ -119,7 +121,6 @@ class WindowActionEvent extends JFrame{
 		
 	}
 }
-
 public class exercise{
 	public static void main(String args[]) {
 		WindowActionEvent win=new WindowActionEvent();
@@ -214,15 +215,15 @@ buttonPanel.add(redButton) ;
 public void actionPerformed(ActionEvent event)
 ```
 > 注释：在按钮示例中，使用的ActionListener接口并不仅限于按钮点击事件。它可以应用于很多情况：
-- 当采用鼠标双击的方式选择了列表框中的一个选项时；
-- 当选择一个菜单项时；
-- 当在文本域中按回车键时；
-- 对于一个Timer组件来说，当达到指定的时间间隔时。
-
-在本章和下一章中，读者将会看到更加详细的内容。
-
-在所有这些情况下，使用ActionListener接口的方式都是一样的：actionPerformed方法（ActionListener中的唯一方法）将接收一个ActionEvent类型的对象作为参数。这个事件对象包含了事件发生时的相关信息。
-
+>
+> - 当采用鼠标双击的方式选择了列表框中的一个选项时；
+> - 当选择一个菜单项时；
+> - 当在文本域中按回车键时；
+> - 对于一个Timer组件来说，当达到指定的时间间隔时。
+>
+> 在本章和下一章中，读者将会看到更加详细的内容。
+>
+> 在所有这些情况下，使用ActionListener接口的方式都是一样的：actionPerformed方法（ActionListener中的唯一方法）将接收一个ActionEvent类型的对象作为参数。这个事件对象包含了事件发生时的相关信息。
 当按钮被点击时， 希望将面板的背景颜色设置为指定的颜色。这个颜色存储在监听器类中：
 ```java
 class ColorAction implements ActionListener
@@ -248,20 +249,17 @@ yellowButton.addActionListener (yellowAction) ;
 blueButton.addActionListener(blueAction) ;
 redButton.addActionListener(redAction) ;
 ```
-例如，如果一个用户在标有“Yellow” 的按钮上点击了一下，yellowAction对象的actionPerformed方法就会被调用。这个对象的backgroundColor实例域被设置为Color.YELLOW，现在就将面板的背景色设置为黄色了。
+例如，如果一个用户在标有“Yellow”的按钮上点击了一下，yellowAction对象的actionPerformed方法就会被调用。这个对象的backgroundColor实例域被设置为Color.YELLOW，现在就将面板的背景色设置为黄色了。
 
 这里还有一个需要考虑的问题。CobrAction对象不能访问buttonpanel变量。可以采用两种方式解决这个问题。一个是将面板存储在ColorAction对象中，并在ColorAction的构造器中设置它；另一个是将ColorAction作为ButtonFrame类的内部类，这样一来，它的方法就自动地拥有访问外部面板的权限了（有关内部类的详细介绍请参看第6章)。这里使用第二种方法。下面说明一下如何将ColorAction类放置在ButtonFrame类内。
 ```java
-class ButtonFrame extends JFrame
-{
+class ButtonFrame extends JFrame {
 	private JPanel buttonPanel ;
 	...
-	private class ColorAction implements ActionListener
-	{
+	private class ColorAction implements ActionListener {
 		private Color backgroundColor;
 		...
-		public void actionPerformed(ActionEvent event)
-		{
+		public void actionPerformed(ActionEvent event) {
 			buttonPanel.setBackground(backgroundColor);
 		}
 	}
@@ -273,7 +271,7 @@ class ButtonFrame extends JFrame
 
 程序清单11-1包含了完整的框架类。无论何时点击任何一个按钮，对应的动作监听器就会修改面板的背景颜色。
 ```java
-程序清单11-1
+//程序清单11-1
 package button;
 
 import java.awt.*;
@@ -282,14 +280,11 @@ import javax.swing.*;
 /**
 * A frame with a button panel
 */
-public class ButtonFrame extends ]Frame
-{
+public class ButtonFrame extends JFrame {
 	private JPanel buttonPanel;
 	private static final int DEFAULT_WIDTH = 300;
 	private static final int DEFAULT_HEICHT = 200;
-
-	public ButtonFrame()
-	{
+	public ButtonFrame() {
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		// create buttons
 		]Button yellowButton = new JButton("Yellow")；
@@ -314,15 +309,12 @@ public class ButtonFrame extends ]Frame
 	/**
 	* An action listener that sets the panel ' s background color.
 	*/
-	private class ColorAction implements ActionListener
-	{
+	private class ColorAction implements ActionListener {
 		private Color backgroundColor;
-		public ColorAction(Color c)
-		{
+		public ColorAction(Color c) {
 			backgroundedor = c;
 		}
-		public void actionPerformed(ActionEvent event)
-		{
+		public void actionPerformed(ActionEvent event) {
 			buttonPanel.setBackground(backgroundColor);
 		}
 	}
@@ -335,8 +327,7 @@ exitButton.addActionListener(event -> System.exit(O));
 ```
 现在考虑这样一种情况：有多个相互关联的动作，如上一节中的彩色按钮。在这种情况下，可以实现一个辅助方法：
 ```java
-public void makeButton(String name, Color backgroundedor)
-{
+public void makeButton(String name, Color backgroundedor) {
 	JButton button = new JButton(name);
 	buttonPanel.add(button);
 	button.addActionListener(event ->
@@ -353,50 +344,52 @@ makeButton("red", Color.RED);
 在这里，我们构造了3个监听器对象，分别对应一种颜色，但并没有显式定义一个类。每次调用这个辅助方法时，它会建立实现了ActionListener接口的一个类的实例它的actionPerformed动作会引用实际上随监听器对象存储的backGroundColor值。不过，所有这些会自动完成，而无需显式定义监听器类、实例变量或设置这些变量的构造器。
 
 > 注释：在较老的代码中，通常可能会看到使用匿名类：
-```java
-exitButton.addActionListener(new ActionListener()
-{
-	public void actionPerformed(new ActionEvent)
-	{
-		System.exit(0);
-	}
-})；
-```
+>
+> ```java
+> exitButton.addActionListener(new ActionListener() {
+> 	public void actionPerformed(new ActionEvent) {
+> 		System.exit(0);
+> 	}
+> })；
+> ```
 当然，已经不再需要这种繁琐的代码。使用lambda表达式更简单，也更简洁。
+
 > 注释：有些程序员不习惯使用内部类或lambda表达式，而更喜欢创建实现了ActionListener接口的事件源容器，然后这个容器再设置自身作为监听器。如下所示：
-```java
-yellowButton.addActionListener(this);
-blueButton.addActionListener(this);
-redButton.addActionListener(this);
-```
-现在这3个按钮不再有单独的监听器。它们共享一个监听器对象， 具体来讲就是框架(frame)。因此，actionPerformed方法必须明确点击了哪个按钮。
-```java
-class ButtonFrame extends JFrame implements ActionListener
-{
-	public void actionPerformed(ActionEvent event)
-	{
-		Object source = event.getSource();
-		if (source == yellowButton) ...
-		else if (source = blueButton) ...
-		else if (source = redButton ) ...
-		else ...
-	}
-}
-```
-我们并不建议采用这种策略。
+>
+> ```java
+> yellowButton.addActionListener(this);
+> blueButton.addActionListener(this);
+> redButton.addActionListener(this);
+> ```
+> 现在这3个按钮不再有单独的监听器。它们共享一个监听器对象， 具体来讲就是框架(frame)。因此，actionPerformed方法必须明确点击了哪个按钮。
+> ```java
+> class ButtonFrame extends JFrame implements ActionListener
+> {
+> 	public void actionPerformed(ActionEvent event)
+> 	{
+> 		Object source = event.getSource();
+> 		if (source == yellowButton) ...
+> 		else if (source = blueButton) ...
+> 		else if (source = redButton ) ...
+> 		else ...
+> 	}
+> }
+> ```
+> 我们并不建议采用这种策略。
+
 > 注释：lambda表达式出现之前，还可以采用一种机制来指定事件监听器，其事件处理器包含一个方法调用。例如，假设一个按钮监听器需要执行以下调用：
-```java
-frame.loadData() ;
-```
-EventHandler类可以用下面的调用创建这样一个监听器：
-```java
-EventHandler.create(ActionListener.class, frame , "loadData")
-```
-这种方法现在已经成为历史。利用lambda表达式，可以更容易地使用以下调用：
-```java
-event -> frame.loadData() ;
-```
-EventHandler机制的效率也不高，而且比较容易出错。它使用反射来调用方法。出于这个原因，EventHandler.create调用的第二个参数必须属于一个公有类。否则，反射机制就无法确定和调用目标方法
+> ```java
+> frame.loadData() ;
+> ```
+> EventHandler类可以用下面的调用创建这样一个监听器：
+> ```java
+> EventHandler.create(ActionListener.class, frame , "loadData")
+> ```
+> 这种方法现在已经成为历史。利用lambda表达式，可以更容易地使用以下调用：
+> ```java
+> event -> frame.loadData() ;
+> ```
+> EventHandler机制的效率也不高，而且比较容易出错。它使用反射来调用方法。出于这个原因，EventHandler.create调用的第二个参数必须属于一个公有类。否则，反射机制就无法确定和调用目标方法
 
 ## 3 ItemEvent事件
 ##### 1.ItemEvent事件源
@@ -585,13 +578,14 @@ public void mouseMoved(MouseEvent event)
 }
 ```
 > 注释：还可以利用Toolkit类中的`createCustomCursor`方法自定义光标类型：
-```java
-Toolkit tk = Toolkit.getDefaultToolkit();
-Image img = tk.getImage("dynamite.gif");
-Cursor dynamiteCursor = tk.createCustomCursor(img, new Point (10 , 10) , "dynamite stick");
-```
-createCustomCursor的第一个参数指向光标图像。第二个参数给出了光标的“热点”偏移。第三个参数是一个描述光标的字符串。这个字符串可以用于访问性支持，例如，可以将光标形式读给视力受损或没有在屏幕前面的人。
-
+>
+> ```java
+> Toolkit tk = Toolkit.getDefaultToolkit();
+> Image img = tk.getImage("dynamite.gif");
+> Cursor dynamiteCursor = tk.createCustomCursor(img, new Point (10 , 10) , "dynamite stick");
+> ```
+>
+> createCustomCursor的第一个参数指向光标图像。第二个参数给出了光标的“热点”偏移。第三个参数是一个描述光标的字符串。这个字符串可以用于访问性支持，例如，可以将光标形式读给视力受损或没有在屏幕前面的人。
 如果用户在移动鼠标的同时按下鼠标，就会调用`mouseMoved`而不是调用`mouseDmgged`。在测试应用程序中，用户可以用光标拖动小方块。在程序中，仅仅用拖动的矩形更新当前光标位置。然后，重新绘制画布，以显示新的鼠标位置。
 ```java
 public void mouseDragged(MouseEvent event)
@@ -607,7 +601,9 @@ public void mouseDragged(MouseEvent event)
 ```
 > 注释：只有鼠标在一个组件内部停留才会调用`mouseMoved`方法。然而，即使鼠标拖动到组件外面，`mouseDragged`方法也会被调用。
 
-还有两个鼠标事件方法：`mouseEntered`和`mouseExited`。这两个方法是在鼠标进入或移出组件时被调用。最后， 解释一下如何监听鼠标事件。鼠标点击由`mouseClicked`过程报告，它是MouseListener接口的一部分。由于大部分应用程序只对鼠标点击感兴趣，而对鼠标移动并不感兴趣，但鼠标移动事件发生的频率又很高，因此将鼠标移动事件与拖动事件定义在一个称为`MouseMotionListener`的独立接口中。
+还有两个鼠标事件方法：`mouseEntered`和`mouseExited`。这两个方法是在鼠标进入或移出组件时被调用。
+
+最后， 解释一下如何监听鼠标事件。鼠标点击由`mouseClicked`过程报告，它是MouseListener接口的一部分。由于大部分应用程序只对鼠标点击感兴趣，而对鼠标移动并不感兴趣，但鼠标移动事件发生的频率又很高，因此将鼠标移动事件与拖动事件定义在一个称为`MouseMotionListener`的独立接口中。
 
 在示例程序中，对两种鼠标事件类型都感兴趣。这里定义了两个内部类：`MouseHandler`和`MouseMotionHandler`。`MouseHandler`类扩展于`MouseAdapter`类，这是因为它只定义了5个`MouseListener`方法中的两个方法。`MouseMotionHandler`实现了`MouseMotionListener`接口，并定义了这个接口中的两个方法。程序清单11-4是这个程序的清单。
 ```java

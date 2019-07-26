@@ -66,26 +66,29 @@ Runnable r = () -> {
 Thread t = new Thread(r);
 t.start();
 ```
-同样地，需要捕获sleep方法可能抛出的异常InterruptedException。下一节将讨论这个异常。在一般情况下，线程在中断时被终止。因此，当发生 InterruptedException异常时，run方法将结束执行。无论何时点击Start按钮，球会移入一个新线程，仅此而已！现在应该知道如何并行运行多个任务了。本章其余部分将阐述如何控制线程之间的交互。
+同样地，需要捕获sleep方法可能抛出的异常InterruptedException。下一节将讨论这个异常。在一般情况下，线程在中断时被终止。因此，当发生 InterruptedException异常时，run方法将结束执行。
+
+无论何时点击Start按钮，球会移入一个新线程
+
+仅此而已！现在应该知道如何并行运行多个任务了。本章其余部分将阐述如何控制线程之间的交互。
 
 > Runnable对象仅仅作为Thread对象的target，Runable实现类里包含的run()方法仅作为线程执行体。而实际的线程对象仍然是Thread实例，只是该Thread线程负责执行其target的run()方法。
 
-#### 也可以通过构建一个Thread类的子类定义一个线程，如下所示
-
-- 定义Thread类的子类 ，并重写该类的run()方法，该run()方法的方法体就体现了线程需要完成的任务。因此把run()方法称为线程执行体.。
-- 创建Thread子类的实例，即创建了线程对象。
-- 调用线程对象的start()方法来启动该线程。
-
-```java
-class MyThread extends Thread
-{
-	public void run()
-	{
-		taskcode
-	}
-}
-```
-然后，构造一个子类的对象，并调用start方法。不过，这种方法已不再推荐。应该将要并行运行的任务与运行机制解耦合。如果有很多任务，要为每个任务创建一个独立的线程所付出的代价太大了。可以使用线程池来解决这个问题，有关内容请参看第14.9节。
+> 也可以通过构建一个Thread类的子类定义一个线程，如下所示
+>
+> - 定义Thread类的子类 ，并重写该类的run()方法，该run()方法的方法体就体现了线程需要完成的任务。因此把run()方法称为线程执行体.。
+> - 创建Thread子类的实例，即创建了线程对象。
+> - 调用线程对象的start()方法来启动该线程。
+>
+> ```java
+> class MyThread extends Thread {
+> 	public void run() {
+> 		taskcode
+> 	}
+> }
+> ```
+>
+> 然后，构造一个子类的对象，并调用start方法。不过，这种方法已不再推荐。应该将要并行运行的任务与运行机制解耦合。如果有很多任务，要为每个任务创建一个独立的线程所付出的代价太大了。可以使用线程池来解决这个问题，有关内容请参看第14.9节。
 
 > 警告：不要调用Thread类或Runnable对象的run方法。直接调用run方法，只会执行同一个线程中的任务，而不会启动新线程。应该调用Thread.start方法。这个方法将创建一个执行run方法的新线程。
 
@@ -174,6 +177,14 @@ void mySubTask() throws InterruptedException
 	...
 }
 ```
+
+> java.Iang.Thread1.0 
+>
+> ```java
+> void interrupts(); //向线程发送中断请求。线程的中断状态将被设置为true。如果目前该线程被一个sleep调用阻塞，那么，InterruptedException异常被抛出。 static boolean interrupted(); //测试当前线程（即正在执行这一命令的线程）是否被中断。注意，这是一个静态方法。这一调用会产生副作用---它将当前线程的中断状态重置为false。
+> boolean islnterrupted(); //测试线程是否被终止。不像静态的中断方法，这一调用不改变线程的中断状态。
+> static Thread currentThread(); //返回代表当前执行线程的Thread对象。
+> ```
 
 ## 3 线程状态
 
@@ -420,7 +431,6 @@ public class Bank
 > ReentrantLock(boolean fair); //构建一个带有公平策略的锁。一个公平锁偏爱等待时间最长的线程。但是，这一公平的保证将大大降低性能。所以，默认情况下，锁没有被强制为公平的。
 > ```
 >
-> 
 
 > 警告： 听起来公平锁更合理一些，但是使用公平锁比使用常规锁要慢很多。 只有当你确实了解自己要做什么并且对于你要解决的问题有一个特定的理由必须使用公平锁的时候，才可以使用公平锁。即使使用公平锁，也无法确保线程调度器是公平的。如果线程调度 器选择忽略一个线程，而该线程为了这个锁已经等待了很长时间，那么就没有机会公平地处理这个锁了。
 
@@ -1003,19 +1013,19 @@ myCondition.await(100, TineUniBILLISECONDS))
 如果等待的线程被中断，await方法将抛出一个InterruptedException异常。在你希望出现这种情况时线程继续等待（可能不太合理)，可以使用awaitUninterruptibly方法代替 await。 
 
 > java.util.concurrent.locks.Lock 5.0 
-
-```java
-boolean tryLock(); //尝试获得锁而没有发生阻塞；如果成功返回真。这个方法会抢夺可用的锁，即使该锁有公平加锁策略，即便其他线程已经等待很久也是如此。
-boolean tryLock(long time, TimeUnit unit); //尝试获得锁，阻塞时间不会超过给定的值；如果成功返回 true。 
-void lockInterruptibly(); //获得锁，但是会不确定地发生阻塞。如果线程被中断，抛出一个InterruptedException异常。
-```
+>
+> ```java
+> boolean tryLock(); //尝试获得锁而没有发生阻塞；如果成功返回真。这个方法会抢夺可用的锁，即使该锁有公平加锁策略，即便其他线程已经等待很久也是如此。
+> boolean tryLock(long time, TimeUnit unit); //尝试获得锁，阻塞时间不会超过给定的值；如果成功返回 true。 
+> void lockInterruptibly(); //获得锁，但是会不确定地发生阻塞。如果线程被中断，抛出一个InterruptedException异常。
+> ```
 
 > java.util.concurrent.locks.Condition 5.0
-
-```java
-boolean await(long time, TimeUnit unit); //进入该条件的等待集，直到线程从等待集中移出或等待了指定的时间之后才解除阻塞。如果因为等待时间到了而返回就返回false, 否则返回true。
-void awaitUninterruptibly(); //进入该条件的等待集，直到线程从等待集移出才解除阻塞。如果线程被中断，该方法 不会抛出InterruptedException异常。
-```
+>
+> ```java
+> boolean await(long time, TimeUnit unit); //进入该条件的等待集，直到线程从等待集中移出或等待了指定的时间之后才解除阻塞。如果因为等待时间到了而返回就返回false, 否则返回true。
+> void awaitUninterruptibly(); //进入该条件的等待集，直到线程从等待集移出才解除阻塞。如果线程被中断，该方法 不会抛出InterruptedException异常。
+> ```
 
 ## 6  阻塞队列
 
@@ -1039,12 +1049,11 @@ void awaitUninterruptibly(); //进入该条件的等待集，直到线程从等�
 阻塞队列方法分为以下3类，这取决于当队列满或空时它们的响应方式。如果将队列当作线程管理工具来使用，将要用到put和take方法。当试图向满的队列中添加或从空的队列 中移出元素时，add、remove和element操作抛出异常。当然，在一个多线程程序中，队列会在任何时候空或满，因此，一定要使用offer、poll和peek方法作为替代。这些方法如果不能完成任务，只是给出一个错误提示而不会抛出异常。
 
 > 注释： poll和peek方法返回空来指示失败。因此，向这些队列中插入null值是非法的。
->
-> 还有带有超时的offer方法和poll方法的变体。例如，下面的调用：
->
-> ```java
-> boolean success = q.offer(x, 100, TimeUnit.MILLISECONDS);
-> ```
+
+还有带有超时的offer方法和poll方法的变体。例如，下面的调用：
+```java
+boolean success = q.offer(x, 100, TimeUnit.MILLISECONDS);
+```
 
 尝试在100毫秒的时间内在队列的尾部插入一个元素。如果成功返回true;否则，达到超时时，返回false。类似地，下面的调用：
 

@@ -28,7 +28,8 @@ interface Printable{
 ### 2.接口体
 &emsp;&emsp;接口体包含常量的声明（没有变量）和抽象方法两部分。
 
-#### 接口体中中只有抽象的方法和普通的方法。而且接口体中所有常量的访问权限一定都是public（允许省略public，final修饰符），所有的抽象方法的访问权限一定都是public（允许省略public，abstract修饰符）例如：
+**接口体中中只有抽象的方法和普通的方法。而且接口体中所有常量的访问权限一定都是public（允许省略public，final修饰符），所有的抽象方法的访问权限一定都是public（允许省略public，abstract修饰符）例如：**
+
 ```java
 interface Printable{
 	public final int MAX=100;
@@ -36,7 +37,8 @@ interface Printable{
 	public abstract float sum(float x,float y);
 }
 ```
-#### 在JDK8以前的版本中，接口只能包含抽象方法，从JDK8开始，为了提高代码的可重用性，允许在接口中定义默认方法和静态方法。默认方法用default关键字来声明，拥有默认的实现，接口的实现类既可以直接访问默认方法，也可以覆盖它，重新实现该方法，例如下例：
+**在JDK8以前的版本中，接口只能包含抽象方法，从JDK8开始，为了提高代码的可重用性，允许在接口中定义默认方法和静态方法。默认方法用default关键字来声明，拥有默认的实现，接口的实现类既可以直接访问默认方法，也可以覆盖它，重新实现该方法，例如下例：**
+
 ```java
 public interface MyIFC{
 	default void method1(){
@@ -71,7 +73,8 @@ MyIFC.method2();//合法，可以通过接口的名字来访问它的静态方�
 ```
 &emsp;&emsp;另外，需要注意的是，在接口中为方法提供默认实现虽然可以提高代码的可重用性，但还是要谨慎地使用这一特性。因为在层次关系比较复杂的软件系统中，这一特性会使程序代码导致歧异和混淆。
 
-#### 接口没有构造方法，不能被实例化。在接口中定义构造方法是非法的，例如：
+**接口没有构造方法，不能被实例化。在接口中定义构造方法是非法的，例如：**
+
 ```java
 public interface A{
 	public A(){//编译出错，接口中不允许定义构造方法
@@ -80,7 +83,8 @@ public interface A{
 	void method();
 }
 ```
-#### 虽然不允许创建接口的实例，但是允许定义接口类型的引用变量，该变量引用实现了这个接口的类的实例，例如：
+**虽然不允许创建接口的实例，但是允许定义接口类型的引用变量，该变量引用实现了这个接口的类的实例，例如：**
+
 ```java
 //引用变量t被定义为Photographable接口类型，他引用Camera实例
 Photographable t=new Camera();
@@ -141,12 +145,13 @@ abstract class A implements Computable{
 ---
 ## 3 理解接口
 
-&emsp;&emsp;不同的类可以实现相同的接口，同一个类也可以实现多个接口。  
+&emsp;&emsp;不同的类可以实现相同的接口，同一个类也可以实现多个接口。 
+
 &emsp;&emsp;**当不希望某些类通过继承使得他们具有一些相同的方法时，就可以考虑让这些类去实现相同的接口而不是把他们声明为同一个类的子类。**  
 
 ## 4 接口实例之Comparator接口
 我们已经了解了如何对一个对象数组排序，前提是这些对象是实现了Comparable接口的类的实例, 例如，可以对一个字符串数组排序，因为String类实现了
-Comparable<String>,而且String.compareTo方法可以按字典顺序比较字符串。
+`Comparable<String>`,而且`String.compareTo`方法可以按字典顺序比较字符串。
 
 现在假设我们希望按长度递增的顺序对字符串进行排序，而不是按字典顺序进行排序。肯定不能让String类用两种不同的方式实现compareTo方法---更何况，String类也不应由我们来修改。
 
@@ -157,7 +162,7 @@ public interface Comparators
 	int compare(T first, T second);
 }
 ```
-要按长度比较字符串，可以如下定义一个实现Comparator<String>的类：
+要按长度比较字符串，可以如下定义一个实现`Comparator<String>`的类：
 
 ```java
 class LengthComparator implements Comparator<String>

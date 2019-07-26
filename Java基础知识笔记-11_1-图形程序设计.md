@@ -115,7 +115,6 @@ JPanel		Frame
 		   |
 		   |
 		JFrame
-
 ```
 对Component类（是所有GUI对象的祖先）和Window类(是Frame类的超类)需要仔细地研究一下，从中找到缩放和改变框架的方法。例如，在Component类中的setLocation方法是重定位组件的一个方法。如果调用`setLocation(x, y)`则窗口将放置在左上角水平x像素，垂直y像素的位置，坐标(0,0)位于屏幕的左上角。
 
