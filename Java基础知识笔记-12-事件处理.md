@@ -225,6 +225,7 @@ public void actionPerformed(ActionEvent event)
 >
 > 在所有这些情况下，使用ActionListener接口的方式都是一样的：actionPerformed方法（ActionListener中的唯一方法）将接收一个ActionEvent类型的对象作为参数。这个事件对象包含了事件发生时的相关信息。
 当按钮被点击时， 希望将面板的背景颜色设置为指定的颜色。这个颜色存储在监听器类中：
+
 ```java
 class ColorAction implements ActionListener
 {
