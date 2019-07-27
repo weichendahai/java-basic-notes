@@ -416,12 +416,12 @@ public class exercise extends JFrame{
 ```
 > # lambda表达式版本
 
-上一章主要介绍了如何使用Java中的事件模式。通过学习读者已经初步知道了构造图形用户界面的基本方法。本章将介绍构造功能更加齐全的图形用户界面(GUI) 所需要的一些重要工具。下面，首先介绍Swing的基本体系结构。要想弄清如何有效地使用一些更高级的组件，必须了解底层的东西。然后，再讲述Swing中各种常用的用户界面组件，如文本框、单选按钮以及菜单等。接下来，介绍在不考虑特定的用户界面观感时，如何使用Java中的布局管理 器排列在窗口中的这些组件。最后，介绍如何在Swing中实现对话框。本章囊括了基本的Swing组件，如文本组件、按钮和滑块等，这些都是基本的用户界面组件，使用十分频繁。Swing中的高级组件将在卷n中讨论。
+上一章主要介绍了如何使用Java中的事件模式。通过学习读者已经初步知道了构造图形用户界面的基本方法。本章将介绍构造功能更加齐全的图形用户界面(GUI) 所需要的一些重要工具。下面，首先介绍Swing的基本体系结构。要想弄清如何有效地使用一些更高级的组件，必须了解底层的东西。然后，再讲述Swing中各种常用的用户界面组件，如文本框、单选按钮以及菜单等。接下来，介绍在不考虑特定的用户界面观感时，如何使用Java中的布局管理 器排列在窗口中的这些组件。最后，介绍如何在Swing中实现对话框。本章囊括了基本的Swing组件，如文本组件、按钮和滑块等，这些都是基本的用户界面组件，使用十分频繁。Swing中的高级组件将在卷Ⅱ中讨论。
 
 # 1 Swing 和模型-视图-控制器设计模式
 前面说过，本章将从Swing组件的体系结构开始。首先，我们讨论设计模式的概念，然后再看一下Swing框架中最具影响力的“模型-视图-控制器”模式。
 ## 1.1 设计模式
-在“模型-视图-控制器”模式中，背景是显示信息和接收用户输人的用户界面系统。有关“模型-视图-控制器”模式将在接下来的章节中讲述。这里有几个冲突因素。对于同一数据来说，可能需要同时更新多个可视化表示。例如，为了适应各种观感标准，可能需要 改变可视化表示形式；又例如，为了支持语音命令，可能需要改变交互机制。解决方案是将这些功能分布到三个独立的交互组件：模型、视图和控制器。模型-视图-控制器模式并不是AWT和Swing设计中使用的唯一模式。下列是应用的 另外几种模式： 
+在“模型-视图-控制器”模式中，背景是显示信息和接收用户输入的用户界面系统。有关“模型-视图-控制器”模式将在接下来的章节中讲述。这里有几个冲突因素。对于同一数据来说，可能需要同时更新多个可视化表示。例如，为了适应各种观感标准，可能需要 改变可视化表示形式；又例如，为了支持语音命令，可能需要改变交互机制。解决方案是将这些功能分布到三个独立的交互组件：模型、视图和控制器。模型-视图-控制器模式并不是AWT和Swing设计中使用的唯一模式。下列是应用的 另外几种模式： 
 
 - 容器和组件是“组合(composite)” 模式
 - 带滚动条的面板是“ 装饰器(decorator)” 模式
@@ -747,7 +747,7 @@ JScrollPane scrollPane = new JScratlPane(textArea);
 
 ## 4.1 复选框
 
-如果想要接收的输人只是“是” 或“非”，就可以使用复选框组件。复选框自动地带有标识标签。用户通过点击某个复选框来选择相应的选项， 再点击则取消选取。当复选框获得焦点时，用户也可以通过按空格键来切换选择。
+如果想要接收的输入只是“是” 或“非”，就可以使用复选框组件。复选框自动地带有标识标签。用户通过点击某个复选框来选择相应的选项， 再点击则取消选取。当复选框获得焦点时，用户也可以通过按空格键来切换选择。
 
 图12-14所示的程序中有两个复选框，其中一个用于打开或关闭字体倾斜属性，而另一个用于控制加粗属性。注意，第二个复选框有焦点，这一点可以由它周围的矩形框看出。只要用户点击某个复选框，程序就会刷新屏幕以便应用新的字体属性。 
 
@@ -900,7 +900,7 @@ else if (mediumButton.isSelected()) size = 12;
 > 		label = newJLabel("The quick brown fox jumps over the lazy dog.");
 > 		label.setFont(new Font("Serif", Font.PLAIN, DEFAULT_SIZE));
 > 		add(label, BorderLayout.CENTER);
-> 		// add the radio buttons buttonPanel = new]Panel();
+> 		// add the radio buttons buttonPanel = new JPanel();
 > 		group = new BtittonGroup();
 > 		addRadioButton( "Small", 8);
 > 		addRadioButton( "Medium", 12);
@@ -917,7 +917,7 @@ else if (mediumButton.isSelected()) size = 12;
 > 	public void addRadioButton(String name, int size)
 > 	{
 > 		boolean selected = size == DEFAULT_SIZE;
-> 		JRadioButton button = new]RadioButton(name, selected);
+> 		JRadioButton button = new JRadioButton(name, selected);
 > 		group.add(button);
 > 		buttonPanel.add(button);
 > 		// this listener sets the label font size
@@ -1042,3 +1042,209 @@ Border etched = BorderFactory.createEtchedBorder(); Border titled = BorderFactor
 > ```java
 > void setBorder(Border border); //设置这个组件的边框
 > ```
+
+## 4.4 组合框
+
+如果有多个选择项， 使用单选按钮就不太适宜了，其原因是占据的屏幕空间太大。这时就可以选择组合框。当用户点击这个组件时，选择列表就会下拉出来，用户可以从中选择一项（见图 12-17 )。
+
+如果下拉列表框被设置成可编辑（ editable), 就可以像编辑文本一样编辑当前的选项内容。鉴于这个原因，这种组件被称为组合框（combo box), 它将文本域的灵活性与一组预定义的选项组合起来。JComboBox类提供了组合框的组件。 
+
+在Java SE 7中，JComboBox 类是一个泛型类。例如，JComboBox<String> 包含String类型的对象，JComboBox<Integer> 包含整数。
+
+调用setEditable方法可以让组合框可编辑。注意，编辑只会影响当前项，而不会改变列表内容。
+
+可以调用getSelectedltem方法获取当前的选项，如果组合框是可编辑的，当前选项则是可以编辑的。不过，对于可编辑组合框， 其中的选项可以是任何类型，这取决于编辑器（即 由编辑器获取用户输人并将结果转换为一个对象)。关于编辑器的讨论请参见卷n中的第6 章。如果你的组合框不是可编辑的， 最好调用
+
+```
+combo.getltemAt(combo.getSelectedlndex()) 
+```
+
+这会为所选选项提供正确的类型。
+
+在示例程序中，用户可以从字体列表（Serif, SansSerif，Monospaced 等）中选择一种字体，用户也可以键入其他的字体。
+
+可以调用addltem方法增加选项。在示例程序中，只在构造器中调用了addltem方法，实际上，可以在任何地方调用它。
+
+```
+JComboBox<String> faceCombo = new JConboBoxo();
+faceCombo.addItem("Serif");
+faceCombo.addltem("SansSerif") ;
+```
+
+这个方法将字符串添加到列表的尾部。可以利用 insertltemAt方法在列表的任何位置插入一个新选项： 
+
+```
+faceCombo.insertltemAt( "Monospaced", 0) ;// add at the beginning 
+```
+
+可以增加任何类型的选项，组合框可以调用每个选项的 toString 方法显示其内容。
+
+如果需要在运行时删除某些选项，可以使用removeltem或者removeltemAt方法，使用哪个方法将取决于参数提供的是想要删除的选项内容，还是选项位置。
+
+```
+faceCombo.removeltem("Monospaced");
+faceCombo.removeltemAt(0)； // remove first item
+```
+
+调用removeAllltems方法将立即移除所有的选项。
+
+> 提示：如果需要往组合框中添加大量的选项，addltem方法的性能就显得很差了。取而代之的是构造一个DefaultComboBoxModel, 并调用addElement方法进行加载， 然后再调用JComboBox 中的 setModel 方法。
+
+当用户从组合框中选择一个选项时，组合框就将产生一个动作事件。为了判断哪个选项被选择，可以通过事件参数调用getSource方法来得到发送事件的组合框引用，接着调用getSelectedltem方法获取当前选择的选项。需要把这个方法的返回值转化为相应的类型，通常是String型。
+
+```java
+ActionListener listener = event ->
+	label.setFont(new Font(faceCoibo.getltenAt(faceConbo.setSelectedlndex()), Font.PLAIN, DEFAULT_SIZE));
+```
+
+程序清单12-6给出了完整的代码。
+
+> 注释： 如果希望持久地显示列表， 而不是下拉列表， 就应该使用JList 组件。在卷Ⅱ的第 6 章中将介绍 JList
+
+> 程序清单 12-6 comboBox/ComboBoxFrame.java
+>
+> ```java
+> package comboBox;
+> import java.awt.BorderLayout;
+> import java.awt.Font;
+> import javax.swing.]ComboBox;
+> import javax.swing.]Frame;
+> import javax.swing.]Label;
+> import javax.swing.]Panel;
+> /**
+> * A frame with a sample text label and a combo box for selecting font faces.
+> */
+> public class ComboBoxFrame extends JFrame
+> {
+> 	private JComboBox<String> faceCombo;
+> 	private JLabel label;
+> 	private static final int DEFAULT.SIZE = 24;
+> 	public ComboBoxFrame()
+> 	{
+> 		// add the sample text label
+> 		label = new JLabel("The quick brown fox jumps over the lazy dog.");
+> 		label.setPont(new FontCSerif, Font.PLAIN, DEFAULT.SEE));
+> 		add(1abel,BorderLayout.CENTER);
+> 		// make a combo box and add face names
+> 		faceCombo = new JComboBox<>();
+> 		faceCombo.addltern("Serif");
+> 		faceCombo.addItem("SansSerif");
+> 		faceCombo.addItem("Monospaced");
+> 		faceCombo.addltem("Dialog");
+> 		faceCombo.addltem("Dialoglnput");
+> 		// the combo box listener changes the label font to the selected face name
+> 		faceCombo.addActionListener(event ->
+> 			label.setFont(
+> 				new Font(faceCombo.getltemAt(faceCombo.getSelectedlndex()), Font.PLAIN, DEFAULT.SIZE)));
+> 		// add combo box to a panel at the frame's southern border
+> 		JPanel comboPanel = new JPanel();
+> 		comboPanel.add(faceCombo);
+> 		add(comboPanel, BorderLayout.SOUTH);
+> 		pack();
+> 	}
+> }
+> ```
+
+> javax.swing.JComboBox 1.2
+>
+> ```java
+> boolean isEditable();
+> void setEditable(boo1ean b ); //获取或设置组合框的可编辑特性。
+> void addItem(Object item); //把一个选项添加到选项列表中。
+> void insertltemAtCObject item, int index); //将一个选项添加到选项列表的指定位置。
+> void removeItem(Object item); //从选项列表中删除一个选项。
+> void removeItemAt(int index ); //删除指定位置的选项。
+> void removeAllItems(); //从选项列表中删除所有选项。
+> Object getSelectedItem(); //返回当前选择的选项。
+> ```
+
+## 4.5 滑动条
+组合框可以让用户从一组离散值中进行选择。滑动条允许进行连续值的选择，例如，从1~100之间选择任意数值。
+
+通常，可以使用下列方式构造滑动条：
+
+```java
+JSlider slider = new JSlider(min, max, initialValue); 
+```
+
+如果省略最小值、最大值和初始值，其默认值分别为0、100和50。
+
+或者如果需要垂直滑动条，可以按照下列方式调用构造器：
+
+```java
+JSlider slider = new JSIider(SwingConstants.VERTICAL, min, max, initialValue);
+```
+
+这些构造器构造了一个无格式的滑动条， 如图12-18最上面的滑动条所示。下面看一下如何为滑动条添加装饰。
+
+当用户滑动滑动条时， 滑动条的值就会在最小值和最大值之间变化。当值发生变化时，ChangeEvent就会发送给所有变化的监听器。为了得到这些改变的通知，需要调用addChangeListener方法并且安装一个实现了ChangeListener接口的对象。这个接口只有一个方法 StateChanged。在这个方法中，可以获取滑动条的当前值：
+
+```java
+ChangeListener listener = event -> {
+	JSlider slider = (JSlider) event.getSource();
+	int value = slider.getValue();
+	...
+};
+```
+
+可以通过显示标尺（tick)对滑动条进行修饰。例如，在示例程序中，第二个滑动条使用了下面的设置：
+
+```java
+slider.setMajorTickSpacing(20);
+slider.setMinorTickSpacing(5);
+```
+
+上述滑动条在每20个单位的位置显示一个大标尺标记，每5个单位的位置显示一个小标尺标记。所谓单位是指滑动条值，而不是像素。 
+
+这些代码只设置了标尺标记，要想将它们显示出来，还需要调用： 
+
+```java
+slider.setPaintTicks(true);
+```
+
+大标尺和小标尺标记是相互独立的。例如，可以每 20 个单位设置一个大标尺标记，同时每 7 个单位设置一个小标尺标记， 但是这样设置，滑动条看起来会显得非常凌乱。
+
+可以强制滑动条对齐标尺。这样一来，只要用户完成拖放滑动条的操作， 滑动条就会立即自动地移到最接近的标尺处。激活这种操作方式需要调用：
+
+```java
+slider.set5napToTicks(true);
+```
+
+> 注释： “对齐标尺”的行为与想象的工作过程并不太一样。在滑动条真正对齐之前，改变监听器报告的滑动条值并不是对应的标尺值。如果点击了滑动条附近，滑动条将会向点 击的方向移动一小段距离，“对夺标尺”的滑块并不移动到下一个标尺处。
+
+可以调用下列方法为大标尺添加标尺标记标签（tick mark labels)： 
+
+```java
+slider.setPaintLabels(true);
+```
+
+例如， 对于一个范围为 0 到 100 的滑动条， 如果大标尺的间距是 20, 每个大标尺的标签 就应该分别是 0、20、40、60、80 和 100。
+
+还可以提供其他形式的标尺标记，如字符串或者图标（见图 12-18 )。这样做有些烦琐。 首先需要填充一个键为 Integer类型且值为Component 类型的散列表。 然后再调用setLabelTable方法，组件就会放置在标尺标记处。通常组件使用的是几此以对象。下面代码 说明了如何将标尺标签设置为 A、B、C、D、E 和 F。 
+
+```java
+Hashtable<Integer, Component> labelTable = new Hashtable<Integer, Components>(); labelTable.put(0, new ]Label("A"));
+labelTable.put(20, new Jabel("B"));
+labelTable.put(1OO, new Jabel("F”);
+slider,setLabelTable(labelTable);
+```
+
+关于散列表的详细介绍， 参考第 9 章。
+
+程序清单12-7显示了如何创建用图标作为标尺标签的滑动条。
+
+> 提示： 如果标尺的标记或者标签不显示，请检查一下是否调用了setPaintTicks(true)和setPaintLabels(true)。
+
+在图 12-18 中， 第 4 个滑动条没有轨迹。要想隐藏滑动条移动的轨迹，可以调用： 
+
+```java
+slider.setPaintTrack(false);
+```
+
+图 12-18 中第 5 个滑动条是逆向的，调用下列方法可以实现这个效果：
+
+```java
+slider.setlnverted(true);
+```
+
+示例程序演示了所有不同视觉效果的滑动条。每个滑动条都安装了一个改变事件监听 器，它负责把当前的滑动条值显示到框架底部的文本域中
