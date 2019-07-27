@@ -636,3 +636,409 @@ JLabel label = new JLabel("User name:",JLabel.RIGHT);
 > void setEchoChar(char echo); //为密码域设置回显字符。注意：独特的观感可以选择自己的回显字符。0表示重新设置为默认的回显字符。
 > char[] getPassworci(); //返回密码域中的文本。为了安全起见，在使用之后应该覆写返回的数组内容（密码并不是以String的形式返回，这是因为字符串在被垃圾回收器回收之前会一直驻留在虚拟机中）。
 > ```
+
+## 3.4 文本区
+有时，用户的输入超过一行。正像前面提到的，需
+
+要使用JTextArea组件来接收这样的输入。当在程序中放置一个文本区组件时，用户就可以输入多行文本，并用ENTER键换行。每行都以一个“ \n” 结尾。图12-13显示了一个工作的文本区。
+
+在JTextArea组件的构造器中，可以指定文本区的行数和列数。例如：
+
+```java
+textArea = new JTextArea(8, 40); // 8 lines of 40 columns each 
+```
+
+与文本域一样。出于稳妥的考虑，参数columns应该设置得大一些。另外，用户并不受限于输入指定的行数和列数。当输入过长时，文本会滚动。还可以用setColumns方法改变列数，用setRows方法改变行数。这些数值只是首选大小一布局管理器可能会对文本区进行缩放。
+
+如果文本区的文本超出显示的范围，那么剩下的文本就会被剪裁掉。可以通过开启换行特性来避免裁剪过长的行：
+
+```java
+textArea.setLineWrap(true); //long lines are wrapped
+```
+
+换行只是视觉效果；文档中的文本没有改变，在文本中并没有插入“ \n”字符。
+
+## 3.5 滚动窗格
+
+在Swing中，文本区没有滚动条。如果需要滚动条，可以将文本区插入到滚动窗格 (scroll pane) 中。
+
+```java
+textArea = new JTextArea(8, 40);
+JScrollPane scrollPane = new JScratlPane(textArea);
+```
+
+现在滚动窗格管理文本区的视图。如果文本超出了文本区可以显示的范围，滚动条就会自动地出现，并且在删除部分文本后，当文本能够显示在文本区范围内时，滚动条会再次自动地消失。滚动是由滚动窗格内部处理的，编写程序时无需处理滚动事件。
+
+这是一种为任意组件添加滚动功能的通用机制，而不是文本区特有的。也就是说，要想为组件添加滚动条，只需将它们放入一个滚动窗格中即可。
+
+程序清单12-2展示了各种文本组件。这个程序只是简单地显示了一个文本域、一个密码域和一个带滚动条的文本区。文本域和密码域都使用了标签。点击“Insert”会将组件中的内容插入到文本区中。
+
+> 注释：JTextArea组件只显示无格式的文本，没有特殊字体或者格式设置。如果想要显示格式化文本（如HTML), 就需要使用JEditorPane类。在卷II将详细讨论。
+
+> 程序清单 12-2 text/TextComponentFrame.java 
+>
+> ```java
+> package text;
+> import java.awt.BorderLayout;
+> import java.awt.GridLayout;
+> import javax.swing.JButton;
+> import javax.swing.JFrame;
+> import javax.swing.JLabel;
+> import javax.swing.JPanel;
+> import javax.swing.JPasswordField;
+> import javax.swing.JScrollPane;
+> import javax.swingJTextArea;
+> import javax.swingJTextField;
+> import javax.swing.SwingConstants;
+> /**
+> * A frame with sample text components.
+> */
+> public class TextComponentFrame extends JFrame
+> {
+> 	public static final int TEXTAREA.ROWS = 8;
+> 	public static final int TEXTAREA.COLUMNS = 20;
+> 	public TextComponentFrame()
+> 	{
+> 		JTextField textField = new JTextField();
+> 		JPasswordField passwordField = new JPasswordseld();
+> 		JPanel northPanel = new JPanel();
+> 		northPanel.setLayout(new CridLayout(2, 2));
+> 		northPanel.add(new JLabel("User name:",SwingConstants.RIGHT));
+> 		northPanel.add(textField);
+> 		northPanel.add(new JLabel("Password:"SwingConstants.RIGHT));
+> 		northPanel.add(passwordField);
+> 		add(northPanel, BorderLayout.NORTH);
+> 		JTextArea textArea = new JTextArea(TEXTAREA_ROWS, TEXTAREA_COLUMNS);
+> 		JScrollPane scrollPane = new JScrollPane(textArea);
+> 		add(scrollPane, BorderLayout.CENTER);
+> 		// add button to append text into the text' area
+> 		JPanel southPanel = new JPanel();
+> 		JButton insertButton = new JButton("Insert");
+> 		southPanel.add(insertButton);
+> 		insertButton.addActionListener(event->textArea.append("User name:"+textField.getText()+ "Password:+new String(passwordField.getPassword())+"\n"));
+> 		add(southPanel,BorderLayout.SOUTH);
+> 		pack();
+> 	}
+> }
+> ```
+
+> javax.swing.JTextArea 1.2
+>
+> ```java
+> JTextArea();
+> JTextArea(int rows, int cols);
+> JTextArea(String text, int rows, int cols); //构造一个新的文本区对象。
+> void setColumns(int cols); //设置文本区应该使用的首选列数。
+> void setRows(int rows); //设置文本区应该使用的首选行数。
+> void append(String newText); //将给定的文本追加到文本区中已有文本的尾部。
+> void setLineWrap(boolean wrap); //打开或关闭换行。
+> void setWrapStyleWord(boolean word); //如果word是true, 超长的行会在字边框处换行。如果为false,超长的行被截断而不考虑字边框。
+> void SETTABSIZG(int c); //将制表符（tab stop) 设置为c列。注意，制表符不会被转化为空格，但可以让文本对齐到下一个制表符处。
+> ```
+>
+> javax.swing.JScroliPane1.2
+>
+> ```java
+> JScrol1Pane(Component c); //创建一个滚动窗格，用来显示指定组件的内容。当组件内容超过显示范围时，滚动条会自动地出现。
+> ```
+
+# 4 选择组件
+前面已经讲述了如何获取用户输入的文本。然而，在很多情况下，可能更加愿意给用户几种选项，而不让用户在文本组件中输入数据。使用一组按钮或者选项列表让用户做出选择 (这样也免去了检查错误的麻烦)。在本节中，将介绍如何编写程序来实现复选框、单选按钮、选项列表以及滑块。
+
+## 4.1 复选框
+
+如果想要接收的输人只是“是” 或“非”，就可以使用复选框组件。复选框自动地带有标识标签。用户通过点击某个复选框来选择相应的选项， 再点击则取消选取。当复选框获得焦点时，用户也可以通过按空格键来切换选择。
+
+图12-14所示的程序中有两个复选框，其中一个用于打开或关闭字体倾斜属性，而另一个用于控制加粗属性。注意，第二个复选框有焦点，这一点可以由它周围的矩形框看出。只要用户点击某个复选框，程序就会刷新屏幕以便应用新的字体属性。 
+
+复选框需要一个紧邻它的标签来说明其用途。在构造器中指定标签文本。
+
+```java
+bold = new JCheckBox("Bold");
+```
+
+可以使用setSelected方法来选定或取消选定复选框。例如：
+
+```java
+bold.setSelected(true);
+```
+
+isSelected方法将返回每个复选框的当前状态。如果没有选取则为false, 否则为true。当用户点击复选框时将触发一个动作事件。通常，可以为复选框设置一个动作监听器。在下面程序中，两个复选框使用了同一个动作监听器。
+
+```java
+ActionListener listener =...
+bold.addActionListener(listener);
+italic.addActionListener(listener);
+```
+
+actionPerformed方法查询bold和italic两个复选框的状态，并且把面板中的字体设置为常规、加粗、倾斜或者粗斜体。
+
+```java
+ActionListener listener = event -> {
+	int mode = 0;
+	if (bold.isSelectedO) mode += Font.BOLD;
+	if (italic.isSelectedO) mode += Font.ITALIC;
+	label.setFont(new Font(Font.SERIF, mode, FONTSIZE));
+};
+```
+
+程序清单 12-3 给出了复选框例子的全部代码。
+
+> 程序清单 12-3 checkBox/CheckBoxTest.java
+>
+> ```java
+> package checkBox;
+> import java.awt.*;
+> import java.awt.event.*;
+> import javax.swing.*;
+> /**
+> * A frame with a sample text label and check boxes for selecting font
+> * attributes.
+> */
+> public class CheckBoxFrame extends JFrame
+> {
+> 	private JLabel label;
+> 	private JCheckBox bold;
+> 	private JCheckBox italic;
+> 	private static final int FONTSIZE = 24;
+> 	public CheckBoxFrame()
+> 	{
+> 		// add the sample text label
+> 		label = new JLabel("The quick brown fox jumps over the lazy dog.");
+> 		label.setFont(new Font("Serif", Font.BOLD, FONTSIZE));
+> 		add(label, BorderLayout.CENTER);
+> 		// this listener sets the font attribute of
+> 		// the label to the check box state
+> 		ActionListener listener = event -> {
+> 			int mode = 0;
+> 			if (bold.isSelectedO) mode += Font.BOLD;
+> 			if (italic.isSelectedO) mode += Font.ITALIC;
+> 			label.setFont(new Font("Serif", mode, FONTSIZE));
+> 		};
+> 		// add the check boxes
+> 		JPanel buttonPanel = new JPanel();
+> 		bold = new JCheckBox("Bo1d");
+> 		bold.addActionListener(listener);
+> 		bold.setSelected(true);
+> 		buttonPanel.add(bold);
+> 		
+> 		italic = new JCheckBox("Italic");
+> 		italic.addActionListener(listener);
+> 		buttonPanel.add(italic);
+> 		
+> 		add(buttonPanel, BordedLayout.SOUTH);
+> 		pack();
+> 	}
+> }
+> ```
+
+> javax.swing.JCheckBox 1.2
+>
+> ```java
+> JCheckBox(String label);
+> JCheckBox(String label,Icon icon); //构造一个复选框， 初始没有被选择。 JCheckBox(String label,boolean state); //用给定的标签和初始化状态构造一个复选框。
+> boolean isSelected ();
+> void setSelected(boolean state); //获取或设置复选框的选择状态。
+> ```
+
+## 4.2 单选钮
+
+在前一个例子中，对于两个复选框，用户既可以选择一个、两个，也可以两个都不选。在很多情况下，我们需要用户只选择几个选项当中的一个。当用户选择另一项的时候， 前一项就自动地取消选择。这样一组选框通常称为单选钮组（RadioButtonGroup), 这是因为这些 按钮的工作很像收音机上的电台选择按钮。当按下一个按钮时，前一个按下的按钮就会自动 弹起。图 12-15给出了一个典型的例子。这里允许用户在多个选择中选择字体的大小，即小、中、大和超大，但是，每次用户只能选择一个。
+
+在Swing中，实现单选钮组非常简单。为单选钮组构造一个ButtonGroup的对象。然后，再将JRadioButton类型的对象添加到按钮组中。按钮组负责在新按钮被按下时，取消前一个被按下的按钮的选择状态。 
+
+```java
+ButtonGroup group = new ButtonGroup();
+JRadioButton smallButton = new JRadioButton("Small", false);
+group.add(smallButton);
+JRadioButton mediumButton = new JRadioButton("Medium", true); group.add(mediumButton);
+...
+```
+
+构造器的第二个参数为true表明这个按钮初始状态是被选择，其他按钮构造器的这个参数为false。注意，按钮组仅仅控制按钮的行为，如果想把这些按钮组织在一起布局，需要把它们添加到容器中，如JPanel。
+
+单选钮与复选框的外观是不一样的。复选框为正方形，并且如果被选择，这个正方形中会出现一个对钩的符号。单选钮是圆形，选择以后圈内出现一个圆点。 单选钮的事件通知机制与其他按钮一样。当用户点击一个单选钮时， 这个按钮将产生一个动作事件。在示例中，定义了一个动作监听器用来把字体大小设置为特定值： 
+
+```java
+ActionListener listener = event ->
+	label.setFont(new Font("Serif", Font.PLAIN, size));
+```
+
+用这个监听器与复选框中的监听器做一个对比。每个单选钮都对应一个不同的监听器对象。每个监听器都非常清楚所要做的事情---把字体尺寸设置为一个特定值。在复选框示例中，使用的是一种不同的方法，两个复选框共享一个动作监听器。这个监听器调用一个方法来检查两个复选框的当前状态。
+
+对于单选钮可以使用同一个方法吗？可以试一下使用一个监听器来计算尺寸，如：
+
+```java
+if (smallButton.isSelected()) size = 8;
+else if (mediumButton.isSelected()) size = 12;
+...
+```
+
+然而，更愿意使用各自独立的动作监听器，因为这样可以将尺寸值与按钮紧密地绑定在一起。
+
+> 注释：如果有一组单选钮，并知道它们之中只选择了一个。要是能够不查询组内所有的按钮就可以很快地知道哪个按钮被选择的话就好了。由于ButtonGroup对象控制着所有的按钮，所以如果这个对象能够给出被选择的按钮的引用就方便多了。事实上，ButtonGroup类中有一个getSelection方法，但是这个方法并不返回被选择的单选钮，而是返回附加在那个按钮上的模型ButtonModel的引用。对于我们来说，ButtonModel中的方法没有什么实际的应用价值。ButtonModel接口从ItemSelectable接口继承了一个getSelectedObject方法，但是这个方法没有用，它返回null。getActionCommand方法看起来似乎可用，这是因为一个单选钮的“动作命令”是它的文本标签，但是它的模型的动作命令是null。只有在通过setActionCommand命令明确地为所有单选钮设定动作命令后，才能够通过调用方法buttonGroup.getSelection().getActionCommand()获得当前选择的按钮的动作命令。 
+
+> 程序清单 12-4是一个用于选择字体大小的完整程序，它演示了单选钮的工作过程。 
+>
+> ```java
+> package radioButton;
+> import java.awt.*;
+> import java.awt.event.*;
+> import javax.swing.*;
+> /**
+> * A frame with a sample text label and radio buttons for selecting font sizes. 
+> */
+> public class RadioButtonPrame extends JFrame
+> {
+> 	private JPanel buttonPanel:
+> 	private ButtonGroup group;
+> 	private JLabel label;
+> 	private static final int DEFAULT.SIZE = 36;
+> 	public RadioButtonFrame()
+> 	{
+> 		// add the sample text label
+> 		label = newJLabel("The quick brown fox jumps over the lazy dog.");
+> 		label.setFont(new Font("Serif", Font.PLAIN, DEFAULT_SIZE));
+> 		add(label, BorderLayout.CENTER);
+> 		// add the radio buttons buttonPanel = new]Panel();
+> 		group = new BtittonGroup();
+> 		addRadioButton( "Small", 8);
+> 		addRadioButton( "Medium", 12);
+> 		addRadioButton( "Large", 18);
+> 		addRadioButton( "Extra large", 36);
+> 		add(buttonPanel,BorderLayout.SOUTH);
+> 		pack();
+> 	}
+> 	/**
+> 	* Adds a radio button that sets the font size of the sample text.
+> 	* @param name the string to appear on the button
+> 	*@param size the font size that this button sets
+> 	**/
+> 	public void addRadioButton(String name, int size)
+> 	{
+> 		boolean selected = size == DEFAULT_SIZE;
+> 		JRadioButton button = new]RadioButton(name, selected);
+> 		group.add(button);
+> 		buttonPanel.add(button);
+> 		// this listener sets the label font size
+> 		ActionListener listener = event -> label.setFont(new Font("Serif", Font.PLAIN, size));
+> 		button.addActionListener(listener);
+> 	}
+> }
+> ```
+
+> javax.swing.JRadioButton 1.2
+>
+> ```java
+> JRadioButton(String label, Icon icon); //构造一个单选钮， 初始没有被选择。 JRadioButton(String label, boolean state); //用给定的标签和初始状态构造一个单选钮。 
+> ```
+
+> javax.swing.ButtonGroup 1.2
+>
+> ```java
+> void add(AbstractButton b); //将按钮添加到组中。
+> ButtonModel getSelection(); //返回被选择的按钮的按钮模型。
+> ```
+
+> javax.swing.ButtonModel 1.2
+>
+> ```java
+> String getActionCommand(); //返回按钮模型的动作命令。 
+> ```
+
+> javax.swing.AbstractButton 1.2
+>
+> ```java
+> void setActionCommand(String s); //设置按钮及其模型的动作命令
+> ```
+
+## 4.3 边框
+
+如果在一个窗口中有多组单选按钮，就需要用可视化的形式指明哪些按钮属于同一组。Swing提供了一组很有用的边框（borders) 来解决这个问题。可以在任何继承了JComponent的组件上应用边框。最常用的用途是在一个面板周围放置一个边框，然后用其他用户界面元素（如单选钮）填充面板。
+
+有几种不同的边框可供选择，但是使用它们的步骤完全一样。
+
+1 ) 调用 BorderFactory 的静态方法创建边框。下面是几种可选的风格
+
+- 凹斜面
+- 凸斜面
+- 蚀刻
+- 直线
+- 蒙版
+- 空（只是在组件外围创建一些空白空间）
+
+2 ) 如果愿意的话，可以给边框添加标题，具体的实现方法是将边框传递给`BroderFactory.createTitledBorder`
+
+3 ) 如果确实想把一切凸显出来，可以调用下列方法将几种边框组合起来使用 `BorderFactory.createCompoundBorder`
+
+4 ) 调用JComponent类中setBorder方法将结果边框添加到组件中。 
+
+例如，下面代码说明了如何把一个带有标题的蚀刻边框添加到一个面板上：
+
+```
+Border etched = BorderFactory.createEtchedBorder(); Border titled = BorderFactory.createTitledBorder(etched, "A Title")； panel.setBorder(titled);
+```
+
+运行程序清单12-5中的程序可以看到各种边框的外观。
+
+不同的边框有不同的用于设置边框的宽度和颜色的选项。详情请参看API注释。偏爱使用边框的人都很欣赏这一点，SoftBevelBorder 类用于构造具有柔和拐角的斜面边框，LineBorder类也能够构造圆拐角。这些边框只能通过类中的某个构造器构造，而没有BorderFactory方法。
+
+> javax.swing.BorderFactory 1.2
+>
+> ```java
+> static Border createLineBorder(Co1or color);
+> static Border createLineBorder(Color color, int thickness); //创建一个简单的直线边框。
+> static MatteBorder createMatteBorder(int top, int left, int bottom, int right, Color color);
+> static MatteBorder createMatteBorder(int top, int left, int bottom, int right, Icon tilelcon); //创建一个用 color 颜色或一个重复（repeating) 图标填充的粗的边框。
+> static Border createEmptyBorder();
+> static Border createEmptyBorder(int top, int left, int bottom, int right); //创建一个空边框。
+> static Border createEtchedBorder();
+> static Border createEtchedBorder(Color highlight,Color shadow);
+> static Border createEtchedBorder(int type);
+> static Border createEtchedBorder(int type,Color highlight,Color shadow);
+> 
+> //创建一个具有 3D 效果的直线边框。
+> //参数： highlight, shadow 用于3D效果的颜色
+> //type EtchedBorder.RAISED 和 EtchedBorder.LOWERED 之一
+> static Border createBevelBorder (int type);
+> static Border createBevelBorder(int type, Color highlight, Color shadow); static Border createLoweredBevelBorder();
+> static Border createRaisedBevelBorder();
+> //创建一个具有凹面或凸面效果的边框。
+> //参数：type   BevelBorder.LOWERED 和 BevelBorder.RAISED 之一
+> //highlight,shadow    用于 3D 效果的颜色
+> static TitledBorder createTitledBorder(String title);
+> static TitledBorder createTitledBorder(Border border);
+> static TitledBorder createTitledBorder(Border border, String title);
+> static TitledBorder createTitledBorder(Border border, String title, int justification, Int position);
+> static TitledBorder createTitledBorder( Border border, String title, int justification, int position, Font font);
+> static Tit edBorder createTitledBorder(Border border, String title, int justification, int position, Font font, Color color);
+> //创建一个具有给定特性的带标题的边框。 
+> //参数: title	 标题字符串
+> //border	用标题装饰的边框
+> //justification	 TitledBorder常量LEFT、CENTER、 RIGHT、 LEADING、 TRAILING 或 DEFAULT_JUSTIFICATION (left) 之一
+> //position	TitledBorder常量ABOVE—TOP、TOP、BELOW—TOP、ABOVE_ BOTTOM、 BOTTOM、 BELOW_BOTTOM 或 DEFAULT— POSITION (top) 之一
+> //font	 标题的字体
+> //color	  标题的颜色
+> static CompoundBorder createCompoundBorder(Border outsideBorder, Border insideBorder); //将两个边框组合成一个新的边框。 position font color 
+> ```
+
+> javax.swing,border.SoftBevelBorder 1.2 
+>
+> ```java
+> SoftBevelBorder(int type)
+> SoftBevelBorder(int type, Color highlight, Color shadow); //创建一个带有柔和边角的斜面边框。
+> //参数：type    BevelBorder.LOWERED和BevelBorder.RAISED之一
+> //highlight,shadow    用于3D效果的颜色 
+> ```
+
+> javax.swing.border.LineBorder 1.2 
+>
+> ```java
+> public LineBorder(Color color, int thickness, boolean roundedCorners); //用指定的颜色和粗细创建一个直线边框。如果roundedCorners为true，则边框有圆角。
+> ```
+
+> javax.swing.JComponent 1.2
+>
+> ```java
+> void setBorder(Border border); //设置这个组件的边框
+> ```
