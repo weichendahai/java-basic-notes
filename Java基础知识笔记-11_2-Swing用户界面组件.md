@@ -1785,9 +1785,11 @@ public void menuSelected(MenuEvent event)
 > 	private Action saveAsAction;
 > 	private JCheckBoxMenuItem readonlyltem;
 > 	private JPopupMenu popup;
+> 	
 > 	/**
 > 	* A sample action that prints the action name to System.out
 > 	*/
+> 	
 > 	class TestAction extends AbstractAction
 > 	{
 > 		public TestAction(String name)
@@ -1804,7 +1806,9 @@ public void menuSelected(MenuEvent event)
 > 		setSize(DEFAULT.WIDTH, DEFAULTJEIGHT);
 > 		JMenu fileMenu = new JMenu("FileH);
 > 		fileMenu.add(new TestAction("New"));
+> 		
 > 		// demonstrate accelerators
+> 		
 > 		JMenuItem openltem = fileMenu.add(new TestAction("0pen"));
 > 		openltem.setAccelerator(KeyStroke.getKeyStroke("ctrl 0"));
 > 		fileMenu.addSeparator();
@@ -1821,7 +1825,9 @@ public void menuSelected(MenuEvent event)
 > 				System,exit(0);
 > 			}
 > 		});
+> 		
 > 		// demonstrate checkbox and radio button menus
+> 		
 > 		readonlyltem = new JCheckBoxMenuItem("Read-only");
 > 		readonlyltem.addActionListener(new ActionListener()
 > 		{
@@ -1838,7 +1844,9 @@ public void menuSelected(MenuEvent event)
 > 		JRadioButtonMenuItem overtypeltem = new JRadioButtonMenuItem("Overtype");
 > 		group.add(insertltem);
 > 		group.add(overtypeltem);
+> 		
 > 		// demonstrate icons
+> 		
 > 		Action cutAction = new TestAction("Cut");
 > 		cutAction.putValue(Action.SMALL_IC0N, new Imagelcon("cut.gif"));
 > 		Action copyAction = new TestAction("Copy");
@@ -1848,7 +1856,9 @@ public void menuSelected(MenuEvent event)
 > 		editMenu.add(cutAction);
 > 		editMenu.add(copyAction);
 > 		editMenu.add(pasteAction);
+> 		
 > 		// demonstrate nested menus
+> 		
 > 		JMenu optionMenu = new JMenu("Options");
 > 		optionMenu.add(readonlyltem);
 > 		optionMenu.addSeparator();
@@ -1856,23 +1866,31 @@ public void menuSelected(MenuEvent event)
 > 		optionMenu.add(overtypeltem);
 > 		editMenu.addSeparator();
 > 		editMenu.add(optionMenu);
+> 		
 > 		// demonstrate mnemonics
+> 		
 > 		JMenu helpMenu = new JMenu("Help");
 > 		helpMenu.setMnemonic('H');
 > 		JMenuItem indexltem = new JMenuItem("Index");
 > 		indexltem.setMnemonic(T);
 > 		helpMenu.add(indexltem);
+> 		
 > 		// you can also add the mnemonic key to an action
+> 		
 > 		Action aboutAction = new TestAction("About");
 > 		aboutAction.putValue(Action.MNEM0NIC_KEY, new Integer('A')); 
 > 		helpMenu.add(aboutAction);
+> 		
 > 		// add all top-level menus to menu bar 
+> 		
 > 		JMenuBar menuBar = new JMenuBar();
 > 		setJMenuBar(menuBar);
 > 		menuBar.add(fileMenu);
 > 		menuBar.add(editMenu);
 > 		menuBar.add(helpMenu);
+> 		
 > 		// demonstrate pop-ups
+> 		
 > 		popup = new JPopupMenu();
 > 		popup.add(cutAction);
 > 		popup.add(copyAction);
