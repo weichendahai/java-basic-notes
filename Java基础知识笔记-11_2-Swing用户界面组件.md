@@ -1804,7 +1804,7 @@ public void menuSelected(MenuEvent event)
 > 	public MenuFrame()
 > 	{
 > 		setSize(DEFAULT.WIDTH, DEFAULTJEIGHT);
-> 		JMenu fileMenu = new JMenu("FileH);
+> 		JMenu fileMenu = new JMenu("File");
 > 		fileMenu.add(new TestAction("New"));
 > 		
 > 		// demonstrate accelerators
