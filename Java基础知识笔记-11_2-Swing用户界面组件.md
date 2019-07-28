@@ -1114,10 +1114,10 @@ ActionListener listener = event ->
 > package comboBox;
 > import java.awt.BorderLayout;
 > import java.awt.Font;
-> import javax.swing.]ComboBox;
-> import javax.swing.]Frame;
-> import javax.swing.]Label;
-> import javax.swing.]Panel;
+> import javax.swing.JComboBox;
+> import javax.swing.JFrame;
+> import javax.swing.JLabel;
+> import javax.swing.JPanel;
 > /**
 > * A frame with a sample text label and a combo box for selecting font faces.
 > */
@@ -1230,7 +1230,7 @@ slider.setPaintLabels(true);
 还可以提供其他形式的标尺标记，如字符串或者图标（见图 12-18 )。这样做有些烦琐。 首先需要填充一个键为 Integer类型且值为Component 类型的散列表。 然后再调用setLabelTable方法，组件就会放置在标尺标记处。通常组件使用的是几此以对象。下面代码 说明了如何将标尺标签设置为 A、B、C、D、E 和 F。 
 
 ```java
-Hashtable<Integer, Component> labelTable = new Hashtable<Integer, Components>(); labelTable.put(0, new ]Label("A"));
+Hashtable<Integer, Component> labelTable = new Hashtable<Integer, Components>(); labelTable.put(0, new JLabel("A"));
 labelTable.put(20, new Jabel("B"));
 labelTable.put(100, new Jabel("F”);
 slider,setLabelTable(labelTable);
@@ -1430,7 +1430,7 @@ menuBar.add(editMenu);
  向菜单对象中添加菜单项、分隔符和子菜单：
 
 ```java
-JMenuItem pasteltem = new ]MenuItem("Paste");
+JMenuItem pasteltem = new JMenuItem("Paste");
 editMenu.add(pasteltem);
 editMenu.addSeparator();
 JMenu optionsMenu = ...; // a submenu
@@ -1514,3 +1514,539 @@ JMenuItem exitltem = new JMenuItem(exitAction); fileMenu.add(exitltem);
 > ```java
 > void setJMenuBar(JMenuBar menubar); //为这个框架设置菜单栏。
 > ```
+
+## 5.2 菜单项中的图标
+
+菜单项与按钮很相似。实际上，JMenuItem类扩展了AbstractButton类。与按钮一样，菜单可以包含文本标签、图标，也可以两者都包含。既可以利用 JMenuItem(String，Icon) 或者 JMenuItem(Icon) 构造器为菜单指定一个图标，也可以利用JMenuItem类中的setlcon方法 (继承自AbstractButton类）指定一个图标。例如：
+
+```
+JMenuItem cutltem = new JMenuItem("Cut", new Imagelcon("cut.gif"));
+```
+
+图12-19展示了具有图标的菜单项。正如所看到的，在默认情况下，菜单项的文本被放置在 图标的右侧。如果喜欢将文本放置在左侧，可以调用JMenuItem类中的setHorizontalTextPosition方法（继承自 AbstractButton 类）设置。例如： 
+
+```
+cutltem.setHorizontalTextPosition(SwingConstants.LEFT); 
+```
+
+这个调用把菜单项文本移动到图标的左侧。 也可以将一个图标添加到一个动作上： 
+
+```
+cutAction.putValue(Action.SMALL.ICON, new Imagelcon("cut.gif"));
+```
+
+当使用动作构造菜单项时，Action.NAME值将会作为菜单项的文本，而Action.SMALL_ ICON将会作为图标。 另外，可以利用AbstractAction构造器设置图标：
+
+```java
+cutAction = new AbstractAction("Cut", new Imagelcon("cut.gif"))
+{
+	public void actionPerformed(ActionEvent event)
+	{
+		...
+	}
+};
+```
+
+> javax.swing.JMenuItem1.2
+>
+> ```java
+> JMenuItem(String label, Icon icon); //用给定的标签和图标构造一个菜单项。 
+> ```
+
+> javax.swing.AbstractButton1.2
+>
+> ```java
+> void setHorizontalTextPosition(int pos); //设置文本对应图标的水平位置。
+> //参数：pos   SwingConstants.RIGHT(文本在图标的右侧)或SwingConstants.LEFT
+> ```
+>
+> javax.swing.AbstractAction1.2
+>
+> ```java
+> AbstractAction(String name, Icon smallIcon); //用给定的名字和图标构造一个抽象的动作。
+> ```
+
+## 5.3 复选框和单选钮菜单项
+
+复选框和单选钮菜单项在文本旁边显示了一个复选框或一个单选钮（参见图 12-19)。当用户选择一个菜单项时，菜单项就会自动地在选择和未选择间进行切换。除了按钮装饰外，同其他菜单项的处理一样。例如，下面是创建复选框菜单项的代码： 
+
+```java
+JCheckBoxHenuItem readonlyltem = new JCheckBoxMenuItem("Read-only"); optionsMenu.add(readonlyltem);
+```
+
+单选钮菜单项与普通单选钮的工作方式一样，必须将它们加人到按钮组中。当按钮组中的一个按钮被选中时，其他按钮都自动地变为未选择项。 
+
+```java
+ButtonGroup group = new ButtonGroup();
+JRadioButtonMenuItem insertltem = new JRadioButtonMenuItem("Insert");
+insertltem.setSelected(true);
+JRadioButtonMenuItem overtypeltem = new JRadioButtonMenuItem("Overtype")； group.add(insertltem);
+group.add(overtypeltem);
+optionsMenu.add(insertltem);
+optionsMenu.add(overtypeltem); 
+```
+
+使用这些菜单项，不需要立刻得到用户选择菜单项的通知。而是使用isSelected方法来测试菜单项的当前状态（当然，这意味着应该保留一个实例域保存这个菜单项的引用）。使用 setSelected方法设置状态。
+
+> javax.swing.JCheckBoxMenultem 1.2
+>
+> ```
+> JCheckBoxMenuItem(String label); //用给定的标签构造一个复选框菜单项。 JCheckBoxMenuItem(String label, boolean state); //用给定的标签和给定的初始状态（true 为选定）构造一个复选框菜单。
+> ```
+
+> 因javax.swing.JRadioButtonMenultem 1.2
+>
+> ```
+> JRadioButtonMenuItem(String label); //用给定的标签构造一个单选钮菜单项。
+> JRadioButtonMenuItemCString label , boolean state); //用给定的标签和给定的初始状态（true 为选定）构造一个单选钮菜单项。
+> ```
+
+> javax.swing.AbstractButton 1.2
+>
+> ```
+> boolean isSelected();
+> void setSelected(boo1ean state); //获取或设置这个菜单项的选择状态（true 为选定)。
+> ```
+
+## 5.4 弹出菜单
+
+弹出菜单（pop-up menu) 是不固定在菜单栏中随处浮动的菜单（参见图 12-20 )。
+
+创建一个弹出菜单与创建一个常规菜单的方法类似，但是弹出菜单没有标题。
+
+```
+ JPopupMenu popup = new JPopupMenu();
+```
+
+然后用常规的方法添加菜单项： 
+
+```
+JMenuItem item = new JMenuItem("Cut");
+item.addActionListener(1istener);
+popup.add(item);
+```
+
+弹出菜单并不像常规菜单栏那样总是显示在框架的顶部，必须调用show方法菜单才能显示出来。调用时需要给 出父组件以及相对父组件坐标的显示位置。例如：
+
+```java
+popup.show(panel, x, y);
+```
+
+通常，当用户点击某个鼠标键时弹出菜单。 这就是所谓的弹出式触发器（pop-up trigger)。在Windows或者Linux中，弹出式触发器是鼠标右键。要想在用户点击某一个组件时弹出菜单， 需要按照下列方式调用方法：
+
+```java
+component.setComponentPopupMenu(popup);
+```
+
+偶尔会遇到在一个含有弹出菜单的组件中放置一个组件的情况。这个子组件可以调用下 列方法继承父组件的弹出菜单。调用：
+
+```java
+child.setlnheritsPopupMenu(true);
+```
+
+> javax.swing.JPopupMenu 1.2 
+>
+> ```java
+> void show(Component c, int x, int y); //显示一个弹出菜单。
+> //参数： c  显示弹出菜单的组件
+> //x,y  弹出菜单左上角的坐标（C 的坐标空间内）
+> boolean isPopupTrigger(MouseEvent event) 1.3 //如果鼠标事件是弹出菜单触发器，则返回 true。 
+> ```
+
+> java.awt.event.MouseEvent 1.1
+>
+> ```
+> boolean isPopupTrigger(); //如果鼠标事件是弹出菜单触发器， 则返回 true。
+> ```
+
+> javax.swing.JComponent 1.2
+>
+> ```java
+> JPopupMenu getComponentPopupMenu( ) 5.0
+> void setComponentPopupMenu(JPopupMenu popup) 5.0 //获取或设置用于这个组件的弹出菜单。
+> boolean getlnheritsPopupMenu( ) 5.0
+> void setInheritsPopupMenu(boolean b) 5.0 //获取或设置 inheritsPopupMenu 特性。 如果这个特性被设置或这个组件的弹出菜单为null, 则应用上一级弹出菜单。
+> ```
+
+## 5.5 快捷键和加速器
+对于有经验的用户来说，通过快捷键来选择菜单项会感觉更加便捷。可以通过在菜单项的构造器中指定一个快捷字母来为菜单项设置快捷键：
+
+```
+JMenuItem aboutltem = new JMenuItem("About", 'A');
+```
+
+快捷键会自动地显示在菜单项中，并带有一条下划线 (如图 12-21 所示)。例如，在上面的例子中，菜单项中的标签为“About”，字母A带有一个下划线。当显示菜单时，用户只需要按下“ A” 键就可以这个选择菜单项（如果快捷 字母没有出现在菜单项标签字符串中， 同样可以按下快捷键选择菜单项，只是快捷键没有显示出来。很自然，这种不可见的快捷键没有提示效果)。
+
+有时候不希望在菜单项的第一个快捷键字母下面加下划线。例如，如果在菜单项“Save As”中使用快捷键“A”，则在第二个“A” （Save As) 下面加下划线更为合理。可以调用 setDisplayedMnemonicIndex方法指定希望加下划线的字符。 
+
+如果有一个Action对象，就可以把快捷键作为Action.MNEMONIC_KEY的键值添加到对象中。如：
+
+```java
+cutAction.putValue(Action,MNEMONIC_KEY, new Integer('A'));
+```
+
+只能在菜单项的构造器中设定快捷键字母，而不是在菜单构造器中。如果想为菜单设置快捷键，需要调用setMnemonic方法：
+
+```
+JMenu helpMenu = new JMenu("Help");
+helpMenu.setMnemonic('H');
+```
+
+可以同时按下ALT键和菜单的快捷键来实现在菜单栏中选择一个顶层菜单的操作。例如：按下ALT+H可以从菜单中选择Help菜单项。
+
+可以使用快捷键从当前打开的菜单中选择一个子菜单或者菜单项。而加速器是在不打开 菜单的情况下选择菜单项的快捷键。例如： 很多程序把加速器CTRL+O和CTRL+S关联到File菜单中的Open和Save菜单项。可以使用setAccelerator将加速器键关联到一个菜单项上。这个方法使用 Keystroke类型的对象作为参数。例如：下面的调用将加速器CTRL+O关联到Openltem菜单项。
+
+```
+openItem.setAccelerator(KeyStroke.getKeyStroke("ctrl 0"));
+```
+
+当用户按下加速器组合键时，就会自动地选择相应的菜单项，同时激活一个动作事件，这与手工地选择这个菜单项一样。
+
+加速器只能关联到菜单项上，不能关联到菜单上。加速器键并不实际打开菜单。它将直接地激活菜单关联的动作事件。
+
+从概念上讲，把加速器添加到菜单项与把加速器添加到Swing组件上所使用的技术十分类似（在第 11 章中讨论了这个技术)。但是，当加速器添加到菜单项时，对应的组合键就会自动地显示在相应的菜单上（见图 12-22 )。
+
+> 注释：在Windows下，ALT+F4用于关闭窗口。 但这不是Java程序设定的加速键。这是操作系统定义的快捷键。这个组合键总会触发活动窗口的WindowClosing事件，而不管菜单上是否有Close菜单项
+
+> javax.swing.JMenultem 1.2
+>
+> ```java
+> JMenuItem(String label, int mnemonic); //用给定的标签和快捷键字符构造一个菜单项。
+> //参数：label  菜单项的标签
+> //mnemonic  菜单项的快捷键字符，在标签中这个字符下面会有一个下划线。
+> void setAccelerator(Keystroke k); //将k设置为这个菜单项的加速器。加速器显示在标签的旁边。
+> ```
+
+> javax.swing.AbstractButton 1.2
+>
+> ```java
+> void setMnemonic(int mnemonic); //设置按钮的快捷字符。该字符会在标签中以下划线的形式显示。
+> void setDisplayedMnemoniclndex(int index) 1.4 将按钮文本中的index字符设定为带下划线。如果不希望第一个出现的快捷键字符带下划线， 就可以使用这个方法。
+> ```
+
+## 5.6 启用和禁用菜单项
+
+在有些时候，某个特定的菜单项可能只能够在某种特定的环境下才可用。例如，当文档以只读方式打开时，Save菜单项就没有意义。当然，可以使用JMemremove方法将这个菜单项从菜单中删掉，但用户会对菜单内容的不断变化感到奇怪。然而，可以将这个菜单项设为禁用状态，以便屏蔽掉这些暂时不适用的命令。被禁用的菜单项被显示为灰色，不能被选择它（见图 12-23 )。 
+
+启用或禁用菜单项需要调用setEnabled方法： 
+
+```
+saveltem.setEnabled(false);
+```
+
+启用和禁用菜单项有两种策略。每次环境发生变化就对相关的菜单项或动作调用setEnabled。例如： 只要当文档以只读方式打开，就禁用Save和Save As菜单项。另一种 方法是在显示菜单之前禁用这些菜单项。这里必须为“菜单选中” 事件注册监听器。javax.swing.event包定义了MenuListener接口，它包含三个方法：
+
+```java
+void menuSelected(MenuEvent event)
+void menuDeselected(MenuEvent event)
+void menuCanceled(MenuEvent event)
+```
+
+由于在菜单显示之前调用menuSelected方法，所以可以在这个方法中禁用或启用菜单项。下面代码显示了只读复选框菜单项被选择以后，如何禁用Save和Save As动作。
+
+```java
+public void menuSelected(MenuEvent event)
+{
+	saveAction.setEnabled(!readonlyltem.isSelected());
+	saveAsAction.setEnabled(!readonlyltem.isSelected());
+}
+```
+
+警告：在显示菜单之前禁用菜单项是一种明智的选择， 但这种方式不适用于带有加速键的菜单项。这是因为在按下加速键时并没有打开菜单，因此动作没有被禁用，致使加速键还会触发这个行为。 
+
+> javax.swing.JMenultem 1.2
+>
+> ```
+> void setEnabled(boolean b); //启用或禁用菜单项。
+> ```
+
+> javax.swing.event.MenuListener 1.2
+>
+> ```
+> void menuSelected(MenuEvent e); //在菜单被选择但尚未打开之前调用。 void menuDeselected(MenuEvent e); //在菜单被取消选择并且已经关闭之后被调用。 •void menuCanceled(MenuEvent e); //当菜单被取消时被调用。例如， 用户点击菜单以外的区域。
+> ```
+
+程序清单12-8是创建一组菜单的示例程序。这个程序演示了本节介绍的所有特性，包括： 嵌套菜单、禁用菜单项、复选框和单选钮菜单项、弹出菜单以及快捷键和加速器。
+
+> 程序清单 12-8 menu/MenuFrame.java
+>
+> ```java
+> package menu;
+> import java.awt.event.*;
+> import javax.swing.*;
+> /**
+> * A frame with a sample menu bar.
+> */
+> public class MenuFrame extends JFrame
+> {
+> 	private static final int DEFAULT_WIDTH = 300;
+> 	private static final int DEFAULTJEICHT = 200;
+> 	private Action saveAction;
+> 	private Action saveAsAction;
+> 	private JCheckBoxMenuItem readonlyltem;
+> 	private JPopupMenu popup;
+> 	/**
+> 	* A sample action that prints the action name to System.out
+> 	*/
+> 	class TestAction extends AbstractAction
+> 	{
+> 		public TestAction(String name)
+> 		{
+> 			super(name);
+> 		}
+> 		public void actionPerformed(ActionEvent event)
+> 		{
+> 			System.out.println(getValue(Action.NAME) + " selected.");
+> 		}
+> 	}
+> 	public MenuFrame()
+> 	{
+> 		setSize(DEFAULT.WIDTH, DEFAULTJEIGHT);
+> 		JMenu fileMenu = new JMenu("FileH);
+> 		fileMenu.add(new TestAction("New"));
+> 		// demonstrate accelerators
+> 		JMenuItem openltem = fileMenu.add(new TestAction("0pen"));
+> 		openltem.setAccelerator(KeyStroke.getKeyStroke("ctrl 0"));
+> 		fileMenu.addSeparator();
+> 		saveAction = new TestAction("Save");
+> 		JMenuItem saveltem = fileMenu.add(saveAction);
+> 		saveltem.setAccelerator(KeyStroke.getKeyStroke("ctrl S"));
+> 		saveAsAction = new TestAction("Save As");
+> 		fileMenu.add(saveAsAction);
+> 		fileMenu.addSeparator();
+> 		fileMenu.add(new AbstractAction("Exit")
+> 		{
+> 			public void actionPerformed(ActionEvent event)
+> 			{
+> 				System,exit(0);
+> 			}
+> 		});
+> 		// demonstrate checkbox and radio button menus
+> 		readonlyltem = new JCheckBoxMenuItem("Read-only");
+> 		readonlyltem.addActionListener(new ActionListener()
+> 		{
+> 			public void actionPerformed(ActionEvent event)
+> 			{
+> 				boolean saveOk = !readonlyltem.isSelected();
+> 				saveAction.setEnabled(saveOk);
+> 				saveAsAction.setEnabled(saveOk);
+> 			}
+> 		});
+> 		ButtonCroup group = new ButtonGroup();
+> 		JRadioButtonMenuIteni insertltem = new JRadioButtonMenuItem("Insert");
+> 		insertltem.setSelected(true);
+> 		JRadioButtonMenuItem overtypeltem = new JRadioButtonMenuItem("Overtype");
+> 		group.add(insertltem);
+> 		group.add(overtypeltem);
+> 		// demonstrate icons
+> 		Action cutAction = new TestAction("Cut");
+> 		cutAction.putValue(Action.SMALL_IC0N, new Imagelcon("cut.gif"));
+> 		Action copyAction = new TestAction("Copy");
+> 		copyAction.putValue(Action.SMALL_IC0N, new Imagelcon("copy.gif")); Action pasteAction = new TestAction("Paste");
+> 		pasteAction.putValue(Action.SMALL_ICON, new ImageIcon("paste.gif"));
+> 		JMenu editMenu = new JMenu("Edit");
+> 		editMenu.add(cutAction);
+> 		editMenu.add(copyAction);
+> 		editMenu.add(pasteAction);
+> 		// demonstrate nested menus
+> 		JMenu optionMenu = new JMenu("Options");
+> 		optionMenu.add(readonlyltem);
+> 		optionMenu.addSeparator();
+> 		optionMenu.add(insertltem);
+> 		optionMenu.add(overtypeltem);
+> 		editMenu.addSeparator();
+> 		editMenu.add(optionMenu);
+> 		// demonstrate mnemonics
+> 		JMenu helpMenu = new JMenu("Help");
+> 		helpMenu.setMnemonic('H');
+> 		JMenuItem indexltem = new JMenuItem("Index");
+> 		indexltem.setMnemonic(T);
+> 		helpMenu.add(indexltem);
+> 		// you can also add the mnemonic key to an action
+> 		Action aboutAction = new TestAction("About");
+> 		aboutAction.putValue(Action.MNEM0NIC_KEY, new Integer('A')); 
+> 		helpMenu.add(aboutAction);
+> 		// add all top-level menus to menu bar 
+> 		JMenuBar menuBar = new JMenuBar();
+> 		setJMenuBar(menuBar);
+> 		menuBar.add(fileMenu);
+> 		menuBar.add(editMenu);
+> 		menuBar.add(helpMenu);
+> 		// demonstrate pop-ups
+> 		popup = new JPopupMenu();
+> 		popup.add(cutAction);
+> 		popup.add(copyAction);
+> 		popup.add(pasteAction);
+> 		JPanel panel = new JPanel();
+> 		panel.setComponentPopupMenu(popup);
+> 		add(panel);
+> 	}
+> }
+> ```
+
+ ## 5.7 工具栏
+
+工具栏是在程序中提供的快速访问常用命令的按钮栏， 如图 12-24 所示。
+
+工具栏的特殊之处在于可以将它随处移动。可以将它拖拽到框架的四个边框上，如图12-25所示。释放鼠标按钮后，工具栏将会停靠在新的位置上，如图12-26所示。
+
+> 注释： 工具栏只有位于采用边框布局或者任何支持 North、 East、South 和 West 约束布局 管理器的容器内才能够被拖拽。 
+
+工具栏可以完全脱离框架。 这样的工具栏将包含在自己的框架中， 如图 12-27 所示。当 关闭包含工具栏的框架时， 它会冋到原始的框架中。
+
+编写创建工具栏的代码非常容易，并且可以将组件添加到工具栏中：
+
+```java
+JToolBar bar = new JToolBar();
+bar.add(blueButton);
+```
+
+JToolBar类还有一个用来添加Action对象的方法，可以用Action对象填充工具栏：
+
+```java
+bar.add(blueAction);
+```
+
+这个动作的小图标将会出现在工具栏中。可以用分隔符将按钮分组：
+
+```java
+bar.addSeparator();
+```
+
+例如，图12-24中的工具栏有一个分隔符，它位于第三个按钮和第四个按钮之间。然后，将工具栏添加到框架中：
+
+```java
+add(bar, BorderLayout.NORTH);
+```
+
+当工具栏没有停靠时，可以指定工具栏的标题：
+
+```java
+bar = new JToolBar(titleString);
+```
+
+在默认情况下，工具栏最初为水平的。如果想要将工具栏垂直放置，可以使用下列代码： 
+
+```java
+bar = new JToolBar(SwingConstants.VERTICAL)
+```
+
+或者
+
+```java
+bar = new JToolBar(titleString, SwingConstants.VERTICAL)
+```
+
+按钮是工具栏中最常见的组件类型。然而工具栏中的组件并不仅限如此。例如，可以往工具栏中加入组合框。
+
+## 5.8 工具提示
+
+工具栏有一个缺点，这就是用户常常需要猜测按钮上小图标按钮的含义。为了解决这个问题，用户界面设计者发明了工具提示（tooltips)。当光标停留在某个按钮上片刻时，工具提 示就会被激活。工具提示文本显示在一个有颜色的矩形里。 当用户移开鼠标时，工具提示就会自动地消失。如图12-28所示。
+
+在Swing中，可以调用setToolText方法将工具提不添加到Component上：
+
+```java
+exitButton.setToolTipText("Exit");
+```
+
+还有一种方法是，如果使用Action对象，就可以用SHORT_DESCRIPTION关联工具提示： 
+
+```java
+exitAction.putValue(Action.SHORTJESCRIPnON, "Exit");
+```
+
+程序清单12-9说明了如何将一个Action对象添加到菜单和工具栏中。注意，动作名在菜单中就是菜单项名，而在工具栏中就是简短的说明。 
+
+> 程序清单 12-9 tooBar/TooBarFrame.java
+>
+> ```java
+> package toolBar;
+> import java.awt.*;
+> import java.awt.event.*;
+> import javax.swing.*;
+> /**
+> * A frame with a toolbar and menu for color changes.
+> */
+> public class ToolBarFrame extends JFrame
+> {
+> 	private static final int DEFAULT_WIDTH = 300;
+> 	private static final int DEFAULT一HEIGHT = 200;
+> 	private JPanel panel;
+> 	public ToolBarFrame()
+> 	{
+> 		setSize(DEFAULT_WIDTH, DEFAULTJEICHT);
+> 		// add a panel for color change
+> 		panel = new JPanel();
+> 		add(panel, BorderLayout.CENTER); 
+> 		// set up actions
+> 		Action blueAction = new ColorAction("Blue", new Imagelcon("blue-ball.gif"), Color.BLUE);
+> 		Action yellowAction = new ColorAction("Yellow", new Imagelcon("yel1ow-bal1.gif"),Color.YELLOW);
+> 		Action redAction = new ColorAction("Red", new Imagelcon("red-ball,gif"),Color.RED);
+> 		Action exitAction = new AbstractAction("Exit", new Imagelcon("exit,gif"))
+> 		{
+> 			public void actionPerformed(ActionEvent event)
+> 			{
+> 				System.exit(O);
+> 			}
+> 		};
+> 		exitAction.putValue(Action.SH0RT_JESCRIPTI0N, "Exit");
+> 		// populate toolbar
+> 		JToolBar bar = new JToolBar();
+> 		bar.add(blueAction);
+> 		bar.add(yellowAction);
+> 		bar.add(redAction);
+> 		bar.addSeparator();
+> 		bar.add(exitAction);
+> 		add(bar, BorderLayout.NORTH);
+> 		// populate menu
+> 		JMenu menu = new JMenu("Color");
+> 		menu.add(yellowAction);
+> 		menu.add(blueAction);
+> 		menu.add(redAction);
+> 		menu.add(exitAction);
+> 		JMenuBar menuBar = new JMenuBar();
+> 		menuBar.add(menu);
+> 		setjMenuBar(menuBar);
+> 	}
+> 		/**
+> 		* The color action sets the background of the frame to a given color.
+> 		*/
+> 	class ColorAction extends AbstractAction
+> 	{
+> 		public ColorAction(String name, Icon icon, Color c)
+> 		{
+> 			putValue(Action.NAME, name);
+> 			putValue(Action.SMALL_ICON, icon);
+> 			putValue(Action.SHORTJESCRIPTION, name + " background");
+> 			putValue("Color", c);
+> 		}
+> 		public void actionPerformed(ActionEvent event)
+> 		{
+> 			Color c = (Color) getValue("Color");
+> 			panel.setBackground(c);
+> 		}
+> 	}
+> }
+> ```
+
+> javax.swing.JToolBar 1.2
+>
+> ```java
+> JToolBar();
+> JToolBar(String titlestring);
+> JToolBar(int orientation);
+> JToolBar(String titeString, int orientation); //用给定的标题字符串和方向构造一个工具栏。Orientation可以是SwingConstants.HORIZONTAL (默认）或SwingConstants.VERTICAL。
+> JButton add(Action a); //用给定的动作名、图标、简要的说明和动作回调构造一个工具栏中的新按钮。
+> void addSeparator(); //将一个分隔符添加到工具栏的尾部。
+> ```
+
+> javax.swing.JComponent 1.2
+>
+> ```java
+> void setToolTipText(String text); //设置当鼠标停留在组件上时显示在工具提示中的文本
+> ```
+
+# 6 复杂的布局管理
+
+# 7 对话框
+
