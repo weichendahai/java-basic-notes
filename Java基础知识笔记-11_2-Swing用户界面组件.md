@@ -73,7 +73,7 @@ Icon icon=new ImageIcon("a.gif");
 ```
 然后菜单项调用`setlcon(Icon icon)`方法将图标设置为icon. 
 
-例11.2中在主类Examplell_ 2的main 方法中，用Frame的子类WindowMenu创建一个含有菜单的窗口，效果如图11.3所示。
+例11.2中在主类Examplell_2的main 方法中，用Frame的子类WindowMenu创建一个含有菜单的窗口，效果如图11.3所示。
 
 ```java
 import javax.swing.*;
@@ -450,7 +450,7 @@ public class exercise extends JFrame{
 
 > 注释：“模式”这个术语可能不太贴切，因为人们通常把模式视为一个抽象概念的具体表 示。汽车和飞机的设计者构造模式来模拟真实的汽车和飞机。但这种类比可能会使你对模型-视图-控制器模式产生错误的理解。在设计模式中，模型存储完整的内容，视图给出了内容的可视化显示（完整或者不完整）。一个更恰当的比喻应当是模特为画家摆好姿势。
 >
-> 此时，就要看画家如何看待模特，并由此来画一张画了。那张画是一幅规矩的肖像画， 或是一幅印象派作品，还是一幅立体派作品（以古怪的曲线来描绘四肢）完全取决于画家。 
+> 此时，就要看画家如何看待模特，并由此来画一张画了。那张画是一幅规矩的肖像画，或是一幅印象派作品，还是一幅立体派作品（以古怪的曲线来描绘四肢）完全取决于画家。 
 
 模型-视图-控制器模式的一个优点是一个模型可以有多个视图，其中每个视图可以显示全部内容的不同部分或不同形式。 例如，一个HTML编辑器常常为同一内容在同一时刻提供两个视图：一个WYSIWYG (所见即所得）视图和一个“ 原始标记” 视图（见图 12-3 )。当通过某一个视图的控制器对模型进行更新时，模式会把这种改变通知给两个视图。视图得到通知以后就会自动地刷新。当然，对于一个简单的用户界面组件来说，如按钮，不需要为同一模型提供多个视图。
 
@@ -466,7 +466,7 @@ public class exercise extends JFrame{
 
 前一章已经介绍了如何使用按钮，当时没有考虑模型、视图和控制器。按钮是最简单的用户界面元素，所以我们从按钮开始学习模型-视图-控制器模式会感觉容易些。对于更复杂的Swing组件来说，所遇到的类和接口都是类似的。
 
-对于大多数组件来说，模型类将实现一个名字以Model结尾的接口，例如，按钮就实现了ButtonModel接口。实现了此接口的类可以定义各种按钮的状态。实际上，按钮并不复杂，在Swing库中有一个名为DefaultButtonModel 的类就实现了这个接口。
+对于大多数组件来说，模型类将实现一个名字以Model结尾的接口，例如，按钮就实现了ButtonModel接口。实现了此接口的类可以定义各种按钮的状态。实际上，按钮并不复杂，在Swing库中有一个名为DefaultButtonModel的类就实现了这个接口。
 
 读者可以通过查看ButtonModd接口中的特征来了解按钮模型所维护的数据类别。表12-1列出了这些特征。
 
@@ -1073,24 +1073,24 @@ combo.getltemAt(combo.getSelectedlndex())
 可以调用addltem方法增加选项。在示例程序中，只在构造器中调用了addltem方法，实际上，可以在任何地方调用它。
 
 ```java
-JComboBox<String> faceCombo = new JConboBoxo();
+JComboBox<String> faceCombo = new JComboBox<>();
 faceCombo.addItem("Serif");
-faceCombo.addltem("SansSerif");
+faceCombo.addItem("SansSerif");
 ```
 
 这个方法将字符串添加到列表的尾部。可以利用 insertltemAt方法在列表的任何位置插入一个新选项： 
 
 ```
-faceCombo.insertltemAt( "Monospaced", 0) ;// add at the beginning 
+faceCombo.insertItemAt( "Monospaced", 0) ;// add at the beginning 
 ```
 
-可以增加任何类型的选项，组合框可以调用每个选项的 toString 方法显示其内容。
+可以增加任何类型的选项，组合框可以调用每个选项的toString方法显示其内容。
 
 如果需要在运行时删除某些选项，可以使用removeltem或者removeltemAt方法，使用哪个方法将取决于参数提供的是想要删除的选项内容，还是选项位置。
 
 ```
-faceCombo.removeltem("Monospaced");
-faceCombo.removeltemAt(0)； // remove first item
+faceCombo.removeItem("Monospaced");
+faceCombo.removeItemAt(0)； // remove first item
 ```
 
 调用removeAllltems方法将立即移除所有的选项。
@@ -1101,12 +1101,12 @@ faceCombo.removeltemAt(0)； // remove first item
 
 ```java
 ActionListener listener = event ->
-	label.setFont(new Font(faceCoibo.getltenAt(faceConbo.setSelectedlndex()),Font.PLAIN,DEFAULT_SIZE));
+	label.setFont(new Font(faceCombo.getItemAt(faceCombo.setSelectedIndex()),Font.PLAIN,DEFAULT_SIZE));
 ```
 
 程序清单12-6给出了完整的代码。
 
-> 注释： 如果希望持久地显示列表， 而不是下拉列表， 就应该使用JList 组件。在卷Ⅱ的第 6 章中将介绍 JList
+> 注释：如果希望持久地显示列表，而不是下拉列表，就应该使用JList 组件。在卷Ⅱ的第6章中将介绍JList
 
 > 程序清单 12-6 comboBox/ComboBoxFrame.java
 >
@@ -1131,7 +1131,7 @@ ActionListener listener = event ->
 > 		// add the sample text label
 > 		label = new JLabel("The quick brown fox jumps over the lazy dog.");
 > 		label.setPont(new FontCSerif, Font.PLAIN, DEFAULT.SEE));
-> 		add(1abel,BorderLayout.CENTER);
+> 		add(label,BorderLayout.CENTER);
 > 		// make a combo box and add face names
 > 		faceCombo = new JComboBox<>();
 > 		faceCombo.addltern("Serif");
@@ -1156,11 +1156,11 @@ ActionListener listener = event ->
 >
 > ```java
 > boolean isEditable();
-> void setEditable(boo1ean b ); //获取或设置组合框的可编辑特性。
+> void setEditable(boolean b); //获取或设置组合框的可编辑特性。
 > void addItem(Object item); //把一个选项添加到选项列表中。
 > void insertltemAtCObject item, int index); //将一个选项添加到选项列表的指定位置。
 > void removeItem(Object item); //从选项列表中删除一个选项。
-> void removeItemAt(int index ); //删除指定位置的选项。
+> void removeItemAt(int index); //删除指定位置的选项。
 > void removeAllItems(); //从选项列表中删除所有选项。
 > Object getSelectedItem(); //返回当前选择的选项。
 > ```
@@ -1179,12 +1179,12 @@ JSlider slider = new JSlider(min, max, initialValue);
 或者如果需要垂直滑动条，可以按照下列方式调用构造器：
 
 ```java
-JSlider slider = new JSIider(SwingConstants.VERTICAL, min, max, initialValue);
+JSlider slider = new JSlider(SwingConstants.VERTICAL, min, max, initialValue);
 ```
 
 这些构造器构造了一个无格式的滑动条， 如图12-18最上面的滑动条所示。下面看一下如何为滑动条添加装饰。
 
-当用户滑动滑动条时， 滑动条的值就会在最小值和最大值之间变化。当值发生变化时，ChangeEvent就会发送给所有变化的监听器。为了得到这些改变的通知，需要调用addChangeListener方法并且安装一个实现了ChangeListener接口的对象。这个接口只有一个方法 StateChanged。在这个方法中，可以获取滑动条的当前值：
+当用户滑动滑动条时， 滑动条的值就会在最小值和最大值之间变化。当值发生变化时，ChangeEvent就会发送给所有变化的监听器。为了得到这些改变的通知，需要调用addChangeListener方法并且安装一个实现了ChangeListener接口的对象。这个接口只有一个方法StateChanged。在这个方法中，可以获取滑动条的当前值：
 
 ```java
 ChangeListener listener = event -> {
@@ -1363,13 +1363,13 @@ slider.setlnverted(true);
 > 	*/
 > 	public void addSlider(Slider s, String description)
 > 	{
-> 		s.addChangeListenerflistener);
+> 		s.addChangeListener(listener);
 > 		jPanel panel = new JPanel();
 > 		panel.add(s);
 > 		panel.add(new JLabel(description));
 > 		panel.setAlignmentX(Component.LEFT_ALIGNMENT);
-> 		GridBagConstraints gbc = new CridBagConstraintsO;
-> 		gbc.gridy = sliderPanel.getComponentCountO；
+> 		GridBagConstraints gbc = new CridBagConstraints();
+> 		gbc.gridy = sliderPanel.getComponentCount();
 > 		gbc.anchor = gridBagConstraints.WEST;
 > 		slidePanel.add(panel, gbc);
 > 	}
@@ -1453,7 +1453,8 @@ editMenu.add("Paste");
 Add方法返回创建的子菜单项。可以采用下列方式获取它，并添加监听器：
 
 ```java
-JMenuItem pasteltem = editMenu.add("Paste"); pasteltem.addActionListener(listener);
+JMenuItem pasteltem = editMenu.add("Paste");
+pasteltem.addActionListener(listener);
 ```
 
 在通常情况下，菜单项触发的命令也可以通过其他用户界面元素（如工具栏上的按钮) 激活。在第11章中，已经看到了如何通过 Action对象来指定命令。通常，采用扩展抽象类 AbstractAction来定义一个实现 Action 接口的类。这里需要在AbstractAction对象的构造器中 指定菜单项标签并且覆盖 actionPerformed方法来获得菜单动作处理器。例如：
@@ -1478,7 +1479,8 @@ JMenuItem exitltem = fileMenu.add(exitAction);
 这个命令利用动作名将一个菜单项添加到菜单中。这个动作对象将作为它的监听器。上面这条语句是下面两条语句的快捷形式：
 
 ```java
-JMenuItem exitltem = new JMenuItem(exitAction); fileMenu.add(exitltem);
+JMenuItem exitltem = new JMenuItem(exitAction);
+fileMenu.add(exitltem);
 ```
 
 > javax.swing.JMenu1.2 
@@ -1519,19 +1521,19 @@ JMenuItem exitltem = new JMenuItem(exitAction); fileMenu.add(exitltem);
 
 菜单项与按钮很相似。实际上，JMenuItem类扩展了AbstractButton类。与按钮一样，菜单可以包含文本标签、图标，也可以两者都包含。既可以利用 JMenuItem(String，Icon) 或者 JMenuItem(Icon) 构造器为菜单指定一个图标，也可以利用JMenuItem类中的setlcon方法 (继承自AbstractButton类）指定一个图标。例如：
 
-```
+```java
 JMenuItem cutltem = new JMenuItem("Cut", new Imagelcon("cut.gif"));
 ```
 
 图12-19展示了具有图标的菜单项。正如所看到的，在默认情况下，菜单项的文本被放置在 图标的右侧。如果喜欢将文本放置在左侧，可以调用JMenuItem类中的setHorizontalTextPosition方法（继承自 AbstractButton 类）设置。例如： 
 
-```
+```java
 cutltem.setHorizontalTextPosition(SwingConstants.LEFT); 
 ```
 
 这个调用把菜单项文本移动到图标的左侧。 也可以将一个图标添加到一个动作上： 
 
-```
+```java
 cutAction.putValue(Action.SMALL.ICON, new Imagelcon("cut.gif"));
 ```
 
@@ -1571,7 +1573,8 @@ cutAction = new AbstractAction("Cut", new Imagelcon("cut.gif"))
 复选框和单选钮菜单项在文本旁边显示了一个复选框或一个单选钮（参见图 12-19)。当用户选择一个菜单项时，菜单项就会自动地在选择和未选择间进行切换。除了按钮装饰外，同其他菜单项的处理一样。例如，下面是创建复选框菜单项的代码： 
 
 ```java
-JCheckBoxHenuItem readonlyltem = new JCheckBoxMenuItem("Read-only"); optionsMenu.add(readonlyltem);
+JCheckBoxHenuItem readonlyltem = new JCheckBoxMenuItem("Read-only");
+optionsMenu.add(readonlyltem);
 ```
 
 单选钮菜单项与普通单选钮的工作方式一样，必须将它们加人到按钮组中。当按钮组中的一个按钮被选中时，其他按钮都自动地变为未选择项。 
@@ -1580,7 +1583,8 @@ JCheckBoxHenuItem readonlyltem = new JCheckBoxMenuItem("Read-only"); optionsMenu
 ButtonGroup group = new ButtonGroup();
 JRadioButtonMenuItem insertltem = new JRadioButtonMenuItem("Insert");
 insertltem.setSelected(true);
-JRadioButtonMenuItem overtypeltem = new JRadioButtonMenuItem("Overtype")； group.add(insertltem);
+JRadioButtonMenuItem overtypeltem = new JRadioButtonMenuItem("Overtype");
+group.add(insertltem);
 group.add(overtypeltem);
 optionsMenu.add(insertltem);
 optionsMenu.add(overtypeltem); 
@@ -1590,20 +1594,20 @@ optionsMenu.add(overtypeltem);
 
 > javax.swing.JCheckBoxMenultem 1.2
 >
-> ```
+> ```java
 > JCheckBoxMenuItem(String label); //用给定的标签构造一个复选框菜单项。 JCheckBoxMenuItem(String label, boolean state); //用给定的标签和给定的初始状态（true 为选定）构造一个复选框菜单。
 > ```
 
 > 因javax.swing.JRadioButtonMenultem 1.2
 >
-> ```
+> ```java
 > JRadioButtonMenuItem(String label); //用给定的标签构造一个单选钮菜单项。
-> JRadioButtonMenuItemCString label , boolean state); //用给定的标签和给定的初始状态（true 为选定）构造一个单选钮菜单项。
+> JRadioButtonMenuItem(String label , boolean state); //用给定的标签和给定的初始状态（true 为选定）构造一个单选钮菜单项。
 > ```
 
 > javax.swing.AbstractButton 1.2
 >
-> ```
+> ```java
 > boolean isSelected();
 > void setSelected(boo1ean state); //获取或设置这个菜单项的选择状态（true 为选定)。
 > ```
@@ -1614,15 +1618,15 @@ optionsMenu.add(overtypeltem);
 
 创建一个弹出菜单与创建一个常规菜单的方法类似，但是弹出菜单没有标题。
 
-```
+```java
  JPopupMenu popup = new JPopupMenu();
 ```
 
 然后用常规的方法添加菜单项： 
 
-```
+```java
 JMenuItem item = new JMenuItem("Cut");
-item.addActionListener(1istener);
+item.addActionListener(listener);
 popup.add(item);
 ```
 
@@ -1655,23 +1659,23 @@ child.setlnheritsPopupMenu(true);
 
 > java.awt.event.MouseEvent 1.1
 >
-> ```
+> ```java
 > boolean isPopupTrigger(); //如果鼠标事件是弹出菜单触发器， 则返回 true。
 > ```
 
 > javax.swing.JComponent 1.2
 >
 > ```java
-> JPopupMenu getComponentPopupMenu( ) 5.0
+> JPopupMenu getComponentPopupMenu() 5.0
 > void setComponentPopupMenu(JPopupMenu popup) 5.0 //获取或设置用于这个组件的弹出菜单。
-> boolean getlnheritsPopupMenu( ) 5.0
+> boolean getlnheritsPopupMenu() 5.0
 > void setInheritsPopupMenu(boolean b) 5.0 //获取或设置 inheritsPopupMenu 特性。 如果这个特性被设置或这个组件的弹出菜单为null, 则应用上一级弹出菜单。
 > ```
 
 ## 5.5 快捷键和加速器
 对于有经验的用户来说，通过快捷键来选择菜单项会感觉更加便捷。可以通过在菜单项的构造器中指定一个快捷字母来为菜单项设置快捷键：
 
-```
+```java
 JMenuItem aboutltem = new JMenuItem("About", 'A');
 ```
 
@@ -1687,7 +1691,7 @@ cutAction.putValue(Action,MNEMONIC_KEY, new Integer('A'));
 
 只能在菜单项的构造器中设定快捷键字母，而不是在菜单构造器中。如果想为菜单设置快捷键，需要调用setMnemonic方法：
 
-```
+```java
 JMenu helpMenu = new JMenu("Help");
 helpMenu.setMnemonic('H');
 ```
@@ -1696,7 +1700,7 @@ helpMenu.setMnemonic('H');
 
 可以使用快捷键从当前打开的菜单中选择一个子菜单或者菜单项。而加速器是在不打开 菜单的情况下选择菜单项的快捷键。例如： 很多程序把加速器CTRL+O和CTRL+S关联到File菜单中的Open和Save菜单项。可以使用setAccelerator将加速器键关联到一个菜单项上。这个方法使用 Keystroke类型的对象作为参数。例如：下面的调用将加速器CTRL+O关联到Openltem菜单项。
 
-```
+```java
 openItem.setAccelerator(KeyStroke.getKeyStroke("ctrl 0"));
 ```
 
@@ -1730,7 +1734,7 @@ openItem.setAccelerator(KeyStroke.getKeyStroke("ctrl 0"));
 
 启用或禁用菜单项需要调用setEnabled方法： 
 
-```
+```java
 saveltem.setEnabled(false);
 ```
 
@@ -1756,14 +1760,16 @@ public void menuSelected(MenuEvent event)
 
 > javax.swing.JMenultem 1.2
 >
-> ```
+> ```java
 > void setEnabled(boolean b); //启用或禁用菜单项。
 > ```
 
 > javax.swing.event.MenuListener 1.2
 >
-> ```
-> void menuSelected(MenuEvent e); //在菜单被选择但尚未打开之前调用。 void menuDeselected(MenuEvent e); //在菜单被取消选择并且已经关闭之后被调用。 •void menuCanceled(MenuEvent e); //当菜单被取消时被调用。例如， 用户点击菜单以外的区域。
+> ```java
+> void menuSelected(MenuEvent e); //在菜单被选择但尚未打开之前调用。
+> void menuDeselected(MenuEvent e); //在菜单被取消选择并且已经关闭之后被调用。
+> void menuCanceled(MenuEvent e); //当菜单被取消时被调用。例如，用户点击菜单以外的区域。
 > ```
 
 程序清单12-8是创建一组菜单的示例程序。这个程序演示了本节介绍的所有特性，包括： 嵌套菜单、禁用菜单项、复选框和单选钮菜单项、弹出菜单以及快捷键和加速器。
@@ -1959,7 +1965,7 @@ bar = new JToolBar(titleString, SwingConstants.VERTICAL)
 
 ## 5.8 工具提示
 
-工具栏有一个缺点，这就是用户常常需要猜测按钮上小图标按钮的含义。为了解决这个问题，用户界面设计者发明了工具提示（tooltips)。当光标停留在某个按钮上片刻时，工具提 示就会被激活。工具提示文本显示在一个有颜色的矩形里。 当用户移开鼠标时，工具提示就会自动地消失。如图12-28所示。
+工具栏有一个缺点，这就是用户常常需要猜测按钮上小图标按钮的含义。为了解决这个问题，用户界面设计者发明了工具提示（tooltips)。当光标停留在某个按钮上片刻时，工具提示就会被激活。工具提示文本显示在一个有颜色的矩形里。 当用户移开鼠标时，工具提示就会自动地消失。如图12-28所示。
 
 在Swing中，可以调用setToolText方法将工具提不添加到Component上：
 
@@ -2076,7 +2082,7 @@ exitAction.putValue(Action.SHORTJESCRIPnON, "Exit");
 
 本节从最简单的对话框开始个简单信息的模式对话框。Swing有一个很容易使用的类JOptionPane，它可以弹出一个简单的对话框，而不必编写任何对话框的相关代码。随后，将看到如何通过实现自己的对话框窗口来编写一个复杂的对话框。最后，介绍在应用程序与对话框之间如何传递数据。
 
-本节用两个标准的对话框结束：文件对话框和颜色对话框。文件对话框比较复杂，为此需要熟悉 Swing中的JFileChooser自已编写文件对话框是一项颇有挑战性的任务。JColorChooser对话框可用来让用户选取颜色。
+本节用两个标准的对话框结束：文件对话框和颜色对话框。文件对话框比较复杂，为此需要熟悉Swing中的JFileChooser自已编写文件对话框是一项颇有挑战性的任务。JColorChooser对话框可用来让用户选取颜色。
 
 ## 7.1 选项对话框
 Swing有一套简单的对话框，用于获取用户的一些简单信息。JOptionPane有4个用于显示这些对话框的静态方法：
@@ -2164,12 +2170,12 @@ CLOSED.OPTION
 
 这些选项似乎令人感到迷惑不解，实际上非常简单步骤如下: 
 
-- 1 ) 选择对话框的类型（消息、确认、选项或者输人)。
+- 1 ) 选择对话框的类型（消息、确认、选项或者输入)。
 - 2 ) 选择图标（错误、信息、警告、问题、无或者自定义)。
 - 3 ) 选择消息（字符串、图表、 自定义组件或者它们的集合)。
 - 4 ) 对于确认对话框，选择选项类型 （默认、Yes/No、Yes/No/Cancel或者Ok/Cancel)。
 -  5 ) 对于选项对话框，选择选项（字符串、图表或者自定义组件）和默认选项。
--  6 ) 对于输人对话框，选择文本框或者组合框。
+-  6 ) 对于输入对话框，选择文本框或者组合框。
 -  7 ) 调用JOptionPane API中的相应方法。
 
 例如， 假设需要显示一个图12-36的对话框。这个对话框显示了一条消息，并请求用户确认或者取消。这是一个确认对话框。图标是警告图标，消息是字符串，选项类型是OK_ CANCEL_OPTION。调用如下：
@@ -2179,3 +2185,150 @@ int selection = JOptionPane.showConfirfnDialog(parent, "Message", "Title", JOpti
 if (selection == JOptionPane.OK_0PTI0N) ...
 ```
 
+> 提示： 消息字符串中可以包含换行符（'\n')。这样就可以让字符串多行显示; 
+
+这个程序显示了6个按钮面板（见图 12-37 ), 其框架类在程序清单12-15中给出。程序清单12-16显示了这些面板的类。点击Show按钮时，会显示所选的对话框。
+
+> 程序清单 12-15 optionDialog/OptionDialogFrame.java 
+>
+> ```java
+> package optionDialog;
+> import java.awt.*;
+> import java.awt.event.*;
+> import java.awt.geom.*;
+> import java.util.*;
+> import javax.swing.*;
+> /**
+> * A frame that contains settings for selecting various option dialogs.
+> */
+> public class OptionDialogFrame extends JFrame
+> {
+> 	private ButtonPanel typePanel:
+> 	private ButtonPanel messagePanel;
+> 	private ButtonPanel messageTypePanel;
+> 	private ButtonPanel optionTypePanel;
+> 	private ButtonPanel optionsPanel;
+> 	private ButtonPanel inputPanel;
+> 	private String messagestring = "Message";
+> 	private Icon messagelcon = new Imagelcon("blue-ball.gif');
+> 	private Object messageObject = new Date();
+> 	private Component messageComponent = new SampleComponent();
+> 	public OptionDialogFrame()
+>     {
+> 	JPanel gridPanel = new JPanel();
+> 	gridPanel.setLayout(new GridLayout(2, 3));
+> 	typePanel = new ButtonPanel ("Type", "Message", "Confirm", "Option", "Input");
+> 	messageTypePanel = new ButtonPanel ("Message Type", "ERROR.MESSAGE", "INFORMATION.MESSACE", "WARNINCJESSAGE", "QUESTION.MESSAGE", "PLAINJESSAGE");
+> 	messagePanel = new ButtonPanel ("Message", "String", "Icon", "Component", "Other", "Object[]");
+> 	optionTypePanel = new ButtonPanel ("Confirm", "DEFAULT_0PTI0N", "HYES_N0_0PTI0N", "YESJO.CANCEL.OPnON", "OK_CANCEL_0PTI0N");
+> 	optionsPanel = new ButtonPanel ("Option", "String[]", "Icon[]"，"Object[]");
+> 	inputPanel = new ButtonPanel ("Input", "Text field", "Combo box");
+> 	gridPanel.add(typePanel);
+> 	gridPanel.add(messageTypePanel);
+> 	gridPanel.add(messagePanel);
+> 	gridPanel.add(optionTypePanel);
+> 	gridPanel.add(optionsPanel);
+> 	gridPanel.add(inputPanel);
+> 	// add a panel with a Show button
+> 	JPanel showPanel = new JPanel();
+> 	JButton showButton = new JButton("Show");
+> 	showButton.addActionListener(new ShowAction());
+> 	showPanel.add(showButton);
+> 	add(gridPanel, BorderLayout.CENTER);
+> 	add(showPanel , BorderLayout.SOUTH);
+> 	pack();
+> 	/**
+> 	* Gets the currently selected message. ©return a string, icon, component, or object array, depending on the Message panel selection
+> 	*/
+> 	public Object getMessage()
+> 	{
+> 		String s = messagePanel.getSelection();
+> 		if (s.equals("String"))
+> 			return messageString;
+> 		else if (s.equals("Icon"))
+> 			return messagelcon;
+> 		else if (s.equals("Component"))
+> 			return messageComponent;
+> 		else if (s.equals("Object[]"))
+> 			return new Object[] { messagestring, messagelcon, messageComponent, messageObject };
+> 		else if (s.equals("Other"))
+> 			return messageObject;
+> 		else
+> 			return null;
+> 	}
+> 	/**
+> 	* Gets the currently selected options.
+> 	* ©return an array of strings, icons, or objects, depending on the Option panel selection
+> 	*/
+> 	public Object[] getOptions()
+> 	{
+> 		String s = optionsPanel.getSelection();
+> 		if (s.equals("String[]"))
+> 			return new String[] {"Yellow", "Blue", "Red"};
+> 		else if (s.equals("Icon[]"))
+> 			return new Icon[] { new Imagelcon("yellow-ball.gif"), new "ImageIconrblue-ball.gif"), new Imagelcon("red-bal1.gif") };
+> 		else if (s.equals("0bject[]"))
+> 			return new Object[] { messageString, messagelcon, messageComponent, messageObject };
+> 		else
+> 			return null;
+> 	/**
+> 	* Gets the selected message or option type
+> 	* @param panel the Message Type or Confirm panel
+> 	* @return the selected XXX MESSAGE or XXX.OPTION constant from the JOptionPane class
+> 	*/
+> 	public int getType(ButtonPanel panel)
+> 	{
+> 		String s = panel.getSelection();
+> 		try
+> 		{
+> 			return JOptionPane.class.getField(s).getlnt(null);
+> 		}
+> 		catch (Exception e)
+> 		{
+> 			return -1;
+> 		}
+> 	}
+> 	/**
+> 	* The action listener for the Show button shows a Confirm, Input, Message, or 	Option dialog
+> 	* depending on the Type panel selection.
+> 	*/
+> 	private class ShowAction implements ActionListener
+> 	{
+> 		public void actionPerformed(ActionEvent event)
+> 		{
+> 			if (typePanel.getSelection().equals("Confirm"))
+> 				JOptionPane.showConfirmDialog(OptionDialogFrame.this, getMessage(), "Title", getType(optionTypePanel), getType(messageTypePanel));
+> 			else if (typePanel.getSelection().equals("Input"))
+> 			{
+> 				if (inputPanel.getSelection().equals("Text field"))
+> 					JOptionPane.showInputDialog(OptionDialogFrame.this, getMessage(), "Title", getType(messageTypePanel));
+> 				else
+> 					JOptionPane.showInputDialog(OptionDialogFrame.this, getMessageQ, "Title",getType(messageTypePanel), null, new String[] { "Yellow", "Blue", "Red" }, "Blue");
+> 			}
+> 			else if(typePanel.getSelection().equals("Message"))
+> 				JOptionPane.showMessageDialog(OptionDialogFrame.this, getMessage(), "Title", getType(messageTypePanel));
+> 			else if (typePanel.getSelection().equals("Option"))
+> 				JOptionPane.showOptionDialog( OptionDialogFrame,this, getMessage(), "Title", getType(optionTypePanel), getType(messageTypePanel), null, getOptions(), getOptions()[0]);
+> 		}
+> 	}
+> }
+> /**
+> * A component with a painted surface
+> */
+> class SampleComponent extends JComponent
+> {
+> 	public void paintComponent(Graphics g)
+> 	{
+> 		Craphics2D g2 = (Graphics2D) g;
+> 		Rectangle2D rect = new Rectangle2D.Double(0, 0, getWidth() - 1 , getHeight() - 1 );
+> 		g2.setPaint(Color.YELLOW);
+> 		g2.fill(rect);
+> 		g2.setPaint(Color.BLUE);
+> 		g2.draw(rect);
+> 	}
+> 	public Dimension getPreferredSize()
+> 	{
+> 		return new Dimension(10, 10);
+> 	}
+> }
+> ```
