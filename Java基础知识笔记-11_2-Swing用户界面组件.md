@@ -2332,3 +2332,115 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 	}
 > }
 > ```
+
+> 程序清单 12-16 optionDialog/ButtonPanel.java
+>
+> ```java
+> package optionDialog;
+> import javax.swing.*;
+> /**
+> * A panel with radio buttons inside a titled border.
+> */
+> public class ButtonPanel extends JPanel
+> {
+> 	private ButtonGroup group;
+> 	/**
+> 	* Constructs a button panel.
+> 	* @param title the title shown in the border is 
+> 	* @param options an array of radio button labels 16 
+> 	*/
+> 	public ButtonPanel(String title, String... options)
+> 	{
+> 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title));
+> 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+> 		group = new ButtonGroup();
+> 		// make one radio button for each option
+> 		for (String option : options)
+> 		{
+> 			JRadioButton b = new JRadioButton(option);
+> 			b.setActionCommand(option);
+> 			add(b);
+> 			group.add(b);
+> 			b.setSelected(option == options[0]);
+> 		}
+> 	}
+> 	/**
+>     * Gets the currently selected option.
+> 	* ©return the label of the currently selected radio button.
+> 	*/
+> 	public String getSelection()
+> 	{
+> 			return group.getSelection().getActionCommand();
+> 	}
+> }
+> ```
+
+> javax.swing.JOptionPane 1.2
+>
+> ```java
+> static void showMessageDialog(Component parent, Object message, String title, int messageType, Icon icon;
+> static void showMessageDialog(Component parent, Object message, String title, int messageType);
+> static void showMessageDialog(Component parent, Object message);
+> static void showlnternalMessageDialog(Component parent, Object message, String title, int messageType, Icon icon);
+> static void showlnternalMessageDialog(Component parent, Object message, String title, int messageType);
+> static void showlnternalMessageDialog(Component parent, Object message);
+> /*
+> 显示一个个消息对话框或者一个内部消息对话框（内部对话框完全显示在所在的框架内)。
+> 参数: parent		父组件（可以为 null)。
+> message		显示在对话框中的消息（可以是字符串、图标、 组件或者一个这些类型的数组)。 
+> title		对话框标题栏中的字符串。
+> messageType		取值为 ERROR_MESSAGE、 INFORMATION_MESSAGE、 WARNING_MESSAGE、 QUESTION_MESSAGE、 PLAIN_MESSAGE 之一。 
+> icon		用于替代标准图标的图标。
+> */
+> static int showConfirmDialog(Component parent, Object message, String title, int optionType, int messageType, Icon Icon);
+> static int showConfirmDialog(Component parent, Object message, String title, int optionType, int messageType);
+> static int showConfirmDialog(Component parent, Object message, String title, int optionType);
+> static int showConfirmDialog(Component parent, Object message);
+> static int showInternalConfirmDialog(Component parent, Object message, String title, int optionType, int messageType, Icon icon);
+> static int showInternalConfirmDialog(Component parent, Object message, String title, int optionType, int messageType);
+> static int showInternalConfirmDialog(Component parent, Object message, String title, int optionType);
+> static int showlnternalConfirmDialog(Component parent, Object message);
+> /*
+> 显示一个确认对话框或者内部确认对话框（内部对话框完全显示在所在的框架内）。返冋用户选择的选项（取值为 OK_OPTION, CANCEL_OPTION, YES_OPTION, NO_OPTION)；如果用户关闭对话框将返回 CLOSED_OPTION。
+> 参数：parent		父组件 （可以为 null)。
+> message		显示在对话框中的消息（可以是字符串、 图标、 组件或者一个这些类型的数组）。
+> title		对话框标题栏中的字符串。
+> messageType		取值为 ERROR_MESSAGE、 INFORMAT10N_MESSAGE、 WARNING_MESSAGE、QUESTION_MESSAGE、 PLAIN_MESSAGE 之一
+> optionType		取值为 DEFAULT_OPTION、YES—N0_0PT10N、 YES_NO CANCEL— OPTION、OK_CANCEL_OPTION 之一。
+> icon		用于替代标准图标的图标。
+> */
+> static int showOptionDialog(Component parent, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object default);
+> static int showlnternalOptionDialog(Component parent, Object message, String title, int optionType, int messageType, Icon icon, Object[]options, Object default)
+> 
+> /*
+> 显示一个选项对话框或者内部选项对话框（内部对话框完全显示在所在的框架内）。返回用户选择的选项索引；如果用户取消对话框返冋 CLOSED_OPTION。
+> 参数：parent		父组件（可以为 null)。
+> message		显示在对话框中的消息（可以是字符串，图标，组件或者一个这些类型的数组） 。
+> title		对话框标题栏中的字符串。
+> messageType		取值为 ERROR_MESSAGE、 INFORMATION_MESSAGE、 WARNING_MESSAGE、QUESTION_MESSAGE、 PLAIN_MESSAGE 之一
+> optionType		取值为 DEFAULT_0PT10N、YES_NO_OPTION、 YES_NO_ CANCEL_OPTION、 OK_CANCEL_OPTION 之一。
+> icon		用于替代标准图标的图标。
+> options		一组选项（可以是字符串、 图标或者组件)。
+> default		呈现给用户的默认值。
+> */
+> static Object showInputDialog(Component parent, Object message, String title, int messageType, Icon icon, Object[] values, Object default);
+> static String showInputDialog(Component parent, Object message, String title, int messageType);
+> static String showInputDialog(Component parent, Object message);
+> static String showInputDialog(Object message);
+> static String showInputDialog(Component parent, Object message, Object default) 1.4
+> static String showInputDialog(Object message, Object default) 1.4
+> static Object showinternalInputDialog(Component parent, Object message, String title, int messageType, Icon icon, Object[] values, Object default);
+> static String showinternalInputDialog(Component parent, Object message, String title, int messageType);
+> static String showinternalInputDialog(Component parent, Object message)
+> 
+> /*
+> 显示一个输入对话框或者内部输入对话框（内部对话框完全显示在所在的框架内）。返回用户输入的字符串； 如果用户取消对话框返回 null。 
+> 参数：parent		父组件（可以为 null)。
+> message		显示在对话框中的消息（可以是字符串、 图标、 组件或者一 个这些类型的数组）。
+> title		对话框标题栏中的字符串。
+> messageType		取值为 ERROR_MESSAGE、INFORMATION_MESSAGE , WARNING—MESSAGE、 QUESTION_MESSAGE、 PLAIN_ MESSAGE 之一。
+> icon		用于替代标准图标的图标。
+> values		在组合框中显示的一组值。
+> default		呈现给用户的默认值。
+> */
+> ```
