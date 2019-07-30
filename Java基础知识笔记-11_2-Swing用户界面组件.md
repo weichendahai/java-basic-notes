@@ -2444,3 +2444,225 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > default		呈现给用户的默认值。
 > */
 > ```
+
+## 7.2 创建对话框
+
+在上一节中，介绍了如何使用JOptionPane来显示一个简单的对话框。本节将讲述如何手工地创建这样一个对话框。
+
+图 12-38 显示了一个典型的模式对话框。当用户点击About按钮时就会显示这样一个程序信息对话框。
+
+要想实现一个对话框，需要从JDialog派生一个类。这与应用程序窗口派生于JFrame的过程完全一样。具体过程如下：
+
+- 1 ) 在对话框构造器中，调用超类 JDialog 的构造器。
+- 2 ) 添加对话框的用户界面组件。
+- 3 ) 添加事件处理器。
+- 4) 设置对话框的大小。
+
+在调用超类构造器时，需要提供拥有者框架（ownerframe)、对话框标题及模式特征。
+
+拥有者框架控制对话框的显示位置，如果将拥有者标识为null, 那么对话框将由一个隐藏框架所拥有。
+
+模式特征将指定对话框处于显示状态时，应用程序中其他窗口是否被锁住。无模式对话框不会锁住其他窗口，而有模式对话框将锁住应用程序中的所有其他窗口（除对话框的子窗口外)。用户经常使用的工具栏就是无模式对话框，另一方面，如果想强迫用户在继续操作之前提供一些必要的信息就应该使用模式对话框。
+
+> 注释：在Java SE 6中，有两个额外的模式特征类型。文档-模式对话框将阻塞所有属于相同“ 文档” 的窗口。更准确地说，是所有作为对话框的具有相同无父根窗口的窗口。这样解决了帮助系统的问题。在早期的版本中，当弹出一个模式对话框时， 用户不可能与帮助窗口交互。工具箱对话框阻塞了所有来自相同“工具箱”的窗口。工具箱是一个 运行于多个应用的 Java 程序，例如，浏览器中的applet引擎。有关更加详细的内容请参看网站：www.oracle.com/technetwork/artides/javase/modality-137604.html。 
+
+下面是一个对话框的例子：
+
+```java
+public AboutDialog extends JDialog
+{
+	public AboutDialog(JFrame owner)
+	{
+		super(owner, "About DialogTest", true);
+		add(new JLabel("<html><h1><i>Core Java</i></h1><hr>By Cay Horstmann</html>"),BorderLayout.CENTER);
+		JPanel panel = new JFanel();
+		JButton ok = new JButton("OK");
+		ok.addActionListener(event -> setVisible(false));
+		panel.add(ok);
+		add(panel, BorderLayout.SOUTH);
+		setSize(250, 150);
+	}
+}
+```
+
+正如看到的，构造器添加了用户界面组件，在本例中添加的是标签和按钮，并且为按钮设置了处理器，然后还设置了对话框的大小。
+
+要想显示对话框，需要建立一个新的对话框对象， 并让它可见： 
+
+```java
+JDialog dialog = new AboutDialog(this);
+dialog.setVisible(true);
+```
+
+实际上，在下面的示例代码中，只建立了一次对话框，无论何时用户点击About按钮，都可以重复使用它。
+
+```java
+if (dialog == null) // first time
+dialog = new AboutDialog(this);
+dialog.setVisible(true);
+```
+
+当用户点击OK按钮时， 该对话框将被关闭。下面是在OK按钮的事件处理器中的处理代码： 
+
+```java
+ok.addActionListener(event -> setVisible(false));
+```
+
+当用户点击Close按钮关闭对话框时，对话框就被隐藏起来。与JFrame—样，可以覆盖 setDefaultCloseOperation方法来改变这个行为。 程序清单12-17是测试程序框架类的代码。程序清单12-18显示了对话框类。
+
+> 程序清单12-17dialog/DialogFrame.java
+>
+> ```java
+> package dialog;
+> import javax.swing.JFrame;
+> import javax.swingJMenu;
+> import javax.swingJMenuBar;
+> import javax.swingJMenuItem;
+> /**
+> * A frame with a menu whose File->About action shows a dialog.
+> */
+> public class DialogFrame extends JFrame
+> {
+> 	private static final int DEFAULT_WIDTH = 300;
+> 	private static final int DEFAULT_HEICHT = 200;
+> 	private AboutDialog dialog;
+> 	
+> 	public DialogFrame()
+> 	{
+> 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+> 		// Construct a File menu.
+> 		JMenuBar menuBar = new JMenuBar();
+> 		setDMenuBar(menuBar);
+> 		JMenu fileMenu = new JMenu("File");
+> 		menuBar.add(fileMenu);
+> 		// Add About and Exit menu items.
+> 		// The About item shows the About dialog.
+> 		JMenuItem aboutItem = new JMenuItem("About");
+> 		aboutItem.addActionListener(event -> {
+> 			if (dialog = null) // first time
+> 				dialog = new AboutDialog(DialogFrame.this);
+> 			dialog.setVisible(true); // pop up dialog
+> 		});
+> 		fileMenu.add(aboutItem);
+> 
+> 		// The Exit item exits the program.
+> 		JMenuItem exitItem = new JMenuItem("Exit");
+> 		exitltem.addActionListener(event -> System.exit(O));
+> 		fileMenu.add(exitItem);
+> 	}
+> }
+> ```
+>
+> 程序清单 12-18 dialog/AboutDialog.java 1 
+>
+> ```java
+> package dialog;
+> import java.awt.BorderLayout;
+> import javax.swing.JButton;
+> import javax.swing.JDialog;
+> import javax.swing.JFrame;
+> import javax.swing.JLabel;
+> import javax.swing.JPanel;
+> /**
+> * sample modal dialog that displays a message and waits for the user to click the OK button.
+> */
+> public class AboutDialog extends JDialog
+> {
+> 	public AboutDialog(JFrame owner)
+> 	{
+> 		super(owner，"About DialogTest", true);
+> 		// add HTML label to center
+> 		add(
+> 			new JLabel( "<html><hl><i>Core Java</i></h1><hr>By Cay Horstmann</html>"), Borde rLayout.CENTER);
+> 		// OK button closes the dialog
+> 
+> 		JButton ok = new JButton("OK");
+> 		ok.addActionListener(event -> setVisible(false));
+> 		// add OK button to southern border
+> 		JPanel panel = new JPanel();
+> 		panel.add(ok);
+> 		add(panel, BorderLayout.SOUTH);
+> 		pack();
+> 	}
+> }
+> ```
+
+> javax.swing.JDialog 1.2
+>
+> ```java
+> public JDialog(Frame parent, String title, boolean modal);
+> //构造一个对话框。在没有明确地让对话框显示之前， 它是不可见的。
+> //参数：parent		对话框拥有者的框架
+> //title		对话框的标题
+> //modal		true代表模式对话框（模式对话框阻塞其他窗口的输入）
+> ```
+
+## 7.3 数据交换
+使用对话框最通常的目的是获取用户的输入信息。在前面已经看到，构造对话框对象非常简单：首先初始化数据，然后调用setViSible(true)就会在屏幕上显示对话框。现在，看看如何将数据传入传出对话框。
+
+看一下如图12-39所示的对话框，可以用来获得用户名和用户密码以便连接某些在线服务。
+
+对话框应该提供设置默认数据的方法。例如，示例程序中的PasswordChooser类提供了一个setUser方法，用来将默认值放到下面的字段中：
+
+```java
+public void setUser(User u)
+{
+	username.setText(u.getName());
+}
+```
+
+一旦设置了默认值（如果需要)，就可以调用setViSible(true)让对话框显示在屏幕上。 
+
+然后用户输入信息， 点击OK或者Cancel按钮。这两个按钮的事件处理器都会调用SetVisible(false)终止对 setVisible(true) 的调用。另外，用户也可以选择关闭对话框。如果没有为对话框安装窗口监听器，就会执行默认的窗口结束操作，即对话框变为不可见，这也中止了对setVisible(true)的调用。
+
+重要的问题是在用户解除这个对话框之前，一直调用setVisible(true)阻塞。这样易于实现模式对话框。 
+
+希望知道用户是接收对话框，还是取消对话框。在示例代码中设置了OK标志，在对话框显示之前是false。只有OK按钮的事件处理器可以将它设置为true。这样，就可以获得对话框中的用户输入。
+
+> 注释：无模式对话框数据传输就没有那么简单了。当无模式对话框显示时，调用setVisible(true) 并不阻塞，在对话框显示时，其他程序仍继续运行。如果用户选择了无模式对话框中的一项，并点击OK, 对话框就会将一个事件发送给程序中的某个监听器。
+
+示例程序中还包含另外一个很有用的改进。在构造一个JDialog对象时，需要指定拥有者框架。但是，在很多情况下，一个对话框可能会有多个拥有者框架，所以最好在准备显示对话框时再确定拥有者框架，而不是在构造PasswordChooser对象时。
+
+有一个技巧是让PasswordChooser扩展JPanel, 而不是扩展JDialog, 在showDialog方法中动态建立JDialog对象：
+
+```java
+public boolean showDialog(Frame owner, String title)
+{
+	ok = false;
+	if (dialog = null || dialog.getOwner()!= owner)
+	{
+		dialog = new JDialog(owner, true);
+		dialog.add(this);
+		dialog.pack();
+	}
+	dialog.setTitie(title);
+	dialog.setVlsible(true);
+	return ok;
+}
+```
+
+注意，让owner等于null是安全的。
+
+可以再做进一步的改进。有时，拥有者框架并不总是可用的。利用任意的parent组件可以很容易地得到它。如下所示：
+
+```java
+Frame owner;
+if (parent instanceof Frame)
+	owner = (Frame) parent;
+else
+	owner = (Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent); 
+```
+
+在示例程序中使用了改进的代码。JOptionPane类也使用了上面的机制。
+
+很多对话框都有默认按钮。 如果用户按下一个触发器键（在大多数“观感” 实现中是ENTER) 就自动地选择了它。默认按钮通常用加粗的轮廓给予特别标识。
+
+可以在对话框的根窗格（root pane) 中设置默认按钮：
+
+```java
+dialog.getRootPane().setDefaultButton(okButton);
+```
+
+如果按照前面的建议，在一个面板中布局对话框就必须特别小心。在包装面板进入对话框后再设置默认按钮。面板本身没有根窗格。
+
+程序清单12-19是程序的框架类，这个程序展示了进出对话框的数据流。程序清单12-20
