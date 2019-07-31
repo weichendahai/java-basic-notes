@@ -2665,4 +2665,159 @@ dialog.getRootPane().setDefaultButton(okButton);
 
 如果按照前面的建议，在一个面板中布局对话框就必须特别小心。在包装面板进入对话框后再设置默认按钮。面板本身没有根窗格。
 
-程序清单12-19是程序的框架类，这个程序展示了进出对话框的数据流。程序清单12-20
+程序清单12-19是程序的框架类，这个程序展示了进出对话框的数据流。程序清单12-20给出了对话框类。
+
+> 程序清单12-19 dataExchange/DataExchangeFrame.java 
+>
+> ```java
+> package dataExchange;
+> import java.awt.*;
+> import java.awt.event.*;
+> import javax.swing.*;
+> /**
+> * A frame with a menu whose File->Connect action shows a password dialog.
+> */
+> public class DataExchangeFrame extends JFrame
+> {
+> 	public static final int TEXT_ROWS = 20;
+> 	public static final int TEXT_C0LUMNS = 40;
+> 	private PasswordChooser dialog = null;
+> 	private JTextArea textArea;
+> 	public DataExchangeFrame()
+> 	{
+> 		// construct a File menu
+> 		JMenuBar mbar =•new JMenuBar();
+> 		setJMenuBar(mbar);
+> 		JMenu fileMenu = new JMenu("File");
+> 		mbar.add(fileMenu);
+> 		// add Connect and Exit menu items
+> 		JMenuItem connectltem = new JMenuItem("Connect");
+> 		connectltem.addActionListener(new ConnectAction());
+> 		fileMenu.add(connectltem);
+> 		// The Exit item exits the program
+> 		JMenuItem exitltem = new JMenuItem("Exit");
+> 		exitltem.addActionListener(event -> System,exit(0));
+> 		fileMenu.add(exitltem);
+> 		textArea = new JTextArea(TEXT_R0WS, TEXT_C0LUMNS);
+> 		add(new JScrollPane(textArea), BorderLayout.CENTER);
+> 		pack();
+> 	}
+> 	/**
+> 	* The Connect action pops up the password dialog.
+> 	*/
+> 	private class ConnectAction implements ActionListener
+> 	{
+> 		public void actionPerformed(ActionEvent event)
+> 		{
+> 			// if first time, construct dialog
+> 			if (dialog == null)
+> 				dialog = new PasswordChooserO;
+> 			// set default values
+> 			dialog.setUser(new User("yourname", null));
+> 
+> 			// pop up dialog
+> 			if (dialog.showDialog(DataExchangeFrame.this, "Connect"))
+> 			{
+> 				// i f accepted, retrieve user input
+> 				User u = dialog.getUser();
+> 				textArea.appendfuser name = " + u.getName() + ", password = + (new 					String(u.getPassword())) + "\n");
+> 			}
+> 		}
+> 	}
+> }
+> ```
+
+> 程序清单 12-20 dataExchange/PasswordChooser.java
+> ```java
+> package dataExchange;
+> import java.awt.BorderLayout;
+> import java.awt.Component;
+> import java.awt.Frame;
+> import java.awt.GridLayout;
+> import javax.swing.JButton;
+> import javax.swing.JDialog;
+> import javax.swing.JLabel;
+> import javax.swing.JPanel;
+> import :javax.swing.JPasswordField;
+> import javax.swingJTextField;
+> import javax.swing.SwingUti1ities;
+> /**
+> * A password chooser that is shown inside a dialog
+> */
+> public class PasswordChooser extends JPanel
+> {
+> 	private JTextField username;
+> 	private JPasswordField password;
+> 	private JButton okButton;
+> 	private boolean ok;
+> 	private JDialog dialog;
+> 	public PasswordChooser()
+> 	{
+> 		setLayout(new BorderLayout());
+> 		// construct a panel with user name and password fields
+> 		JPanel panel = new JPanel();
+> 		panel.setLayout(new CridLayout(2, 2));
+> 		panel.add(new JLabel("User name:"));
+> 		panel.add(username = new JTextField(""));
+> 		panel.add(new JLabel("Password:"));
+> 		panel.add(password = new ]PasswordField(""));
+> 		add(panel, BorderLayout.CENTER);
+> 		// create Ok and Cancel buttons that terminate the dialog
+> 		okButton = new JButton("Ok");
+> 		okButton.addActionListener(event -> {
+> 			ok = true;
+> 			dialog.setVisible(false); 47 });
+> 		]Button cancelButton = new ]Button("Cancel");
+> 		cancelButton.addActionListener(event -> dialog.setVisible(false));
+> 		// add buttons to southern border
+> 		]Panel buttonPanel = new JPanel();
+> 		buttonPanel.add(okButton);
+> 		buttonPanel.add(cancelButton);
+> 		add(buttonPanel, BorderLayout.SOUTH);
+> 	}
+> 	/**
+> 	* Sets the dialog defaults.
+> 	* @param u the default user information
+> 	*/
+> 	public void setUser(User u)
+> 	{
+> 		username.setText(u.getName());
+> 	}
+> 	/**
+> 	* Gets the dialog entries.
+> 	* ©return a User object whose state represents the dialog entries
+> 	*/
+> 	public User getUser()
+> 	{
+> 		return new User(username.getText(), password.getPassword());
+> 	}
+> 	/**
+> 	* Show the chooser panel in a dialog
+> 	* @param parent a component in the owner frame or null
+> 	* @param title the dialog window title
+> 	*/
+> 	public boolean showDialog(Component parent, String title)
+> 	{
+> 		ok = false;
+> 		// locate the owner frame
+> 		Frame owner = null;
+> 		if (parent instanceof Frame)
+> 			owner = (Frame) parent;
+> 		else
+> 			owner = (Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent);
+> 		// if first time, or if owner has changed, make new dialog
+> 		if (dialog = null || dialog.getOwner() != owner)
+> 		{
+> 			dialog = new Dialog(owner, true);
+> 			dialog.add(this);
+> 			dialog.getRootPane().setDefaultButton(okButton);
+> 			dialog.pack();
+> 		}
+> 		// set title and show dialog
+> 		dialog.setTitie(title);
+> 		dialog.setVisible(true);
+> 		return ok;
+> 	}
+> }
+> ```
+>
