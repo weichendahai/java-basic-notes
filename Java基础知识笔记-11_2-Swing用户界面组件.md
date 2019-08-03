@@ -2515,9 +2515,9 @@ ok.addActionListener(event -> setVisible(false));
 > ```java
 > package dialog;
 > import javax.swing.JFrame;
-> import javax.swingJMenu;
-> import javax.swingJMenuBar;
-> import javax.swingJMenuItem;
+> import javax.swing.JMenu;
+> import javax.swing.JMenuBar;
+> import javax.swing.JMenuItem;
 > /**
 > * A frame with a menu whose File->About action shows a dialog.
 > */
@@ -2711,7 +2711,7 @@ dialog.getRootPane().setDefaultButton(okButton);
 > 		{
 > 			// if first time, construct dialog
 > 			if (dialog == null)
-> 				dialog = new PasswordChooserO;
+> 				dialog = new PasswordChooser();
 > 			// set default values
 > 			dialog.setUser(new User("yourname", null));
 > 
@@ -2766,8 +2766,9 @@ dialog.getRootPane().setDefaultButton(okButton);
 > 		okButton = new JButton("Ok");
 > 		okButton.addActionListener(event -> {
 > 			ok = true;
-> 			dialog.setVisible(false); 47 });
-> 		]Button cancelButton = new JButton("Cancel");
+> 			dialog.setVisible(false);
+> 		});
+> 		JButton cancelButton = new JButton("Cancel");
 > 		cancelButton.addActionListener(event -> dialog.setVisible(false));
 > 		// add buttons to southern border
 > 		]Panel buttonPanel = new JPanel();
@@ -2851,7 +2852,7 @@ dialog.getRootPane().setDefaultButton(okButton);
 
 下面是建立文件对话框并且获取用户选择信息的步骤：
 
-- 1 ) 建立一个 JFileChooser 对象。与 JDialog 类的构造器不同，它不需要指定父组件。允 许在多个框架中重用一个文件选择器。例如：
+- 1 ) 建立一个JFileChooser对象。与JDialog类的构造器不同，它不需要指定父组件。允 许在多个框架中重用一个文件选择器。例如：
 
 ```java
 JFileChooser chooser = new JFileChooser();
@@ -2869,7 +2870,7 @@ chooser.setCurrentDirectory(new File(".");
 - 3 ) 如果有一个想要作为用户选择的默认文件名，可以使用setSelectedFile方法进行指定： 
 
 ```java
-chooser.setSelectedFi1e(new File(filename));
+chooser.setSelectedFile(new File(filename));
 ```
 
 - 4) 如果允许用户在对话框中选择多个文件，需要调用setMultiSelectionEnabled方法。 当然，这是可选的。
@@ -2931,8 +2932,8 @@ chooser.setFileFilter(new FileNameExtensionFilter("Image files", "gif", "jpg"));
 可以为一个文件选择器安装多个过滤器：
 
 ```java
-chooser.addChoosableFileFi1ter(filterl);
-chooser.addChoosableFileFi1ter(filter2);
+chooser.addChoosableFileFilter(filterl);
+chooser.addChoosableFileFilter(filter2);
 ```
 
 用户可以从文件对话框底部的组合框中选择过滤器。在默认情况下，All files过滤器总是显示在组合框中。这是一个很好的主意，特别是在使用这个程序的用户需要选择一个具有非标准扩展名的文件时。然而，如果你想禁用All files过滤器，需要调用：
@@ -2943,7 +2944,7 @@ chooser.setAcceptAllFileFilterUsed(false);
 
 > 警告：如果为加载和保存不同类型的文件重用一个文件选择器，就需要调用：
 > ```java
-> chooser.resetChoosableFi1ters();
+> chooser.resetChoosableFilters();
 > ```
 > 这样可以在添加新文件过滤器之前清除旧文件过滤器。
 
@@ -2979,7 +2980,7 @@ class FilelconView extends FileView
     }
 	public Icon getIcon(File f)
 	{
-		if (If.isDirectoryO && fiIter.accept(f))
+		if (If.isDirectory() && fiIter.accept(f))
 			return icon;
 		else
 			return null;
@@ -3115,7 +3116,7 @@ chooser.addPropertyChangeListener(event -> {
 > 		setPreferredSize(new Dimension(100, 100));
 > 		setBorder(BorderFactory.createEtchedBorder());
 > 		chooser.addPropertyChangeListener(event -> {
-> 			if (event.getPropertyNameO == JFi1eChooser.SELECTED_FILE_CHANGED_PROPERTY)
+> 			if (event.getPropertyName() == JFi1eChooser.SELECTED_FILE_CHANGED_PROPERTY)
 > 			{
 > 				// the user has selected a new file
 > 				File f = (File) event.getNewValue();
@@ -3128,7 +3129,7 @@ chooser.addPropertyChangeListener(event -> {
 > 				Imagelcon icon = new Imagelcon(f.getPath());
 > 				// if the icon is too large to fit, scale it
 > 				if (icon.getlconWidth() > getWidth())
-> 					icon = new Imagelcon(icon.getlmage().getScaledlnstance( getWidthO, -1 , Image.SCALEJEFAULT));
+> 					icon = new Imagelcon(icon.getlmage().getScaledlnstance( getWidth(), -1 , Image.SCALEJEFAULT));
 > 				setIcon(icon);
 > 			}
 > 		});
@@ -3187,10 +3188,10 @@ chooser.addPropertyChangeListener(event -> {
 > int showDialog(Component parent, String approveButtonText); //显 示 按 钮 标 签 为 Open， Save或者approveButtonText字符串的对话框，并返回APPROVE_ OPTION、CANCEL_OPTION (如果用户选择取消按钮或者离开了对话框) 或者ERROR_OPTION (如果发生错误)。 
 > File getSelectedFile()
 > File[] getSelectedFi1es(); //获取用户选择的一个文件或多个文件（如果用户没有选择文件，返回 null)。
-> void setmeF1lter(FileFilter filter); //设置文件对话框的文件过滤器。所有让 filteraccqrt 返回 true 的文件都会被显示，并且 将过滤器添加到可选过滤器列表中。
-> void addChoosableFi1eFilter(FileFilter filter); //将文件过滤器添加到可选过滤器列表中。 
-> void setAcceptAl1Fi1eFi1terUsed(boo1ean b); //在过滤器组合框中包括或者取消 All files 过滤器。
-> void resetChoosableFi1eFi1ters(); //清除可选过滤器列表。除非 All files 过滤器被显式地清除，否则它仍然会存在。
+> void setmeFilter(FileFilter filter); //设置文件对话框的文件过滤器。所有让 filteraccqrt 返回 true 的文件都会被显示，并且 将过滤器添加到可选过滤器列表中。
+> void addChoosableFileFilter(FileFilter filter); //将文件过滤器添加到可选过滤器列表中。 
+> void setAcceptAl1FileFilterUsed(boo1ean b); //在过滤器组合框中包括或者取消 All files 过滤器。
+> void resetChoosableFi1eFilters(); //清除可选过滤器列表。除非 All files 过滤器被显式地清除，否则它仍然会存在。
 > void setFileView(FileView view); //设置一个文件视图来提供文件选择器显示信息。
 > void setAccessory(JComponent component); //设置一个附件组件。
 > ```
@@ -3202,7 +3203,7 @@ chooser.addPropertyChangeListener(event -> {
 > String getDescription(); //返回这个文件过滤器的说明信息，例如，Image files (*.gif， *jpeg)。
 > ```
 
-> [AW|javax.swing.filechooser.FileNameExtensionFiler 6 
+> javax.swing.filechooser.FileNameExtensionFiler
 >
 > ```java
 > Fi1eNameExtensionFilter(String description, String ... extensions); //利用给定的描述构造一个文件过滤器。这些描述限定了被接受的所有目录和文件其名 称结尾的句点之后所包含的扩展字符串。
