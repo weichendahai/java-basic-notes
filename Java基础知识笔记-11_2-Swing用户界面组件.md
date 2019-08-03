@@ -1502,13 +1502,13 @@ fileMenu.add(exitltem);
 >
 > ```java
 > JMenuItem(String label); //用给定标签构造一个菜单项。 
-> JMenuItemCAction a)1.3 为给定动作构造一个菜单项。
+> JMenuItemCAction a)1.3 //为给定动作构造一个菜单项。
 > ```
 
 > javax.swing.AbstractButton1.2 
 >
 > ```java
-> void setAction(Action a)1.3 为这个按钮或菜单项设置动作
+> void setAction(Action a)1.3 //为这个按钮或菜单项设置动作
 > ```
 
 >  javax.swing.JFrame1.2
@@ -1725,7 +1725,7 @@ openItem.setAccelerator(KeyStroke.getKeyStroke("ctrl 0"));
 >
 > ```java
 > void setMnemonic(int mnemonic); //设置按钮的快捷字符。该字符会在标签中以下划线的形式显示。
-> void setDisplayedMnemoniclndex(int index) 1.4 将按钮文本中的index字符设定为带下划线。如果不希望第一个出现的快捷键字符带下划线， 就可以使用这个方法。
+> void setDisplayedMnemoniclndex(int index) 1.4 //将按钮文本中的index字符设定为带下划线。如果不希望第一个出现的快捷键字符带下划线， 就可以使用这个方法。
 > ```
 
 ## 5.6 启用和禁用菜单项
@@ -1856,7 +1856,8 @@ public void menuSelected(MenuEvent event)
 > 		Action cutAction = new TestAction("Cut");
 > 		cutAction.putValue(Action.SMALL_IC0N, new Imagelcon("cut.gif"));
 > 		Action copyAction = new TestAction("Copy");
-> 		copyAction.putValue(Action.SMALL_IC0N, new Imagelcon("copy.gif")); Action pasteAction = new TestAction("Paste");
+> 		copyAction.putValue(Action.SMALL_IC0N, new Imagelcon("copy.gif"));
+> 		Action pasteAction = new TestAction("Paste");
 > 		pasteAction.putValue(Action.SMALL_ICON, new ImageIcon("paste.gif"));
 > 		JMenu editMenu = new JMenu("Edit");
 > 		editMenu.add(cutAction);
@@ -1994,7 +1995,7 @@ exitAction.putValue(Action.SHORTJESCRIPnON, "Exit");
 > public class ToolBarFrame extends JFrame
 > {
 > 	private static final int DEFAULT_WIDTH = 300;
-> 	private static final int DEFAULT一HEIGHT = 200;
+> 	private static final int DEFAULT_HEIGHT = 200;
 > 	private JPanel panel;
 > 	public ToolBarFrame()
 > 	{
@@ -2010,7 +2011,7 @@ exitAction.putValue(Action.SHORTJESCRIPnON, "Exit");
 > 		{
 > 			public void actionPerformed(ActionEvent event)
 > 			{
-> 				System.exit(O);
+> 				System.exit(0);
 > 			}
 > 		};
 > 		exitAction.putValue(Action.SH0RT_JESCRIPTI0N, "Exit");
@@ -2214,29 +2215,30 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 	private Object messageObject = new Date();
 > 	private Component messageComponent = new SampleComponent();
 > 	public OptionDialogFrame()
->     {
-> 	JPanel gridPanel = new JPanel();
-> 	gridPanel.setLayout(new GridLayout(2, 3));
-> 	typePanel = new ButtonPanel ("Type", "Message", "Confirm", "Option", "Input");
-> 	messageTypePanel = new ButtonPanel ("Message Type", "ERROR.MESSAGE", "INFORMATION.MESSACE", "WARNINCJESSAGE", "QUESTION.MESSAGE", "PLAINJESSAGE");
-> 	messagePanel = new ButtonPanel ("Message", "String", "Icon", "Component", "Other", "Object[]");
-> 	optionTypePanel = new ButtonPanel ("Confirm", "DEFAULT_0PTI0N", "HYES_N0_0PTI0N", "YESJO.CANCEL.OPnON", "OK_CANCEL_0PTI0N");
-> 	optionsPanel = new ButtonPanel ("Option", "String[]", "Icon[]"，"Object[]");
-> 	inputPanel = new ButtonPanel ("Input", "Text field", "Combo box");
-> 	gridPanel.add(typePanel);
-> 	gridPanel.add(messageTypePanel);
-> 	gridPanel.add(messagePanel);
-> 	gridPanel.add(optionTypePanel);
-> 	gridPanel.add(optionsPanel);
-> 	gridPanel.add(inputPanel);
-> 	// add a panel with a Show button
-> 	JPanel showPanel = new JPanel();
-> 	JButton showButton = new JButton("Show");
-> 	showButton.addActionListener(new ShowAction());
-> 	showPanel.add(showButton);
-> 	add(gridPanel, BorderLayout.CENTER);
-> 	add(showPanel , BorderLayout.SOUTH);
-> 	pack();
+> 	{
+> 		JPanel gridPanel = new JPanel();
+> 		gridPanel.setLayout(new GridLayout(2, 3));
+> 		typePanel = new ButtonPanel ("Type", "Message", "Confirm", "Option", "Input");
+> 		messageTypePanel = new ButtonPanel ("Message Type", "ERROR.MESSAGE", "INFORMATION.MESSACE", "WARNINCJESSAGE", "QUESTION.MESSAGE", "PLAINJESSAGE");
+> 		messagePanel = new ButtonPanel ("Message", "String", "Icon", "Component", "Other", "Object[]");
+> 		optionTypePanel = new ButtonPanel ("Confirm", "DEFAULT_0PTI0N", "HYES_N0_0PTI0N", "YESJO.CANCEL.OPnON", "OK_CANCEL_0PTI0N");
+> 		optionsPanel = new ButtonPanel ("Option", "String[]", "Icon[]"，"Object[]");
+> 		inputPanel = new ButtonPanel ("Input", "Text field", "Combo box");
+> 		gridPanel.add(typePanel);
+> 		gridPanel.add(messageTypePanel);
+> 		gridPanel.add(messagePanel);
+> 		gridPanel.add(optionTypePanel);
+> 		gridPanel.add(optionsPanel);
+> 		gridPanel.add(inputPanel);
+> 		// add a panel with a Show button
+> 		JPanel showPanel = new JPanel();
+> 		JButton showButton = new JButton("Show");
+> 		showButton.addActionListener(new ShowAction());
+> 		showPanel.add(showButton);
+> 		add(gridPanel, BorderLayout.CENTER);
+> 		add(showPanel , BorderLayout.SOUTH);
+> 		pack();
+> 	}
 > 	/**
 > 	* Gets the currently selected message. ©return a string, icon, component, or object array, depending on the Message panel selection
 > 	*/
@@ -2271,6 +2273,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 			return new Object[] { messageString, messagelcon, messageComponent, messageObject };
 > 		else
 > 			return null;
+> 	}
 > 	/**
 > 	* Gets the selected message or option type
 > 	* @param panel the Message Type or Confirm panel
@@ -2378,7 +2381,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > javax.swing.JOptionPane 1.2
 >
 > ```java
-> static void showMessageDialog(Component parent, Object message, String title, int messageType, Icon icon;
+> static void showMessageDialog(Component parent, Object message, String title, int messageType, Icon icon);
 > static void showMessageDialog(Component parent, Object message, String title, int messageType);
 > static void showMessageDialog(Component parent, Object message);
 > static void showlnternalMessageDialog(Component parent, Object message, String title, int messageType, Icon icon);
@@ -2410,7 +2413,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > icon		用于替代标准图标的图标。
 > */
 > static int showOptionDialog(Component parent, Object message, String title, int optionType, int messageType, Icon icon, Object[] options, Object default);
-> static int showlnternalOptionDialog(Component parent, Object message, String title, int optionType, int messageType, Icon icon, Object[]options, Object default)
+> static int showlnternalOptionDialog(Component parent, Object message, String title, int optionType, int messageType, Icon icon, Object[]options, Object default);
 > 
 > /*
 > 显示一个选项对话框或者内部选项对话框（内部对话框完全显示在所在的框架内）。返回用户选择的选项索引；如果用户取消对话框返冋 CLOSED_OPTION。
@@ -2431,7 +2434,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > static String showInputDialog(Object message, Object default) 1.4
 > static Object showinternalInputDialog(Component parent, Object message, String title, int messageType, Icon icon, Object[] values, Object default);
 > static String showinternalInputDialog(Component parent, Object message, String title, int messageType);
-> static String showinternalInputDialog(Component parent, Object message)
+> static String showinternalInputDialog(Component parent, Object message);
 > 
 > /*
 > 显示一个输入对话框或者内部输入对话框（内部对话框完全显示在所在的框架内）。返回用户输入的字符串； 如果用户取消对话框返回 null。 
@@ -2570,7 +2573,7 @@ ok.addActionListener(event -> setVisible(false));
 > {
 > 	public AboutDialog(JFrame owner)
 > 	{
-> 		super(owner，"About DialogTest", true);
+> 		super(owner,"About DialogTest", true);
 > 		// add HTML label to center
 > 		add(
 > 			new JLabel( "<html><hl><i>Core Java</i></h1><hr>By Cay Horstmann</html>"), Borde rLayout.CENTER);
@@ -2686,7 +2689,7 @@ dialog.getRootPane().setDefaultButton(okButton);
 > 	public DataExchangeFrame()
 > 	{
 > 		// construct a File menu
-> 		JMenuBar mbar =•new JMenuBar();
+> 		JMenuBar mbar = new JMenuBar();
 > 		setJMenuBar(mbar);
 > 		JMenu fileMenu = new JMenu("File");
 > 		mbar.add(fileMenu);
@@ -3034,7 +3037,7 @@ chooser.addPropertyChangeListener(event -> {
 ```
 在这个示例中，将这段代码添加到ImagePreviewer构造器中。
 
-程序清单12-21〜程序清单12-23对第2章中的ImageViewer程序做了一定的修改。通过自定义的文件视图和预览附件文件增强了文件选择器的功能。 
+程序清单12-21~程序清单12-23对第2章中的ImageViewer程序做了一定的修改。通过自定义的文件视图和预览附件文件增强了文件选择器的功能。 
 
 > 程序清单12-21 fileChooser/lmageViewerFrame.java
 >
