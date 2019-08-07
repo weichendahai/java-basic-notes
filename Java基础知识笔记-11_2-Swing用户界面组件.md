@@ -2211,7 +2211,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 	private ButtonPanel optionsPanel;
 > 	private ButtonPanel inputPanel;
 > 	private String messagestring = "Message";
-> 	private Icon messagelcon = new Imagelcon("blue-ball.gif');
+> 	private Icon messagelcon = new Imagelcon("blue-ball.gif");
 > 	private Object messageObject = new Date();
 > 	private Component messageComponent = new SampleComponent();
 > 	public OptionDialogFrame()
