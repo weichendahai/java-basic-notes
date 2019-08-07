@@ -3186,8 +3186,8 @@ chooser.addPropertyChangeListener(event -> {
 > void setSelectedFiles(File[] file); //设置文件对话框的默认文件选择。
 > void setMultiSelectionEnabled(boolean b); //设置或清除多选模式。
 > void setFi1eSelectionMode(int mode); //设置用户选择模式，只可以选择文件（默认)，只可以选择目录，或者文件和目录均可以选择。mode参数的取值可以是JFileChooser.FILES_ONLY、JFileChooser.DIRECTORIES_ONLY和JFileChooser.FILES_AND_DIRECTORIES 之一。
-> int showOpenDialog(Component parent )
-> int showSaveDialog(Component parent )
+> int showOpenDialog(Component parent)
+> int showSaveDialog(Component parent)
 > int showDialog(Component parent, String approveButtonText); //显 示 按 钮 标 签 为 Open， Save或者approveButtonText字符串的对话框，并返回APPROVE_ OPTION、CANCEL_OPTION (如果用户选择取消按钮或者离开了对话框) 或者ERROR_OPTION (如果发生错误)。 
 > File getSelectedFile()
 > File[] getSelectedFi1es(); //获取用户选择的一个文件或多个文件（如果用户没有选择文件，返回 null)。
