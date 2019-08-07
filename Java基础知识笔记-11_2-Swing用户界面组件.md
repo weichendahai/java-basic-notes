@@ -2089,30 +2089,30 @@ exitAction.putValue(Action.SHORTJESCRIPnON, "Exit");
 Swing有一套简单的对话框，用于获取用户的一些简单信息。JOptionPane有4个用于显示这些对话框的静态方法：
 
 ```
-showMessageDialog: 显示一条消息并等待用户点击 OK
+showMessageDialog: 显示一条消息并等待用户点击OK
 showConfirmDialog: 显示一条消息并等待用户确认（与 OK/Cancel类似）
 showOptionDialog: 显示一条消息并获得用户在一组选项中的选择
-showInputDialog: 显示一条消息并获得用户输人的一行文本
+showInputDialog: 显示一条消息并获得用户输入的一行文本
 ```
 
 图12-36显示了一个典型的对话框。可以看到，对话框有下列组件：
 
-- 一个图标 
-- 一条消息 
+- 一个图标
+- 一条消息
 - 一个或多个按钮
 
 输入对话框有一个用于接收用户输入的额外组件。它既可能是用于输入任何字符串的文本域，也可能是允许用户从中选择的组合框。 
 
 这些对话框的确切布局和为标准消息类型选择的图标都取决于具体的观感。
 
-左侧的图标将由下面 5 种消息类型决定：
+左侧的图标将由下面5种消息类型决定：
 
 ```
-ERROR.MESSACE
-INFORMATIONJESSACE
-WARNINCJESSACE
-QUESTIONJESSACE
-PLAINJESSACE
+ERROR_MESSACE
+INFORMATION_MESSACE
+WARNINC_MESSACE
+QUESTION_MESSACE
+PLAIN_MESSACE
 ```
 
 PLAIN_MESSAGE类型没有图标。每个对话框类型都有一个方法，可以用来提供自己的图标，以替代原来的图标。
@@ -2134,13 +2134,13 @@ Object[]: 显示数组中的所有对象，依次叠加
 位于底部的按钮取决于对话框类型和选项类型。当调用showMessageDialog和showInputDialog时，只能看到一组标准按钮（分别是OK/Cancel)。当调用showConfirmDialog时，可以选择下面四种选项类型之一：
 
 ```
-DEFAULL0PTI0N
+DEFAULLOPTI0N
 YES_NO_OPTION
-YES_N0_CANCEL_0PTI0N
-OK_CANCELJPTION
+YES_N0_CANCEL_OPTI0N
+OK_CANCEL_OPTION
 ```
 
-使用showOptionDialog可以指定任意的选项。这里需要为选项提供一个对象数组。每个数组元素可以是下列类型之一： 
+使用showOptionDialog可以指定任意的选项。这里需要为选项提供一个对象数组。每个数组元素可以是下列类型之一：
 
 ```
 String： 使用字符串标签创建一个按钮
@@ -2159,14 +2159,14 @@ showOptionDialog 表示被选项的一个整数
 showInputDialog 用户选择或输入的字符串
 ```
 
-showConfirmDialog和showOptionDialog返回一个整数用来表示用户选择了哪个按钮。对于选项对话框来说，这个值就是被选的选项的索引值或者是CLOSED_OPTION (此时用户 没有选择可选项， 而是关闭了对话框)。对于确认对话框，返回值可以是下列值之一：
+showConfirmDialog和showOptionDialog返回一个整数用来表示用户选择了哪个按钮。对于选项对话框来说，这个值就是被选的选项的索引值或者是CLOSED_OPTION (此时用户没有选择可选项， 而是关闭了对话框)。对于确认对话框，返回值可以是下列值之一：
 
 ```
-OKJPTI0N
-CANCEL0PTI0N
-VESJPTION
-N0_0PTI0N
-CLOSED.OPTION
+OK_OPTION
+CANCEL_OPTI0N
+YES_OPTION
+N0_OPTION
+CLOSED_OPTION
 ```
 
 这些选项似乎令人感到迷惑不解，实际上非常简单步骤如下: 
@@ -2182,7 +2182,7 @@ CLOSED.OPTION
 例如， 假设需要显示一个图12-36的对话框。这个对话框显示了一条消息，并请求用户确认或者取消。这是一个确认对话框。图标是警告图标，消息是字符串，选项类型是OK_ CANCEL_OPTION。调用如下：
 
 ```java
-int selection = JOptionPane.showConfirfnDialog(parent, "Message", "Title", JOptionPane.OK_CANCEL_0PTI0N, JOptionPane.QUESTION_MESSACE);
+int selection = JOptionPane.showConfirfnDialog(parent, "Message", "Title", JOptionPane.OK_CANCEL_OPTI0N, JOptionPane.QUESTION_MESSACE);
 if (selection == JOptionPane.OK_0PTI0N) ...
 ```
 
@@ -2211,7 +2211,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 	private ButtonPanel optionsPanel;
 > 	private ButtonPanel inputPanel;
 > 	private String messagestring = "Message";
-> 	private Icon messagelcon = new Imagelcon("blue-ball.gif");
+> 	private Icon messageIcon = new ImageIon("blue-ball.gif");
 > 	private Object messageObject = new Date();
 > 	private Component messageComponent = new SampleComponent();
 > 	public OptionDialogFrame()
@@ -2219,9 +2219,9 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 		JPanel gridPanel = new JPanel();
 > 		gridPanel.setLayout(new GridLayout(2, 3));
 > 		typePanel = new ButtonPanel ("Type", "Message", "Confirm", "Option", "Input");
-> 		messageTypePanel = new ButtonPanel ("Message Type", "ERROR.MESSAGE", "INFORMATION.MESSACE", "WARNINCJESSAGE", "QUESTION.MESSAGE", "PLAINJESSAGE");
+> 		messageTypePanel = new ButtonPanel ("Message Type", "ERROR_MESSAGE", "INFORMATION_MESSACE", "WARNIN_MESSAGE", "QUESTION_MESSAGE", "PLAIN_MESSAGE");
 > 		messagePanel = new ButtonPanel ("Message", "String", "Icon", "Component", "Other", "Object[]");
-> 		optionTypePanel = new ButtonPanel ("Confirm", "DEFAULT_0PTI0N", "HYES_N0_0PTI0N", "YESJO.CANCEL.OPnON", "OK_CANCEL_0PTI0N");
+> 		optionTypePanel = new ButtonPanel ("Confirm", "DEFAULT_0PTI0N", "YES_N0_0PTI0N", "YES_NO_CANCEL.OPTION", "OK_CANCEL_0PTI0N");
 > 		optionsPanel = new ButtonPanel ("Option", "String[]", "Icon[]"，"Object[]");
 > 		inputPanel = new ButtonPanel ("Input", "Text field", "Combo box");
 > 		gridPanel.add(typePanel);
@@ -2236,7 +2236,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 		showButton.addActionListener(new ShowAction());
 > 		showPanel.add(showButton);
 > 		add(gridPanel, BorderLayout.CENTER);
-> 		add(showPanel , BorderLayout.SOUTH);
+> 		add(showPanel, BorderLayout.SOUTH);
 > 		pack();
 > 	}
 > 	/**
@@ -2269,7 +2269,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 			return new String[] {"Yellow", "Blue", "Red"};
 > 		else if (s.equals("Icon[]"))
 > 			return new Icon[] { new Imagelcon("yellow-ball.gif"), new "ImageIconrblue-ball.gif"), new Imagelcon("red-bal1.gif") };
-> 		else if (s.equals("0bject[]"))
+> 		else if (s.equals("Object[]"))
 > 			return new Object[] { messageString, messagelcon, messageComponent, messageObject };
 > 		else
 > 			return null;
@@ -2311,7 +2311,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 			else if(typePanel.getSelection().equals("Message"))
 > 				JOptionPane.showMessageDialog(OptionDialogFrame.this, getMessage(), "Title", getType(messageTypePanel));
 > 			else if (typePanel.getSelection().equals("Option"))
-> 				JOptionPane.showOptionDialog( OptionDialogFrame,this, getMessage(), "Title", getType(optionTypePanel), getType(messageTypePanel), null, getOptions(), getOptions()[0]);
+> 				JOptionPane.showOptionDialog(OptionDialogFrame,this, getMessage(), "Title", getType(optionTypePanel), getType(messageTypePanel), null, getOptions(), getOptions()[0]);
 > 		}
 > 	}
 > }
@@ -2966,7 +2966,7 @@ Boolean isTraversable(File f);
 
 文件选择器为每个希望显示的文件或目录调用这些方法。如果方法返回的图标、名字或描述信息为 null, 那么文件选择器将会构造当前观感的默认文件视图。这样处理很好，其原因是这样只需处理具有不同显示的文件类型。
 
-文件选择器调用isTraversable方法来决定是否在用户点击一个目录的时候打开这个目录。请注意，这个方法返回一个Boolean对象，而不是boolean值。看起来似乎有点怪，但实际上很方便—-—如果需要使用默认的视图，则返回null。文件选择器将会使用默认的文件视图。换句话说，这个方法返回的Boolean对象能给出下面三种选择：真（Boolean.TRUE), 假(Boolean.FALSE)和不关心（null)。
+文件选择器调用isTraversable方法来决定是否在用户点击一个目录的时候打开这个目录。请注意，这个方法返回一个Boolean对象，而不是boolean值。看起来似乎有点怪，但实际上很方便---如果需要使用默认的视图，则返回null。文件选择器将会使用默认的文件视图。换句话说，这个方法返回的Boolean对象能给出下面三种选择：真（Boolean.TRUE), 假(Boolean.FALSE)和不关心（null)。
 
 在示例中包含了一个简单的文件视图类。当文件匹配文件过滤器时，这个类将会显示一个特定的图标。可以利用这个类为所有的图像文件显示一个调色板图标。
 
