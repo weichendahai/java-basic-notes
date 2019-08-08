@@ -2467,7 +2467,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 
 模式特征将指定对话框处于显示状态时，应用程序中其他窗口是否被锁住。无模式对话框不会锁住其他窗口，而有模式对话框将锁住应用程序中的所有其他窗口（除对话框的子窗口外)。用户经常使用的工具栏就是无模式对话框，另一方面，如果想强迫用户在继续操作之前提供一些必要的信息就应该使用模式对话框。
 
-> 注释：在Java SE 6中，有两个额外的模式特征类型。文档-模式对话框将阻塞所有属于相同“ 文档” 的窗口。更准确地说，是所有作为对话框的具有相同无父根窗口的窗口。这样解决了帮助系统的问题。在早期的版本中，当弹出一个模式对话框时， 用户不可能与帮助窗口交互。工具箱对话框阻塞了所有来自相同“工具箱”的窗口。工具箱是一个 运行于多个应用的 Java 程序，例如，浏览器中的applet引擎。有关更加详细的内容请参看网站：www.oracle.com/technetwork/artides/javase/modality-137604.html。 
+> 注释：在Java SE 6中，有两个额外的模式特征类型。文档-模式对话框将阻塞所有属于相同“ 文档” 的窗口。更准确地说，是所有作为对话框的具有相同无父根窗口的窗口。这样解决了帮助系统的问题。在早期的版本中，当弹出一个模式对话框时， 用户不可能与帮助窗口交互。工具箱对话框阻塞了所有来自相同“工具箱”的窗口。工具箱是一个 运行于多个应用的Java程序，例如，浏览器中的applet引擎。有关更加详细的内容请参看网站：www.oracle.com/technetwork/artides/javase/modality-137604.html。 
 
 下面是一个对话框的例子：
 
@@ -2505,7 +2505,7 @@ dialog = new AboutDialog(this);
 dialog.setVisible(true);
 ```
 
-当用户点击OK按钮时， 该对话框将被关闭。下面是在OK按钮的事件处理器中的处理代码： 
+当用户点击OK按钮时，该对话框将被关闭。下面是在OK按钮的事件处理器中的处理代码： 
 
 ```java
 ok.addActionListener(event -> setVisible(false));
@@ -2616,7 +2616,7 @@ public void setUser(User u)
 
 一旦设置了默认值（如果需要)，就可以调用setViSible(true)让对话框显示在屏幕上。 
 
-然后用户输入信息， 点击OK或者Cancel按钮。这两个按钮的事件处理器都会调用SetVisible(false)终止对 setVisible(true) 的调用。另外，用户也可以选择关闭对话框。如果没有为对话框安装窗口监听器，就会执行默认的窗口结束操作，即对话框变为不可见，这也中止了对setVisible(true)的调用。
+然后用户输入信息，点击OK或者Cancel按钮。这两个按钮的事件处理器都会调用SetVisible(false)终止对 setVisible(true) 的调用。另外，用户也可以选择关闭对话框。如果没有为对话框安装窗口监听器，就会执行默认的窗口结束操作，即对话框变为不可见，这也中止了对setVisible(true)的调用。
 
 重要的问题是在用户解除这个对话框之前，一直调用setVisible(true)阻塞。这样易于实现模式对话框。 
 
@@ -2639,7 +2639,7 @@ public boolean showDialog(Frame owner, String title)
 		dialog.pack();
 	}
 	dialog.setTitie(title);
-	dialog.setVlsible(true);
+	dialog.setVisible(true);
 	return ok;
 }
 ```
@@ -2774,7 +2774,7 @@ dialog.getRootPane().setDefaultButton(okButton);
 > 		JButton cancelButton = new JButton("Cancel");
 > 		cancelButton.addActionListener(event -> dialog.setVisible(false));
 > 		// add buttons to southern border
-> 		]Panel buttonPanel = new JPanel();
+> 		JPanel buttonPanel = new JPanel();
 > 		buttonPanel.add(okButton);
 > 		buttonPanel.add(cancelButton);
 > 		add(buttonPanel, BorderLayout.SOUTH);
@@ -2851,11 +2851,11 @@ dialog.getRootPane().setDefaultButton(okButton);
 > ```
 
 ## 7.4 文件对话框
-当编写应用程序时，通常希望可以打开和保存文件。一个好的文件对话框应该可以显示 文件和目录，可以让用户浏览文件系统，这是很难编写的。人们肯定不愿意从头做起。很幸运，Swing中提供了JFileChooser类，它可以显示一个文件对话框，其外观与本地应用程序中使用的文件对话框基本一样。JFileChooser是一个模式对话框。注意，JFileChooser类并不是JDialog类的子类。需要调用showOpenDialog，而不是调用SetVisible(true)显示打开文件的对话框，或者调用showSaveDialog显示保存文件的对话框。接收文件的按钮被自动地标签为Open或者Save。也可以调用showDialog方法为按钮设定标签。图12*40是文件选择对话框的样例。
+当编写应用程序时，通常希望可以打开和保存文件。一个好的文件对话框应该可以显示文件和目录，可以让用户浏览文件系统，这是很难编写的。人们肯定不愿意从头做起。很幸运，Swing中提供了JFileChooser类，它可以显示一个文件对话框，其外观与本地应用程序中使用的文件对话框基本一样。JFileChooser是一个模式对话框。注意，JFileChooser类并不是JDialog类的子类。需要调用showOpenDialog，而不是调用SetVisible(true)显示打开文件的对话框，或者调用showSaveDialog显示保存文件的对话框。接收文件的按钮被自动地标签为Open或者Save。也可以调用showDialog方法为按钮设定标签。图12*40是文件选择对话框的样例。
 
 下面是建立文件对话框并且获取用户选择信息的步骤：
 
-- 1 ) 建立一个JFileChooser对象。与JDialog类的构造器不同，它不需要指定父组件。允 许在多个框架中重用一个文件选择器。例如：
+- 1 ) 建立一个JFileChooser对象。与JDialog类的构造器不同，它不需要指定父组件。允许在多个框架中重用一个文件选择器。例如：
 
 ```java
 JFileChooser chooser = new JFileChooser();
@@ -2876,7 +2876,7 @@ chooser.setCurrentDirectory(new File(".");
 chooser.setSelectedFile(new File(filename));
 ```
 
-- 4) 如果允许用户在对话框中选择多个文件，需要调用setMultiSelectionEnabled方法。 当然，这是可选的。
+- 4 ) 如果允许用户在对话框中选择多个文件，需要调用setMultiSelectionEnabled方法。 当然，这是可选的。
 
 ```java
 chooser.setMultiSelectionEnabled(true);
@@ -2887,7 +2887,7 @@ chooser.setMultiSelectionEnabled(true);
 - 6 ) 在默认情况下，用户在文件选择器中只能选择文件。如果希望选择目录，需要调用 setFileSelectionMode方法。参数值为：JFileChooser.FILES_ONLY (默认值），JFileChooser.DIRECTORIES_ONLY或者JFileChooser.FILES_AND_DIRECTORIES
 
 
-- 7 ) 调用 showOpenDialog 或者 showSaveDialog 方法显7TC对话框。必须为这些调用提供父 组件：
+- 7 ) 调用 showOpenDialog或者showSaveDialog方法显示对话框。必须为这些调用提供父组件：
 
 ```java
 int result = chooser.showOpenDialog(parent);
@@ -2898,21 +2898,21 @@ int result = chooser.showOpenDialog(parent);
 int result = chooser.showSaveDialog(parent);
 ```
 
-这些调用的区别是“确认按钮”的标签不同。点击“确认按钮”将完成文件选择。也可以调用 showDialog方法，并将一个显式的文本传递给确认按钮：
+这些调用的区别是“确认按钮”的标签不同。点击“确认按钮”将完成文件选择。也可以调用showDialog方法，并将一个显式的文本传递给确认按钮：
 
 ```java
 int result = chooser.showDialog(parent, "Select");
 ```
 
-仅当用户确认、取消或者离开对话框时才返回调用。返回值可以是JFileChooser.APPROVE_OPTION、JFileChooser.CANCEL_OPTION或者 JFileChooser.ERROR—OPTION。
+仅当用户确认、取消或者离开对话框时才返回调用。返回值可以是JFileChooser.APPROVE_OPTION、JFileChooser.CANCEL_OPTION或者 JFileChooser.ERROR_OPTION。
 
-- 8 ) 调用getSelectedFile()或者getSelectedFiles()方法获取用户选择的一个或多个文件。这些方法将返回一个文件对象或者一组文件对象。如果需要知道文件对象名时，可以调用 getPath方法。例如：
+- 8 ) 调用`getSelectedFile()`或者`getSelectedFiles()`方法获取用户选择的一个或多个文件。这些方法将返回一个文件对象或者一组文件对象。如果需要知道文件对象名时，可以调用getPath方法。例如：
 
 ```java
 String filename = chooser.getSelectedFile().getPath();
 ```
 
-在大多数情况下，这些过程比较简单。使用文件对话框的主要困难在于指定用户需要选择的文件子集。例如，假定用户应该选择GIF图像文件。后面的文件选择器就应该只显示扩展名为.gif的文件，并且，还应该为用户提供反馈信息来说明显示的特定文件类别，如“GIF图像”。然而，情况有可能会更加复杂。如果用户应该选择JPFG图像文件，扩展名就可以是.jpg或者jpeg。与重新编码实现这种复杂情况相比，文件选择器的设计者提供了一种更好的机制：若想限制显示的文件，需要创建一个实现了抽象类jaVax.swing.filechooser.FileFilter的对象。文件选择器将每个文件传递给文件过滤器，只有文件过滤器接受的文件才被最终显示出来。
+在大多数情况下，这些过程比较简单。使用文件对话框的主要困难在于指定用户需要选择的文件子集。例如，假定用户应该选择GIF图像文件。后面的文件选择器就应该只显示扩展名为.gif的文件，并且，还应该为用户提供反馈信息来说明显示的特定文件类别，如“GIF图像”。然而，情况有可能会更加复杂。如果用户应该选择JPFG图像文件，扩展名就可以是.jpg或者.jpeg。与重新编码实现这种复杂情况相比，文件选择器的设计者提供了一种更好的机制：若想限制显示的文件，需要创建一个实现了抽象类javax.swing.filechooser.FileFilter的对象。文件选择器将每个文件传递给文件过滤器，只有文件过滤器接受的文件才被最终显示出来。
 
 在编写本书的时候，有两个子类可用：可以接受所有文件的默认过滤器和可以接受给定扩展名的所有文件的过滤器。其实，设计专用文件过滤器非常简单，只要实现FileFilter超类中的两个方法即可：
 
@@ -2964,7 +2964,7 @@ Boolean isTraversable(File f);
 
 然后，调用setFileView方法将文件视图安装到文件选择器中。
 
-文件选择器为每个希望显示的文件或目录调用这些方法。如果方法返回的图标、名字或描述信息为 null, 那么文件选择器将会构造当前观感的默认文件视图。这样处理很好，其原因是这样只需处理具有不同显示的文件类型。
+文件选择器为每个希望显示的文件或目录调用这些方法。如果方法返回的图标、名字或描述信息为null, 那么文件选择器将会构造当前观感的默认文件视图。这样处理很好，其原因是这样只需处理具有不同显示的文件类型。
 
 文件选择器调用isTraversable方法来决定是否在用户点击一个目录的时候打开这个目录。请注意，这个方法返回一个Boolean对象，而不是boolean值。看起来似乎有点怪，但实际上很方便---如果需要使用默认的视图，则返回null。文件选择器将会使用默认的文件视图。换句话说，这个方法返回的Boolean对象能给出下面三种选择：真（Boolean.TRUE), 假(Boolean.FALSE)和不关心（null)。
 
@@ -2983,7 +2983,7 @@ class FilelconView extends FileView
     }
 	public Icon getIcon(File f)
 	{
-		if (If.isDirectory() && fiIter.accept(f))
+		if (If.isDirectory() && filter.accept(f))
 			return icon;
 		else
 			return null;
@@ -3016,7 +3016,7 @@ class ImagePreviewer extends JLabel
 	{
 		Imagelcon icon = new Imagelcon(f.getPath());
 		if(icon.getIconWidth() > getWidth())
-			icon = new Imagelcon(icon.getlmage().getScaledlnstance(getWidth(), -1 , Image.SCALEJEFAULT));
+			icon = new ImageIcon(icon.getlmage().getScaledlnstance(getWidth(), -1 , Image.SCALEJEFAULT));
 		setIcon(icon);
 		repaint();
 	}
@@ -3045,8 +3045,8 @@ chooser.addPropertyChangeListener(event -> {
 > package fileChooser;
 > import java.io.*;
 > import javax.swing.*;
-> import javax.swing.fi1echooser.*;
-> import javax.swing.fi1echooser.Fi1eFi1ter;
+> import javax.swing.filechooser.*;
+> import javax.swing.filechooser.FileFi1ter;
 > /**
 > * A frame that has a menu for loading an image and a display area for the
 > * loaded image.
@@ -3062,8 +3062,8 @@ chooser.addPropertyChangeListener(event -> {
 > 		setSize(DEFAULT_WIDTH, DEFAULTJEIGHT);
 > 		//set up menu bar
 > 		JNenuBar menuBar = new DMenuBar();
-> 		set]MenuBar(menuBar);
-> 		JMenu menu = new JMenuC'File");
+> 		setJMenuBar(menuBar);
+> 		JMenu menu = new JMenu("File");
 > 		menuBar.add(menu);
 > 		JMenuItem openltem = new JMenuItem("Open");
 > 		menu.add(openltem);
@@ -3079,8 +3079,8 @@ chooser.addPropertyChangeListener(event -> {
 > 				pack();
 > 			}
 > 		});
->         JMenuItem exitltem = new ]MenuItem("Exit");
->         menu.add(exitltem);
+>         	JMenuItem exitltem = new JMenuItem("Exit");
+>         	menu.add(exitltem);
 > 
 > 		exitltem.addActionListener(event -> System,exit(0));
 > 		// use a label to display the images
@@ -3091,7 +3091,7 @@ chooser.addPropertyChangeListener(event -> {
 > 		// accept all image files ending with .jpg, .jpeg, .gif
 > 		FileFilter filter = new FileNameExtensionFilter(
 > "Image files", "jpg", "jpeg", "gif");
-> 		chooser,setFileFilter(fiIter);
+> 		chooser.setFileFilter(filter);
 > 		chooser.setAccessory(new ImagePreviewer(chooser));
 > 		chooser.setFileView(new FileIconView(filter, new Imagelcon("palette.gif")));
 > 	}
@@ -3114,7 +3114,7 @@ chooser.addPropertyChangeListener(event -> {
 > 	* Qparam chooser the file chooser whose property changes trigger an image
 > 	* change in this previewer
 > 	*/
-> 	public ImagePreviewer(JFi1eChooser chooser)
+> 	public ImagePreviewer(JFileChooser chooser)
 > 	{
 > 		setPreferredSize(new Dimension(100, 100));
 > 		setBorder(BorderFactory.createEtchedBorder());
@@ -3129,7 +3129,7 @@ chooser.addPropertyChangeListener(event -> {
 > 					return;
 > 				}
 > 				// read the image into an icon
-> 				Imagelcon icon = new Imagelcon(f.getPath());
+> 				ImageIcon icon = new ImageIcon(f.getPath());
 > 				// if the icon is too large to fit, scale it
 > 				if (icon.getlconWidth() > getWidth())
 > 					icon = new Imagelcon(icon.getlmage().getScaledlnstance( getWidth(), -1 , Image.SCALEJEFAULT));
@@ -3147,7 +3147,7 @@ chooser.addPropertyChangeListener(event -> {
 > import java.io.*;
 > import javax.swing.*;
 > import javax.swing.filechooser.*;
-> import javax.swing.fi1echooser.FileFiIter;
+> import javax.swing.filechooser.FileFiIter;
 > /**
 > * A file view that displays an icon for all files that match a file filter.
 > */
@@ -3193,7 +3193,7 @@ chooser.addPropertyChangeListener(event -> {
 > File[] getSelectedFi1es(); //获取用户选择的一个文件或多个文件（如果用户没有选择文件，返回 null)。
 > void setmeFilter(FileFilter filter); //设置文件对话框的文件过滤器。所有让 filteraccqrt 返回 true 的文件都会被显示，并且 将过滤器添加到可选过滤器列表中。
 > void addChoosableFileFilter(FileFilter filter); //将文件过滤器添加到可选过滤器列表中。 
-> void setAcceptAl1FileFilterUsed(boo1ean b); //在过滤器组合框中包括或者取消 All files 过滤器。
+> void setAcceptAl1FileFilterUsed(boolean b); //在过滤器组合框中包括或者取消 All files 过滤器。
 > void resetChoosableFi1eFilters(); //清除可选过滤器列表。除非 All files 过滤器被显式地清除，否则它仍然会存在。
 > void setFileView(FileView view); //设置一个文件视图来提供文件选择器显示信息。
 > void setAccessory(JComponent component); //设置一个附件组件。
@@ -3209,7 +3209,7 @@ chooser.addPropertyChangeListener(event -> {
 > javax.swing.filechooser.FileNameExtensionFiler
 >
 > ```java
-> Fi1eNameExtensionFilter(String description, String ... extensions); //利用给定的描述构造一个文件过滤器。这些描述限定了被接受的所有目录和文件其名 称结尾的句点之后所包含的扩展字符串。
+> FileNameExtensionFilter(String description, String ... extensions); //利用给定的描述构造一个文件过滤器。这些描述限定了被接受的所有目录和文件其名 称结尾的句点之后所包含的扩展字符串。
 > ```
 
 > javax.swing.filechooser.FileView 1.2 
