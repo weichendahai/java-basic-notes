@@ -1,4 +1,4 @@
-Java基础知识笔记-9-图形程序设计
+Java基础知识笔记-11_1-图形程序设计
 
 ## 1 Swing概述
 现在，Swing是不对等基于GUI工具箱的正式名字。它已是Java基础类库(Java Foundation Class, JFC)的一部分。完整的JFC十分庞大，其中包含的内容远远大于Swing GUI工具箱。

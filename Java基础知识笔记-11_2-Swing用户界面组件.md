@@ -1,4 +1,4 @@
-Java基础知识笔记-11-Swing用户界面组件
+Java基础知识笔记-11_2-Swing用户界面组件
 > *这章教程两个版本，一个语法是非lambda表达式版本，另一个是lambda表达式版本*
 
 > # 非lambda表达式版本
@@ -2576,7 +2576,7 @@ ok.addActionListener(event -> setVisible(false));
 > 		super(owner,"About DialogTest", true);
 > 		// add HTML label to center
 > 		add(
-> 			new JLabel( "<html><hl><i>Core Java</i></h1><hr>By Cay Horstmann</html>"), Borde rLayout.CENTER);
+> 			new JLabel( "<html><hl><i>Core Java</i></h1><hr>By Cay Horstmann</html>"), BorderLayout.CENTER);
 > 		// OK button closes the dialog
 > 
 > 		JButton ok = new JButton("OK");
@@ -2699,7 +2699,7 @@ dialog.getRootPane().setDefaultButton(okButton);
 > 		fileMenu.add(connectltem);
 > 		// The Exit item exits the program
 > 		JMenuItem exitltem = new JMenuItem("Exit");
-> 		exitltem.addActionListener(event -> System,exit(0));
+> 		exitltem.addActionListener(event -> System.exit(0));
 > 		fileMenu.add(exitltem);
 > 		textArea = new JTextArea(TEXT_R0WS, TEXT_C0LUMNS);
 > 		add(new JScrollPane(textArea), BorderLayout.CENTER);
@@ -2977,10 +2977,10 @@ class FilelconView extends FileView
 	private Icon icon;
 
 	public FileIconView(FileFilter aFilter, Icon anlcon)
-    {
-    	filter = aFilter;
-    	icon = anlcon;
-    }
+	{
+		filter = aFilter;
+		icon = anlcon;
+	}
 	public Icon getIcon(File f)
 	{
 		if (If.isDirectory() && filter.accept(f))
@@ -3029,9 +3029,9 @@ class ImagePreviewer extends JLabel
 chooser.addPropertyChangeListener(event -> {
 	if (event.getPropertyName() == JFileChooser.SELECTED_FILE_CHANCED_PROPERTY)
 	{
-	File newFile = (File) event.getNewValue();
-	// update the accessory
-	...
+		File newFile = (File) event.getNewValue();
+		// update the accessory
+		...
 	}
 })；
 ```
@@ -3046,7 +3046,7 @@ chooser.addPropertyChangeListener(event -> {
 > import java.io.*;
 > import javax.swing.*;
 > import javax.swing.filechooser.*;
-> import javax.swing.filechooser.FileFi1ter;
+> import javax.swing.filechooser.FileFilter;
 > /**
 > * A frame that has a menu for loading an image and a display area for the
 > * loaded image.
@@ -3072,7 +3072,7 @@ chooser.addPropertyChangeListener(event -> {
 > 			// show file chooser dialog
 > 			int result = chooser.showOpenDialog(ImageViewerFrame.this);
 > 			// if image file accepted, set it as icon of the label
-> 			if (result == ]FileChooser.APPR0VE_0PTI0N)
+> 			if (result == JFileChooser.APPR0VE_0PTI0N)
 > 			{
 > 				String name = chooser.getSelectedPile().getPath();
 > 				label.setIcon(new Imagelcon(name));
@@ -3111,7 +3111,7 @@ chooser.addPropertyChangeListener(event -> {
 > {
 > 	/**
 > 	* Constructs an ImagePreviewer.
-> 	* Qparam chooser the file chooser whose property changes trigger an image
+> 	* @param chooser the file chooser whose property changes trigger an image
 > 	* change in this previewer
 > 	*/
 > 	public ImagePreviewer(JFileChooser chooser)
@@ -3119,7 +3119,7 @@ chooser.addPropertyChangeListener(event -> {
 > 		setPreferredSize(new Dimension(100, 100));
 > 		setBorder(BorderFactory.createEtchedBorder());
 > 		chooser.addPropertyChangeListener(event -> {
-> 			if (event.getPropertyName() == JFi1eChooser.SELECTED_FILE_CHANGED_PROPERTY)
+> 			if (event.getPropertyName() == JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)
 > 			{
 > 				// the user has selected a new file
 > 				File f = (File) event.getNewValue();
@@ -3180,12 +3180,12 @@ chooser.addPropertyChangeListener(event -> {
 > javax.swing.JFileChooser 1.2
 >
 > ```java
-> JFi1eChooser(); //创建一个可用于多框架的文件选择器对话框。
+> JFileChooser(); //创建一个可用于多框架的文件选择器对话框。
 > void setCurrentDirectory(File dir); //设置文件对话框的初始目录。
 > void setSelectedFile(File file)
 > void setSelectedFiles(File[] file); //设置文件对话框的默认文件选择。
 > void setMultiSelectionEnabled(boolean b); //设置或清除多选模式。
-> void setFi1eSelectionMode(int mode); //设置用户选择模式，只可以选择文件（默认)，只可以选择目录，或者文件和目录均可以选择。mode参数的取值可以是JFileChooser.FILES_ONLY、JFileChooser.DIRECTORIES_ONLY和JFileChooser.FILES_AND_DIRECTORIES 之一。
+> void setFileSelectionMode(int mode); //设置用户选择模式，只可以选择文件（默认)，只可以选择目录，或者文件和目录均可以选择。mode参数的取值可以是JFileChooser.FILES_ONLY、JFileChooser.DIRECTORIES_ONLY和JFileChooser.FILES_AND_DIRECTORIES 之一。
 > int showOpenDialog(Component parent)
 > int showSaveDialog(Component parent)
 > int showDialog(Component parent, String approveButtonText); //显 示 按 钮 标 签 为 Open， Save或者approveButtonText字符串的对话框，并返回APPROVE_ OPTION、CANCEL_OPTION (如果用户选择取消按钮或者离开了对话框) 或者ERROR_OPTION (如果发生错误)。 
