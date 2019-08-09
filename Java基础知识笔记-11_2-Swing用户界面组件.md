@@ -2108,11 +2108,11 @@ showInputDialog: 显示一条消息并获得用户输入的一行文本
 左侧的图标将由下面5种消息类型决定：
 
 ```
-ERROR_MESSACE
-INFORMATION_MESSACE
-WARNINC_MESSACE
-QUESTION_MESSACE
-PLAIN_MESSACE
+ERROR_MESSAGE
+INFORMATION_MESSAGE
+WARNINC_MESSAGE
+QUESTION_MESSAGE
+PLAIN_MESSAGE
 ```
 
 PLAIN_MESSAGE类型没有图标。每个对话框类型都有一个方法，可以用来提供自己的图标，以替代原来的图标。
@@ -2134,7 +2134,7 @@ Object[]: 显示数组中的所有对象，依次叠加
 位于底部的按钮取决于对话框类型和选项类型。当调用showMessageDialog和showInputDialog时，只能看到一组标准按钮（分别是OK/Cancel)。当调用showConfirmDialog时，可以选择下面四种选项类型之一：
 
 ```
-DEFAULLOPTI0N
+DEFAUL_OPTI0N
 YES_NO_OPTION
 YES_N0_CANCEL_OPTI0N
 OK_CANCEL_OPTION
@@ -2179,7 +2179,7 @@ CLOSED_OPTION
 -  6 ) 对于输入对话框，选择文本框或者组合框。
 -  7 ) 调用JOptionPane API中的相应方法。
 
-例如， 假设需要显示一个图12-36的对话框。这个对话框显示了一条消息，并请求用户确认或者取消。这是一个确认对话框。图标是警告图标，消息是字符串，选项类型是OK_ CANCEL_OPTION。调用如下：
+例如， 假设需要显示一个图12-36的对话框。这个对话框显示了一条消息，并请求用户确认或者取消。这是一个确认对话框。图标是警告图标，消息是字符串，选项类型是OK_CANCEL_OPTION。调用如下：
 
 ```java
 int selection = JOptionPane.showConfirfnDialog(parent, "Message", "Title", JOptionPane.OK_CANCEL_OPTI0N, JOptionPane.QUESTION_MESSACE);
@@ -2866,7 +2866,7 @@ JFileChooser chooser = new JFileChooser();
 - 2 ) 调用setCurrentDirectory方法设置当前目录。例如，使用当前的工作目录：
 
 ```java
-chooser.setCurrentDirectory(new File(".");
+chooser.setCurrentDirectory(new File("."));
 ```
 需要提供一个File对象。File对象将在卷II的第2章中详细地介绍。这里只需要知道构造器File (String fileName) 能够将一个文件或目录名转化为一个File对象即可。
 
@@ -2994,11 +2994,11 @@ class FilelconView extends FileView
 可以调用setFileView方法将这个文件视图安装到文件选择器中：
 
 ```java
-chooser.setFileView(new FilelconView(filter, new Iaagelco("palette.gif")));
+chooser.setFileView(new FilelconView(filter, new ImageIcon("palette.gif")));
 ```
 文件选择器会在通过filter的所有文件旁边显示调色板图标，并且使用默认的文件视图来显示所有其他的文件。很自然，我们可以使用与文件选择器设定的一样的过滤器。
 
-> 提示：可以在JDK的demo/jfc/FileChooserDemo目录下找到更实用的ExampleFileView 类。它可以将图标和描述信息与任意扩展名关联起来。
+> 提示：可以在JDK的demo/jfc/FileChooserDemo目录下找到更实用的ExampleFileView类。它可以将图标和描述信息与任意扩展名关联起来。
 
 最后，可以通过添加一个附件组件来定制文件对话框。例如，图12*41在文件列表旁边显示了一个预览附件。这个附件显示了当前选择文件的缩略视图。
 
@@ -3190,10 +3190,10 @@ chooser.addPropertyChangeListener(event -> {
 > int showSaveDialog(Component parent)
 > int showDialog(Component parent, String approveButtonText); //显 示 按 钮 标 签 为 Open， Save或者approveButtonText字符串的对话框，并返回APPROVE_ OPTION、CANCEL_OPTION (如果用户选择取消按钮或者离开了对话框) 或者ERROR_OPTION (如果发生错误)。 
 > File getSelectedFile()
-> File[] getSelectedFi1es(); //获取用户选择的一个文件或多个文件（如果用户没有选择文件，返回 null)。
+> File[] getSelectedFiles(); //获取用户选择的一个文件或多个文件（如果用户没有选择文件，返回 null)。
 > void setmeFilter(FileFilter filter); //设置文件对话框的文件过滤器。所有让 filteraccqrt 返回 true 的文件都会被显示，并且 将过滤器添加到可选过滤器列表中。
 > void addChoosableFileFilter(FileFilter filter); //将文件过滤器添加到可选过滤器列表中。 
-> void setAcceptAl1FileFilterUsed(boolean b); //在过滤器组合框中包括或者取消 All files 过滤器。
+> void setAcceptAllFileFilterUsed(boolean b); //在过滤器组合框中包括或者取消 All files 过滤器。
 > void resetChoosableFi1eFilters(); //清除可选过滤器列表。除非 All files 过滤器被显式地清除，否则它仍然会存在。
 > void setFileView(FileView view); //设置一个文件视图来提供文件选择器显示信息。
 > void setAccessory(JComponent component); //设置一个附件组件。
