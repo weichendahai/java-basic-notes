@@ -2,7 +2,9 @@ Java基础知识笔记-6-继承
 
 # 6 继承
 继承是一种由已创建的类创建新类的机制，利用继承，我们先创建一个共有属性的一般类，根据一般类再创建具有特殊属性的新类，新类继承一般类的状态和行为，并根据需要增加他自己新的状态和行为，由继承得到的类称为子类，被继承的称为父类。  
+
 **Java中，一个子类只能继承一个父类，不支持多重继承；**
+
 ## 1 继承的基本语法
 格式如下：
 ```java
@@ -10,8 +12,7 @@ class Student extends People{
 	...
 }
 ```
-关键字extends表明正在构造的新类派生于一个已存在的类。已存在的类称为超类(superclass)、基类(base class)或父类(parent class);新类称为子类( subclass)、派生类(derived class)或孩子类(child class)。超类和子类是Java程序员最常用的两个术语，而了解其他语言的程序员可能更加偏爱使用父类和孩子类，这些都是继承时使用的术语。
-**一个子类继承的成员变量应当是这个类的完全成员。**
+关键字extends表明正在构造的新类派生于一个已存在的类。已存在的类称为超类(superclass)、基类(base class)或父类(parent class);新类称为子类( subclass)、派生类(derived class)或孩子类(child class)。超类和子类是Java程序员最常用的两个术语，而了解其他语言的程序员可能更加偏爱使用父类和孩子类，这些都是继承时使用的术语。**一个子类继承的成员变量应当是这个类的完全成员。**
 ### 子类和父类在同一包中的继承性
 子类继承父类中protected和public默认访问级别的成员变量和方法作为继承；
 ### 子类和父类不在同一包中的继承
@@ -48,10 +49,10 @@ public class Base{
 例如:
 ```java
 public Base{
-	public static void method(){
+	public static void method() {
 	}
 }
-public class Sub extends Base{
+public class Sub extends Base {
 	public void method(){
 	}
 }
@@ -70,9 +71,10 @@ public abstract class Base{
 	abstract void method2();
 }
 public abstract class Sub extends Base{
-	public void method1(){
+	public void method1() {
 	}//实现method1方法，并且扩大访问权限
-	public abstract void method2();//重新申明method2方法，仅仅扩大访问权限，但不实现
+}
+public abstract void method2();//重新申明method2方法，仅仅扩大访问权限，但不实现
 ```
 #### 10.父类的非抽象方法可以被覆盖为抽象方法。
 例如：
@@ -80,6 +82,7 @@ public abstract class Sub extends Base{
 public class Base{
 	void method(){
 	}
+}
 public abstract class Sub extends Base{
 	public abstract void method();
 }//合法
@@ -89,14 +92,17 @@ public abstract class Sub extends Base{
 ### 1.重写的语法规则
 
 如果子类可以继承父类的某个实例方法，那么子类就有权利重写这个方法。
+
 方法重写是指：
+
 **子类中定义一个方法，这个方法的类型和父类的方法的类型一致或者是父类的方法的类型的子类型（所谓子类型是指，如果父类的方法的类型是“类”，那么允许子类的重写方法的类型是“子类”）一致，并且这个方法的名字，参数个数，参数的类型和父类的方法完全相同。**
+
 子类如此定义的方法称作子类重写的方法。
 
 
 ### 2.重写的目的
 
- *子类通过方法的重写可以隐藏继承的方法，子类通过方法的重写可以把父类的状态和行为改变为自身的状态和行为。*
+*子类通过方法的重写可以隐藏继承的方法，子类通过方法的重写可以把父类的状态和行为改变为自身的状态和行为。*
 
 *如果父类的方法`f()`可以被子类继承，子类就有权利重写f()，一旦子类重写了父类的方法f()，就隐藏了继承的方法f()，那么子类对象调用方法f()一定是调用的重写方法f()；如果子类没有重写，而是继承了父类的方法f()，那么子类创建的对象当然可以调用f()方法，只不过方法f()产生的行为和父类的相同而已。*
 
@@ -138,7 +144,7 @@ public class exercise{
 ```
 例：
 ```java
-class A{
+class A {
 	float computer(float x,floaty){
 		return x+y;
 	}
@@ -164,7 +170,7 @@ public class exercise{
 ```
 但是如果子类重写方法时如下就会出现错误：
 ```java
-double computer(float x,float y){
+double computer(float x,float y) {
 	return x*y;
 }
 ```
@@ -173,7 +179,7 @@ double computer(float x,float y){
 ---
 ## 5 super关键字
 
-## 5.1用super操作被隐藏的的成员变量和方法
+## 5.1 用super操作被隐藏的的成员变量和方法
 
 在以下场合会出现方法或者变量被屏蔽的情况：
 - 在一个方法内，当局部变量和类的成员变量同名，或者局部变量和父类的成员变量同名时，按照变量的作用域规则，只有局部变量在方法内可见。
@@ -256,7 +262,8 @@ super();
 例如：
 ```java
 class Student{
-	int number;String name;
+	int number;
+	String name;
 	Student(){
 	}
 	Student(int number,String name) {
@@ -278,6 +285,7 @@ public class exercise {
 		UniverStudent zhang=new UniverStudent(9901,"何晓玲",false);
 	}
 }
+
 ```
 如果在类里定义了一个或多个构造方法，那么Java不提供默认的构造方法（不带参数的构造方法），因此，当我们在父类中定义多个构造方法时，应当包括一个不带任何参数的构造方法（如上面代码中的Student类），以防出现省略super时出现错误。
 
@@ -344,9 +352,13 @@ graph LR
 上传型对象操作子类继承的方法或子类重写的实例方法，其作用等价于子类对象去调用这些方法。因此，如果子类重写了父类的某个实例方法后，当对象的上传型对象调用这个实例方法时一定调用了子类重写的实例方法。
 
 注意：
-1.不要将父类创建的对象和子类对象的上传型对象混淆。  
+
+1.不要将父类创建的对象和子类对象的上传型对象混淆。 
+
 2.可以将对象的上传型对象在强制转换到一个子类对象，这时，该子类对象又具备了子类所有属性和功能。  
+
 3.不能将父类创建的对象的引用赋值给子类声明的对象  
+
 ```java
 class leirenyuan{//类人猿
 	void crySpeak(String s){
@@ -450,7 +462,9 @@ public class exercise{
 > 面向抽象编程
 
 在设计一个系统时，可以通过abstract类中声明若干个abstract方法，表明这些方法在整个系统设计中的重要性，方法体的内容细节由它的非abstract子类去完成。  
+
 例如:
+
 ```java
 abstract class Geometry{
 	public abstract double getArea();
@@ -506,7 +520,7 @@ public class exercise{
 	}
 }
 ```
-关于抽象类和final参见笔记 Java基础知识笔记-5-Java语言中的修饰符
+关于抽象类和final参见笔记Java基础知识笔记-5-Java语言中的修饰符
 
 > 继承的利弊和使用原则
 
@@ -515,20 +529,23 @@ public class exercise{
 - 继承关系最大的弱点：打破封装
 - 精心设计专门用于被继承的类
 - 区分对象的属性与继承
+
 ## 8 Object类
+
 Object类是Java中所有类的始祖，在Java中每个类都是由它扩展而来的。但是并不需要这样写：
+
 ```java
-public class Employee extends Object
+public class Employee extends Object;
 ```
-如果没有明确地指出超类，Object就被认为是这个类的超类。由于在Java中，每个类都是由Object类扩展而来的，所以，熟悉这个类提供的所有服务十分重要。本章将介绍一些基本的内容，没有提到的部分请参看后面的章节或在线文档（在Object 中有几个只在处理线程才会被调用的方法，有关线程内容请参见第14章)。
+如果没有明确地指出超类，Object就被认为是这个类的超类。由于在Java中，每个类都是由Object类扩展而来的，所以，熟悉这个类提供的所有服务十分重要。本章将介绍一些基本的内容，没有提到的部分请参看后面的章节或在线文档（在Object中有几个只在处理线程才会被调用的方法，有关线程内容请参见第14章)。
 
 可以使用Object类型的变量引用任何类型的对象：
 ```java
-Object obj = new EmployeeC'Harry Hacker", 35000) ;
+Object obj = new Employee("Harry Hacker", 35000);
 ```
 当然，Object类型的变量只能用于作为各种值的通用持有者。要想对其中的内容进行具体的操作，还需要清楚对象的原始类型，并进行相应的类型转换：
 ```java
-Employee e = (Employee) obj ;
+Employee e = (Employee) obj;
 ```
 **在Java中，只有基本类型(primitive types)不是对象，例如，数值、字符和布尔类型的值都不是对象。**
 

@@ -38,15 +38,15 @@ Java基础知识笔记-7-异常，断言和日志
 4. 代码错误
 程序方法有可能无法正确执行。例如，方法可能返回了一个错误的答案，或者错误地调用了其他的方法。计算的数组索引不合法，试图在散列表中查找一个不存在的记录，或者试图让一个空找执行弹出操作，这些都属于代码错误。 
 
-对于方法中的一个错误，传统的做法是返回一个特殊的错误码， 由调用方法分析。例如，对于一个从文件中读取信息的方法来说，返回值通常不是标准字符，而是一个-1, 表示文件结束。这种处理方式对于很多异常状况都是可行的。还有一种表示错误状况的常用返回值是null引用。
+对于方法中的一个错误，传统的做法是返回一个特殊的错误码，由调用方法分析。例如，对于一个从文件中读取信息的方法来说，返回值通常不是标准字符，而是一个-1, 表示文件结束。这种处理方式对于很多异常状况都是可行的。还有一种表示错误状况的常用返回值是null引用。
 
-遗憾的是，并不是在任何情况下都能够返回一个错误码。有可能无法明确地将有效数据与无效数据加以区分。一个返回整型的方法就不能简单地通过返回-1表示错误，因为-1很可能是一个完全合法的结果。 正如第5章中所叙述的那样，在Java中，如果某个方法不能够采用正常的途径完整它的 任务，就可以通过另外一个路径退出方法。在这种情况下，方法并不返回任何值， 而是抛出(throw) 一个封装了错误信息的对象。需要注意的是，这个方法将会立刻退出，并不返回任何值。此外，调用这个方法的代码也将无法继续执行，取而代之的是，异常处理机制开始搜索能够处理这种异常状况的异常处理器 (exception handler)。 异常具有自己的语法和特定的继承结构。下面首先介绍一下语法， 然后再给出有效地使用这种语言功能的技巧。
+遗憾的是，并不是在任何情况下都能够返回一个错误码。有可能无法明确地将有效数据与无效数据加以区分。一个返回整型的方法就不能简单地通过返回-1表示错误，因为-1很可能是一个完全合法的结果。 正如第5章中所叙述的那样，在Java中，如果某个方法不能够采用正常的途径完整它的 任务，就可以通过另外一个路径退出方法。在这种情况下，方法并不返回任何值， 而是抛出(throw) 一个封装了错误信息的对象。需要注意的是，这个方法将会立刻退出，并不返回任何值。此外，调用这个方法的代码也将无法继续执行，取而代之的是，异常处理机制开始搜索能够处理这种异常状况的异常处理器 (exception handler)。 异常具有自己的语法和特定的继承结构。下面首先介绍一下语法，然后再给出有效地使用这种语言功能的技巧。
 
 ### 1.1 异常分类
 
 在Java程序设计语言中，异常对象都是派生于Throwable类的一个实例。稍后还可以看到，如果Java中内置的异常类不能够满足需求，用户可以创建自己的异常类。
 
-图 7-1 是 Java 异常层次结构的一个简化示意图。
+图 7-1 是Java异常层次结构的一个简化示意图。
 
 ```
 		Throwable
@@ -144,7 +144,7 @@ class MyAnimation {
 
 > 警告：如果在子类中覆盖了超类的一个方法，子类方法中声明的受查异常不能比超类方法中声明的异常更通用（也就是说，子类方法中可以抛出更特定的异常，或者根本不抛 出任何异常）特别需要说明的是，如果超类方法没有抛出任何受查异常，子类也不能抛出任何受查异常。例如，如果覆盖JComponent.paintComponent方法，由于超类中这个方法没有抛出任何异常，所以，自定义的paintComponent也不能抛出任何受查异常。 
 
-如果类中的一个方法声明将会抛出一个异常，而这个异常是某个特定类的实例时，则这个方法就有可能抛出一个这个类的异常，或者这个类的任意一个子类的异常。例如，FilelnputStream构造器声明将有可能抛出一个IOExcetion异常，然而并不知道具体是哪种 IOException异常。它既可能是IOException异常，也可能是其子类的异常，例如， FileNotFoundException
+如果类中的一个方法声明将会抛出一个异常，而这个异常是某个特定类的实例时，则这个方法就有可能抛出一个这个类的异常，或者这个类的任意一个子类的异常。例如，FilelnputStream构造器声明将有可能抛出一个IOExcetion异常，然而并不知道具体是哪种IOException异常。它既可能是IOException异常，也可能是其子类的异常，例如， FileNotFoundException
 
 ### 1.3 如何抛出异常
 
@@ -211,8 +211,7 @@ throw new EOFException(gripe);
 class FileFormatException extends IOException
 {
 	public FileFormatException() {}
-	public FileFormatException(String gripe)
-	{
+	public FileFormatException(String gripe) {
 		super(gripe);
 	}
 } 
@@ -221,10 +220,8 @@ class FileFormatException extends IOException
 现在，就可以抛出自己定义的异常类型了。
 
 ```java
-String readData(BufferedReader in) throws FileFormatException
-{
-	while (...)
-	{
+String readData(BufferedReader in) throws FileFormatException {
+	while (...) {
 		if (ch == -1 ) // EOF encountered
 		{
 			if (n < len) 
@@ -247,7 +244,7 @@ String getMessage();  //获得Throwabie对象的详细描述信息
 到目前为止，已经知道如何抛出一个异常。这个过程十分容易。只要将其抛出就不用理踩了。当然，有些代码必须捕获异常。捕获异常需要进行周密的计划。这正是下面几节要介 绍的内容。
 
 ### 2.1 捕获异常
-如果某个异常发生的时候没有在任何地方进行捕获，那程序就会终止执行，并在控制台上打印出异常信息，其中包括异常的类型和堆栈的内容。对于图形界面程序（applet和应用 程序)，在捕获异常之后，也会打印出堆桟的信息，但程序将返回到用户界面的处理循环中 (在调试GUI程序时， 最好保证控制台窗口可见，并且没有被最小化)。
+如果某个异常发生的时候没有在任何地方进行捕获，那程序就会终止执行，并在控制台上打印出异常信息，其中包括异常的类型和堆栈的内容。对于图形界面程序（applet和应用程序)，在捕获异常之后，也会打印出堆桟的信息，但程序将返回到用户界面的处理循环中 (在调试GUI程序时， 最好保证控制台窗口可见，并且没有被最小化)。
 
 要想捕获一个异常，必须设置try/catch语句块。最简单的try语句块如下所示：
 
@@ -318,26 +315,22 @@ public void read(String filename) throws IOException
 
 仔细阅读一下Java API文档，以便知道每个方法可能会抛出哪种异常，然后再决定是自己处理，还是添加到throws列表中。对于后一种情况，也不必犹豫。将异常直接交给能够胜 任的处理器进行处理要比压制对它的处理更好。
 
-同时请记住，这个规则也有一个例外。前面曾经提到过：如果编写一个覆盖超类的方法， 而这个方法又没有抛出异常（如JComponent中的paintComponent), 那么这个方法就必须捕获方法代码中出现的每一个受查异常。不允许在子类的throws说明符中出现超过超类方法所 列出的异常类范围。
+同时请记住，这个规则也有一个例外。前面曾经提到过：如果编写一个覆盖超类的方法，而这个方法又没有抛出异常（如JComponent中的paintComponent), 那么这个方法就必须捕获方法代码中出现的每一个受查异常。不允许在子类的throws说明符中出现超过超类方法所 列出的异常类范围。
 
 ### 2.2 捕获多个异常
 在一个try语句块中可以捕获多个异常类型，并对不同类型的异常做出不同的处理。可以按照下列方式为每个异常类型使用一个单独的catch子句： 
 
 ```java
-try
-{
+try {
 	code that might throw exceptions
 }
-catch (FileNotFoundException e)
-{
+catch (FileNotFoundException e) {
 	emergency action for missing files
 }
-catch (UnknownHostException e)
-{
+catch (UnknownHostException e) {
 	emergency action for unknown hosts
 }
-catch (IOException e)
-{
+catch (IOException e) {
 	emergency action for allother I/Oproblems
 }
 ```
@@ -351,24 +344,21 @@ e.getHessage()
 得到详细的错误信息（如果有的话)，或者使用
 
 ```
-e.getClassO.getName()
+e.getClass().getName()
 ```
 
 得到异常对象的实际类型。
 
-在 Java SE 7中，同一个catch子句中可以捕获多个异常类型。例如，假设对应缺少文件和未知主机异常的动作是一样的，就可以合并catch子句：
+在Java SE 7中，同一个catch子句中可以捕获多个异常类型。例如，假设对应缺少文件和未知主机异常的动作是一样的，就可以合并catch子句：
 
 ```java
-try
-{
+try {
 	code that might throw exceptions
 }
-catch (FileNotFoundException|UnknownHostException e)
-{
+catch (FileNotFoundException|UnknownHostException e) {
 	emergency action for missing filesand unknown hosts
 }
-catch (IOException e)
-{
+catch (IOException e) {
 	emergency action for all other I/O problems
 } 
 ```
@@ -395,20 +385,17 @@ Java有一种更好的解决方案，这就是finally子句。下面将介绍Jav
 
 ```java
 InputStream in = new FileInputStream(...); 
-try
-{
+try {
 	//1
 	code that might throwexceptions
 	//2
 }
-catch (IOException e)
-{
+catch (IOException e) {
 	// 3
 	show error message 
 	// 4 
 }
-finally
-{
+finally {
 	// 5
 	in.close();
 }
@@ -426,12 +413,10 @@ try语句可以只有finally子句，而没有catch子句。例如，下面这�
 
 ```java
 InputStream in = ...;
-try
-{
+try {
 	code that might throw exceptions
 }
-finally
-{
+finally {
 	in.close();
 } 
 ```
@@ -443,59 +428,50 @@ finally
 下面的提示将给出具体的解释。
 
 
-> 提示： 这里， 强烈建议解搞合try/catch和try/finally语句块。这样可以提高代码的清晰度。例如：
+> 提示： 这里，强烈建议解搞合try/catch和try/finally语句块。这样可以提高代码的清晰度。例如：
 >
 > ```java
 > InputStrean in = ...;
-> try
-> {
-> 	try
-> 	{
+> try {
+> 	try {
 > 		code that might throw exceptions
 > 	}
-> 	finally
-> 	{
+> 	finally {
 > 		in.close();
 > 	}
 > }
-> catch (IOException e)
-> {
+> catch (IOException e) {
 > 	show error message
 > }
 > ```
->
+> 
 > 内层的try语句块只有一个职责，就是确保关闭输入流。外层的try语句块也只有一个职责，就是确保报告出现的错误。这种设计方式不仅清楚，而且还具有一个功能，就是将会报告finally子句中出现的错误。
 
 > 警告：当finally子句包含return语句时，将会出现一种意想不到的结果„ 假设利用return语句从try语句块中退出。在方法返回前，finally子句的内容将被执行。如果finally子句中也有一个return语句，这个返回值将会覆盖原始的返回值。请看一个复杂的例子：
 >
 > ```java
-> public static int f(int n)
-> {
-> 	try
-> 	{
+> public static int f(int n) {
+> 	try {
 > 		int r = n * n;
 > 		return r;
 > 	}
-> 	finally
-> 	{
+> 	finally {
 > 		if (n = 2)
 > 			return 0;
 > 	}
 > } 
 > ```
->
+> 
 > 如果调用f(2), 那么try语句块的计算结果为r=4,并执行return语句然而，在方法真正返回前，还要执行finally子句。finally子句将使得方法返回0, 这个返回值覆盖了原 始的返回值4。
 
 有时候，finally子句也会带来麻烦。例如，清理资源的方法也有可能抛出异常。假设希望能够确保在流处理代码中遇到异常时将流关闭。
 
 ```java
 InputStreai in = ...;
-try
-{
+try {
 	code that might throw exceptions
 }
-finally
-{
+finally {
 	in.close();
 }
 ```
@@ -507,32 +483,23 @@ finally
 ```java
 InputStream in = ...;
 Exception ex = null;
-try
-{
-	try
-	{
+try {
+	try {
 		code that might throw exceptions
-	}
-	catch (Exception e)
-	{
+	} catch (Exception e) {
 		ex=e;
 		throw e;
 	}
 }
-finally
-{
-	try
-	{
+finally {
+	try {
 		in.close()；
-	}
-	catch (Exception e)
-	{
+	} catch (Exception e) {
 		if (ex = null)
 			throw e;
 	}
 }
 ```
-
 
 幸运的是，下一节你将了解到，Java SE 7中关闭资源的处理会容易得多。
 
