@@ -4,9 +4,7 @@ Java基础知识笔记-4-类对象和方法
 
 ## 1 类的基础知识
 类是定义对象形式的模板，指定了数据，以及操作数据代码，java使用类的规范来构造对象，而对象是类的实例。因此，类实质上是一系列指定如何构建对象的计划，类是逻辑抽象结构，搞清楚这个问题非常重要，直到类的对象被创建时，内存中才会有类的物理表示。
-> 顶层类是指不是嵌套类的类
-
-> 嵌套类是指其声明出现在其他类体或接口体中的类
+> 顶层类是指不是嵌套类的类，嵌套类是指其声明出现在其他类体或接口体中的类
 
 **组成类的方法和变量被称为类的成员。数据成员也被称为实例变量**
 ### 1.1 类的基本形式
@@ -21,7 +19,7 @@ class A {
 	a=5;
 }
 ```
-> 成员变量又分为实例变量和类变量，在声明成员变量时，用关键字static修饰的称作类变量（也被称为静态变量）将在第八节详细讲到
+> 成员变量又分为实例变量和类变量，在声明成员变量时，用关键字static修饰的称作类变量（也被称为静态变量）
 
 #### 2.方法的定义
 实例代码：
@@ -41,28 +39,31 @@ Class Lader{
 ## 2 如何创建对象
 
 要想使用OOP, —定要清楚对象的三个主要特性：
-- 对象的行为（behavior)—可以对对象施加哪些操作，或可以对对象施加哪些方法？
-- 对象的状态（state )—当施加那些方法时，对象如何响应？
-- 对象标识（identity )—如何辨别具有相同行为与状态的不同对象？
+- 对象的行为（behavior）---可以对对象施加哪些操作，或可以对对象施加哪些方法？
+- 对象的状态（state）---当施加那些方法时，对象如何响应？
+- 对象标识（identity）---如何辨别具有相同行为与状态的不同对象？
 
 有四种显式创建对象的方式：
 - 用new语句创建对象，这是最常用的创建对象的方式。
-- 运用反射手段，调用java.lang.Class或者java.lang.reflect.Constructor类的newInstance()实例方法
-- 调用对象的clone()方法
-- 运营反序列化手段，调用java.io.ObjectInputStream对象的readObject()方法，具体见对象的序列化和反序列化
+- 运用反射手段，调用`java.lang.Class`或者`java.lang.reflect.Constructor`类的`newInstance()`实例方法
+- 调用对象的`clone()`方法
+- 运营反序列化手段，调用`java.io.ObjectInputStream`对象的`readObject()`方法，具体见对象的序列化和反序列化
 
-一下重点讲new方法
+**重点讲new方法**
+
 ### 1.对象的声明
 ```java
 Lader lader;
 ```
-&emsp;&emsp;**在Java中，对象总是作为引用来储存的，这意味着分配给变量lader的空间只够持有一个Lader对象的地址，**
+**在Java中，对象总是作为引用来储存的，这意味着分配给变量lader的空间只够持有一个Lader对象的地址，**
 为了给对象中的变量预留空间，我们需要使用new操作符来分配新对象。
 
 ### 2.为创建的对象分配变量
 
 使用new运算符和类的构造方法为声明的对象分配变量。**储存在lader中的值是一个指向内存中该数据结构的引用，而不是该数据结构自身，在Java中，对象总是作为引用来储存的**
+
 上面两步可以写作这样的一步：
+
 ```java
 Lader lader=new Lader();
 ```
@@ -180,9 +181,8 @@ Employee zh=new Employee();
 #### 3.1.1 关于无参数的构造器
 很多类都包含一个无参数的构造函数，对象由无参数构造函数创建时，其状态会设置为适当的默认值。例如，以下是Employee类的无参数构造函数：
 ```java
-public Employee()
-{
-	name = " "
+public Employee() {
+	name = ""
 	salary = 0;
 	hireDay = LocalDate.now();
 }
@@ -205,8 +205,7 @@ new ClassName();
 ```
 就必须提供一个默认的构造器（即不带参数的构造器）。当然，如果希望所有域被赋予默认值，可以采用下列格式：
 ```java
-public ClassName()
-{
+public ClassName() {
 }
 ```
 #### 3.1.2 调用另一个构造器
@@ -247,7 +246,10 @@ public Employee(){
 
 在以下场合之一，可以把类的所有构造方法都声明为private类型:
 
-#### 1.在这个类中仅仅包含一些供其他程序调用的静态方法，没有任何实例方法。其他程序无需创建该类的实例，就能访问类的静态方法。**例如java.lang.Math类就符合这种情况，在Math类中提供了一系列用于数学运算的公共静态方法，为了防止外部程序创建Math类的实例，Math类的唯一构造方法就是private类型的**
+#### 1.在这个类中仅仅包含一些供其他程序调用的静态方法，没有任何实例方法。其他程序无需创建该类的实例，就能访问类的静态方法。
+
+**例如java.lang.Math类就符合这种情况，在Math类中提供了一系列用于数学运算的公共静态方法，为了防止外部程序创建Math类的实例，Math类的唯一构造方法就是private类型的**
+
 > 在之前的abstract修饰符的时候提到过，abstract类型的类也不允许实例化，也许有这样一个疑问，把Math定义为abstract类，不是也能禁止该类被实例化吗？
 
 需要注意的是，如果一个类是抽象类，意味着他是专门用于被继承的类，可以拥有子类，而且可以创建具体子类的实例。而JDK不希望用户创建Math类的子类，在这种情况下，把类的构造方法定义为private类型更合适。
@@ -265,8 +267,7 @@ public Employee(){
 #### 3.6.1 静态域
 如果将域定义为static, 每个类中只有一个这样的域。而每一个对象对于所有的实例域却都有自己的一份拷贝。例如，假定需要给每一个雇员賦予唯一的标识码。这里给Employee类添加一个实例域id和一个静态域nextld:
 ```java
-class Employee
-{
+class Employee {
 	private static int nextld = 1;
 	private int id;
 }
@@ -277,8 +278,7 @@ class Employee
 
 下面实现一个简单的方法：
 ```java
-public void setld()
-{
+public void setld() {
 	id = nextld;
 	nextld++;
 }
@@ -295,8 +295,7 @@ Eip1oyee.nextId++;
 #### 3.6.2静态常量
 静态变量使用得比较少，但静态常量却使用得比较多。例如，在Math类中定义了一个静态常量：
 ```java
-public class Hath
-{
+public class Hath {
 	public static final double PI = 3.14159265358979323846;
 }
 ```
@@ -316,7 +315,7 @@ public class System
 ```java
 System.out = new PrintStrean(...); // Error out is final
 ```
-> 注释： 如果查看一下System 类，就会发现有一个setOut方法，它可以将System.out设置为不同的流。读者可能会感到奇怪，为什么这个方法可以修改final 变量的值。原因在于，setOut方法是一个本地方法，而不是用Java语言实现的。本地方法可以绕过Java语言的存取控制机制。这是一种特殊的方法，在自己编写程序时，不应该这样处理。
+> 注释： 如果查看一下System类，就会发现有一个setOut方法，它可以将System.out设置为不同的流。读者可能会感到奇怪，为什么这个方法可以修改final 变量的值。原因在于，setOut方法是一个本地方法，而不是用Java语言实现的。本地方法可以绕过Java语言的存取控制机制。这是一种特殊的方法，在自己编写程序时，不应该这样处理。
 
 #### 3.6.3 静态方法
 静态方法是一种不能向对象实施操作的方法。例如，Math类的pow方法就是一静态方法。表达式
@@ -324,20 +323,21 @@ System.out = new PrintStrean(...); // Error out is final
 Math.pow(x, a)
 ```
 不使用任何Math对象。换句话说，没有隐式的参数。可以认为静态方法是没有this参数的方法（非静态的方法中，this参数表示这个方法的隐式参数)。
+
 Employee类的静态方法不能访问Id实例域，因为它不能操作对象。但是，静态方法可以访问自身类中的静态域。下面是使用这种静态方法的一种示例：
+
 ```java
-public static int getNextldO
-{
+public static int getNextld() {
 	return nextld; // returns static field
 }
 ```
 可以通过类名调用这个方法：
 ```java
-int n = Employee.getNextldO;
+int n = Employee.getNextld();
 ```
-这个方法可以省略关键字字static? 答案是肯定的。但是，需要通过Employee对象的引用调用这个方法。
+这个方法可以省略关键字static? 答案是肯定的。但是，需要通过Employee对象的引用调用这个方法。
 
-> 注释：可以使用对象调用静态方法。例如，如果harry是一个Employee 对象，可以用`harry.getNextId()`代替`Employee.getNextId()`。不过，这种方式很容易造成混淆 其原因是getNextld方法计算的结果与harry毫无关系。我们建议使用类名，而不是对象来调用静态方法。
+> 注释：可以使用对象调用静态方法。例如，如果harry是一个Employee对象，可以用`harry.getNextId()`代替`Employee.getNextId()`。不过，这种方式很容易造成混淆，其原因是getNextld方法计算的结果与harry毫无关系。我们建议使用类名，而不是对象来调用静态方法。
 
 在下面两种情况下使用静态方法：
 - 一方法不需要访问对象状态，其所需参数都是通过显式参数提供（例如：Math.pow）
@@ -362,7 +362,7 @@ int n = Employee.getNextldO;
 
 当对象调用方法时，方法中出现的成员变量就是指分配给该对象的变量。在讲述类的时候我们讲过类中的方法可以操作成员变量。当对象调用方法时，方法中出现的成员变量就是指分配给该对象的变量。
 ```java
-class XiyoujiRenwu{
+class XiyoujiRenwu {
 	float height,weight;  
 	String head,ear,hand,foot,nouth;
 	void speak(Strings) {
@@ -649,7 +649,7 @@ public class exercise {
 		System.out.println("圆锥的bottom的半径："+circular.getVolme());
 		System.out.println("圆锥的体积："+circular.getVolme());
 		double r=8888;
-			System.out.println("圆锥更改底园bottom的半径："+r);
+		System.out.println("圆锥更改底园bottom的半径："+r);
 		circular.setBottomRadius(r);
 		System.out.println("圆锥的bottom的半径："+circular.getBottomRadius());
 		System.out.println("圆锥的体积："+circular.getVolme());
@@ -723,7 +723,7 @@ class Dog{
 #### 1.对象调用实例方法
 当类的字节码文件加载到内存时，类的实例方法不会被分配入口地址，只有该类创建对象后，类中的实例方法才分配入口地址。
 
-&emsp;&emsp;需要注意的是，当我们创建第一个对象时，类中的实例方法就分配了入口地址，当再创建对象时，不再分配入口地址，**也就是说，方法的入口地址被所有对象共享，当所有对象都不存在时，方法的入口地址才会被取消。**
+需要注意的是，当我们创建第一个对象时，类中的实例方法就分配了入口地址，当再创建对象时，不再分配入口地址，**也就是说，方法的入口地址被所有对象共享，当所有对象都不存在时，方法的入口地址才会被取消。**
 
 #### 2.类名调用类方法
 对于类中的类方法，在该类被加载到内存时，就分配了相应的入口地址，从而类方法不仅可以被类创建的任何对象调用执行，也可以被类名调用执行，**类方法的入口地址直到程序退出才被取消。**  
@@ -795,7 +795,7 @@ public class exercise{
 
 实例：
 ```java
-class Overload{
+class Overload {
 	void ovlDemo(){
 		System.out.println("No parameters");
 	}
@@ -825,6 +825,7 @@ class Overload{
 ## 10 this关键字(隐式参数与显式参数)
 
 this是Java中的一个关键字，表示某个对象。  
+
 **this可以出现在实例方法和构造方法中，但是不可以出现在类方法中。**
 
 方法用于操作对象以及存取它们的实例域。例如，方法：
@@ -848,8 +849,7 @@ raiseSalary方法有两个参数。第一个参数称为隐式(implicit)参数�
 
 可以看到，显式参数是明显地列在方法声明中的，例如double byPercent。隐式参数没有出现在方法声明中。在每一个方法中，关键字this表示隐式参数。如果需要的话，可以用下列方式编写raiseSalary方法：
 ```java
-public void raiseSalary(double byPercent)
-{
+public void raiseSalary(double byPercent) {
 	double raise = this.salary * byPercent / 100;
 	this.sal ary += raise;
 }
@@ -857,10 +857,10 @@ public void raiseSalary(double byPercent)
 
 ### 10.1 在构造方法中使用this
 ```java
-public class People{
+public class People {
 	int leg,hand;
 	String name;
-	People(String s){
+	People(String s) {
 		name=s;
 		this.init();//可以省略this，写成init()
 	}
@@ -887,7 +887,7 @@ this.成员变量
 ```
 如：
 ```java
-clsaa A{
+clsaa A {
 	int a;
 	static int y;
 	void f(){
@@ -908,7 +908,7 @@ this.方法
 ```
 例如：
 ```java
-class B{
+class B {
 	void f(){
 		this.g();
 		B.h();
@@ -921,10 +921,12 @@ class B{
 	}
 }
 ```
-在上述B类方法中出现了this，this代表调用方法f的当前对象，所以，方法f的方法体中this.g()就是当前对象调用方法g，也就是说，当某个对象调用方法f的过程中，又调用了方法g。由于这种逻辑关系非常明确，一个实例方法调用另一个方法时可以省略方法名字前面的"this."或"类名."  
+在上述B类方法中出现了this，this代表调用方法f的当前对象，所以，方法f的方法体中this.g()就是当前对象调用方法g，也就是说，当某个对象调用方法f的过程中，又调用了方法g。由于这种逻辑关系非常明确，一个实例方法调用另一个方法时可以省略方法名字前面的"this."或"类名." 
+
 例如：
+
 ```java
-class B{
+class B {
 	void f(){
 		.g();
 		h();
@@ -969,8 +971,7 @@ javadoc 实用程序(utility)从下面几个特性中抽取信息：
 * Spade or Club) and a value (1 = Ace, 2 . . . 10, 11 = Jack,
 * 12 = Queen , 13 = King)
 */
-public class Card
-{
+public class Card {
 	...
 }
 ```
@@ -983,13 +984,12 @@ Spade or Club) and a value (1 = Ace, 2 . . . 10, 11 = jack ,
 12 = Queen, 13 = King) .
 */
 ```
-然而， 大部分IDE提供了自动添加星号*, 并且当注释行改变时， 自动重新排列这
-些星号的功能。
+然而，大部分IDE提供了自动添加星号*, 并且当注释行改变时，自动重新排列这些星号的功能。
 
 ### 11.3 方法注释
 每一个方法注释必须放在所描述的方法之前。除了通用标记之外，还可以使用下面的标记：
 - `@param`变量描述
-这个标记将对当前方法的“param ”（参数）部分添加一个条目。这个描述可以占据多行，并可以使用HTML标记。一个方法的所有@param标记必须放在一起。
+这个标记将对当前方法的“param”（参数）部分添加一个条目。这个描述可以占据多行，并可以使用HTML标记。一个方法的所有@param标记必须放在一起。
 - `@return`描述
 这个标记将对当前方法添加“return”（返回）部分。这个描述可以跨越多行，并可以使用HTML标记。
 - `@throws`类描述
@@ -1020,9 +1020,8 @@ public static final int HEARTS = 1;
 
   例如，
 
-  `@deprecated Use <code> setVIsible(true)</code> instead`通过`@see`和`@link`标记，可以使用超级链接，链接到javadoc文档的相关部分或外
-  部文档。
-
+  `@deprecated Use <code> setVIsible(true)</code> instead`通过`@see`和`@link`标记，可以使用超级链接，链接到javadoc文档的相关部分或外部文档。
+  
 - `@see`引用
   这个标记将在“see also”部分增加一个超级链接。它可以用于类中，也可以用于方法中。这里的引用可以选择下列情形之一：
 
@@ -1135,7 +1134,7 @@ javadoc -link http://docs.oracle.eom/:javase/8/docs/api *.java
    下面是一个反面的设计示例。 
    
    ```java
-   public class CardDeck // bad design 
+   public class CardDeck // bad design  
    {
    	private int[] value;
    	private int[] suit;
@@ -1147,19 +1146,17 @@ javadoc -link http://docs.oracle.eom/:javase/8/docs/api *.java
    } 
    ```
    
-   实际上，这个类实现了两个独立的概念：一副牌（含有 shuffle 方法和 draw方法）和一 张牌（含有查看面值和花色的方法)。另外，引入一个表示单张牌的 Card类。现在有两个类， 每个类完成自己的职责：
+   实际上，这个类实现了两个独立的概念：一副牌（含有 shuffle 方法和 draw方法）和一张牌（含有查看面值和花色的方法)。另外，引入一个表示单张牌的Card类。现在有两个类， 每个类完成自己的职责：
    
    ```java
-   public class CardDeck
-   {
+   public class CardDeck {
    	private Card[] cards;
    	public CardDeck() { ... }
    	public void shuffle() { ... }
    	public Card getTopO { ... }
    	public void draw() { ...}
    }
-   public class Card
-   {
+   public class Card {
    	private int value;
    	private int suit;
    	public Card(int aValue, int aSuit){ ... }
@@ -1172,7 +1169,7 @@ javadoc -link http://docs.oracle.eom/:javase/8/docs/api *.java
 
    与变量应该有一个能够反映其含义的名字一样，类也应该如此（在标准类库中，也存在着一些含义不明确的例子，如：Date类实际上是一个用于描述时间的类)。 
 
-   命名类名的良好习惯是采用一个名词(Order)、前面有形容词修饰的名词(RushOrder) 或动名词（有“ -ing” 后缀）修饰名词（例如，BillingAddress)。对于方法来说，习惯是访问器方法用小写get开头(getSalary), 更改器方法用小写的set开头(setSalary) 
+   命名类名的良好习惯是采用一个名词(Order)、前面有形容词修饰的名词(RushOrder) 或动名词（有“-ing”后缀）修饰名词（例如，BillingAddress)。对于方法来说，习惯是访问器方法用小写get开头(getSalary), 更改器方法用小写的set开头(setSalary) 
 
 7. 优先使用不可变的类
 
@@ -1184,4 +1181,4 @@ javadoc -link http://docs.oracle.eom/:javase/8/docs/api *.java
 
     当然，并不是所有类都应当是不可变的。如果员工加薪时让raiseSalary方法返回一个新的Employee对象，这会很奇怪。
 
-    本章介绍了Java这种面向对象语言的有关对象和类的基础知识。为了真正做到面向对 象，程序设计语言还必须支持继承和多态。Java提供了对这些特性的支持，具体内容将在下一章中介绍。
+    本章介绍了Java这种面向对象语言的有关对象和类的基础知识。为了真正做到面向对象，程序设计语言还必须支持继承和多态。Java提供了对这些特性的支持，具体内容将在下一章中介绍。
