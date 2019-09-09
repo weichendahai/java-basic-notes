@@ -4,17 +4,19 @@ Java基础知识笔记-8-接口，lambda表达式与内部类
 
 接下来，讨论内部类(inner class)机制。理论上讲，内部类有些复杂，内部类定义在另外一个类的内部，其中的方法可以访问包含它们的外部类的域。内部类技术主要用于设计具有相互协作关系的类集合。
 
-# 接口
+# 10.1 接口
 在Java程序设计语言中， 接口不是类，而是对类的一组需求描述，这些类要遵从接口描述的统一格式进行定义。
 
 &emsp;&emsp;在Java语言中，接口有两种意思
 - 一是指概念性的接口，即指系统对外提供的所有服务，类的所有能被外部使用者访问的方法构成了类的接口
 - 二是指interface关键字定义的实实在在的接口，也称为接口类型。
 
-&emsp;&emsp;在面相对象程序设计中，定义一个类必须做什么而不是怎么做有时是很有益的。前面有一个这样的例子：抽象方法为方法定义了签名，但不提供实现方式。子类必须自己实现由其父类定义的抽象方法。这样，抽象方法就指定了方法的接口而不是实现。尽管抽象类和方法很有用，但还可以将这一概念进一步延伸。在java中，可使用关键字interface把类的接口和实现方法完全分开。
+在面相对象程序设计中，定义一个类必须做什么而不是怎么做有时是很有益的。前面有一个这样的例子：抽象方法为方法定义了签名，但不提供实现方式。子类必须自己实现由其父类定义的抽象方法。这样，抽象方法就指定了方法的接口而不是实现。尽管抽象类和方法很有用，但还可以将这一概念进一步延伸。在java中，可使用关键字interface把类的接口和实现方法完全分开。
 
-&emsp;&emsp;使用关键字interface来定义一个接口。接口的定义和类的定义很相似，分为接口的声明和接口体
+使用关键字interface来定义一个接口。接口的定义和类的定义很相似，分为接口的声明和接口体
+
 例如：
+
 ```java
 interface Printable{
 	final int MAX=100;
@@ -23,10 +25,10 @@ interface Printable{
 }
 ```
 ### 1.接口声明
-&emsp;&emsp;接口包含接口声明和接口体，和类不同的是，接口声明使用关键字interface来表明自己是一个接口。
+接口包含接口声明和接口体，和类不同的是，接口声明使用关键字interface来表明自己是一个接口。
 
 ### 2.接口体
-&emsp;&emsp;接口体包含常量的声明（没有变量）和抽象方法两部分。
+接口体包含常量的声明（没有变量）和抽象方法两部分。
 
 **接口体中中只有抽象的方法和普通的方法。而且接口体中所有常量的访问权限一定都是public（允许省略public，final修饰符），所有的抽象方法的访问权限一定都是public（允许省略public，abstract修饰符）例如：**
 
@@ -50,7 +52,7 @@ public interface MyIFC{
 	void method3();//声明了一个抽象方法
 }
 ```
-&emsp;&emsp;以下类实现了上面这个接口，Tester类作为非抽象类，必须实现MyIFC接口的抽象method3()方法。tester的实例可以直接访问在接口中定义的method1()默认方法
+以下类实现了上面这个接口，Tester类作为非抽象类，必须实现MyIFC接口的抽象method3()方法。tester的实例可以直接访问在接口中定义的method1()默认方法
 ```java
 public class Tester implements MyIFC{
 	public void method3(){//实现接口中的method3()方法
@@ -65,13 +67,13 @@ public class Tester implements MyIFC{
 	}
 }
 ```
-&emsp;&emsp;接口中的静态方法只能在接口内部被访问，或者其他程序通过接口的名字来访问它的静态方法，如果试图通过实现接口的类的实例来访问该静态方法，会导致编译错误，例如：
+接口中的静态方法只能在接口内部被访问，或者其他程序通过接口的名字来访问它的静态方法，如果试图通过实现接口的类的实例来访问该静态方法，会导致编译错误，例如：
 
 ```java
 t.method2();//编译出错，Tester实例不能访问MyIFC接口的静态方法
 MyIFC.method2();//合法，可以通过接口的名字来访问它的静态方法
 ```
-&emsp;&emsp;另外，需要注意的是，在接口中为方法提供默认实现虽然可以提高代码的可重用性，但还是要谨慎地使用这一特性。因为在层次关系比较复杂的软件系统中，这一特性会使程序代码导致歧异和混淆。
+另外，需要注意的是，在接口中为方法提供默认实现虽然可以提高代码的可重用性，但还是要谨慎地使用这一特性。因为在层次关系比较复杂的软件系统中，这一特性会使程序代码导致歧异和混淆。
 
 **接口没有构造方法，不能被实例化。在接口中定义构造方法是非法的，例如：**
 
@@ -93,7 +95,7 @@ Photographable t=new Camera();
 ---
 
 ## 2 实现接口
-&emsp;&emsp;在Java语言中，**接口由类去实现以便使用接口中的方法，一个类可以实现多个接口，类通过使用关键字implements声明自己实现一个或者多个接口。** 如果实现多个接口，用逗号隔开接口名。  
+在Java语言中，**接口由类去实现以便使用接口中的方法，一个类可以实现多个接口，类通过使用关键字implements声明自己实现一个或者多个接口。** 如果实现多个接口，用逗号隔开接口名。  
 
 为了让类实现一个接口， 通常需要下面两个步骤：
 - 1)将类声明为实现给定的接口。
@@ -107,20 +109,20 @@ class A implements Printable,Addable
 ```java
 class Dog extends Animal implements Eatable,Sleepable
 ```
-&emsp;&emsp;**如果一个非抽象类实现了某个接口，那么这个类必须重写该接口的所有方法，需要注意的是，由于接口中的方法一定是`public abstract方法`**，所以非抽象类在重写接口方法时不仅要去掉abstract修饰给出的方法体，而且方法的访问权限一定要明显的用public来修饰（否则降低了访问权限，这是不允许的）实现接口的非抽象类一定要重写接口的方法，因此也称这个类实现了接口的方法，Java提供的接口都在相应的包中，通过import语句不仅可以引入包中的类，还可以引入包中的接口，例如:
+**如果一个非抽象类实现了某个接口，那么这个类必须重写该接口的所有方法，需要注意的是，由于接口中的方法一定是`public abstract方法`**，所以非抽象类在重写接口方法时不仅要去掉abstract修饰给出的方法体，而且方法的访问权限一定要明显的用public来修饰（否则降低了访问权限，这是不允许的）实现接口的非抽象类一定要重写接口的方法，因此也称这个类实现了接口的方法，Java提供的接口都在相应的包中，通过import语句不仅可以引入包中的类，还可以引入包中的接口，例如:
+
 ```java
 import java.io.*;
 ```
-&emsp;&emsp;类重写的接口方法以及接口中的常量可以直接被类的对象调用，而且常量也可以用接口名直接调用。  
+类重写的接口方法以及接口中的常量可以直接被类的对象调用，而且常量也可以用接口名直接调用。  
 
-&emsp;&emsp;接口声明时，如果关键字interface前面加上public，就称它为public接口，可以被任何一个类实现，如果一个接口不加public修饰，那么就称它为友好接口类，友好接口类可以被与该接口在同一个包中实现。  
+接口声明时，如果关键字interface前面加上public，就称它为public接口，可以被任何一个类实现，如果一个接口不加public修饰，那么就称它为友好接口类，友好接口类可以被与该接口在同一个包中实现。  
 
-&emsp;&emsp;如果父类实现了某个接口，那么子类也自然实现了接口，子类不必再显式地使用关键字implements声明实现这个接口。  
+如果父类实现了某个接口，那么子类也自然实现了接口，子类不必再显式地使用关键字implements声明实现这个接口。  
 
-&emsp;&emsp;接口也可以被继承，既可以通过关键字extends声明一个接口是另一个接口的子接口。由于接口中的方法和常量都是public，子接口将继承父接口中的全部方法和常量。  
+接口也可以被继承，既可以通过关键字extends声明一个接口是另一个接口的子接口。由于接口中的方法和常量都是public，子接口将继承父接口中的全部方法和常量。  
 
-&emsp;&emsp;***注意：如果一个类声明实现某一个接口，但没有重写接口中的所有方法，那么这个类必须是abstracts类***
-这句话是指当类实现了某个接口，它必须实现接口中的所有抽象方法，否则这个类必须被定义为抽象类。
+***注意：如果一个类声明实现某一个接口，但没有重写接口中的所有方法，那么这个类必须是abstracts类***这句话是指当类实现了某个接口，它必须实现接口中的所有抽象方法，否则这个类必须被定义为抽象类。
 
 
 例如:
@@ -145,9 +147,9 @@ abstract class A implements Computable{
 ---
 ## 3 理解接口
 
-&emsp;&emsp;不同的类可以实现相同的接口，同一个类也可以实现多个接口。 
+不同的类可以实现相同的接口，同一个类也可以实现多个接口。 
 
-&emsp;&emsp;**当不希望某些类通过继承使得他们具有一些相同的方法时，就可以考虑让这些类去实现相同的接口而不是把他们声明为同一个类的子类。**  
+**当不希望某些类通过继承使得他们具有一些相同的方法时，就可以考虑让这些类去实现相同的接口而不是把他们声明为同一个类的子类。**  
 
 ## 4 接口实例之Comparator接口
 我们已经了解了如何对一个对象数组排序，前提是这些对象是实现了Comparable接口的类的实例, 例如，可以对一个字符串数组排序，因为String类实现了
@@ -157,16 +159,14 @@ abstract class A implements Computable{
 
 要处理这种情况，Arrays.Sort方法还有第二个版本，有一个数组和一个比较器(comparator)作为参数，比较器是实现了Comparator接口的类的实例。
 ```java
-public interface Comparators
-{
+public interface Comparators {
 	int compare(T first, T second);
 }
 ```
 要按长度比较字符串，可以如下定义一个实现`Comparator<String>`的类：
 
 ```java
-class LengthComparator implements Comparator<String>
-{
+class LengthComparator implements Comparator<String> {
 	public int compare(String first, String second) {
 	return first.length() - second.length();
 	}
@@ -191,47 +191,50 @@ Arrays,sort(friends, new LengthComparatorO):
 
 ---
 ## 5 接口回调
-&emsp;&emsp;和类一样，接口也是Java中重要的一种数据类型，用接口声明的变量称为接口变量。 **接口属于引用型变量，接口变量中可以存放实现该接口的类的实例的引用，即存放对象的引用** 
+和类一样，接口也是Java中重要的一种数据类型，用接口声明的变量称为接口变量。 **接口属于引用型变量，接口变量中可以存放实现该接口的类的实例的引用，即存放对象的引用** 
 
-&emsp;&emsp;假如，假设Com是一个接口，那么就可以用Com声明一个变量:
+假如，假设Com是一个接口，那么就可以用Com声明一个变量:
 
 ```java
 Com com;
 ```
-&emsp;&emsp;内存模型如图所示，此时的com是一个空接口，因为com变量中还没有存放实现该接口的类的实例的引用。  
+内存模型如图所示，此时的com是一个空接口，因为com变量中还没有存放实现该接口的类的实例的引用。  
 
-&emsp;&emsp;假设ImpleCom类是实现Com接口，用ImpleCom创建名字为object的对象，那么object对象不仅可以调用ImpleCom类中原有的方法，还可以调用该类实现的接口方法。
+假设ImpleCom类是实现Com接口，用ImpleCom创建名字为object的对象，那么object对象不仅可以调用ImpleCom类中原有的方法，还可以调用该类实现的接口方法。
 ```java
 ImpleCom object=new ImpleCom();
 ```
-&emsp;&emsp;在Java中，接口回调是指可以把实现某一类接口的类创建的的对象的引用赋给该接口声明的接口变量中，那么该接口变量就可以调用被类实现的接口方法。实际上，当接口变量调用被类实现的接口方法时，就是通知相应的对象调用这个方法。  
+在Java中，接口回调是指可以把实现某一类接口的类创建的的对象的引用赋给该接口声明的接口变量中，那么该接口变量就可以调用被类实现的接口方法。实际上，当接口变量调用被类实现的接口方法时，就是通知相应的对象调用这个方法。  
 
-&emsp;&emsp;**接口回调非常类似我们在之前介绍的上传型对象调用子类重写的方法**
+**接口回调非常类似我们在之前介绍的上传型对象调用子类重写的方法**
+
 ### 5.1 使用接口引用
-&emsp;&emsp;你可能会对可以使用接口创建引用变量感到惊讶，可以创建接口引用变量，这样的变量可以引用实现他的接口的任何对象，当通过接口调用一个对象上的方法时，就会执行次对象实现的那个版本上那个的方法，这个过程类似与使用父类去引用访问子类对象。
+你可能会对可以使用接口创建引用变量感到惊讶，可以创建接口引用变量，这样的变量可以引用实现他的接口的任何对象，当通过接口调用一个对象上的方法时，就会执行次对象实现的那个版本上那个的方法，这个过程类似与使用父类去引用访问子类对象。
 
 ### 5.2 接口能够扩展
-&emsp;&emsp;使用关键字extends，一个接口可以继承另一个接口。扩展接口的语法与继承类的语法一样，当一个类实现继承了其他接口的接口时，他必须在接口继承链中定义的所有方法提供实现方式。
+使用关键字extends，一个接口可以继承另一个接口。扩展接口的语法与继承类的语法一样，当一个类实现继承了其他接口的接口时，他必须在接口继承链中定义的所有方法提供实现方式。
+
 实例代码：
+
 ```java
 interface A{
 	void meth1();
 	void meth2();
 }
-interface B extends A{
+interface B extends A {
 	void meth3();
 }
-class MyClass implements B{
+class MyClass implements B {
 	public void meth1(){
 		System.out.println("Implement meth1().");
 	}
-	public void meth2(){
+	public void meth2() {
 		System.out.println("Implement meth2().");
 	}
-	public void meth3(){
+	public void meth3() {
 		System.out.println("Implement meth3().");
 	}
-class IFExtends{
+class IFExtends {
 	public static void main(String args[]){
 		MyClass ob=new MyClass();
 
@@ -295,7 +298,7 @@ At the tone, the time is Wed Apr 13 23:29:08 PDT 2016
 
 上面是个比较经典的例子，下面用代码实现上述例子：
 
-- （1）先定义一个接口
+- 1 先定义一个接口
 ```java
 package JieKouHuiDiao;
 //定义一个接口
@@ -303,7 +306,7 @@ public interface JieKou {
 	public void show();
 }
 ```
-- （2）定义一个Boss类实现接口
+- 2 定义一个Boss类实现接口
 ```java
 package JieKouHuiDiao;
 public class Boss implements JieKou{
@@ -314,7 +317,7 @@ public class Boss implements JieKou{
 	} 
 }
 ```
-- （3）定义一个员工Employee类
+- 3 定义一个员工Employee类
 ```java
 package JieKouHuiDiao;
 public class Employee {
@@ -332,7 +335,7 @@ public class Employee {
 	}
 }
 ```
-- （4）测试类
+- 4 测试类
 ```java
 复制代码
 package JieKouHuiDiao;
@@ -349,7 +352,7 @@ public class Test {
 
 ---
 ## 6 接口与多态
-&emsp;&emsp;由接口产生多态就是指不同的类在实现同一个接口时可能具有不同的实现方式，那么接口变量在回调接口方法时就可能具有多种形态。
+由接口产生多态就是指不同的类在实现同一个接口时可能具有不同的实现方式，那么接口变量在回调接口方法时就可能具有多种形态。
 ```java
 interface ComputerAverage{
 	public double average(double a,double b);
@@ -387,18 +390,17 @@ public class exercise{
 
 ---
 ## 8 abstract类与接口的比较
-&emsp;&emsp;接口和abstract类的比较如下：
+接口和abstract类的比较如下：
 
 #### 1.abstract类和接口都有abstract方法  
 #### 2.接口中只可以有常量，不能有变量；而abstract类中既可以有常量又可以有变量  
 #### 3.abstract类中也可以有非abstract方法，接口不可以
-&emsp;&emsp;在设计程序时，应当根据具体的分析方法来确定是使用抽象类还是接口。abstract类除了提供重要的需要子类重写的abstract方法外，也提供了子类需要继承的变量和非abstract方法，如果子类需要重写父类的abstract方法，还需要从父类继承一些变量或继承一些重要的非abstract方法，就可以考虑用abstract。  
+在设计程序时，应当根据具体的分析方法来确定是使用抽象类还是接口。abstract类除了提供重要的需要子类重写的abstract方法外，也提供了子类需要继承的变量和非abstract方法，如果子类需要重写父类的abstract方法，还需要从父类继承一些变量或继承一些重要的非abstract方法，就可以考虑用abstract。  
 
-&emsp;&emsp;如果某个问题不需要继承，只是需要若干个类给出某些重要的abstract方法的实现细节，就可以考虑使用接口。
+如果某个问题不需要继承，只是需要若干个类给出某些重要的abstract方法的实现细节，就可以考虑使用接口。
 
 ## 9 接口与抽象类
-可能会产生这样一个疑问：为什么Java程序设计语言还要不辞辛苦地引入接口概念？为什么不将Comparable直接设计成如下所示的
-抽象类。
+可能会产生这样一个疑问：为什么Java程序设计语言还要不辞辛苦地引入接口概念？为什么不将Comparable直接设计成如下所示的抽象类。
 ```java
 abstract class Comparable // why not?{
 	public abstract int compareTo(Object other);
@@ -421,11 +423,11 @@ class Employee extends Person implements Comparable // OK
 有些程序设计语言允许一个类有多个超类，例如C++。我们将此特性称为多重继承(multiple inheritance)。而Java的设计者选择了不支持多继承，其主要原因是多继承会让语言本身变得非常复杂（如同C++)，效率也会降低（如同Eiffel)。
 
 实际上，接口可以提供多重继承的大多数好处，同时还能避免多重继承的复杂性和低效性
-# lambda表达式
+# 10.2 lambda表达式
 现在可以来学习lambda表达式，这是这些年来Java语言最让人激动的一个变化。你会了解如何使用lambda表达式采用一种简洁的语法定义代码块，以及如何编写处理lambda表达式的代码。
 
-## 学习lambda表达式之前：一些简单的例子
-### Lambda表达式的语法
+## 1 学习lambda表达式之前：一些简单的例子
+### 1.1 Lambda表达式的语法
 
 基本语法:
 ```java
@@ -450,15 +452,13 @@ x -> 2 * x
 ```
 更多外链到：https://www.cnblogs.com/franson-2016/p/5593080.html
 
-## 1 为什么引入lambda 表达式
+## 2 为什么引入lambda 表达式
 lambda表达式是一个可传递的代码块，可以在以后执行一次或多次。具体介绍语法（以及解释这个让人好奇的名字）之前，下面先退一步，观察一下我们在Java中的哪些地方用过这种代码块。
 
 已经了解了如何按指定时间间隔完成工作。将这个工作放在一个ActionListener的actionPerformed方法中：
 ```java
-class Worker implements ActionListener
-{
-	public void actionPerformed(ActionEvent event)
-	{
+class Worker implements ActionListener {
+	public void actionPerformed(ActionEvent event) {
 		// do some work
 	}
 }
@@ -467,10 +467,8 @@ class Worker implements ActionListener
 
 或者可以考虑如何用一个定制比较器完成排序。如果想按长度而不是默认的字典顺序对字符串排序，可以向sort方法传入一个Comparator对象：
 ```java
-class LengthComparator implements Comparator<String>
-{
-	public int compare(String first, String second)
-	{
+class LengthComparator implements Comparator<String> {
+	public int compare(String first, String second) {
 		return first.length() - second.length();
 	}
 }
@@ -487,7 +485,7 @@ compare方法不是立即调用。实际上，在数组完成排序之前，sort
 
 就现在来说，问题已经不是是否增强Java来支持函数式编程，而是要如何做到这一点。设计者们做了多年的尝试，终于找到一种适合Java的设计。下一节中，你会了解Java SE8中如何处理代码块。
 
-## 2 lambda表达式的语法
+## 3 lambda表达式的语法
 再来考虑上一节讨论的排序例子。我们传入代码来检查一个字符串是否比另一个字符串短。这里要计算：
 ```
 first.length() - second.length()
@@ -505,8 +503,7 @@ first和second是什么？它们都是字符串。Java是一种强类型语言�
 ```
 你已经见过Java中的一种lambda表达式形式：参数，箭头（->) 以及一个表达式。如果代码要完成的计算无法放在一个表达式中，就可以像写方法一样，把这些代码放在括号中，并包含显式的return语句。例如：
 ```java
-(String first, String second) ->
-	{
+(String first, String second) -> {
 		if (first.length() < second.length()) return -1;
 		else if (first.length() > second.length()) return 1;
 		else return 0;
@@ -550,10 +547,8 @@ import javax.swing.Timer;
 * ©version 1.0 2015-05-12
 * ©author Cay Horstmann
 */
-public class LambdaTest
-{
-	public static void main(String[] args)
-	{
+public class LambdaTest {
+	public static void main(String[] args) {
 		String[] planets = new String[] { "Mercury" , "Venus", "Earth" , "Mars" , "Jupiter" , "Saturn", "Uranus", "Neptune" };
 		System.out.println(Arrays.toString(planets));
 		System.out.println("Sorted in dictionary order:") ;
@@ -571,8 +566,8 @@ public class LambdaTest
 	}
 }
 ```
-## 3 函数式接口
-前面已经讨论过，Java中已经有很多封装代码块的接口，如ActionListener或Comparator，lambda 表达式与这些接口是兼容的，
+## 4 函数式接口
+前面已经讨论过，Java中已经有很多封装代码块的接口，如ActionListener或Comparator，lambda表达式与这些接口是兼容的，
 
 对于只有一个抽象方法的接口，需要这种接口的对象时，就可以提供一个lambda表达式。这种接口称为函数式接口(functional interface)。
 
@@ -598,7 +593,7 @@ Timer t = new Timer(1000, event ->
 
 *lambda表达式未完待续*
 
-# 内部类
+# 10.3 内部类
 ## 内部类的简单实例
 前面已经知道，类可以有两种重要的成员：变量成员和方法，实际上Java还允许类可以有另一种成员：内部类。
 

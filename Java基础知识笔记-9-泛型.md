@@ -79,7 +79,7 @@ if(classStringArrayList.equals(classIntegerArrayList)){
 
 泛型类的最基本写法（这么看可能会有点晕，会在下面的例子中详解）：
 ```java
-class 类名称 <泛型标识：可以随便写任意标识号，标识指定的泛型的类型>{
+class 类名称 <泛型标识：可以随便写任意标识号，标识指定的泛型的类型> {
 	private 泛型标识 /*（成员变量类型）*/ var; 
 	.....
 	}
@@ -138,12 +138,15 @@ D/泛型测试: key is false
 ```
 
 > 注意：
+>
+> 泛型的类型参数只能是类类型，不能是简单类型。
+> 不能对确切的泛型类型使用instanceof操作。如下面的操作是非法的，编译时会出错。
+>
+> ```java
+> if(ex_num instanceof Generic<Number>){ }
+> ```
 
-泛型的类型参数只能是类类型，不能是简单类型。
-不能对确切的泛型类型使用instanceof操作。如下面的操作是非法的，编译时会出错。
-```java
-	if(ex_num instanceof Generic<Number>){ }
-```
+
 ### 2.2 泛型接口
 
 泛型接口与泛型类的定义及使用基本相同。泛型接口常被用在各种类的生产器中，可以看一个例子：
@@ -154,24 +157,20 @@ public interface Generator<T> {
 }
 ```
 ```java
-public class Apple<T>
-{
+public class Apple<T> {
 	private T info;
 	public Apple(){}
 	//下面方法中使用T类型形参来定义构造器
-	public Apple(T info)
-	{
+	public Apple(T info) {
 		this.info=info;
 	}
-	public void setInfo(T info)
-	{
+	public void setInfo(T info) {
 		this.info=info;
 	}
 	public T getInfo(){
 		return this.info;
 	}
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		//由于传给T形参的是String，所以构造器参数只能是String
 		Apple<String> a1=new Apple<>("苹果");
 		System.out.println(a1.getInfo());
@@ -182,7 +181,7 @@ public class Apple<T>
 }
 ```
 
-上面程序定义了一个带泛型申明的`Apple<T>`类（不要理会这个类型形参是否具有实际意义），使用`Apple<T>`类时就可为T类型形参传入实际类型，这样就可以生成如`Apple<String>`,`Apple<Double>`...形式的多个逻辑子类，物理上并不存在。
+上面程序定义了一个带泛型申明的`Apple<T>`类（不要理会这个类型形参是否具有实际意义），使用`Apple<T>`类时就可为T类型形参传入实际类型，这样就可以生成如`Apple<String>`,`Apple<Double>.`..形式的多个逻辑子类，物理上并不存在。
 
 当实现泛型接口的类，未传入泛型实参时：
 
@@ -192,7 +191,7 @@ public class Apple<T>
  * 即：class FruitGenerator<T> implements Generator<T>{
  * 如果不声明泛型，如：class FruitGenerator implements Generator<T>，编译器会报错："Unknown class"
  */
-class FruitGenerator<T> implements Generator<T>{
+class FruitGenerator<T> implements Generator<T> {
 	@Override
 	public T next() {
 		return null;
@@ -220,7 +219,7 @@ public class FruitGenerator implements Generator<String> {
 ```
 #### 并不存在泛型类
 
-前面提到可以把ArrayList<String>类当成ArrayList的子类，事实上，ArrayList<String>类也确实像一种特殊的ArrayList类：该ArrayList<String>对象只能添加String对象作为集合元素，但实际上，系统并没有为ArrayList<String>对象生成新的class文件，而且也不会把ArrayList<String>当成新类来处理。
+前面提到可以把`ArrayList<String>`类当成ArrayList的子类，事实上，`ArrayList<String>`类也确实像一种特殊的ArrayList类：该`ArrayList<String>`对象只能添加String对象作为集合元素，但实际上，系统并没有为`ArrayList<String>`对象生成新的class文件，而且也不会把`ArrayList<String>`当成新类来处理。
 
 ```java
 List<String> l1=new ArrayList<>();
@@ -233,8 +232,7 @@ System.out.println(l1.getclass()==l2.getclass());
 不管为泛型的类型形参传入哪一种类型实参，对于Java来说，他们仍然被当成同一个类处理，在内存总也只占用一块内存空间，因此在静态方法，静态初始化块或者静态变量的声明和初始化中不允许使用类型形参，如下例：
 
 ```java
-public class R<T>
-{
+public class R<T> {
 	//下面代码错误，不能在静态变量声明中使用类型形参
 	static T info;
 	T age;
@@ -252,8 +250,6 @@ java.util.Collection<String> cs=new java.util.ArrayList<>();
 if(cs instanceof java.util.ArrayList<String>){...}
 ```
 
-
-
 ## 3 泛型通配符
 
 我们知道Ingeter是Number的一个子类，同时在特性章节中我们也验证过`Generic<Ingeter>`与`Generic<Number>`实际上是相同的一种基本类型。那么问题来了，在使用`Generic<Number>`作为形参的方法中，能否使用`Generic<Ingeter>`的实例传入呢？在逻辑上类似于`Generic<Number>`和`Generic<Ingeter>`是否可以看成具有父子关系的泛型类型呢？
@@ -269,7 +265,6 @@ Generic<Integer> gInteger = new Generic<Integer>(123);
 Generic<Number> gNumber = new Generic<Number>(456);
 
 showKeyValue(gNumber);
-
 // showKeyValue这个方法编译器会为我们报错：Generic<java.lang.Integer> 
 // cannot be applied to Generic<java.lang.Number>
 // showKeyValue(gInteger);
@@ -293,33 +288,28 @@ public void showKeyValue1(Generic<?> obj){
 当直接使用`List<?>`这种形式时，即表明这个List集合可以是任何泛型List的父类。但是还有一种特殊的情形，程序不希望这个`List<?>`是任何泛型List的父类，只希望他代表某一泛型List的父类。考虑一个简单的绘图程序，下面定义三个形状类。
 
 ```java
-Shape.java
+//Shape.java
 //定义一个抽象类Shape
-public abstract class Shape
-{
+public abstract class Shape {
 	public abstract void draw(Canvas c);
 }
 ```
 
 ```java
-Circle.java
-public class Circle extends Shape
-{
+//Circle.java
+public class Circle extends Shape {
 	//实现画图方法，以打印字符串来模拟画图方法实现
-	public void draw(Canvas c)
-	{
+	public void draw(Canvas c) {
 		System.out.println("在画布"+c+"上画一个圆");
 	}
 }
 ```
 
 ```java
-Canvas.java
-public class Rectangle extends Shape
-{
+//Canvas.java
+public class Rectangle extends Shape {
 	实现画图方法，以打印字符串来模拟画图方法的实现
-	public void draw(Canvas c)
-	{
+	public void draw(Canvas c) {
 		System.out.println("把一个矩形画在画布"+c+"上");
 	}
 }
@@ -328,11 +318,9 @@ public class Rectangle extends Shape
 接下来定义一个Canvas类，该画布类可以画数量不等的形状（Shape子类的对象），那应该如何定义这个Canvas类呢？考虑如下的Canvas实现类。
 
 ```java
-Canvas.java
-public class Canvas
-{
-	public void drawAll(List<Shape> shapes)
-	{
+//Canvas.java
+public class Canvas {
+	public void drawAll(List<Shape> shapes) {
 		for(Shape s:shapes)
 			s.draw(this);
 	}
@@ -351,11 +339,9 @@ c.drawAll(circleList);
 关键在于`List<Circle>`并不是`List<Shape>>`的子类型，所以不能把`List<Circle>`对象当成`List<Shape>`使用。为了表示`List<Circle>`的父类，可以考虑使用`List<?>`，把Canvas改成如下形式
 
 ```java
-Canvas.java
-public class Canvas
-{
-	public void drawAll(List<?> shapes)
-	{
+//Canvas.java
+public class Canvas {
+	public void drawAll(List<?> shapes) {
 		for(Shape s:shapes)
 			s.draw(this);
 	}
@@ -374,11 +360,9 @@ List<? extends Shape>
 上面的Canvas程序改为如下形式：
 
 ```java
-Canvas.java
-public class Canvas
-{
-	public void drawAll(List<? extends Shape> shapes)
-	{
+//Canvas.java
+public class Canvas {
+	public void drawAll(List<? extends Shape> shapes) {
 		for(Shape s:shapes)
 			s.draw(this);
 	}
@@ -392,8 +376,7 @@ public class Canvas
 类似的，由于程序无法确定那个这个受限制的统配符的具体类型，所以不能把Shape对象及其子类的对象加入这个泛型集合中。例如，下面的代码就是错误的。
 
 ```java
-public void addRectangle(List<? extends Shape> shapes)
-{
+public void addRectangle(List<? extends Shape> shapes) {
 	//下面代码引起编译错误
 	shapes.add(0,new Rectangle());
 }
@@ -408,8 +391,7 @@ Java泛型不仅允许在使用通配符形参是设定上限，而且可以在�
 ```java
 public class Apple<T extends Number>
 T col;
-public static void main(String[] args)
-{
+public static void main(String[] args) {
 	Apple<Integer> ai=new Apple<>();
 	Apple<Double> ad=new Apple<>();
 	//下面的代码将引发编译异常，下面代码试图把String类型传给T形参
@@ -441,10 +423,8 @@ public class Apple<T extends Bumber&java.io.Serializable>
 假设需要实现这样一个方法---该方法负责将一个Object数组的所有元素添加到一个Collection集合中。考虑采用下面的代码
 
 ```java
-static void fromArrayToCollection(Object[] a,Collection<Object> c)
-{
-	for(Object o:a)
-	{
+static void fromArrayToCollection(Object[] a,Collection<Object> c) {
+	for(Object o:a) {
 		c.add(o);
 	}
 }
@@ -466,10 +446,8 @@ fromArrayToCollection(strArr,strList);
 将上面的方法改成如下形式
 
 ```java
-static <T> void fromArrayToCollection(T[] a,Collection<T> c)
-{
-	for(T o:a)
-	{
+static <T> void fromArrayToCollection(T[] a,Collection<T> c) {
+	for(T o:a) {
 		c.add(o);
 	}
 }
@@ -480,18 +458,14 @@ static <T> void fromArrayToCollection(T[] a,Collection<T> c)
 下面的程序示范了完整的用法
 
 ```java
-public class GenericMethodTest
-{
+public class GenericMethodTest {
 	//声明一个泛型方法，该泛型方法中带一个T类型形参
-	static <T> void fromArrayToCollection(T[] a,Collection<T> c)
-	{
-		for(T o:a)
-		{
+	static <T> void fromArrayToCollection(T[] a,Collection<T> c) {
+		for(T o:a) {
 			c.add(o);
 		}
 	}
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
 		Object[] oa=new Object[100];
 		Collection<Object> co=new ArrayList<>();
 		//下面代码中T代表Object类型
@@ -525,8 +499,6 @@ public class GenericMethodTest
 }
 ```
 
-
-
 与类，接口中使用泛型参数不同的是，方法中的泛型参数无须显式传入实际类型参数，如上面程序所示，当程序调用fromArrayToCollection()方法时，无须在调用该方法前传入String，Object等类型，但系统仍然可以知道类型形参的数据类型，因为编译器根据实参推断类型形参的值，它通常推断出最直接的类型参数，例如
 
 ```java
@@ -546,17 +518,13 @@ fromArrayToCollection(ia,cn);
 为了防编译器能准确的推断出泛型方法中类型形参的类型，不要制造迷惑
 
 ```java
-public class ErrorTest
-{
+public class ErrorTest {
 	//声明一个泛型方法，在该泛型方法中带一个T类型形参
-	static <T> void test(Collection<T> from,Collection<T> to)
-	{
-		for(T ele:from)
-		{
+	static <T> void test(Collection<T> from,Collection<T> to) {
+		for(T ele:from) {
 			to.add(ele);
 		}
-		public static void main(String[] args)
-		{
+		public static void main(String[] args) {
 			List<Object> as=new ArrayList<>();
 			List<String> ao=new ArrayList<>();
 			//下面的代码将产生编译错误
@@ -571,17 +539,13 @@ public class ErrorTest
 上面程序中调用test方法传入了两个实际参数，其中as的数据类型是`List<String>`，而ao的数据类型是`List<Object>`，与泛型方法签名进行对比：`test(Collection<T> a,Collection<T> c)`，编译器无法正确识别T所代表的实际类型。为了避免这种错误，可以将该方法改成如下形式：
 
 ```java
-public class ErrorTest
-{
+public class ErrorTest {
 	//声明一个泛型方法，在该泛型方法中带一个T类型形参
-	static <T> void test(Collection<? extends T> from,Collection<T> to)
-	{
-		for(T ele:from)
-		{
+	static <T> void test(Collection<? extends T> from,Collection<T> to) {
+		for(T ele:from) {
 			to.add(ele);
 		}
-		public static void main(String[] args)
-		{
+		public static void main(String[] args) {
 			List<Object> ao=new ArrayList<>();
 			List<String> as=new ArrayList<>();
 			//下面的代码正常
@@ -600,8 +564,7 @@ public class ErrorTest
 大多数时候可以使用泛型方法来替代类型通配符。例如，对于Java的Collection接口中的两个方法的定义：
 
 ```java
-public interface Collection<E>
-{
+public interface Collection<E> {
 	boolean containsAll(Collection<?> c);
 	boolean addAll(Collection<? extends E> c);
 }
@@ -610,8 +573,7 @@ public interface Collection<E>
 上面集合中的两个方法的形参都采用了类型通配符的形式，也可以采用泛型方法的形式，如下所示：
 
 ```java
-public interface Collection<E>
-{
+public interface Collection<E> {
 	<T> boolean containsAll(Collection<T> c);
 	<T extends E> boolean addAll(Collection<T> c);
 }
@@ -628,6 +590,7 @@ public interface Collection<E>
 > ## 版本2
 
 尤其是我们见到的大多数泛型类中的成员方法也都使用了泛型，有的甚至泛型类中也包含着泛型方法，这样在初学者中非常容易将泛型方法理解错了。
+
 泛型类，是在实例化类的时候指明泛型的具体类型；泛型方法，是在调用方法的时候指明泛型的具体类型 。
 
 ```java
@@ -658,7 +621,7 @@ Object obj = genericMethod(Class.forName("com.test.test"));
 ```java
 public class GenericTest {
 	//这个类是个泛型类，在上面已经介绍过
-	public class Generic<T>{     
+	public class Generic<T> {     
 		private T key;
 		public Generic(T key) {
 			this.key = key;

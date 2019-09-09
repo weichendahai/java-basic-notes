@@ -1,7 +1,11 @@
 Java基础知识笔记-11_1-图形程序设计
 
+# 11_1 图形程序设计
+
 ## 1 Swing概述
+
 现在，Swing是不对等基于GUI工具箱的正式名字。它已是Java基础类库(Java Foundation Class, JFC)的一部分。完整的JFC十分庞大，其中包含的内容远远大于Swing GUI工具箱。
+
 JFC特性不仅仅包含了Swing组件，而且还包含了一个可访问性API、一个2D API和一个可拖放API。
 
 > 注释：Swing没有完全替代AWT,而是基于AWT架构之上。Swing仅仅提供了能力更加强大的用户界面组件。尤其在采用Swing编写的程序中，还需要使用基本的AWT处
@@ -36,25 +40,20 @@ import javax.swing.*;
 * ©version 1.33 2015-05-12
 * author Cay Horstmann
 
-public class SimpleFrameTest
-{
-	public static void main(String[] args)
-	{
-		EventQueue.invokeLater(() ->
-                        {
-				SimpleFrame frame = new SimpleFrame() ;
-				frame.setDefaultCloseOperationQFrame.EXIT_0N_CL0SE) ;
-				frame.setVisible(true) ;
-			})；
+public class SimpleFrameTest {
+	public static void main(String[] args) {
+		EventQueue.invokeLater(() -> {
+				SimpleFrame frame = new SimpleFrame();
+				frame.setDefault(CloseOperationJFrame.EXIT_0N_CL0SE);
+				frame.setVisible(true);
+			});
 	}
 }
-class SimpleFrame extends ]Frame
-{
-	private static final int DEFAULT.WIDTH = 300;
-	private static final int DEFAULT.HEIGHT = 200;
-	public SimpleFrame()
-	{
-		setSize(DEFAULT_WIDTH , DEFAULTJEICHT) ;
+class SimpleFrame extends JFrame {
+	private static final int DEFAULT_WIDTH = 300;
+	private static final int DEFAULT_HEIGHT = 200;
+	public SimpleFrame() {
+		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 	}
 }
 ```
@@ -71,8 +70,7 @@ SimpleFrame和JFrame之间唯一的差别。
 
 首先，所有的Swing组件必须由事件分派线程(event dispatch thread)进行配置，线程将鼠标点击和按键控制转移到用户接口组件。下面的代码片断是事件分派线程中的执行代码：
 ```java
-EventQueue.invokeLater(() ->
-{
+EventQueue.invokeLater(() -> {
 	statements
 });
 ```
