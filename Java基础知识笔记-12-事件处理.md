@@ -4,15 +4,15 @@ Java基础知识笔记-12-事件处理
 
 ## 1 事件处理模式基础
 
-任何支持GUI的操作环境都要不断地监视按键或点击鼠标这样的事件。操作环境将 这些事件报告给正在运行的应用程序。如果有事件产生，每个应用程序将决定如何对它们做出响应。在Visual Basic这样的语言中， 事件与代码之间有着明确的对应关系。程序员对相关的特定事件编写代码， 并将这些代码放置在过程中，通常人们将它们称为事件过程（event procedure) 例如，有一个名为HelpButton的Visual Basic按钮有一个与之关联的HelpButton_Click事件过程。这个过程中的代码将在点击按钮后执行。每个Visual Basic的GUI组件都响应一个固定的事件集，不可能改变Visual Basic组件响应的事件集。
+任何支持GUI的操作环境都要不断地监视按键或点击鼠标这样的事件。操作环境将 这些事件报告给正在运行的应用程序。如果有事件产生，每个应用程序将决定如何对它们做出响应。在Visual Basic这样的语言中， 事件与代码之间有着明确的对应关系。程序员对相关的特定事件编写代码，并将这些代码放置在过程中，通常人们将它们称为事件过程（event procedure) 例如，有一个名为HelpButton的Visual Basic按钮有一个与之关联的HelpButton_Click事件过程。这个过程中的代码将在点击按钮后执行。每个Visual Basic的GUI组件都响应一个固定的事件集，不可能改变Visual Basic组件响应的事件集。
 
-另一方面，如果使用像原始的 C 这样的语言进行事件驱动的程序设计， 那就需要编写代 码来不断地检查事件队列， 以便査询操作环境报告的内容（通常这些代码被放置在包含很多switch语句的循环体中） 。显然，这种方式编写的程序可读性很差，而且在有些情况下，编码的难度也非常大。它的好处在于响应的事件不受限制，而不像 Visual Basic 这样的语言，将 事件队列对程序员隐藏起来。
+另一方面，如果使用像原始的C这样的语言进行事件驱动的程序设计，那就需要编写代 码来不断地检查事件队列， 以便査询操作环境报告的内容（通常这些代码被放置在包含很多switch语句的循环体中） 。显然，这种方式编写的程序可读性很差，而且在有些情况下，编码的难度也非常大。它的好处在于响应的事件不受限制，而不像Visual Basic这样的语言，将 事件队列对程序员隐藏起来。
 
-Java程序设计环境折中了Visual Basic与原始C的事件处理方式，因此，它既有着强 大的功能，又具有一定的复杂性。在AWT所知的事件范围内，完全可以控制事件从事件源 (event source) 例如，按钮或滚动条，到事件监听器（event listener) 的传递过程，并将任何对 象指派给事件监听器。不过事实上，应该选择一个能够便于响应事件的对象。这种事件委托模型（event delegation model) 与Visual Basic那种预定义监听器模型比较起来更加灵活。
+Java程序设计环境折中了Visual Basic与原始C的事件处理方式，因此，它既有着强大的功能，又具有一定的复杂性。在AWT所知的事件范围内，完全可以控制事件从事件源 (event source) 例如，按钮或滚动条，到事件监听器（event listener) 的传递过程，并将任何对 象指派给事件监听器。不过事实上，应该选择一个能够便于响应事件的对象。这种事件委托模型（event delegation model) 与Visual Basic那种预定义监听器模型比较起来更加灵活。
 
 事件源有一些向其注册事件监听器的方法。当某个事件源产生事件时，事件源会向为事件注册的所有事件监听器对象发送一个通告。
 
-像Java这样的面向对象语言，都将事件的相关信息封装在一个事件对象（event object) 中。在Java中，所有的事件对象都最终派生于java.util.EventObject 类。当然，每个事件类型还有子类，例如，ActionEvent和WindowEvent。
+像Java这样的面向对象语言，都将事件的相关信息封装在一个事件对象（event object) 中。在Java中，所有的事件对象都最终派生于java.util.EventObject类。当然，每个事件类型还有子类，例如，ActionEvent和WindowEvent。
 
 不同的事件源可以产生不同类别的事件。例如，按钮可以发送一个ActionEvent对象,而窗口可以发送WindowEvent对象。
 
@@ -32,12 +32,12 @@ Java程序设计环境折中了Visual Basic与原始C的事件处理方式，因
 ```
 addActionListener(监视器);
 ```
-对于注册了监视器的文本框，在文本框获得输入焦点后,如果用户按回车键,Java运行环境就自动用Actionven类创建一个对象，即发生了ActionEvent事件。也就是说，事件源注册监视器之后，相应的操作就会导致相应的事件地发生，并通知监视器，监视器就会出相应的处理。
+对于注册了监视器的文本框，在文本框获得输入焦点后,如果用户按回车键，Java运行环境就自动用Actionven类创建一个对象，即发生了ActionEvent事件。也就是说，事件源注册监视器之后，相应的操作就会导致相应的事件地发生，并通知监视器，监视器就会出相应的处理。
 ##### 3.处理事件的接口
 
 监视器负责处理事件源发生的事件。监视器是一个对象，为了处理事件源发生的事件，监视器这个对象会自动调用一个方法来处理事件。那么监视器去调用哪个方法呢？我们我知道，对象可以调用创建它的那个类中的方法，那么它到底调用该类中的哪个方法呢？Java规定为了让监视器这个对象能对事件源发生的事件进行处理，创建该监视器对象的以实现相应的接口，即必须在类体中重写接口中的所有方法，那么当事件源发生事，监视器就自动调用被类重写的某个接口方法。事件处理模式如图11.6所示。
 
-- 下面是监听器的一个示例：
+下面是监听器的一个示例：
 
 ```java
 ActionListener listener = ...
@@ -75,7 +75,7 @@ E[类A负责创建监视器,A必须实现XXXListener接口]---A[事件源.addXXX
 addActionListener(ActionListener listen);
 ```
 将实现ActionListener接口的类的实例注册为事件源的监视器。
-##### 3.ActionListener 接口
+##### 3.ActionListener接口
 ActionListener接口在java.awt.event包中，该接口中只有一个方法:
 ```java
 public void actionPerformed(ActionEvente);
@@ -117,8 +117,7 @@ class WindowActionEvent extends JFrame{
 		text=new JTextField(10);
 		listener=new ReaderListen();
 		text.addActionListener(listener);//text是事件源，listener是监视器
-		add(text);
-		
+		add(text);	
 	}
 }
 public class exercise{
@@ -178,7 +177,7 @@ class WindowActionEvent extends JFrame{
 	}
 }
 
-public class exercise{
+public class exercise {
 	public static void main(String args[]) {
 		WindowActionEvent win=new WindowActionEvent();
 		win.setBounds(100,100,460,360);
@@ -186,8 +185,7 @@ public class exercise{
 	}
 }
 ```
-Java的事件处理是基于授权模式，即事件源调用方法将某个对象注册为自己的监视器。
-**处理相应的事件调用相应的接口**
+Java的事件处理是基于授权模式，即事件源调用方法将某个对象注册为自己的监视器。**处理相应的事件调用相应的接口**
 
 ### 实例2
 为了加深对事件委托模型的理解，下面以一个响应按钮点击事件的简单示例来说明所需要知道的所有细节。在这个示例中，想要在一个面板中放置三个按钮，添加三个监听器对象用来作为按钮的动作监听器。
@@ -224,23 +222,21 @@ public void actionPerformed(ActionEvent event)
 > 在本章和下一章中，读者将会看到更加详细的内容。
 >
 > 在所有这些情况下，使用ActionListener接口的方式都是一样的：actionPerformed方法（ActionListener中的唯一方法）将接收一个ActionEvent类型的对象作为参数。这个事件对象包含了事件发生时的相关信息。
-当按钮被点击时， 希望将面板的背景颜色设置为指定的颜色。这个颜色存储在监听器类中：
+> 当按钮被点击时， 希望将面板的背景颜色设置为指定的颜色。这个颜色存储在监听器类中：
+>
+> ```java
+> class ColorAction implements ActionListener {
+> 	private Color backgroundColor ;
+> 	public ColorAction(Color c) {
+> 		backgroundedor = c;
+> 	}
+> 	public void actionPerformed (ActionEvent event) {
+> 		// set panel background color
+> 		...
+> 	}
+> }
+> ```
 
-```java
-class ColorAction implements ActionListener
-{
-	private Color backgroundColor ;
-	public ColorAction(Color c)
-	{
-		backgroundedor = c;
-	}
-	public void actionPerformed (ActionEvent event)
-	{
-		// set panel background color
-		...
-	}
-}
-```
 然后，为每种颜色构造一个对象，并将这些对象设置为按钮监听器。
 ```java
 ColorAction yellowAction = new ColorAction(Color.YELLOW) :
@@ -288,8 +284,8 @@ public class ButtonFrame extends JFrame {
 	public ButtonFrame() {
 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 		// create buttons
-		]Button yellowButton = new JButton("Yellow")；
-		3Button blueButton = new JButton("Blue")；
+		JButton yellowButton = new JButton("Yellow");
+		JButton blueButton = new JButton("Blue");
 		JButton redButton = new JButton("Red");
 		buttonPanel = new JPanel () ;
 		// add buttons to panel
@@ -303,7 +299,7 @@ public class ButtonFrame extends JFrame {
 		ColorAction blueAction = new ColorAction(Color.BLUE) ;
 		ColorAction redAction = new ColorAction(Color.RED) ;
 		// associate actions with buttons
-		yellowButton.addActionListener(yel1owAction);
+		yellowButton.addActionListener(yellowAction);
 		blueButton.addActionListener(blueAction) ;
 		redButton.addActionListener(redAction);
 	}
@@ -351,7 +347,7 @@ makeButton("red", Color.RED);
 > 	public void actionPerformed(new ActionEvent) {
 > 		System.exit(0);
 > 	}
-> })；
+> });
 > ```
 当然，已经不再需要这种繁琐的代码。使用lambda表达式更简单，也更简洁。
 
@@ -364,10 +360,8 @@ makeButton("red", Color.RED);
 > ```
 > 现在这3个按钮不再有单独的监听器。它们共享一个监听器对象， 具体来讲就是框架(frame)。因此，actionPerformed方法必须明确点击了哪个按钮。
 > ```java
-> class ButtonFrame extends JFrame implements ActionListener
-> {
-> 	public void actionPerformed(ActionEvent event)
-> 	{
+> class ButtonFrame extends JFrame implements ActionListener {
+> 	public void actionPerformed(ActionEvent event) {
 > 		Object source = event.getSource();
 > 		if (source == yellowButton) ...
 > 		else if (source = blueButton) ...
@@ -380,15 +374,15 @@ makeButton("red", Color.RED);
 
 > 注释：lambda表达式出现之前，还可以采用一种机制来指定事件监听器，其事件处理器包含一个方法调用。例如，假设一个按钮监听器需要执行以下调用：
 > ```java
-> frame.loadData() ;
+> frame.loadData();
 > ```
 > EventHandler类可以用下面的调用创建这样一个监听器：
 > ```java
-> EventHandler.create(ActionListener.class, frame , "loadData")
+> EventHandler.create(ActionListener.class,frame,"loadData");
 > ```
 > 这种方法现在已经成为历史。利用lambda表达式，可以更容易地使用以下调用：
 > ```java
-> event -> frame.loadData() ;
+> event -> frame.loadData();
 > ```
 > EventHandler机制的效率也不高，而且比较容易出错。它使用反射来调用方法。出于这个原因，EventHandler.create调用的第二个参数必须属于一个公有类。否则，反射机制就无法确定和调用目标方法
 
@@ -435,7 +429,7 @@ import java.io.*;
 import javax.swing.event.*;
 import javax.swing.*;
 import java.util.*;
-class PoliceListen implements DocumentListener{
+class PoliceListen implements DocumentListener {
 	JTextArea inputText,showText;
 	public void setInputText(JTextArea text) {
 		inputText=text;
@@ -551,14 +545,12 @@ mouseClicked(MouseEvent);//负责处理在组件上单击鼠标键触发的鼠�
 ### 实例
 在列举的简单示例中， 提供了`mousePressed`和`mouseClicked`方法。当鼠标点击在所有小方块的像素之外时，就会绘制一个新的小方块。这个操作是在`mousePressed`方法中实现的，这样可以让用户的操作立即得到响应，而不必等到释放鼠标按键。如果用户在某个小方块中双击鼠标，就会将它擦除。由于需要知道点击次数，所以这个操作将在`mouseClicked`方法中实现。
 ```java
-public void mousePressed (MouseEvent event)
-{
+public void mousePressed (MouseEvent event) {
 	current = find(event.getPoint());
 	if (current null) // not inside a square
 		add(event.getPoint()) ;
 }
-public void mouseClicked(MouseEvent event)
-{
+public void mouseClicked(MouseEvent event) {
 	current = find(event.getPoint())；
 	if (current != null && event.getClickCount() >= 2)
 		remove(current):
@@ -570,8 +562,7 @@ public void mouseClicked(MouseEvent event)
 
 下面是示例程序中`MouseMotionListener`类的`mouseMoved`方法：
 ```java
-public void mouseMoved(MouseEvent event)
-{
+public void mouseMoved(MouseEvent event) {
 	if (find(event.getPointO) = null )
 		setCursor(Cursor.getDefaultCursor ()) ;
 	else
@@ -589,12 +580,10 @@ public void mouseMoved(MouseEvent event)
 > createCustomCursor的第一个参数指向光标图像。第二个参数给出了光标的“热点”偏移。第三个参数是一个描述光标的字符串。这个字符串可以用于访问性支持，例如，可以将光标形式读给视力受损或没有在屏幕前面的人。
 如果用户在移动鼠标的同时按下鼠标，就会调用`mouseMoved`而不是调用`mouseDmgged`。在测试应用程序中，用户可以用光标拖动小方块。在程序中，仅仅用拖动的矩形更新当前光标位置。然后，重新绘制画布，以显示新的鼠标位置。
 ```java
-public void mouseDragged(MouseEvent event)
-{
-	if (current != null )
-	{
-		int x = event .getX() ;
-		int y = event.getY()；
+public void mouseDragged(MouseEvent event) {
+	if (current != null) {
+		int x = event .getX();
+		int y = event.getY();
 		current .setFrame(x - SIDELENGTH / 2 , y - SIDELENGTH / 2, SIDELENCTH , SIDELENCTH) ;
 		repaint();
 	}
@@ -614,10 +603,8 @@ import javax.swing.*;
 /**
 * A frame containing a panel for testing mouse operations
 */
-public class MouseFrame extends JFrame
-{
-	public MouseFrame()
-	{
+public class MouseFrame extends JFrame {
+	public MouseFrame() {
 		add (new MouseComponent()) ;
 		pack() ;
 	}
@@ -634,26 +621,22 @@ import javax.swing.*;
 /**
 * A component with mouse operations for adding and removing squares.
 */
-public class MouseComponent extends JComponent
-{
+public class MouseComponent extends JComponent {
 	private static final int DEFAULT.WIDTH = 300;
 	private static final int DEFAULT.HEICHT = 200;
 	private static final int SIDELENCTH = 10;
 	private ArrayList<Rectangle2D> squares;
 	private Rectangle2D current ; // the square containing the mouse cursor
-	public MouseComponent ()
-	{
+	public MouseComponent () {
 		squares = new ArrayList() ;
 		current = null ;
 		addMouseListener(new MouseHandler());
-		addMouseMotionListener(new MouseMotionHandler())；
+		addMouseMotionListener(new MouseMotionHandler());
 	}
-	public Dimension getPreferredSize() 
-	{ 
+	public Dimension getPreferredSize() { 
 		return new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT); 
 	}
-	public void paintComponent(Graphics g)
-	{
+	public void paintComponent(Graphics g) {
 		Graphics2D g2 = (Graphics2D) g;
 		// draw all squares
 		for (Rectangle2D r : squares)
@@ -664,10 +647,8 @@ public class MouseComponent extends JComponent
 	* @param p a point
 	* ©return the first square that contains p
 	*/
-	public Rectangle2D find(Point2D p)
-	{
-		for (Rectangle2D r : squares)
-		{
+	public Rectangle2D find(Point2D p) {
+		for (Rectangle2D r : squares) {
 			if (r.contains(p)) return r;
 		}
 		return null;
@@ -676,8 +657,7 @@ public class MouseComponent extends JComponent
 	* Adds a square to the collection.
 	* @param p the center of the square
 	*/
-	public void add(Point2D p)
-	{
+	public void add(Point2D p) {
 		double x = p.getX();
 		double y = p.getY();
 		current = new Rectangle2D.Double(x-SIDELENCTH/2, y-SIDELENCTH/2, SIDELENCTH, SIDELENCTH);
@@ -688,33 +668,27 @@ public class MouseComponent extends JComponent
 	* Removes a square from the collection.
 	* iparan s the square to remove
 	*/
-	public void remove(Rectangle2D s)
-	{
+	public void remove(Rectangle2D s) {
 		if (s = null) return;
 		if (s == current) current = null;
 		squares.remove(s);
 		repaint();
 	}
-	private class MouseHandler extends MouseAdapter
-	{
-		public void mousePressed(MouseEvent event)
-		{
+	private class MouseHandler extends MouseAdapter {
+		public void mousePressed(MouseEvent event) {
 			// add a new square if the cursor isn't inside a square
-			current = find(event.getPoint())；
+			current = find(event.getPoint());
 			if (current == null) add(event,getPoint());
 		}
-		public void mousedieked(MouseEvent event)
-		{
+		public void mousedieked(MouseEvent event) {
 			// remove the current square if double clicked
 			current = find(event.getPoint());
 			if (current != null && event.getClickCount() >= 2)
 				remove(current);
 		}
 	}
-	private class MouseMotionHandler implements MouseMotionListener
-	{
-		public void mouseMoved(MouseEvent event)
-		{
+	private class MouseMotionHandler implements MouseMotionListener {
+		public void mouseMoved(MouseEvent event) {
 			// set the mouse cursor to cross hairs if it is inside
 			// a rectangle
 			if (find(event.getPoint()) == null)
@@ -722,10 +696,8 @@ public class MouseComponent extends JComponent
 			else
 				setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		}
-		public void mouseDragged(MouseEvent event)
-		{
-			if (current != null)
-			{
+		public void mouseDragged(MouseEvent event) {
+			if (current != null) {
 				int x = event.getX();
 				int y = event.getY();
 				// drag the current rectangle to center it at (x, y)
@@ -945,7 +917,7 @@ class Police implements KeyListener,FocusListener{
 	}
 }
 
-class Win extends JFrame{
+class Win extends JFrame {
 	JTextField text[]=new JTextField[3];
 	Police police;
 	JButton b;
@@ -978,13 +950,14 @@ public class exercise{
 
 ## 9 使用MVC结构
 模型-视图-控制器，简称MVC，MVC是一种先进的设计结构，是TrygveReenskaug教授于1978年最早开发的一个基本结构，其目的是以会话形式提供方便的GUI支持，MVC首先出现在Smalltalk编程语言中。
+
 MVC是一种通过三个不同部分构造一个软件或组件的理想办法。
+
 - 模型，用于储存数据的对象
 - 视图，为模型提供数据显示的对象
 - 控制器，处理用户的交互操作，对于用户的操作做出响应，让模型和视图进行必要的交互，即通过视图修改，获取模型中的数据；当模型中的数据变化时，让视图更新显示。  
 
-从面向对象的角度看，MVC结构可以使程序更具有对象化特性，也更容易维护，
-**在设计程序时，可以将某个对象看作模型，然后为模型提供恰当的显示组件，即视图，为了对用户的操作做出响应，可以选择某个组件做控制器，当组件发生事件后，通过视图修改得到模型中维护着的数据，并让视图更新显示。**  
+从面向对象的角度看，MVC结构可以使程序更具有对象化特性，也更容易维护，**在设计程序时，可以将某个对象看作模型，然后为模型提供恰当的显示组件，即视图，为了对用户的操作做出响应，可以选择某个组件做控制器，当组件发生事件后，通过视图修改得到模型中维护着的数据，并让视图更新显示。**  
 
 如下例：首先编写一个封装三角形的类，然后再编写一个窗口。要求窗口使用三个文本框和一个文本区域为三角形对象中的数据提供视图，其中三个文本框用来显示和更新三角形对象的三个边的长度；文本区对象用来显示三角形的面积。窗口中有一个按钮，用户单击该按钮后，程序用三个文本框中的数据分别作为三角形的三个边的长度，并将计算结果显示在文本区。
 ```java

@@ -521,12 +521,12 @@ sufficientFunds.signalAll();
 ```java
 public void transfer(int from, int to, int amount) 
 {
-	bankLock.lock()；
+	bankLock.lock();
 	try
 	{
 		while (accounts[from] < amount)
-			sufficientFunds.await()；
-			// transfer funds sufficientFunds.signalAll()；
+			sufficientFunds.await();
+			// transfer funds sufficientFunds.signalAll();
 	}
 	finally {
 		bankLock.unlock();
@@ -574,7 +574,7 @@ public class Bank
 		accounts = new double[n];
 		Arrays.fill(accounts, initialBalance);
 		bankLock = new ReentrantLock();
-		sufficientFunds = bankLock.newCondition()；
+		sufficientFunds = bankLock.newCondition();
 		/** 
 		* Transfers money from one account to another. 
 		* @param from the account to transfer from
@@ -583,11 +583,11 @@ public class Bank
 		*/
 		public void transfer(int from, int to, double amount) throws InterruptedException
 		{
-			bankLock.lock()；
+			bankLock.lock();
 			try 
 			{
 				while (accounts[from] < amount)
-					sufficientFunds.await()；
+					sufficientFunds.await();
 				System.out.print(Thread.currentThread());
 				accounts[from] -= amount;
 				System.out.printf(" %10.2f from %6 to %d", amount, from, to);
@@ -685,7 +685,7 @@ class Bank
 			wait(); // wait on intrinsic object lock's single condition
 		accounts[from] -= amount;
 		accounts[to] += amount;
-		notifyAll()；// notify all threads waiting on the condition
+		notifyAll();// notify all threads waiting on the condition
 	}
 	public synchronized double getTotalBalance() { ... }
 }
@@ -913,7 +913,7 @@ public void setDone() {
 还有一种情况可以安全地访问一个共享域，即这个域声明为final时。考虑以下声明：
 
 ```java
-final Map<String, Double> accounts = new HashKap<>()；
+final Map<String, Double> accounts = new HashKap<>();
 ```
 
 其他线程会在构造函数完成构造之后才看到这个accounts变量。

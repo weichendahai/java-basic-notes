@@ -2,6 +2,15 @@
 
 # 8 包
 一般而言，当命名类的时候，是从名称空间中分配一个名称。名称空间定义了一个声明性的区域。在java中，同一个名称空间中的两个类不能使用相同的名称。这样，再给定的一个名称空间中，每一个类名必然是唯一的包提供了一种为名称空间分区的方法。当在包中定义一个类时，该包的名称将附加到每一个类上，这样就避免了与其他包中具有相同名字的类发生名字冲突。
+
+Java 允许使用包（package） 将类组织起来。借助于包可以方便地组织自己的代码，并将 自己的代码与别人提供的代码库分开管理。
+
+标准的Java类库分布在多个包中，包括java.lang、java.util和java.net等。标准的Java包具有一个层次结构。如同硬盘的目录嵌套一样，也可以使用嵌套层次组织包。所有标准的Java包都处于java和javax包层次中。
+
+使用包的主要原因是确保类名的唯一性。假如两个程序员不约而同地建立了Employee类。只要将这些类放置在不同的包中，就不会产生冲突。事实上，为了保证包名的绝对唯一性，Sun公司建议将公司的因特网域名（这显然是独一无二的）以逆序的形式作为包名，并且对于不同的项目使用不同的子包。例如，horstmann.com是本书作者之一注册的域名。逆序形式为com.horstmann。这个包还可以被进一步地划分成子包，如 com.horstmann.corejava。
+
+从编译器的角度来看，嵌套的包之间没有任何关系。例如，java.util包与java.util.jar包毫无关系。每一个都拥有独立的类集合
+
 ## 1 包的作用
 - 1.把功能相似或相关的类或接口组织在同一个包中，方便类的查找和使用。
 - 2.如同文件夹一样，包也采用了树形目录的存储方式。同一个包中的类名字是不同的，不同的包中的类的名字是可以相同的，当同时调用两个不同包中相同类名的类时，应该加上包名加以区别。因此，包可以避免名字冲突。
@@ -21,6 +30,7 @@ public class Something{
 }
 ```
 那么它的路径应该是`net/java/util/Something.java`这样保存的。package(包)的作用是把不同的java程序分类保存，更方便的被其他java程序调用。  
+
 一个包（package）可以定义为一组相互联系的类型（类、接口、枚举和注释），为这些类型提供访问保护和命名空间管理的功能。  
 
 以下是一些Java中的包：
@@ -43,7 +53,9 @@ java.io-包含输入输出功能的函数
 ### 例子
 
 让我们来看一个例子，这个例子创建了一个叫做animals的包。通常使用小写的字母来命名避免与类、接口名字的冲突  
+
 在 animals 包中加入一个接口（interface）：
+
 ```java
 Animal.java 文件代码：
 /* 文件名: Animal.java */
@@ -56,7 +68,7 @@ interface Animal {
 ```
 接下来，在同一个包中加入该接口的实现：
 ```java
-MammalInt.java 文件代码：
+//MammalInt.java 文件代码：
 package animals;
 
 /* 文件名 : MammalInt.java */
@@ -88,7 +100,7 @@ Mammal travel
 ```
 
 ## 3 包和成员访问
-包也参与了java的访问控制机制，元素的可见性取决于它的访问说明-private，public，protected或者默认，也取决于元素所在的包。因此，一个元素的可见性就由它所属的类和所属的包的可见性来决定，这种多层次的访问控制方法适用与丰富的访问权限分表，如下表：
+包也参与了java的访问控制机制，元素的可见性取决于它的访问说明private，public，protected或者默认，也取决于元素所在的包。因此，一个元素的可见性就由它所属的类和所属的包的可见性来决定，这种多层次的访问控制方法适用与丰富的访问权限分表，如下表：
 
 -|private成员|默认成员|protected成员|public成员
 ---|---|---|---|---
@@ -142,7 +154,10 @@ import payroll.Employee;
 
 类文件中可以包含任意数量的import声明。import声明必须在包声明之后，类声明之前。
 
-在大多数情况下，只导入所需的包，并不必过多地理睬它们。但在发生命名冲突的时候，就不能不注意包的名字了。例如，java.util 和java.sql 包都有日期（ Date) 类。如果在程序中导入了这两个包：
+但是，需要注意的是，只能使用星号（\*）导入一个包，而不能使用import java.*或import java.\*.\*导入以java为前缀的所有包。 
+
+**在大多数情况下，只导入所需的包，并不必过多地理睬它们。但在发生命名冲突的时候，就不能不注意包的名字了。例如，java.util 和java.sql包都有日期（Date) 类。如果在程序中导入了这两个包：**
+
 ```java
 import java.util .*;
 import java.sql .*;
@@ -166,9 +181,25 @@ java.sql .Date today = new java.sql .Date(...) ;
 
 > C++注释：C++程序员经常将import与#include弄混。实际上，这两者之间并没有共同之处。在C++中，必须使用include将外部特性的声明加栽进来，这是因为C++编译器无法查看任何文件的内部， 除了正在编译的文件以及在头文件中明确包含的文件。Java编译器可以查看其他文件的内部， 只要告诉它到哪里去查看就可以了
 > 在Java中，通过显式地给出包名，如java.util.Date，就可以不使用import; 而在C++中，无法避免使用include指令。Import语句的唯一的好处是简捷。可以使用简短的名字而不是完整的包名来引用一个类。例如，在import java.util.* ( 或import java.util.Date) 语句之后，可以仅仅用Date引用java.util.Date类。
+>
 > 在C++中，与包机制类似的是命名空间(namespace)。在Java中，package与import语句类似于C++中的namespace和using指令。
 
-## 5 package的目录结构
+## 5 将类放入包中
+
+要想将一个类放入包中，就必须将包的名字放在源文件的开头，包中定义类的代码之前。例如，Employee.java开头是这样的：
+
+```java
+package com.horstiman.corejava;
+public class Employee {
+	...
+} 
+```
+
+如果没有在源文件中放置package语句，这个源文件中的类就被放置在一个默认包 (defaulf package)中。默认包是一个没有名字的包。在此之前，我们定义的所有类都在默认包中。
+
+将包中的文件放到与完整的包名匹配的子目录中。例如，com.horstmann.corejava包中的所有源文件应该被放置在子目录com/horstmann/corejava (Windows中com\horstmann\corejava) 中。编译器将类文件也放在相同的目录结构中。
+
+## 6 package的目录结构
 
 类放在包中会有两种主要的结果：
 - 包名成为类名的一部分，正如我们前面讨论的一样。
@@ -179,9 +210,7 @@ java.sql .Date today = new java.sql .Date(...) ;
 将类、接口等类型的源码放在一个文本中，这个文件的名字就是这个类型的名字，并以`.java`作为扩展名。例如：
 ```java
 // 文件名 :  Car.java
- 
 package vehicle;
- 
 public class Car {
    // 类实现  导入包
 }
@@ -196,19 +225,15 @@ public class Car {
 
 通常，一个公司使用它互联网域名的颠倒形式来作为它的包名.例如：互联网域名是runoob.com，所有的包名都以 com.runoob开头。包名中的每一个部分对应一个子目录。
 
-例如：有一个`com.runoob.test`的包，这个包包含一个叫做`Runoob.java`的源文件，那么相应的，应该有如下面的一连串子目录：
-....\com\runoob\test\Runoob.java
+例如：有一个`com.runoob.test`的包，这个包包含一个叫做`Runoob.java`的源文件，那么相应的，应该有如下面的一连串子目录：`...\com\runoob\test\Runoob.java`
 
 编译的时候，编译器为包中定义的每个类、接口等类型各创建一个不同的输出文件，输出文件的名字就是这个类型的名字，并加上`.class`作为扩展后缀。 例如：
 ```java
 // 文件名: Runoob.java
- 
 package com.runoob.test;
-public class Runoob {
-      
+public class Runoob { 
 }
-class Google {
-      
+class Google { 
 }
 ```
 现在，我们用`-d`选项来编译这个文件，如下：
@@ -235,9 +260,9 @@ import com.runoob.test.*;
 
 `<path- two>\classe`是`class path`，`package`名字是`com.runoob.test`,而编译器和JVM会在`<path-two>\classes\com\runoob\test`中找 `.class`文件。
 
-一个`class path`可能会包含好几个路径，多路径应该用分隔符分开。默认情况下，编译器和JVM查找当前目录。JAR 文件按包含Java平台相关的类，所以他们的目录默认放在了`class path`中。
+一个`class path`可能会包含好几个路径，多路径应该用分隔符分开。默认情况下，编译器和JVM查找当前目录。JAR文件按包含Java平台相关的类，所以他们的目录默认放在了`class path`中。
 
-## 6 设置CLASSPATH系统变量
+## 7 设置CLASSPATH系统变量
 
 用下面的命令显示当前的CLASSPATH变量：
 ```
@@ -256,7 +281,7 @@ UNIX 平台（Bourne shell 下）：# CLASSPATH=/home/jack/java/classes; export 
 ```
 
 ---
-## 7 JDK中提供的Java基本包
+## 8 JDK中提供的Java基本包
 
 JDK中提供了一些Java基本包，主要包括：
 - java.lang包：包含线程类，异常类，系统类，整数类和字符串类等，这些类是编写Java程序经常用到的。这个包是Java虚拟机自动引入的，也就是说，即使没有提供import java.lang.*语句，这个包也会被自动引入。

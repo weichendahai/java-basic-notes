@@ -284,13 +284,13 @@ static变量在某种程度上与其他语言比如C语言中的全局变量相�
 ### 4.2 static方法
 成员方法分为静态方法和实例方法，用static修饰的方法叫做静态方法或者类方法。静态方法和静态变量一样，不需要创建类的实例，可以直接通过类名来访问，例如：
 ```java
-public class Sample{
+public class Sample {
 	public static int add(int x,int y){//静态方法
 		return x+y;
 	}
-	public class Sample{
+	public class Sample {
 	public void Sample{
-	public void method(){
+	public void method() {
 			int result=Sample.add(1,2);//调用Sample类的add()静态
 			System.out.println("result");
 		}

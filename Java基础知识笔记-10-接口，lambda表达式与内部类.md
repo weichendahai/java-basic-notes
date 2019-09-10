@@ -7,7 +7,8 @@ Java基础知识笔记-8-接口，lambda表达式与内部类
 # 10.1 接口
 在Java程序设计语言中， 接口不是类，而是对类的一组需求描述，这些类要遵从接口描述的统一格式进行定义。
 
-&emsp;&emsp;在Java语言中，接口有两种意思
+在Java语言中，接口有两种意思
+
 - 一是指概念性的接口，即指系统对外提供的所有服务，类的所有能被外部使用者访问的方法构成了类的接口
 - 二是指interface关键字定义的实实在在的接口，也称为接口类型。
 
@@ -18,7 +19,7 @@ Java基础知识笔记-8-接口，lambda表达式与内部类
 例如：
 
 ```java
-interface Printable{
+interface Printable {
 	final int MAX=100;
 	void add();
 	float sum(float x,float y);
@@ -33,7 +34,7 @@ interface Printable{
 **接口体中中只有抽象的方法和普通的方法。而且接口体中所有常量的访问权限一定都是public（允许省略public，final修饰符），所有的抽象方法的访问权限一定都是public（允许省略public，abstract修饰符）例如：**
 
 ```java
-interface Printable{
+interface Printable {
 	public final int MAX=100;
 	public abstract void add();
 	public abstract float sum(float x,float y);
@@ -78,7 +79,7 @@ MyIFC.method2();//合法，可以通过接口的名字来访问它的静态方�
 **接口没有构造方法，不能被实例化。在接口中定义构造方法是非法的，例如：**
 
 ```java
-public interface A{
+public interface A {
 	public A(){//编译出错，接口中不允许定义构造方法
 		...
 	}
@@ -151,7 +152,10 @@ abstract class A implements Computable{
 
 **当不希望某些类通过继承使得他们具有一些相同的方法时，就可以考虑让这些类去实现相同的接口而不是把他们声明为同一个类的子类。**  
 
-## 4 接口实例之Comparator接口
+## 4 接口示例
+
+### 4.1 Comparator接口
+
 我们已经了解了如何对一个对象数组排序，前提是这些对象是实现了Comparable接口的类的实例, 例如，可以对一个字符串数组排序，因为String类实现了
 `Comparable<String>`,而且`String.compareTo`方法可以按字典顺序比较字符串。
 
@@ -183,14 +187,16 @@ if (comp.compare(words[i], words[j]) > 0)...
 要对一个数组排序，需要为Arrays.sort方法传入一个LengthComparator对象：
 ```java
 String[] friends = { "Peter", "Paul", "Mary" };
-Arrays,sort(friends, new LengthComparatorO):
+Arrays,sort(friends, new LengthComparator()):
 ```
 现在这个数组可能是["Paul", "Mary", "Peter"] 或["Mary", "Paul", "Peter"]。
 
 以后我们会了解，利用lambda表达式可以更容易地使用Comparator。
 
----
-## 5 接口回调
+### 4.2 接口回调
+
+回调（callback) 是一种常见的程序设计模式。在这种模式中，可以指出某个特定事件发生时应该采取的动作。例如，可以指出在按下鼠标或选择某个菜单项时应该采取什么行动。然而，由于至此还没有介绍如何实现用户接口，所以只能讨论一些与上述操作类似，但比较简单的情况。
+
 和类一样，接口也是Java中重要的一种数据类型，用接口声明的变量称为接口变量。 **接口属于引用型变量，接口变量中可以存放实现该接口的类的实例的引用，即存放对象的引用** 
 
 假如，假设Com是一个接口，那么就可以用Com声明一个变量:
@@ -208,16 +214,16 @@ ImpleCom object=new ImpleCom();
 
 **接口回调非常类似我们在之前介绍的上传型对象调用子类重写的方法**
 
-### 5.1 使用接口引用
+#### 4.2.1 使用接口引用
 你可能会对可以使用接口创建引用变量感到惊讶，可以创建接口引用变量，这样的变量可以引用实现他的接口的任何对象，当通过接口调用一个对象上的方法时，就会执行次对象实现的那个版本上那个的方法，这个过程类似与使用父类去引用访问子类对象。
 
-### 5.2 接口能够扩展
+#### 4.2.2 接口能够扩展
 使用关键字extends，一个接口可以继承另一个接口。扩展接口的语法与继承类的语法一样，当一个类实现继承了其他接口的接口时，他必须在接口继承链中定义的所有方法提供实现方式。
 
 实例代码：
 
 ```java
-interface A{
+interface A {
 	void meth1();
 	void meth2();
 }
@@ -244,9 +250,8 @@ class IFExtends {
 		}
 	}
 }
-
 ```
-### 5.3 接口回调实例1
+#### 4.2.3 接口回调实例1
 回调(callback)是一种常见的程序设计模式。在这种模式中，可以指出某个特定事件发生时应该采取的动作。例如，可以指出在按下鼠标或选择某个菜单项时应该采取什么行动。然而， 由于至此还没有介绍如何实现用户接口， 所以只能讨论一些与上述操作类似，但比较简单的情况。
 
 在java.swing包中有一个Timer类，可以使用它在到达给定的时间间隔时发出通告。例如，假如程序中有一个时钟，就可以请求每秒钟获得一个通告，以便更新时钟的表盘。在构造定时器时，需要设置一个时间间隔，并告之定时器，当到达时间间隔时需要做些什么操作。
@@ -292,7 +297,8 @@ At the tone, the time is Wed Apr 13 23:29:08 PDT 2016
 运行这个程序时要有一些耐心。程序启动后，将会立即显示一个包含“Quit program?”字样的对话框，10秒钟之后，第1条定时器消息才会显示出来。
 
 需要注意，这个程序除了导入javax.swing.* 和java.util.\*外，还通过类名导入了javax.swing.Timer。这就消除了javax.swing.Timer与java.util.Timer之间产生的二义性。这里的java.util.Timer是一个与本例无关的类，它主要用于调度后台任务。
-### 5.4 接口回调实例2
+
+#### 4.2.4 接口回调实例2
 
 举例：老板分派给员工做事，员工做完事情后需要给老板回复，老板对其做出反应。
 
@@ -309,7 +315,7 @@ public interface JieKou {
 - 2 定义一个Boss类实现接口
 ```java
 package JieKouHuiDiao;
-public class Boss implements JieKou{
+public class Boss implements JieKou {
 //定义一个老板实现接口
 	@Override
 	public void show() {
@@ -337,7 +343,6 @@ public class Employee {
 ```
 - 4 测试类
 ```java
-复制代码
 package JieKouHuiDiao;
 public class Test {
 	public static void main(String[] args) {
@@ -351,10 +356,10 @@ public class Test {
 通过上面的例子和代码应该有个比较初步的了解了，接口回调还有使用匿名内部类来实现
 
 ---
-## 6 接口与多态
+## 5 接口与多态
 由接口产生多态就是指不同的类在实现同一个接口时可能具有不同的实现方式，那么接口变量在回调接口方法时就可能具有多种形态。
 ```java
-interface ComputerAverage{
+interface ComputerAverage {
 	public double average(double a,double b);
 }
 
@@ -386,29 +391,21 @@ public class exercise{
 }
 ```
 ---
-## 7 接口变量做参数
 
----
-## 8 abstract类与接口的比较
-接口和abstract类的比较如下：
+## 6 接口变量做参数
 
-#### 1.abstract类和接口都有abstract方法  
-#### 2.接口中只可以有常量，不能有变量；而abstract类中既可以有常量又可以有变量  
-#### 3.abstract类中也可以有非abstract方法，接口不可以
-在设计程序时，应当根据具体的分析方法来确定是使用抽象类还是接口。abstract类除了提供重要的需要子类重写的abstract方法外，也提供了子类需要继承的变量和非abstract方法，如果子类需要重写父类的abstract方法，还需要从父类继承一些变量或继承一些重要的非abstract方法，就可以考虑用abstract。  
-
-如果某个问题不需要继承，只是需要若干个类给出某些重要的abstract方法的实现细节，就可以考虑使用接口。
-
-## 9 接口与抽象类
+## 7 接口与抽象类
 可能会产生这样一个疑问：为什么Java程序设计语言还要不辞辛苦地引入接口概念？为什么不将Comparable直接设计成如下所示的抽象类。
 ```java
-abstract class Comparable // why not?{
+abstract class Comparable // why not?
+{
 	public abstract int compareTo(Object other);
 }
 ```
 然后，Employee类再直接扩展这个抽象类，并提供compareTo方法的实现：
 ```java
-class Employee extends Comparable // why not?{
+class Employee extends Comparable // why not?
+{
 	public int compareTo(Object other) { . . . }
 }
 ```
@@ -423,6 +420,21 @@ class Employee extends Person implements Comparable // OK
 有些程序设计语言允许一个类有多个超类，例如C++。我们将此特性称为多重继承(multiple inheritance)。而Java的设计者选择了不支持多继承，其主要原因是多继承会让语言本身变得非常复杂（如同C++)，效率也会降低（如同Eiffel)。
 
 实际上，接口可以提供多重继承的大多数好处，同时还能避免多重继承的复杂性和低效性
+
+### 7.1 abstract类与接口的比较
+
+接口和abstract类的比较如下：
+
+#### 1.abstract类和接口都有abstract方法  
+
+#### 2.接口中只可以有常量，不能有变量；而abstract类中既可以有常量又可以有变量  
+
+#### 3.abstract类中也可以有非abstract方法，接口不可以
+
+在设计程序时，应当根据具体的分析方法来确定是使用抽象类还是接口。abstract类除了提供重要的需要子类重写的abstract方法外，也提供了子类需要继承的变量和非abstract方法，如果子类需要重写父类的abstract方法，还需要从父类继承一些变量或继承一些重要的非abstract方法，就可以考虑用abstract。  
+
+如果某个问题不需要继承，只是需要若干个类给出某些重要的abstract方法的实现细节，就可以考虑使用接口。
+
 # 10.2 lambda表达式
 现在可以来学习lambda表达式，这是这些年来Java语言最让人激动的一个变化。你会了解如何使用lambda表达式采用一种简洁的语法定义代码块，以及如何编写处理lambda表达式的代码。
 
@@ -561,7 +573,7 @@ public class LambdaTest {
 			System.out.println ("The time is " + new Date())) ;
 		t.start() ;
 		// keep program running until user selects "0k"
-		JOptionPane.showMessageDialog (nul1 , "Quit program?")；
+		JOptionPane.showMessageDialog (nul1 , "Quit program?");
 		System.exit (O) ;
 	}
 }
@@ -586,7 +598,7 @@ Timer t = new Timer(1000, event ->
 	{
 		System.out.println("At the tone, the time is " + new DateO);
 		Toolkit.getDefaultToolkit().beep();
-	})；
+	});
 ```
 与使用实现了ActionListener接口的类相比，这个代码可读性要好得多。实际上，在Java 中，对lambda表达式所能做的也只是能转换为函数式接口。在其他支
 持函数字面量的程序设计语言中，可以声明函数类型(如（String, String) -> int )、声明这些类型的变量，还可以使用变量保存函数表达式。不过，Java设计者还是决定保持我们熟悉的接口概念，没有为Java语言增加函数类型。
@@ -648,3 +660,36 @@ public class exercise{
 - 在6.4.4 节中，讨论局部内部类，它可以访问外围作用域中的局部变量。
 - 在6.4.5 节中，介绍匿名内部类，说明在Java有lambda表达式之前用于实现回调的基本方法。
 - 最后在6.4.6 节中，介绍如何将静态内部类嵌套在辅助类中。
+
+> C++ 注释：
+>
+> C++ 有嵌套类。一个被嵌套的类包含在外围类的作用域内。下面是一个典型的例子，一个链表类定义了一个存储结点的类和一个定义迭代器位置的类。
+>
+> ```java
+> class LinkedList {
+> public:
+> 	class Iterator // a nested class
+> 	{
+> 		public: void;
+> 		insert(int x);
+> 		int erase();
+> 		...
+> 	};
+> private:
+> 	class Link // a nested class
+> 	{
+> 		public:
+> 			Link* next;
+> 			int data;
+> 	};
+>     ...
+> };
+> ```
+>
+> 嵌套是一种类之间的关系，而不是对象之间的关系。一个LinkedList对象并不包含Iterator类型或Link类型的子对象。
+>
+> 嵌套类有两个好处：命名控制和访问控制。由于名字Iterator嵌套在LinkedList类的内部， 所以在外部被命名为LinkedList::Iterator，这样就不会与其他名为Iterator的类 发生冲突。在Java中这个并不重要，因为Java包已经提供了相同的命名控制。需要注意的是，Link类位于LinkedList类的私有部分，因此，Link对其他的代码均不可见。鉴于此情况，可以将Link的数据域设计为公有的，它仍然是安全的。这些数据域只能被LinkedList类（具有访问这些数据域的合理需要）中的方法访问，而不会暴露给其他的代码。在Java中，只有内部类能够实现这样的控制。
+>
+> 然而，Java内部类还有另外一个功能，这使得它比C++的嵌套类更加丰富，用途更加广泛。内部类的对象有一个隐式引用，它引用了实例化该内部对象的外围类对象。通过这个指针，可以访问外围类对象的全部状态。在本章后续内容中，我们将会看到有关这个Java机制的详细介绍
+>
+> 在Java中，static内部类没有这种附加指针，这样的内部类与C++中的嵌套类很相似。

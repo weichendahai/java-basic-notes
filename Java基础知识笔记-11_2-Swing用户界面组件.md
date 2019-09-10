@@ -106,7 +106,7 @@ class WindowMenu extends JFrame {
         menu.add(item1);
         menu.addSeparator();
         menu.add(item2);
-        menu.add(subMenu);//把sunmenu作为menu的一个菜单项；
+        menu.add(subMenu);//把sunmenu作为menu的一个菜单项
         subMenu.add(new JMenuItem("汽车销售系统",new ImageIcon("c.gif")));
         subMenu.add(new JMenuItem("农场管理系统",new ImageIcon("d.gif")));
         menubar.add(menu);
@@ -1306,7 +1306,7 @@ slider.setlnverted(true);
 > 		slider.setMajorTickSpacing(20);
 > 		slider.setMinorTickSpacing(5);
 > 		slider.setPaintTrack(false);
-> 		addSlider(slider, "No track")；
+> 		addSlider(slider, "No track");
 > 		// add an inverted slider
 > 		slider = new JSlider();
 > 		slider.setPaintTicks(true);
@@ -2977,7 +2977,7 @@ chooser.addPropertyChangeListener(event -> {
 		// update the accessory
 		...
 	}
-})；
+});
 ```
 在这个示例中，将这段代码添加到ImagePreviewer构造器中。
 
