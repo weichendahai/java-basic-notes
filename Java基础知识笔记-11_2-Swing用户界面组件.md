@@ -36,7 +36,7 @@ Java提供的JFrame类的实例就是一个底层容器(JDialog类的实例也�
 ```java
 import javax.swing.*;
 import java.awt.*;
-public class exercise{
+public class exercise {
 	public static void main(String args[]) {
 		JFrame windows1=new JFrame("The first windows");
 		JFrame windows2=new JFrame("The second windows");
@@ -151,7 +151,7 @@ char[]getPassword()
 import java.awt.*;
 import javax.swing.*;
 
-class ComponentInWindow extends JFrame{
+class ComponentInWindow extends JFrame {
 	JTextField text;
 	JButton button;
 	JCheckBox checkBox1,checkBox2,checkBox3;
@@ -421,7 +421,7 @@ public class exercise extends JFrame{
 # 1 Swing 和模型-视图-控制器设计模式
 前面说过，本章将从Swing组件的体系结构开始。首先，我们讨论设计模式的概念，然后再看一下Swing框架中最具影响力的“模型-视图-控制器”模式。
 ## 1.1 设计模式
-在“模型-视图-控制器”模式中，背景是显示信息和接收用户输入的用户界面系统。有关“模型-视图-控制器”模式将在接下来的章节中讲述。这里有几个冲突因素。对于同一数据来说，可能需要同时更新多个可视化表示。例如，为了适应各种观感标准，可能需要改变可视化表示形式；又例如，为了支持语音命令，可能需要改变交互机制。解决方案是将这些功能分布到三个独立的交互组件：模型、视图和控制器。模型-视图-控制器模式并不是AWT和Swing设计中使用的唯一模式。下列是应用的 另外几种模式： 
+在“模型-视图-控制器”模式中，背景是显示信息和接收用户输入的用户界面系统。有关“模型-视图-控制器”模式将在接下来的章节中讲述。这里有几个冲突因素。对于同一数据来说，可能需要同时更新多个可视化表示。例如，为了适应各种观感标准，可能需要改变可视化表示形式；又例如，为了支持语音命令，可能需要改变交互机制。解决方案是将这些功能分布到三个独立的交互组件：模型、视图和控制器。模型-视图-控制器模式并不是AWT和Swing设计中使用的唯一模式。下列是应用的另外几种模式： 
 
 - 容器和组件是“组合(composite)” 模式
 - 带滚动条的面板是“ 装饰器(decorator)” 模式
@@ -436,9 +436,9 @@ public class exercise extends JFrame{
 - 外观（颜色，大小等)。 
 - 行为（对事件的反应)。 
 
-这三个要素之间的关系是相当复杂的，即使对于最简单的组件（如：按钮）来说也是如此。很明显，按钮的外观显示取决于它的观感。Metal按钮的外观与Windows按钮或者Motif按钮的外观就不一样。另外，外观显示还要取决于按钮的状态：当按钮被按下时，按钮需要 被重新绘制成另一种不同的外观。而状态取决于按钮接收到的事件。当用户在按钮上点击时，按钮就被按下。 
+这三个要素之间的关系是相当复杂的，即使对于最简单的组件（如：按钮）来说也是如此。很明显，按钮的外观显示取决于它的观感。Metal按钮的外观与Windows按钮或者Motif按钮的外观就不一样。另外，外观显示还要取决于按钮的状态：当按钮被按下时，按钮需要被重新绘制成另一种不同的外观。而状态取决于按钮接收到的事件。当用户在按钮上点击时，按钮就被按下。 
 
-当然，在程序中使用按钮时，只需要简单地把它看成是一个按钮，而不需要考虑它的内部工作和特性。毕竟，这些是实现按钮的程序员的工作。无论怎样，实现按钮的程序员就要 对这些按钮考虑得细致一些了。毕竟，无论观感如何，他们必须实现这些按钮和其他用户界 面组件，以便让这些组件正常地工作。为了实现这样的需求，Swing设计者采用了一种很有名的设计模式(design pattern):模型-视图-控制器(model-view-controller)模式。这种设计模式同其他许多设计模式一样，都遵循第5章介绍过的面向对象设计中的一个基本原则： 限制一个对象拥有的功能数量。不要用一个按钮类完成所有的事情，而是应该让一个对象负责组件的观感，另一个对象负责存储内容。模型-视图-控制器（MVC) 模式告诉我们如何实现这种设计，实现三个独立的类：
+当然，在程序中使用按钮时，只需要简单地把它看成是一个按钮，而不需要考虑它的内部工作和特性。毕竟，这些是实现按钮的程序员的工作。无论怎样，实现按钮的程序员就要对这些按钮考虑得细致一些了。毕竟，无论观感如何，他们必须实现这些按钮和其他用户界 面组件，以便让这些组件正常地工作。为了实现这样的需求，Swing设计者采用了一种很有名的设计模式(design pattern)：模型-视图-控制器(model-view-controller)模式。这种设计模式同其他许多设计模式一样，都遵循第5章介绍过的面向对象设计中的一个基本原则： 限制一个对象拥有的功能数量。不要用一个按钮类完成所有的事情，而是应该让一个对象负责组件的观感，另一个对象负责存储内容。模型-视图-控制器（MVC) 模式告诉我们如何实现这种设计，实现三个独立的类：
 
 - 模型(model): 存储内容。
 - 视图(view): 显示内容。
@@ -448,11 +448,11 @@ public class exercise extends JFrame{
 
 模型必须实现改变内容和查找内容的方法。例如，一个文本模型中的方法有：在当前文本中添加或者删除字符以及把当前文本作为一个字符串返回等。记住：模型是完全不可见的。显示存储在模型中的数据是视图的工作。
 
-> 注释：“模式”这个术语可能不太贴切，因为人们通常把模式视为一个抽象概念的具体表 示。汽车和飞机的设计者构造模式来模拟真实的汽车和飞机。但这种类比可能会使你对模型-视图-控制器模式产生错误的理解。在设计模式中，模型存储完整的内容，视图给出了内容的可视化显示（完整或者不完整）。一个更恰当的比喻应当是模特为画家摆好姿势。
+> 注释：“模式”这个术语可能不太贴切，因为人们通常把模式视为一个抽象概念的具体表示。汽车和飞机的设计者构造模式来模拟真实的汽车和飞机。但这种类比可能会使你对模型-视图-控制器模式产生错误的理解。在设计模式中，模型存储完整的内容，视图给出了内容的可视化显示（完整或者不完整）。一个更恰当的比喻应当是模特为画家摆好姿势。
 >
 > 此时，就要看画家如何看待模特，并由此来画一张画了。那张画是一幅规矩的肖像画，或是一幅印象派作品，还是一幅立体派作品（以古怪的曲线来描绘四肢）完全取决于画家。 
 
-模型-视图-控制器模式的一个优点是一个模型可以有多个视图，其中每个视图可以显示全部内容的不同部分或不同形式。 例如，一个HTML编辑器常常为同一内容在同一时刻提供两个视图：一个WYSIWYG (所见即所得）视图和一个“ 原始标记” 视图（见图 12-3 )。当通过某一个视图的控制器对模型进行更新时，模式会把这种改变通知给两个视图。视图得到通知以后就会自动地刷新。当然，对于一个简单的用户界面组件来说，如按钮，不需要为同一模型提供多个视图。
+模型-视图-控制器模式的一个优点是一个模型可以有多个视图，其中每个视图可以显示全部内容的不同部分或不同形式。 例如，一个HTML编辑器常常为同一内容在同一时刻提供两个视图：一个WYSIWYG (所见即所得）视图和一个“原始标记” 视图（见图 12-3 )。当通过某一个视图的控制器对模型进行更新时，模式会把这种改变通知给两个视图。视图得到通知以后就会自动地刷新。当然，对于一个简单的用户界面组件来说，如按钮，不需要为同一模型提供多个视图。
 
 控制器负责处理用户输入事件，如点击鼠标和敲击键盘。然后决定是否把这些事件转化成对模型或视图的改变。例如，如果用户在一个文本框中按下了一个字符键，控制器调用模型中的“插入字符”命令，然后模型告诉视图进行更新，而视图永远不会知道文本为什么改变了。但是如果用户按下了一个光标键，那么控制器会通知视图进行卷屏。卷动视图对实际文本不会有任何影响，因此模型永远不会知道这个事件的发生。 
 
@@ -521,7 +521,8 @@ ButtonModel model = button.getModel();
 
 ```JAVA
 JPanel panel = new JPanel();
-JTextField textField = new JTextField("Default input", 20); panel.add(textField); 
+JTextField textField = new JTextField("Default input", 20);
+panel.add(textField); 
 ```
 
 这段代码将添加一个文本域，同时通过传递字符串“Default input”进行初始化。构造器的第二个参数设置了文本域的宽度。在这个示例中，宽度值为 20“列”。但是，这里所说的列不是一个精确的测量单位。一列就是在当前使用的字体下一个字符的宽度。如果希望文本域最多能够输入n个字符，就应该把宽度设置为n列。在实际中，这样做效果并不理想，应该将最大输入长度再多设1~2个字符。列数只是给AWT设定首选(preferred)大小的一 个提示。如果布局管理器需要缩放这个文本域，它会调整文本域的大小。在JTextField的构造器中设定的宽度并不是用户能输入的字符个数的上限。用户可以输入一个更长的字符串，但是当文本长度超过文本域长度时输入就会滚动。用户通常不喜欢滚动文本域，因此应该尽 量把文本域设置的宽一些。如果需要在运行时重新设置列数，可以使用setColumns方法。
@@ -558,7 +559,7 @@ String text = textField.getText().trim;
 > javax.swing.JTextField 1.2 
 >
 > ```java
-> JTextF1eld(1nt cols); //构造一个给定列数的空 JTextField对象。 JTextField(String text, int cols); //构造一个给定列数、给定初始字符串的 JTextField 对象。
+> JTextField(int cols); //构造一个给定列数的空 JTextField对象。 JTextField(String text, int cols); //构造一个给定列数、给定初始字符串的JTextField对象。
 > int getColumns();
 > void setColumns(int cols); //获取或设置文本域使用的列数。
 > ```
@@ -579,9 +580,9 @@ String text = textField.getText().trim;
 
 ## 3.2 标签和标签组件
 
-标签是容纳文本的组件，它们没有任何的修饰（例如没有边缘)，也不能响应用户输入。可以利用标签标识组件。例如：与按钮不同，文本域没有标识它们的标签 要想用标识符标识这种不带标签的组件，应该 
+标签是容纳文本的组件，它们没有任何的修饰（例如没有边缘)，也不能响应用户输入。可以利用标签标识组件。例如：与按钮不同，文本域没有标识它们的标签，要想用标识符标识这种不带标签的组件，应该 
 
-- 1 ) 用相应的文本构造一个 JLabel 组件。
+- 1 ) 用相应的文本构造一个JLabel组件。
 - 2 ) 将标签组件放置在距离需要标识的组件足够近的地方， 以便用户可以知道标签所标 识的组件。
 
 JLabel的构造器允许指定初始文本和图标，也可以选择内容的排列方式。可以用Swing Constants接口中的常量来指定排列方式。在这个接口中定义了几个很有用的常量，如LEFT、RIGHT、CENTER、NORTH、EAST等。JLabel是实现这个接口的一个Swing类。因此，可以指定右对齐标签：
@@ -604,7 +605,7 @@ JLabel label = new JLabel("User name:",JLabel.RIGHT);
 > label = new JLabel("<html><b>Required</b> entry:</html>");
 > ```
 >
-> 需要说明的是包含HTML标签的第一个组件需要延迟一段时间才能显示出来，这是 因为需要加载相当复杂的HTML显示代码。
+> 需要说明的是包含HTML标签的第一个组件需要延迟一段时间才能显示出来，这是因为需要加载相当复杂的HTML显示代码。
 
 与其他组件一样，标签也可以放置在容器中。这就是说，可以利用前面介绍的技巧将标签放置在任何需要的地方。 
 
@@ -646,7 +647,7 @@ JLabel label = new JLabel("User name:",JLabel.RIGHT);
 textArea = new JTextArea(8, 40); // 8 lines of 40 columns each 
 ```
 
-与文本域一样。出于稳妥的考虑，参数columns应该设置得大一些。另外，用户并不受限于输入指定的行数和列数。当输入过长时，文本会滚动。还可以用setColumns方法改变列数，用setRows方法改变行数。这些数值只是首选大小一布局管理器可能会对文本区进行缩放。
+与文本域一样。出于稳妥的考虑，参数columns应该设置得大一些。另外，用户并不受限于输入指定的行数和列数。当输入过长时，文本会滚动。还可以用setColumns方法改变列数，用setRows方法改变行数。这些数值只是首选大小---布局管理器可能会对文本区进行缩放。
 
 如果文本区的文本超出显示的范围，那么剩下的文本就会被剪裁掉。可以通过开启换行特性来避免裁剪过长的行：
 
@@ -841,7 +842,7 @@ ActionListener listener = event -> {
 
 ## 4.2 单选钮
 
-在前一个例子中，对于两个复选框，用户既可以选择一个、两个，也可以两个都不选。在很多情况下，我们需要用户只选择几个选项当中的一个。当用户选择另一项的时候， 前一项就自动地取消选择。这样一组选框通常称为单选钮组（RadioButtonGroup), 这是因为这些 按钮的工作很像收音机上的电台选择按钮。当按下一个按钮时，前一个按下的按钮就会自动 弹起。图 12-15给出了一个典型的例子。这里允许用户在多个选择中选择字体的大小，即小、中、大和超大，但是，每次用户只能选择一个。
+在前一个例子中，对于两个复选框，用户既可以选择一个、两个，也可以两个都不选。在很多情况下，我们需要用户只选择几个选项当中的一个。当用户选择另一项的时候， 前一项就自动地取消选择。这样一组选框通常称为单选钮组（RadioButtonGroup), 这是因为这些 按钮的工作很像收音机上的电台选择按钮。当按下一个按钮时，前一个按下的按钮就会自动 弹起。图12-15给出了一个典型的例子。这里允许用户在多个选择中选择字体的大小，即小、中、大和超大，但是，每次用户只能选择一个。
 
 在Swing中，实现单选钮组非常简单。为单选钮组构造一个ButtonGroup的对象。然后，再将JRadioButton类型的对象添加到按钮组中。按钮组负责在新按钮被按下时，取消前一个被按下的按钮的选择状态。 
 
@@ -907,10 +908,10 @@ else if (mediumButton.isSelected()) size = 12;
 > 		add(label, BorderLayout.CENTER);
 > 		// add the radio buttons buttonPanel = new JPanel();
 > 		group = new BtittonGroup();
-> 		addRadioButton( "Small", 8);
-> 		addRadioButton( "Medium", 12);
-> 		addRadioButton( "Large", 18);
-> 		addRadioButton( "Extra large", 36);
+> 		addRadioButton("Small", 8);
+> 		addRadioButton("Medium", 12);
+> 		addRadioButton("Large", 18);
+> 		addRadioButton("Extra large", 36);
 > 		add(buttonPanel,BorderLayout.SOUTH);
 > 		pack();
 > 	}
@@ -988,7 +989,7 @@ panel.setBorder(titled);
 
 运行程序清单12-5中的程序可以看到各种边框的外观。
 
-不同的边框有不同的用于设置边框的宽度和颜色的选项。详情请参看API注释。偏爱使用边框的人都很欣赏这一点，SoftBevelBorder 类用于构造具有柔和拐角的斜面边框，LineBorder类也能够构造圆拐角。这些边框只能通过类中的某个构造器构造，而没有BorderFactory方法。
+不同的边框有不同的用于设置边框的宽度和颜色的选项。详情请参看API注释。偏爱使用边框的人都很欣赏这一点，SoftBevelBorder类用于构造具有柔和拐角的斜面边框，LineBorder类也能够构造圆拐角。这些边框只能通过类中的某个构造器构造，而没有BorderFactory方法。
 
 > javax.swing.BorderFactory 1.2
 >
@@ -1008,7 +1009,8 @@ panel.setBorder(titled);
 > //参数： highlight, shadow 用于3D效果的颜色
 > //type EtchedBorder.RAISED 和 EtchedBorder.LOWERED 之一
 > static Border createBevelBorder (int type);
-> static Border createBevelBorder(int type, Color highlight, Color shadow); static Border createLoweredBevelBorder();
+> static Border createBevelBorder(int type, Color highlight, Color shadow);
+> static Border createLoweredBevelBorder();
 > static Border createRaisedBevelBorder();
 > //创建一个具有凹面或凸面效果的边框。
 > //参数：type   BevelBorder.LOWERED 和 BevelBorder.RAISED 之一
@@ -1017,7 +1019,7 @@ panel.setBorder(titled);
 > static TitledBorder createTitledBorder(Border border);
 > static TitledBorder createTitledBorder(Border border, String title);
 > static TitledBorder createTitledBorder(Border border, String title, int justification, Int position);
-> static TitledBorder createTitledBorder( Border border, String title, int justification, int position, Font font);
+> static TitledBorder createTitledBorder(Border border, String title, int justification, int position, Font font);
 > static Tit edBorder createTitledBorder(Border border, String title, int justification, int position, Font font, Color color);
 > //创建一个具有给定特性的带标题的边框。 
 > //参数: title	 标题字符串
@@ -1032,7 +1034,7 @@ panel.setBorder(titled);
 > javax.swing,border.SoftBevelBorder 1.2 
 >
 > ```java
-> SoftBevelBorder(int type)
+> SoftBevelBorder(int type);
 > SoftBevelBorder(int type, Color highlight, Color shadow); //创建一个带有柔和边角的斜面边框。
 > //参数：type    BevelBorder.LOWERED和BevelBorder.RAISED之一
 > //highlight,shadow    用于3D效果的颜色 
@@ -1056,7 +1058,7 @@ panel.setBorder(titled);
 
 如果下拉列表框被设置成可编辑（ editable), 就可以像编辑文本一样编辑当前的选项内容。鉴于这个原因，这种组件被称为组合框（combo box), 它将文本域的灵活性与一组预定义的选项组合起来。JComboBox类提供了组合框的组件。 
 
-在Java SE 7中，JComboBox 类是一个泛型类。例如，JComboBox<String> 包含String类型的对象，JComboBox<Integer> 包含整数。
+在Java SE 7中，JComboBox 类是一个泛型类。例如，`JComboBox<String> `包含String类型的对象，`JComboBox<Integer>` 包含整数。
 
 调用setEditable方法可以让组合框可编辑。注意，编辑只会影响当前项，而不会改变列表内容。
 
@@ -1081,7 +1083,7 @@ faceCombo.addItem("SansSerif");
 这个方法将字符串添加到列表的尾部。可以利用 insertltemAt方法在列表的任何位置插入一个新选项： 
 
 ```
-faceCombo.insertItemAt( "Monospaced", 0) ;// add at the beginning 
+faceCombo.insertItemAt("Monospaced", 0);// add at the beginning 
 ```
 
 可以增加任何类型的选项，组合框可以调用每个选项的toString方法显示其内容。
@@ -1090,12 +1092,12 @@ faceCombo.insertItemAt( "Monospaced", 0) ;// add at the beginning
 
 ```
 faceCombo.removeItem("Monospaced");
-faceCombo.removeItemAt(0)； // remove first item
+faceCombo.removeItemAt(0); // remove first item
 ```
 
 调用removeAllltems方法将立即移除所有的选项。
 
-> 提示：如果需要往组合框中添加大量的选项，addltem方法的性能就显得很差了。取而代之的是构造一个DefaultComboBoxModel, 并调用addElement方法进行加载， 然后再调用JComboBox 中的 setModel 方法。
+> 提示：如果需要往组合框中添加大量的选项，addltem方法的性能就显得很差了。取而代之的是构造一个DefaultComboBoxModel, 并调用addElement方法进行加载， 然后再调用JComboBox中的setModel方法。
 
 当用户从组合框中选择一个选项时，组合框就将产生一个动作事件。为了判断哪个选项被选择，可以通过事件参数调用getSource方法来得到发送事件的组合框引用，接着调用getSelectedltem方法获取当前选择的选项。需要把这个方法的返回值转化为相应的类型，通常是String型。
 
@@ -1106,7 +1108,7 @@ ActionListener listener = event ->
 
 程序清单12-6给出了完整的代码。
 
-> 注释：如果希望持久地显示列表，而不是下拉列表，就应该使用JList 组件。在卷Ⅱ的第6章中将介绍JList
+> 注释：如果希望持久地显示列表，而不是下拉列表，就应该使用JList组件。在卷Ⅱ的第6章中将介绍JList
 
 > 程序清单 12-6 comboBox/ComboBoxFrame.java
 >
@@ -1227,13 +1229,14 @@ slider.setPaintLabels(true);
 
 例如， 对于一个范围为 0 到 100 的滑动条， 如果大标尺的间距是 20, 每个大标尺的标签 就应该分别是 0、20、40、60、80 和 100。
 
-还可以提供其他形式的标尺标记，如字符串或者图标（见图 12-18 )。这样做有些烦琐。 首先需要填充一个键为 Integer类型且值为Component 类型的散列表。 然后再调用setLabelTable方法，组件就会放置在标尺标记处。通常组件使用的是几此以对象。下面代码 说明了如何将标尺标签设置为 A、B、C、D、E 和 F。 
+还可以提供其他形式的标尺标记，如字符串或者图标（见图 12-18 )。这样做有些烦琐。 首先需要填充一个键为Integer类型且值为Component类型的散列表。 然后再调用setLabelTable方法，组件就会放置在标尺标记处。通常组件使用的是几此以对象。下面代码 说明了如何将标尺标签设置为 A、B、C、D、E 和 F。 
 
 ```java
-Hashtable<Integer, Component> labelTable = new Hashtable<Integer, Components>(); labelTable.put(0, new JLabel("A"));
+Hashtable<Integer, Component> labelTable = new Hashtable<Integer, Components>();
+labelTable.put(0, new JLabel("A"));
 labelTable.put(20, new Jabel("B"));
-labelTable.put(100, new Jabel("F”);
-slider,setLabelTable(labelTable);
+labelTable.put(100, new Jabel("F"));
+slider.setLabelTable(labelTable);
 ```
 
 关于散列表的详细介绍， 参考第 9 章。
@@ -1324,12 +1327,12 @@ slider.setlnverted(true);
 > 		slider.setPaintTicks(true);
 > 		slider.setMajorTickSpacing(20);
 > 		slider.setMinorTickSpacing(5);
-> 		Dictionary<lnteger, Component〉labelTable = new Hashtable<>();
+> 		Dictionary<lnteger, Component>labelTable = new Hashtable<>();
 > 		labelTable.put(0，new JLabel("A"));
 > 		labelTable.put(20, new JLabel("B"));
 > 		labelTable,put(40, new JLabel("C"));
 > 		labelTable.put(60, new JLabel("D"));
-> 		labelTable,put(80, new JLabel("E"));
+> 		labelTable.put(80, new JLabel("E"));
 > 		labelTable.put(100, new JLabel("F"));
 > 		slider.setLabelTable(labelTable);
 > 		addSlider(slider, "Custom labels");
@@ -1343,12 +1346,12 @@ slider.setlnverted(true);
 > 		labelTable = new Hashtable<Integer, Component>();
 > 		// add card images
 > 		labelTable.put(0, new JLabel(new Imagelcon("nine.gif")));
-> 		labelTable,put(20, new JLabel(new ImagelconC"ten.gif")));
-> 		labelTable,put(40, new JLabel(new Imagelcon("jack,gif")));
-> 		labelTable,put(60, new JLabel(new Imagelcon("queen,gif")));
-> 		labelTable,put(80, new JLabel(new Imagelcon("king.gif")));
-> 		labelTable,put(100, new JLabel(new Imagelcon("ace.gif")));
-> 		slider,setLabelTable(labelTable);
+> 		labelTable.put(20, new JLabel(new ImagelconC"ten.gif")));
+> 		labelTable.put(40, new JLabel(new Imagelcon("jack,gif")));
+> 		labelTable.put(60, new JLabel(new Imagelcon("queen,gif")));
+> 		labelTable.put(80, new JLabel(new Imagelcon("king.gif")));
+> 		labelTable.put(100, new JLabel(new Imagelcon("ace.gif")));
+> 		slider.setLabelTable(labelTable);
 > 		addSlider(slider, "Icon labels");
 > 		// add the text field that displays the slider value
 > 		textField = new JTextField();
@@ -1380,10 +1383,10 @@ slider.setlnverted(true);
 >
 > ```java
 > JSlider();
-> JS1ider(int direction);
-> JS1ider(int min, int max);
-> JS1ider( int min, int max, int initialValue);
-> JS1ider(int direction, int min, int max, int initialValue); //用给定的方向、最大值、 最小值和初始化值构造一个水平滑动条。 
+> JSlider(int direction);
+> JSlider(int min, int max);
+> JSlider( int min, int max, int initialValue);
+> JSlider(int direction, int min, int max, int initialValue); //用给定的方向、最大值、 最小值和初始化值构造一个水平滑动条。 
 > //参数： direction     SwingConstants.HORIZONTAL或 SwingConstants.VERTICAL之一。默认为水平。
 > //min, max   滑动条的最大值、最小值。默认值为0到100。
 > //initialValue   滑动条的初始化值。默认值为50。
@@ -1502,7 +1505,7 @@ fileMenu.add(exitltem);
 >
 > ```java
 > JMenuItem(String label); //用给定标签构造一个菜单项。 
-> JMenuItemCAction a)1.3 //为给定动作构造一个菜单项。
+> JMenuItem(Action a)1.3 //为给定动作构造一个菜单项。
 > ```
 
 > javax.swing.AbstractButton1.2 
@@ -1540,10 +1543,8 @@ cutAction.putValue(Action.SMALL.ICON, new Imagelcon("cut.gif"));
 当使用动作构造菜单项时，Action.NAME值将会作为菜单项的文本，而Action.SMALL_ ICON将会作为图标。 另外，可以利用AbstractAction构造器设置图标：
 
 ```java
-cutAction = new AbstractAction("Cut", new Imagelcon("cut.gif"))
-{
-	public void actionPerformed(ActionEvent event)
-	{
+cutAction = new AbstractAction("Cut", new Imagelcon("cut.gif")) {
+	public void actionPerformed(ActionEvent event) {
 		...
 	}
 };
@@ -1609,7 +1610,7 @@ optionsMenu.add(overtypeltem);
 >
 > ```java
 > boolean isSelected();
-> void setSelected(boo1ean state); //获取或设置这个菜单项的选择状态（true 为选定)。
+> void setSelected(boolean state); //获取或设置这个菜单项的选择状态（true 为选定)。
 > ```
 
 ## 5.4 弹出菜单
@@ -1630,7 +1631,7 @@ item.addActionListener(listener);
 popup.add(item);
 ```
 
-弹出菜单并不像常规菜单栏那样总是显示在框架的顶部，必须调用show方法菜单才能显示出来。调用时需要给 出父组件以及相对父组件坐标的显示位置。例如：
+弹出菜单并不像常规菜单栏那样总是显示在框架的顶部，必须调用show方法菜单才能显示出来。调用时需要给出父组件以及相对父组件坐标的显示位置。例如：
 
 ```java
 popup.show(panel, x, y);
@@ -1749,8 +1750,7 @@ void menuCanceled(MenuEvent event)
 由于在菜单显示之前调用menuSelected方法，所以可以在这个方法中禁用或启用菜单项。下面代码显示了只读复选框菜单项被选择以后，如何禁用Save和Save As动作。
 
 ```java
-public void menuSelected(MenuEvent event)
-{
+public void menuSelected(MenuEvent event) {
 	saveAction.setEnabled(!readonlyltem.isSelected());
 	saveAsAction.setEnabled(!readonlyltem.isSelected());
 }
@@ -1783,8 +1783,7 @@ public void menuSelected(MenuEvent event)
 > /**
 > * A frame with a sample menu bar.
 > */
-> public class MenuFrame extends JFrame
-> {
+> public class MenuFrame extends JFrame {
 > 	private static final int DEFAULT_WIDTH = 300;
 > 	private static final int DEFAULTJEICHT = 200;
 > 	private Action saveAction;
@@ -1796,19 +1795,15 @@ public void menuSelected(MenuEvent event)
 > 	* A sample action that prints the action name to System.out
 > 	*/
 > 	
-> 	class TestAction extends AbstractAction
-> 	{
-> 		public TestAction(String name)
-> 		{
+> 	class TestAction extends AbstractAction {
+> 		public TestAction(String name) {
 > 			super(name);
 > 		}
-> 		public void actionPerformed(ActionEvent event)
-> 		{
+> 		public void actionPerformed(ActionEvent event) {
 > 			System.out.println(getValue(Action.NAME) + " selected.");
 > 		}
 > 	}
-> 	public MenuFrame()
-> 	{
+> 	public MenuFrame() {
 > 		setSize(DEFAULT.WIDTH, DEFAULTJEIGHT);
 > 		JMenu fileMenu = new JMenu("File");
 > 		fileMenu.add(new TestAction("New"));
@@ -1824,8 +1819,7 @@ public void menuSelected(MenuEvent event)
 > 		saveAsAction = new TestAction("Save As");
 > 		fileMenu.add(saveAsAction);
 > 		fileMenu.addSeparator();
-> 		fileMenu.add(new AbstractAction("Exit")
-> 		{
+> 		fileMenu.add(new AbstractAction("Exit") {
 > 			public void actionPerformed(ActionEvent event)
 > 			{
 > 				System,exit(0);
@@ -1835,8 +1829,7 @@ public void menuSelected(MenuEvent event)
 > 		// demonstrate checkbox and radio button menus
 > 		
 > 		readonlyltem = new JCheckBoxMenuItem("Read-only");
-> 		readonlyltem.addActionListener(new ActionListener()
-> 		{
+> 		readonlyltem.addActionListener(new ActionListener() {
 > 			public void actionPerformed(ActionEvent event)
 > 			{
 > 				boolean saveOk = !readonlyltem.isSelected();
@@ -1915,7 +1908,7 @@ public void menuSelected(MenuEvent event)
 
 工具栏的特殊之处在于可以将它随处移动。可以将它拖拽到框架的四个边框上，如图12-25所示。释放鼠标按钮后，工具栏将会停靠在新的位置上，如图12-26所示。
 
-> 注释： 工具栏只有位于采用边框布局或者任何支持 North、 East、South 和 West 约束布局 管理器的容器内才能够被拖拽。 
+> 注释： 工具栏只有位于采用边框布局或者任何支持 North、 East、South 和 West 约束布局管理器的容器内才能够被拖拽。 
 
 工具栏可以完全脱离框架。 这样的工具栏将包含在自己的框架中， 如图 12-27 所示。当 关闭包含工具栏的框架时， 它会冋到原始的框架中。
 

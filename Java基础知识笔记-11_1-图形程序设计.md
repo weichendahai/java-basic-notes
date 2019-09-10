@@ -11,8 +11,7 @@ JFC特性不仅仅包含了Swing组件，而且还包含了一个可访问性API
 > 注释：Swing没有完全替代AWT,而是基于AWT架构之上。Swing仅仅提供了能力更加强大的用户界面组件。尤其在采用Swing编写的程序中，还需要使用基本的AWT处
 理事件。从现在开始，Swing是指“被绘制的”用户界面类；AWT是指像事件处理这样的窗口工具箱的底层机制。
 
-当然，在用户屏幕上显示基于Swing用户界面的元素要比显示AWT的基于对等体组件的速度慢一些。鉴于以往的经验，对于任何一台现代的计算机来说，微小的速度差别无妨大
-碍。另外，由于下列几点无法抗拒的原因，人们选择Swing:
+当然，在用户屏幕上显示基于Swing用户界面的元素要比显示AWT的基于对等体组件的速度慢一些。鉴于以往的经验，对于任何一台现代的计算机来说，微小的速度差别无妨大碍。另外，由于下列几点无法抗拒的原因，人们选择Swing:
 - Swing 拥有一个丰富、便捷的用户界面元素集合。
 - Swing 对底层平台依赖的很少，因此与平台相关的bug很少。
 - Swing 给予不同平台的用户一致的感觉。
@@ -29,11 +28,11 @@ Swing采用了一种很巧妙的方式来解决这个问题。在程序员编写
 ## 2 创建框架
 在Java中，顶层窗口（就是没有包含在其他窗口中的窗口）被称为框架(frame)。在AWT库中有一个称为Frame的类，用于描述顶层窗口。这个类的Swing版本名为JFrame,它扩展于Frame类。JFrame是极少数几个不绘制在画布上的Swing组件之一。因此，它的修饰部件（按钮、标题栏、图标等）由用户的窗口系统绘制， 而不是由Swing绘制。
 
-> 警告：绝大多数Swing 组件类都以“J”开头，例如，JButton、JFrame等。在Java中有Button和Frame这样的类，但它们属于AWT组件。如果偶然地忘记书写“ J”，程序仍然可以进行编译和运行，但是将Swing和AWT组件混合在一起使用将会导致视觉和行为的不一致。
+> 警告：绝大多数Swing 组件类都以“J”开头，例如，JButton、JFrame等。在Java中有Button和Frame这样的类，但它们属于AWT组件。如果偶然地忘记书写“J”，程序仍然可以进行编译和运行，但是将Swing和AWT组件混合在一起使用将会导致视觉和行为的不一致。
 
 在本节中，将介绍有关Swing的JFrame的常用方法。程序清单10-1给出了一个在屏幕中显示一个空框架的简单程序
 ```java
-程序清单10-1 simpleframe/SimpleFrameTest.java
+//程序清单10-1 simpleframe/SimpleFrameTest.java
 package simpleFrame;
 import java.awt.*;
 import javax.swing.*;
@@ -61,8 +60,7 @@ class SimpleFrame extends JFrame {
 
 Swing类位于javax.swing包中。包名javax表示这是一个Java扩展包，而不是核心包。出于历史原因Swing类被认为是一个扩展。不过从1.2版本开始，在每个Java SE实现中都包含它。
 
-在默认情况下，框架的大小为0 x 0像素，这种框架没有什么实际意义。这里定义了一个子类SimpleFmme，它的构造器将框架大小设置为300 x 200像素。这是
-SimpleFrame和JFrame之间唯一的差别。
+在默认情况下，框架的大小为0x0像素，这种框架没有什么实际意义。这里定义了一个子类SimpleFmme，它的构造器将框架大小设置为300 x 200像素。这是SimpleFrame和JFrame之间唯一的差别。
 
 在SimpleFrameTest类的main方法中，我们构造了一个SimpleFrame对象使它可见。
 

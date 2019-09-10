@@ -172,11 +172,9 @@ throw e;
 
 
 ```java
-String readData(Scanner in) throws EOFException
-{
+String readData(Scanner in) throws EOFException {
 	...
-	while(...） 
-	{
+	while(...) {
     	if (!in.hasNext()) // EOF encountered
     	{
     		if (n < len)
@@ -208,8 +206,7 @@ throw new EOFException(gripe);
 在程序中，可能会遇到任何标准异常类都没有能够充分地描述清楚的问题。在这种情况下，创建自己的异常类就是一件顺理成章的事情了。我们需要做的只是定义一个派生于Exception的类，或者派生于Exception子类的类。例如，定义一个派生于IOException的类。习惯上，定义的类应该包含两个构造器，一个是默认的构造器；另一个是带有详细描述信息的构造器（超类Throwable的toString方法将会打印出这些详细信息，这在调试中非常有用)。
 
 ```java
-class FileFormatException extends IOException
-{
+class FileFormatException extends IOException {
 	public FileFormatException() {}
 	public FileFormatException(String gripe) {
 		super(gripe);
@@ -249,14 +246,11 @@ String getMessage();  //获得Throwabie对象的详细描述信息
 要想捕获一个异常，必须设置try/catch语句块。最简单的try语句块如下所示：
 
 ```java
-try
-{
+try {
 	code
 	more code
 	more code
-}
-catch (ExceptionType e)
-{
+} catch (ExceptionType e) {
 	handlerfor this type
 }
 ```
@@ -273,19 +267,15 @@ catch (ExceptionType e)
 为了演示捕获异常的处理过程，下面给出一个读取数据的典型程序代码： 
 
 ```java
-public void read(String filename)
-{
-	try
-	{
+public void read(String filename) {
+	try {
 		InputStream in = new FileInputStream(filename);
 		int b;
 		while ((b = in.read()3 != -1 )
 		{
 			process input
 		}
-	}
-	catch (IOException exception)
-	{
+	} catch (IOException exception) {
 		exception.printStackTrace();
 	}
 } 
@@ -296,12 +286,10 @@ public void read(String filename)
 通常，最好的选择是什么也不做，而是将异常传递给调用者。如果read方法出现了错误, 就让read方法的调用者去操心！如果采用这种处理方式，就必须声明这个方法可能会拋出一个 IOException。 
 
 ```java
-public void read(String filename) throws IOException
-{
+public void read(String filename) throws IOException {
 	inputStream in = new FileinputStream(filename);
 	int b;
-	while ((b = in.readO) != -1 )
-	{
+	while ((b = in.readO) != -1 ) {
 		process input
 	}
 } 
