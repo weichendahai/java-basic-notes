@@ -1985,8 +1985,7 @@ exitAction.putValue(Action.SHORTJESCRIPnON, "Exit");
 > /**
 > * A frame with a toolbar and menu for color changes.
 > */
-> public class ToolBarFrame extends JFrame
-> {
+> public class ToolBarFrame extends JFrame {
 > 	private static final int DEFAULT_WIDTH = 300;
 > 	private static final int DEFAULT_HEIGHT = 200;
 > 	private JPanel panel;
@@ -2000,10 +1999,8 @@ exitAction.putValue(Action.SHORTJESCRIPnON, "Exit");
 > 		Action blueAction = new ColorAction("Blue", new Imagelcon("blue-ball.gif"), Color.BLUE);
 > 		Action yellowAction = new ColorAction("Yellow", new Imagelcon("yel1ow-bal1.gif"),Color.YELLOW);
 > 		Action redAction = new ColorAction("Red", new Imagelcon("red-ball,gif"),Color.RED);
-> 		Action exitAction = new AbstractAction("Exit", new Imagelcon("exit,gif"))
-> 		{
-> 			public void actionPerformed(ActionEvent event)
-> 			{
+> 		Action exitAction = new AbstractAction("Exit", new Imagelcon("exit,gif")) {
+> 			public void actionPerformed(ActionEvent event) {
 > 				System.exit(0);
 > 			}
 > 		};
@@ -2029,17 +2026,14 @@ exitAction.putValue(Action.SHORTJESCRIPnON, "Exit");
 > 		/**
 > 		* The color action sets the background of the frame to a given color.
 > 		*/
-> 	class ColorAction extends AbstractAction
-> 	{
-> 		public ColorAction(String name, Icon icon, Color c)
-> 		{
+> 	class ColorAction extends AbstractAction {
+> 		public ColorAction(String name, Icon icon, Color c) {
 > 			putValue(Action.NAME, name);
 > 			putValue(Action.SMALL_ICON, icon);
 > 			putValue(Action.SHORTJESCRIPTION, name + " background");
 > 			putValue("Color", c);
 > 		}
-> 		public void actionPerformed(ActionEvent event)
-> 		{
+> 		public void actionPerformed(ActionEvent event) {
 > 			Color c = (Color) getValue("Color");
 > 			panel.setBackground(c);
 > 		}
@@ -2195,8 +2189,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > /**
 > * A frame that contains settings for selecting various option dialogs.
 > */
-> public class OptionDialogFrame extends JFrame
-> {
+> public class OptionDialogFrame extends JFrame {
 > 	private ButtonPanel typePanel:
 > 	private ButtonPanel messagePanel;
 > 	private ButtonPanel messageTypePanel;
@@ -2207,8 +2200,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 	private Icon messageIcon = new ImageIon("blue-ball.gif");
 > 	private Object messageObject = new Date();
 > 	private Component messageComponent = new SampleComponent();
-> 	public OptionDialogFrame()
-> 	{
+> 	public OptionDialogFrame() {
 > 		JPanel gridPanel = new JPanel();
 > 		gridPanel.setLayout(new GridLayout(2, 3));
 > 		typePanel = new ButtonPanel ("Type", "Message", "Confirm", "Option", "Input");
@@ -2235,8 +2227,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 	/**
 > 	* Gets the currently selected message. ©return a string, icon, component, or object array, depending on the Message panel selection
 > 	*/
-> 	public Object getMessage()
-> 	{
+> 	public Object getMessage() {
 > 		String s = messagePanel.getSelection();
 > 		if (s.equals("String"))
 > 			return messageString;
@@ -2255,8 +2246,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 	* Gets the currently selected options.
 > 	* ©return an array of strings, icons, or objects, depending on the Option panel selection
 > 	*/
-> 	public Object[] getOptions()
-> 	{
+> 	public Object[] getOptions() {
 > 		String s = optionsPanel.getSelection();
 > 		if (s.equals("String[]"))
 > 			return new String[] {"Yellow", "Blue", "Red"};
@@ -2272,15 +2262,12 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 	* @param panel the Message Type or Confirm panel
 > 	* @return the selected XXX MESSAGE or XXX.OPTION constant from the JOptionPane class
 > 	*/
-> 	public int getType(ButtonPanel panel)
-> 	{
+> 	public int getType(ButtonPanel panel) {
 > 		String s = panel.getSelection();
-> 		try
-> 		{
+> 		try {
 > 			return JOptionPane.class.getField(s).getlnt(null);
 > 		}
-> 		catch (Exception e)
-> 		{
+> 		catch (Exception e) {
 > 			return -1;
 > 		}
 > 	}
@@ -2288,14 +2275,11 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 	* The action listener for the Show button shows a Confirm, Input, Message, or 	Option dialog
 > 	* depending on the Type panel selection.
 > 	*/
-> 	private class ShowAction implements ActionListener
-> 	{
-> 		public void actionPerformed(ActionEvent event)
-> 		{
+> 	private class ShowAction implements ActionListener {
+> 		public void actionPerformed(ActionEvent event) {
 > 			if (typePanel.getSelection().equals("Confirm"))
 > 				JOptionPane.showConfirmDialog(OptionDialogFrame.this, getMessage(), "Title", getType(optionTypePanel), getType(messageTypePanel));
-> 			else if (typePanel.getSelection().equals("Input"))
-> 			{
+> 			else if (typePanel.getSelection().equals("Input")) {
 > 				if (inputPanel.getSelection().equals("Text field"))
 > 					JOptionPane.showInputDialog(OptionDialogFrame.this, getMessage(), "Title", getType(messageTypePanel));
 > 				else
@@ -2311,10 +2295,8 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > /**
 > * A component with a painted surface
 > */
-> class SampleComponent extends JComponent
-> {
-> 	public void paintComponent(Graphics g)
-> 	{
+> class SampleComponent extends JComponent {
+> 	public void paintComponent(Graphics g) {
 > 		Craphics2D g2 = (Graphics2D) g;
 > 		Rectangle2D rect = new Rectangle2D.Double(0, 0, getWidth() - 1 , getHeight() - 1 );
 > 		g2.setPaint(Color.YELLOW);
@@ -2322,8 +2304,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 		g2.setPaint(Color.BLUE);
 > 		g2.draw(rect);
 > 	}
-> 	public Dimension getPreferredSize()
-> 	{
+> 	public Dimension getPreferredSize() {
 > 		return new Dimension(10, 10);
 > 	}
 > }
@@ -2345,14 +2326,12 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > 	* @param title the title shown in the border is 
 > 	* @param options an array of radio button labels 16 
 > 	*/
-> 	public ButtonPanel(String title, String... options)
-> 	{
+> 	public ButtonPanel(String title, String... options) {
 > 		setBorder(BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), title));
 > 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 > 		group = new ButtonGroup();
 > 		// make one radio button for each option
-> 		for (String option : options)
-> 		{
+> 		for (String option : options) {
 > 			JRadioButton b = new JRadioButton(option);
 > 			b.setActionCommand(option);
 > 			add(b);
@@ -2364,8 +2343,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 >     * Gets the currently selected option.
 > 	* ©return the label of the currently selected radio button.
 > 	*/
-> 	public String getSelection()
-> 	{
+> 	public String getSelection() {
 > 			return group.getSelection().getActionCommand();
 > 	}
 > }
@@ -2460,15 +2438,13 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 
 模式特征将指定对话框处于显示状态时，应用程序中其他窗口是否被锁住。无模式对话框不会锁住其他窗口，而有模式对话框将锁住应用程序中的所有其他窗口（除对话框的子窗口外)。用户经常使用的工具栏就是无模式对话框，另一方面，如果想强迫用户在继续操作之前提供一些必要的信息就应该使用模式对话框。
 
-> 注释：在Java SE 6中，有两个额外的模式特征类型。文档-模式对话框将阻塞所有属于相同“ 文档” 的窗口。更准确地说，是所有作为对话框的具有相同无父根窗口的窗口。这样解决了帮助系统的问题。在早期的版本中，当弹出一个模式对话框时， 用户不可能与帮助窗口交互。工具箱对话框阻塞了所有来自相同“工具箱”的窗口。工具箱是一个 运行于多个应用的Java程序，例如，浏览器中的applet引擎。有关更加详细的内容请参看网站：www.oracle.com/technetwork/artides/javase/modality-137604.html。 
+> 注释：在Java SE 6中，有两个额外的模式特征类型。文档-模式对话框将阻塞所有属于相同“文档” 的窗口。更准确地说，是所有作为对话框的具有相同无父根窗口的窗口。这样解决了帮助系统的问题。在早期的版本中，当弹出一个模式对话框时， 用户不可能与帮助窗口交互。工具箱对话框阻塞了所有来自相同“工具箱”的窗口。工具箱是一个 运行于多个应用的Java程序，例如，浏览器中的applet引擎。有关更加详细的内容请参看网站：www.oracle.com/technetwork/artides/javase/modality-137604.html。 
 
 下面是一个对话框的例子：
 
 ```java
-public AboutDialog extends JDialog
-{
-	public AboutDialog(JFrame owner)
-	{
+public AboutDialog extends JDialog {
+	public AboutDialog(JFrame owner) {
 		super(owner, "About DialogTest", true);
 		add(new JLabel("<html><h1><i>Core Java</i></h1><hr>By Cay Horstmann</html>"),BorderLayout.CENTER);
 		JPanel panel = new JFanel();
@@ -2517,14 +2493,12 @@ ok.addActionListener(event -> setVisible(false));
 > /**
 > * A frame with a menu whose File->About action shows a dialog.
 > */
-> public class DialogFrame extends JFrame
-> {
+> public class DialogFrame extends JFrame {
 > 	private static final int DEFAULT_WIDTH = 300;
 > 	private static final int DEFAULT_HEICHT = 200;
 > 	private AboutDialog dialog;
 > 	
-> 	public DialogFrame()
-> 	{
+> 	public DialogFrame() {
 > 		setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 > 		// Construct a File menu.
 > 		JMenuBar menuBar = new JMenuBar();
@@ -2548,11 +2522,11 @@ ok.addActionListener(event -> setVisible(false));
 > 	}
 > }
 > ```
->
+> 
 > 程序清单 12-18 dialog/AboutDialog.java 1 
 >
 > ```java
-> package dialog;
+>package dialog;
 > import java.awt.BorderLayout;
 > import javax.swing.JButton;
 > import javax.swing.JDialog;
@@ -2562,10 +2536,8 @@ ok.addActionListener(event -> setVisible(false));
 > /**
 > * sample modal dialog that displays a message and waits for the user to click the OK button.
 > */
-> public class AboutDialog extends JDialog
-> {
-> 	public AboutDialog(JFrame owner)
-> 	{
+> public class AboutDialog extends JDialog {
+> 	public AboutDialog(JFrame owner) {
 > 		super(owner,"About DialogTest", true);
 > 		// add HTML label to center
 > 		add(
@@ -2601,8 +2573,7 @@ ok.addActionListener(event -> setVisible(false));
 对话框应该提供设置默认数据的方法。例如，示例程序中的PasswordChooser类提供了一个setUser方法，用来将默认值放到下面的字段中：
 
 ```java
-public void setUser(User u)
-{
+public void setUser(User u) {
 	username.setText(u.getName());
 }
 ```
@@ -2622,11 +2593,9 @@ public void setUser(User u)
 有一个技巧是让PasswordChooser扩展JPanel, 而不是扩展JDialog, 在showDialog方法中动态建立JDialog对象：
 
 ```java
-public boolean showDialog(Frame owner, String title)
-{
+public boolean showDialog(Frame owner, String title) {
 	ok = false;
-	if (dialog = null || dialog.getOwner()!= owner)
-	{
+	if (dialog = null || dialog.getOwner()!= owner) {
 		dialog = new JDialog(owner, true);
 		dialog.add(this);
 		dialog.pack();
@@ -2673,14 +2642,12 @@ dialog.getRootPane().setDefaultButton(okButton);
 > /**
 > * A frame with a menu whose File->Connect action shows a password dialog.
 > */
-> public class DataExchangeFrame extends JFrame
-> {
+> public class DataExchangeFrame extends JFrame {
 > 	public static final int TEXT_ROWS = 20;
 > 	public static final int TEXT_C0LUMNS = 40;
 > 	private PasswordChooser dialog = null;
 > 	private JTextArea textArea;
-> 	public DataExchangeFrame()
-> 	{
+> 	public DataExchangeFrame() {
 > 		// construct a File menu
 > 		JMenuBar mbar = new JMenuBar();
 > 		setJMenuBar(mbar);
@@ -2701,10 +2668,8 @@ dialog.getRootPane().setDefaultButton(okButton);
 > 	/**
 > 	* The Connect action pops up the password dialog.
 > 	*/
-> 	private class ConnectAction implements ActionListener
-> 	{
-> 		public void actionPerformed(ActionEvent event)
-> 		{
+> 	private class ConnectAction implements ActionListener {
+> 		public void actionPerformed(ActionEvent event) {
 > 			// if first time, construct dialog
 > 			if (dialog == null)
 > 				dialog = new PasswordChooser();
@@ -2712,8 +2677,7 @@ dialog.getRootPane().setDefaultButton(okButton);
 > 			dialog.setUser(new User("yourname", null));
 > 
 > 			// pop up dialog
-> 			if (dialog.showDialog(DataExchangeFrame.this, "Connect"))
-> 			{
+> 			if (dialog.showDialog(DataExchangeFrame.this, "Connect")) {
 > 				// i f accepted, retrieve user input
 > 				User u = dialog.getUser();
 > 				textArea.appendfuser name = " + u.getName() + ", password = + (new 					String(u.getPassword())) + "\n");
@@ -2740,15 +2704,13 @@ dialog.getRootPane().setDefaultButton(okButton);
 > /**
 > * A password chooser that is shown inside a dialog
 > */
-> public class PasswordChooser extends JPanel
-> {
+> public class PasswordChooser extends JPanel {
 > 	private JTextField username;
 > 	private JPasswordField password;
 > 	private JButton okButton;
 > 	private boolean ok;
 > 	private JDialog dialog;
-> 	public PasswordChooser()
-> 	{
+> 	public PasswordChooser() {
 > 		setLayout(new BorderLayout());
 > 		// construct a panel with user name and password fields
 > 		JPanel panel = new JPanel();
@@ -2776,16 +2738,14 @@ dialog.getRootPane().setDefaultButton(okButton);
 > 	* Sets the dialog defaults.
 > 	* @param u the default user information
 > 	*/
-> 	public void setUser(User u)
-> 	{
+> 	public void setUser(User u) {
 > 		username.setText(u.getName());
 > 	}
 > 	/**
 > 	* Gets the dialog entries.
 > 	* ©return a User object whose state represents the dialog entries
 > 	*/
-> 	public User getUser()
-> 	{
+> 	public User getUser() {
 > 		return new User(username.getText(), password.getPassword());
 > 	}
 > 	/**
@@ -2793,8 +2753,7 @@ dialog.getRootPane().setDefaultButton(okButton);
 > 	* @param parent a component in the owner frame or null
 > 	* @param title the dialog window title
 > 	*/
-> 	public boolean showDialog(Component parent, String title)
-> 	{
+> 	public boolean showDialog(Component parent, String title) {
 > 		ok = false;
 > 		// locate the owner frame
 > 		Frame owner = null;
@@ -2803,8 +2762,7 @@ dialog.getRootPane().setDefaultButton(okButton);
 > 		else
 > 			owner = (Frame) SwingUtilities.getAncestorOfClass(Frame.class, parent);
 > 		// if first time, or if owner has changed, make new dialog
-> 		if (dialog = null || dialog.getOwner() != owner)
-> 		{
+> 		if (dialog = null || dialog.getOwner() != owner) {
 > 			dialog = new Dialog(owner, true);
 > 			dialog.add(this);
 > 			dialog.getRootPane().setDefaultButton(okButton);
@@ -2817,7 +2775,7 @@ dialog.getRootPane().setDefaultButton(okButton);
 > 	}
 > }
 > ```
->
+> 
 
 > javax.swing.SwingUtilities 1.2
 >
@@ -2964,18 +2922,15 @@ Boolean isTraversable(File f);
 在示例中包含了一个简单的文件视图类。当文件匹配文件过滤器时，这个类将会显示一个特定的图标。可以利用这个类为所有的图像文件显示一个调色板图标。
 
 ```java
-class FilelconView extends FileView
-{
+class FilelconView extends FileView {
 	private FileFilter filter;
 	private Icon icon;
 
-	public FileIconView(FileFilter aFilter, Icon anlcon)
-	{
+	public FileIconView(FileFilter aFilter, Icon anlcon) {
 		filter = aFilter;
 		icon = anlcon;
 	}
-	public Icon getIcon(File f)
-	{
+	public Icon getIcon(File f) {
 		if (If.isDirectory() && filter.accept(f))
 			return icon;
 		else
@@ -2998,15 +2953,12 @@ chooser.setFileView(new FilelconView(filter, new ImageIcon("palette.gif")));
 附件可以是任何Swing组件。在这个示例中，扩展JLabel类，并将图标设置为所选的图像文件的压缩拷贝。
 
 ```java
-class ImagePreviewer extends JLabel
-{
-	public ImagePreviewer(FileChooser chooser)
-	{
+class ImagePreviewer extends JLabel {
+	public ImagePreviewer(FileChooser chooser) {
 		setPreferredSize(new Dimension(100, 100));
 		setBorder(BorderFactory.createEtchedBorder());
 	}
-	public void loadImage(File f)
-	{
+	public void loadImage(File f) {
 		Imagelcon icon = new Imagelcon(f.getPath());
 		if(icon.getIconWidth() > getWidth())
 			icon = new ImageIcon(icon.getlmage().getScaledlnstance(getWidth(), -1 , Image.SCALEJEFAULT));
@@ -3020,8 +2972,7 @@ class ImagePreviewer extends JLabel
 
 ```java
 chooser.addPropertyChangeListener(event -> {
-	if (event.getPropertyName() == JFileChooser.SELECTED_FILE_CHANCED_PROPERTY)
-	{
+	if (event.getPropertyName() == JFileChooser.SELECTED_FILE_CHANCED_PROPERTY) {
 		File newFile = (File) event.getNewValue();
 		// update the accessory
 		...
@@ -3044,14 +2995,12 @@ chooser.addPropertyChangeListener(event -> {
 > * A frame that has a menu for loading an image and a display area for the
 > * loaded image.
 > */
-> public class ImageViewerFrame extends JFrame
-> {
+> public class ImageViewerFrame extends JFrame {
 > 	private static final int DEFAULTJUDTH:300;
 > 	private static final int DEFAULTJEICHT = 400;
 > 	private JLabel label;
 > 	private JFileChooser chooser;
-> 	public ImageViewerFrame()
-> 	{
+> 	public ImageViewerFrame() {
 > 		setSize(DEFAULT_WIDTH, DEFAULTJEIGHT);
 > 		//set up menu bar
 > 		JNenuBar menuBar = new DMenuBar();
@@ -3065,18 +3014,17 @@ chooser.addPropertyChangeListener(event -> {
 > 			// show file chooser dialog
 > 			int result = chooser.showOpenDialog(ImageViewerFrame.this);
 > 			// if image file accepted, set it as icon of the label
-> 			if (result == JFileChooser.APPR0VE_0PTI0N)
-> 			{
+> 			if (result == JFileChooser.APPR0VE_0PTI0N) {
 > 				String name = chooser.getSelectedPile().getPath();
 > 				label.setIcon(new Imagelcon(name));
 > 				pack();
 > 			}
 > 		});
->         	JMenuItem exitltem = new JMenuItem("Exit");
->         	menu.add(exitltem);
+>      	JMenuItem exitltem = new JMenuItem("Exit");
+>      	menu.add(exitltem);
 > 
-> 		exitltem.addActionListener(event -> System,exit(0));
-> 		// use a label to display the images
+>    		exitltem.addActionListener(event -> System,exit(0));
+>    		// use a label to display the images
 > 		label = new JLabel();
 > 		add(label);
 > 		// set up file chooser
@@ -3100,24 +3048,20 @@ chooser.addPropertyChangeListener(event -> {
 > /**
 > * A file chooser accessory that previews images.
 > */
-> public class ImagePreviewer extends JLabel
-> {
+> public class ImagePreviewer extends JLabel {
 > 	/**
 > 	* Constructs an ImagePreviewer.
 > 	* @param chooser the file chooser whose property changes trigger an image
 > 	* change in this previewer
 > 	*/
-> 	public ImagePreviewer(JFileChooser chooser)
-> 	{
+> 	public ImagePreviewer(JFileChooser chooser) {
 > 		setPreferredSize(new Dimension(100, 100));
 > 		setBorder(BorderFactory.createEtchedBorder());
 > 		chooser.addPropertyChangeListener(event -> {
-> 			if (event.getPropertyName() == JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)
-> 			{
+> 			if (event.getPropertyName() == JFileChooser.SELECTED_FILE_CHANGED_PROPERTY) {
 > 				// the user has selected a new file
 > 				File f = (File) event.getNewValue();
-> 				if (f == null)
-> 				{
+> 				if (f == null) {
 > 					setlcon(null);
 > 					return;
 > 				}
@@ -3144,8 +3088,7 @@ chooser.addPropertyChangeListener(event -> {
 > /**
 > * A file view that displays an icon for all files that match a file filter.
 > */
-> public class FilelconView extends FileView
-> {
+> public class FilelconView extends FileView {
 > 	private FileFilter filter;
 > 	private Icon icon;
 > 	/**
@@ -3154,13 +3097,11 @@ chooser.addPropertyChangeListener(event -> {
 > 	* with the icon.
 > 	* @param anlcon the icon shown with all accepted files.
 > 	*/
-> 	public FilelconView(FileFilter aFilter, Icon anlcon)
-> 	{
+> 	public FilelconView(FileFilter aFilter, Icon anlcon) {
 > 		filter = aFilter;
 > 		icon = anlcon;
 > 	}
-> 	public Icon getIcon(File f)
-> 	{
+> 	public Icon getIcon(File f) {
 > 		if (!f.isDirectory() && filter.accept(f))
 > 			return icon;
 > 		else
@@ -3168,7 +3109,7 @@ chooser.addPropertyChangeListener(event -> {
 > 	}
 > }
 > ```
->
+> 
 
 > javax.swing.JFileChooser 1.2
 >
