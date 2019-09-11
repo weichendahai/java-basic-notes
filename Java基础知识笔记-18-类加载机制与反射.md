@@ -7,16 +7,15 @@ Java基础知识笔记-18-类加载机制与反射
 当调用Java命令运行某个Java程序时，该命令将会启动一个Java虚拟机进程，不管该Java程序有多么复杂，当程序启动了多少个线程，他们都处于该Java虚拟机进程里。正如前面介绍的，同一个JVM的所有线程，所有变量都处于同一个进程里，他们都使用该JVM进程的内存区。当系统出现以下几种情况时，JVM进程将被终止。
 
 - 程序运行到最后正常结束
-- 程序运行到使用System.exit()或者Runtime.getRumtime().exit()代码处结束程序。
+- 程序运行到使用`System.exit()`或者`Runtime.getRumtime().exit()`代码处结束程序。
 - 程序执行过程中遇到未捕获的异常或错误而结束
 - 程序所在平台强制结束了JVM进程
 
 下面以类的类变量来说明这个问题。下面程序先定义了一个包含类变量的类
 
 ```java
-A.java
-public class A
-{
+//A.java
+public class A {
 	//定义该类的类变量
 	public static int a=6;
 }
@@ -25,11 +24,9 @@ public class A
 上面程序中的粗体字代码定义了一个类变量a，接下来定义一个类创建A类的实例，并访问A对象的类变量a
 
 ```java
-ATest1.java
-public class ATest1
-{
-	public static void main(String[] args)
-	{
+//ATest1.java
+public class ATest1 {
+	public static void main(String[] args) {
 		//创建A类的实例
 		A a=new A();
 		//让a实例的类变量a的值自加
@@ -42,11 +39,9 @@ public class ATest1
 下面程序也创建A对象，并访问其类变量a的值
 
 ```java
-ATest.java
-public class ATest2
-{
-	public static void main(String[] args)
-	{
+//ATest.java
+public class ATest2 {
+	public static void main(String[] args) {
 		//创建A类的实例
 		A b=new A();
 		//输出b实例的类变量a的值
@@ -61,7 +56,7 @@ public class ATest2
 
 当程序主动使用某个类时，如果该类还未被加载到内存中，则系统会通过加载，连接，初始化三个步骤来对该类进行初始化。如果没有意外，JVM将连续完成这三个步骤，所以有时也把这三个步骤统称为类加载或者类初始化。
 
-类加载指的是将类的class文件读入内存，并为之创建一个java.lang.Class对象，也就是说，当程序中使用任何类时，系统都会为之建立一个java.lang.Class对象
+类加载指的是将类的class文件读入内存，并为之创建一个`java.lang.Class`对象，也就是说，当程序中使用任何类时，系统都会为之建立一个`java.lang.Class`对象
 
 类的加载由类加载器完成，类加载器通常由JVM提供，这些类加载器也是前面所有程序运行的基础，JVM提供的这些类加载器通常被称为系统类加载器。除此之外，开发者还可以通过继承ClassLoader基类来创建自己的类加载器。
 
@@ -87,8 +82,7 @@ public class ATest2
 在类的初始化阶段，虚拟机负责对类进行初始化，主要就是对类变量进行初始化。在Java类中对类变量指定初始值有两种方式：①声明类变量指定初始值；②使用静态初始化块为类变量指定初始值。例如下面代码片段。
 
 ```java
-public class Test
-{
+public class Test {
 	//声明变量a时指定初始值
 	static int a=5;
 	static int b;
@@ -107,10 +101,8 @@ public class Test
 
 ```java
 Test.java
-public class Test
-{
-	static 
-	{
+public class Test {
+	static {
 		//使用静态初始化块为变量b指定初始值
 		b=6;
 		System.out.println("--------");
@@ -121,7 +113,7 @@ public class Test
 	static int c;
 	public static void main(String[] args){
 		System.out.println(Test.b);
-}
+	}
 }
 ```
 
@@ -151,19 +143,15 @@ JVM初始化一个类包含如下几个步骤
 对于一个final型的类变量，如果该类变量的值在编译时就可以确定下来，那么这个类变量相当于“宏变量”。Java编译器会在编译时直接把这个类变量出现的地方替换成它的值，因此即使程序使用该静态类变量，也不会导致类的初始化。如下示例程序
 
 ```java
-class MyTest
-{
-	static
-	{
+class MyTest {
+	static {
 		System.out.println("静态初始化块...");
 	}
 	//使用一个字符串直接量为static final的类变量赋值
 	static final String compileConstant="疯狂Java讲义";
 }
-public class CompileConstantTest
-{
-	public static void main(String[] args)
-	{
+public class CompileConstantTest {
+	public static void main(String[] args) {
 		//访问，输出MyTest中的compileConstant类变量
 		System.out.println(MyTest.compileConstant); //①
 	}
@@ -181,5 +169,5 @@ static final String compileConstant=System.currentTimeMills()+"";
 
 因为上面定义的cimpileConstant类变量的值必须在运行时才可以确定，所以①处的粗体字代码必须保留对MyTest类的类变量的引用，这行代码就变成了使用MyTest的类变量，这将导致MyTest类被初始化。
 
-当使用ClassLoader类的loadClass()方法来加载某个类时，该方法只是加载该类，并不会执行该类的初始化。使用Class的forName()静态方法才会导致强制初始化该类。
+当使用ClassLoader类的`loadClass()`方法来加载某个类时，该方法只是加载该类，并不会执行该类的初始化。使用Class的`forName()`静态方法才会导致强制初始化该类。
 
