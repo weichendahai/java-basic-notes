@@ -15,10 +15,9 @@ Java基础知识笔记-14-并发
 ```java
 Ball ball = new Ball();
 panel.add(ball); 
-for (int i = 1 ;i <= STEPS;i++) 
-{ 
+for (int i = 1 ;i <= STEPS;i++) { 
 	ball.move(panel.getBounds());
-	panel,paint(panel.getCraphics());
+	panel.paint(panel.getCraphics());
 	Thread.sleep(DELAY);
 }
 ```
@@ -35,8 +34,7 @@ for (int i = 1 ;i <= STEPS;i++)
 
 - 1)将任务代码移到实现了Runnable接口的类的run方法中。这个接口非常简单，只有一个方法：
 ```java
-public interface Runnable 
-{
+public interface Runnable {
 	void run();
 } 
 ```
@@ -52,10 +50,8 @@ Thread t = new Thread(r);
 要想将弹跳球代码放在一个独立的线程中，只需要实现一个类BallRunnable，然后，将动画代码放在run方法中，如同下面这段代码：
 ```java
 Runnable r = () -> {
-	try 
-	{ 
-		for (int i = 1 ; i <=: STEPS; i++) 
-		{
+	try { 
+		for (int i = 1 ; i <=: STEPS; i++) {
 			ball.move(comp.getBounds()); 
 			comp.repaint(); 
 			Thread.sleep(DELAY); 
@@ -66,11 +62,9 @@ Runnable r = () -> {
 Thread t = new Thread(r);
 t.start();
 ```
-同样地，需要捕获sleep方法可能抛出的异常InterruptedException。下一节将讨论这个异常。在一般情况下，线程在中断时被终止。因此，当发生 InterruptedException异常时，run方法将结束执行。
+同样地，需要捕获sleep方法可能抛出的异常InterruptedException。下一节将讨论这个异常。在一般情况下，线程在中断时被终止。因此，当发生InterruptedException异常时，run方法将结束执行。
 
-无论何时点击Start按钮，球会移入一个新线程
-
-仅此而已！现在应该知道如何并行运行多个任务了。本章其余部分将阐述如何控制线程之间的交互。
+无论何时点击Start按钮，球会移入一个新线程。仅此而已！现在应该知道如何并行运行多个任务了。本章其余部分将阐述如何控制线程之间的交互。
 
 > Runnable对象仅仅作为Thread对象的target，Runable实现类里包含的run()方法仅作为线程执行体。而实际的线程对象仍然是Thread实例，只是该Thread线程负责执行其target的run()方法。
 
@@ -90,7 +84,7 @@ t.start();
 >
 > 然后，构造一个子类的对象，并调用start方法。不过，这种方法已不再推荐。应该将要并行运行的任务与运行机制解耦合。如果有很多任务，要为每个任务创建一个独立的线程所付出的代价太大了。可以使用线程池来解决这个问题，有关内容请参看第14.9节。
 
-> 警告：不要调用Thread类或Runnable对象的run方法。直接调用run方法，只会执行同一个线程中的任务，而不会启动新线程。应该调用Thread.start方法。这个方法将创建一个执行run方法的新线程。
+> 警告：不要调用Thread类或Runnable对象的run方法。直接调用run方法，只会执行同一个线程中的任务，而不会启动新线程。应该调用`Thread.start`方法。这个方法将创建一个执行run方法的新线程。
 
 ## 2 中断线程
 当线程的run方法执行方法体中最后一条语句后，并经由执行return语句返冋时，或者出现了在方法中没有捕获的异常时，线程将终止。在Java的早期版本中，还有一个stop方法，其他线程可以调用它终止线程。但是，这个方法现在已经被弃用了。
@@ -101,8 +95,7 @@ t.start();
 
 要想弄清中断状态是否被置位，首先调用静态的Thread.currentThread方法获得当前线程，然后调用islnterrupted方法：
 ```java
-while (!Thread.currentThread().islnterrupted() && more work todo) 
-{ 
+while (!Thread.currentThread().islnterrupted() && more work todo) { 
 	domorework 
 }
 ```
@@ -111,41 +104,33 @@ while (!Thread.currentThread().islnterrupted() && more work todo)
 没有任何语言方面的需求要求一个被中断的线程应该终止。中断一个线程不过是引起它的注意。被中断的线程可以决定如何响应中断。某些线程是如此重要以至于应该处理完异常后，继续执行，而不理会中断。但是，更普遍的情况是，线程将简单地将中断作为一个终止的请求。这种线程的run方法具有如下形式：
 ```java
 Runnable r = () -> { 
-	try 
-	{ 
-		while (!Thread.currentThread().islnterrupted0 && more work todo) 
-		{
+	try { 
+		while (!Thread.currentThread().islnterrupted0 && more work todo) {
 			do morework
 		}
 	} 
-	catch(InterruptedException e) 
-	{ 
+	catch(InterruptedException e) { 
 		// thread was interrupted during sleep or wait
 	} 
-	finally
-	{
-		cleanup,ifrequired
+	finally {
+		cleanup,if required
 	} // exiting the run method terminates the thread 
 };
 ```
 如果在每次工作迭代之后都调用sleep方法（或者其他的可中断方法)，islnterrupted检测既没有必要也没有用处。如果在中断状态被置位时调用sleep方法，它不会休眠。相反，它将清除这一状态（！）并拋出InterruptedException。因此，如果你的循环调用sleep，不会检测中断状态。相反，要如下所示捕获 InterruptedException异常：
 ```java
 Runnable r = () -> { 
-	try 
-	{
-		while (!Thread.currentThread().islnterrupter() && more work todo) 
-		{
+	try {
+		while (!Thread.currentThread().isInterrupter() && more work todo) {
 			do morework
 			Tread.sleep(delay);
 		}
 	}
-	catch(InterruptedException e) 
-	{
+	catch(InterruptedException e) {
 		// thread was interrupted during sleep
 	}
-	finally
-	{
-		cleanup,ifrequired
+	finally{
+		cleanup,if required
 	} // exiting the run method terminates the thread
 };
 ```
@@ -162,7 +147,7 @@ void mySubTask() {
 ```
 不要这样做！如果不认为在catch子句中做这一处理有什么好处的话，仍然有两种合理的选择： 
 
-- 在catch子句中调用Thread.currentThread().interrupt()来设置中断状态。于是，调用者可以对其进行检测。 
+- 在catch子句中调用`Thread.currentThread().interrupt()`来设置中断状态。于是，调用者可以对其进行检测。 
 ```java
 void mySubTask() {
 	try { sleep(delay); } 
@@ -170,8 +155,7 @@ void mySubTask() {
 ```
 - 或者，更好的选择是，用throws InterruptedException标记你的方法，不采用try语句块捕获异常。于是，调用者（或者，最终的run方法）可以捕获这一异常。
 ```java
-void mySubTask() throws InterruptedException
-{
+void mySubTask() throws InterruptedException {
 	...
 	sleep(delay);
 	...
@@ -188,7 +172,7 @@ void mySubTask() throws InterruptedException
 
 ## 3 线程状态
 
-线程可以有如下 6 种状态：
+线程可以有如下6种状态：
 - New (新创建） 
 - Runnable (可运行） 
 - Blocked (被阻塞） 
@@ -272,18 +256,18 @@ t.setDaemon(true);
 ```java
 void uncaughtException(Thread t, Throwable e)
 ```
-可以用`setUncaughtExceptionHandler`方法为任何线程安装一个处理器。也可以用Thread类的静态方法setDefaultUncaughtExceptionHandler为所有线程安装一个默认的处理器。替换处理器可以使用日志API发送未捕获异常的报告到日志文件。
+可以用`setUncaughtExceptionHandler`方法为任何线程安装一个处理器。也可以用Thread类的静态方法`setDefaultUncaughtExceptionHandler`为所有线程安装一个默认的处理器。替换处理器可以使用日志API发送未捕获异常的报告到日志文件。
 
 如果不安装默认的处理器，默认的处理器为空。但是，如果不为独立的线程安装处理器，此时的处理器就是该线程的ThreadGroup对象。 
 
 > 注释：线程组是一个可以统一管理的线程集合。默认情况下，创建的所有线程属于相同的线程组，但是，也可能会建立其他的组。现在引入了更好的特性用于线程集合的操作，所以建议不要在自己的程序中使用线程组。 
 
-ThreadGroup类实现Thread.UncaughtExceptionHandler接口。它的uncaughtException方法做如下操作： 
+ThreadGroup类实现`Thread.UncaughtExceptionHandler`接口。它的uncaughtException方法做如下操作： 
 
 - 1)如果该线程组有父线程组，那么父线程组的uncaughtException方法被调用。 
-- 2)否则，如果Thread.getDefaultExceptionHandler方法返回一个非空的处理器，则调用该处理器。 
+- 2)否则，如果`Thread.getDefaultExceptionHandler`方法返回一个非空的处理器，则调用该处理器。 
 - 3)否则，如果Throwable 是ThreadDeath的一个实例，什么都不做。 
-- 4)否则，线程的名字以及Throwable的栈轨迹被输出到System.err上。这是你在程序中肯定看到过许多次的栈轨迹。 
+- 4)否则，线程的名字以及Throwable的栈轨迹被输出到`System.err`上。这是你在程序中肯定看到过许多次的栈轨迹。 
 ### 4.4线程睡眠
 
 如果需要让当前正在执行的线程暂停一段时间，进入阻塞状态，则可以通过调用Thread类的静态sleep()方法来实现。sleep()方法有两种重载方式。
@@ -307,14 +291,13 @@ public void transfer(int from, int to, double amount)
 	accounts[from] -= amount; 
 	System.out.printf("%10.2f from %d to %d", amount, from, to);
 	accounts[to] += amount;
-	System.out.printf('Total Balance: %10.2fXn", getTotalBalance());
+	System.out.printf("Total Balance: %10.2fXn", getTotalBalance());
 } 
 ```
 这里是Runnable类的代码。它的run方法不断地从一个固定的银行账户取出钱款。在每一次迭代中，run方法随机选择一个目标账户和一个随机账户，调用bank对象的transfer方法，然后睡眠。
 ```java
 Runnable r = () -> { 
-	try
-	{
+	try {
 		while (true)
 		{
 			int toAccount = (int) (bank.size() * Math.random());
@@ -323,8 +306,7 @@ Runnable r = () -> {
 			Thread.sleep((int) (DELAY * Math.random()));
 		}
 	}
-	catch (InterruptedExeeption e)
-	{
+	catch (InterruptedExeeption e) {
 	}
 };
 ```
@@ -365,7 +347,7 @@ Thread[Thread-4,5,main]Thread[Thread-33,5,main] 7.31 from 31to 32 Total Balance:
 ### 5.3 锁对象
 有两种机制防止代码块受并发访问的干扰。Java语言提供一个synchronized关键字达 到这一目的，并且Java SE 5.0引入了ReentrantLock类。synchronized关键字自动提供一个锁以及相关的“条件”，对于大多数需要显式锁的情况，这是很便利的。但是，我们相信在读者分別阅读了锁和条件的内容之后，理解 synchronized关键字是很轻松的事情。
 
-java.util.concurrent框架为这些基础机制提供独立的类，在此以及第14.5.4节加以解释这个内容。读者理解了这些构建块之后，将讨论第14.5.5节。 
+`java.util.concurrent`框架为这些基础机制提供独立的类，在此以及第14.5.4节加以解释这个内容。读者理解了这些构建块之后，将讨论第14.5.5节。 
 
 用ReentrantLock保护代码块的基本结构如下： 
 ```java
@@ -385,19 +367,16 @@ finally {
 
 让我们使用一个锁来保护Bank类的transfer方法。
 ```java
-public class Bank
-{
+public class Bank {
 	private Lock bankLock = new ReentrantLock();// ReentrantLock implements the Lock interface
-	public void transfer(int from, int to, int amount)
-	{
+	public void transfer(int from, int to, int amount) {
 		bankLock.lock();
-		try
-		{
+		try {
 			System.out.print(Thread.currentThread());
 			accounts[from] -= amount;
-			System.out.printf(" %10.2f from %A to %d", amount, from, to);
+			System.out.printf("%10.2f from %A to %d", amount, from, to);
 			accounts[to] += amount;
-			System.out.printf(" Total Balance: %10.2f%n", getTotalBalance());
+			System.out.printf("Total Balance: %10.2f%n", getTotalBalance());
 		}
 		finally {
 			banklock.unlock();
@@ -453,13 +432,10 @@ public class Bank
 在线程再次运行前，账户余额可能已经低于提款金额。必须确保没有其他线程在本检査余额 与转账活动之间修改余额。通过使用锁来保护检査与转账动作来做到这一点： 
 
 ```java
-public void transfer(int from, int to,int amount) 
-{ 
+public void transfer(int from, int to,int amount) { 
 	bankLock.lock(); 
-	try 
-	{ 
-		while (accounts[from] < amount) 
-		{ 
+	try { 
+		while (accounts[from] < amount) { 
 			// wait
 			...
 		}
@@ -477,12 +453,10 @@ public void transfer(int from, int to,int amount)
 一个锁对象可以有一个或多个相关的条件对象。你可以用newCondition方法获得一个条件对象。习惯上给每一个条件对象命名为可以反映它所表达的条件的名字。例如，在此设置一个条件对象来表达“余额充足”条件。 
 
 ```java
-class Bank 
-{
+class Bank {
 	private Condition sufficientFunds;
 	...
-	public Bank()
-	{
+	public Bank() {
 		...
 		sufficientFunds = bankLock.newCondition();
 	}
@@ -510,7 +484,7 @@ sufficientFunds.signalAll();
 > 注释： 通常，对await的调用应该在如下形式的循环体中
 >
 > ```java
-> while (I(ok to proceed))
+> while (!(ok to proceed))
 > 	condition.await(); 
 > ```
 
@@ -519,11 +493,9 @@ sufficientFunds.signalAll();
 应该何时调用signalAll呢？经验上讲，在对象的状态有利于等待线程的方向改变时调用signalAll。例如，当一个账户余额发生改变时，等待的线程会应该有机会检查余额。在例子中，当完成了转账时，调用signalAll方法。 
 
 ```java
-public void transfer(int from, int to, int amount) 
-{
+public void transfer(int from, int to, int amount) {
 	bankLock.lock();
-	try
-	{
+	try {
 		while (accounts[from] < amount)
 			sufficientFunds.await();
 			// transfer funds sufficientFunds.signalAll();
@@ -557,8 +529,7 @@ import java.util.concurrent.locks.*;
 * ©author Cay Horstmann
 */
 
-public class Bank
-{
+public class Bank {
 	private final double[] accounts;
 	private Lock bankLock;
 	private Condition sufficientFunds;
@@ -569,8 +540,7 @@ public class Bank
 	* @param initialBalance the initial balance for each account
 	*/
 
-	public Bank(int n, double initialBalance)
-	{
+	public Bank(int n, double initialBalance) {
 		accounts = new double[n];
 		Arrays.fill(accounts, initialBalance);
 		bankLock = new ReentrantLock();
@@ -581,22 +551,19 @@ public class Bank
 		* @param to the account to transfer to
 		* @paran amount the amount to transfer
 		*/
-		public void transfer(int from, int to, double amount) throws InterruptedException
-		{
+		public void transfer(int from, int to, double amount) throws InterruptedException {
 			bankLock.lock();
-			try 
-			{
+			try {
 				while (accounts[from] < amount)
 					sufficientFunds.await();
 				System.out.print(Thread.currentThread());
 				accounts[from] -= amount;
-				System.out.printf(" %10.2f from %6 to %d", amount, from, to);
+				System.out.printf("%10.2f from %6 to %d", amount, from, to);
 				accounts[to] += amount;
 				System.out.printf("Total Balance: %10.2f%n", getTotalBalance());
 				sufficientFunds.signalAll();
 			}
-			finally
-			{
+			finally {
 				bankLock.unlock();
 			}
 		}
@@ -604,18 +571,15 @@ public class Bank
 		* Gets the sum of all account balances.
 		* ©return the total balance 
 		*/ 
-		public double getTotalBalance()
-		{
+		public double getTotalBalance() {
 			bankLock.lock();
-			try
-			{
+			try {
 				double sum = 0;
-				for (double a : accounts)
+				for (double a:accounts)
 					sum += a;
 				return sum;
 			}
-			finally
-			{
+			finally {
 				bankLock.unlock();
 			}
 		}
@@ -623,8 +587,7 @@ public class Bank
 		* Gets the number of accounts in the bank.
 		* ©return the number of accounts
 		*/
-		public int size()
-		{
+		public int size() {
 			return accounts.length;
 		}
 }
@@ -652,8 +615,7 @@ public synchronized void method() {
 等价于
 
 ```java
-public void method()
-{
+public void method() {
 	this.intrinsidock.lock();
 	try {
 		method body
@@ -676,11 +638,9 @@ intrinsicCondition.signalAll();
 例如，可以用Java实现Bank类如下：
 
 ```java
-class Bank
-{
+class Bank {
 	private double[] accounts;
-	public synchronized void transfer(int from，int to, int amount) throws InterruptedException
-	{
+	public synchronized void transfer(int from，int to, int amount) throws InterruptedException {
 		while (accounts[from] < amount)
 			wait(); // wait on intrinsic object lock's single condition
 		accounts[from] -= amount;
@@ -710,76 +670,73 @@ class Bank
 - 如果特别需要Lock/Condition结构提供的独有特性时，才使用Lock/Condition。
 
 > 程序清单14-8 synch2/Bank.java
-
-```java
-package synch2;
-import java.util.*;
-/** 
-* A bank with a number of bank accounts that uses synchronization primitives. 
-* ©version 1.30 2004-08-01 s * ©author Cay Horstmann 
-*/
-public class Bank
-{
-	private final doublet[] accounts;
-	/**
-	* Constructs the bank.
-	* @parain n the number of accounts
-	* @param initialBalance the initial balance for each account
-	*/
-	public Bank(int n, double initialBalance)
-	{
-		accounts = new double[n];
-		Arrays.fill (accounts, initialBalance);
-	}
-	/** Transfers money from one account to another.
-	* @param from the account to transfer from
-	* @param to the account to transfer to
-	* @param amount the amount to transfer
-	*/
-	public synchronized void transfer(int from, int to, double amount) throws InterruptedException
-	{
-		while (accounts[from] < amount)
-			wait();
-		System.out.print(Thread.currentThread());
-		accounts[from] -= amount;
-		System.out.printf(" %10.2f from %d to %d", amount, from, to);
-		accounts[to] += amount;
-		System.out.printf(" Total Balance: %10.2f%n", getTotalBalanceO);
-		notifyAll();
-	}
-	/**
-	* Gets the sum of all account balances.
-	* return the total balance
-	*/
-	public synchronized double getTotalBalance()
-	{
-		double sum = 0;
-		for (double a : accounts)
-			sum += a;
-		return sum;
-	}
-	/**
-	* Gets the number of accounts in the bank.
-	* ©return the number of accounts
-	*/
-	public int size()
-	{
-		return accounts.length;
-	}
-}
-```
+>
+> ```java
+> package synch2;
+> import java.util.*;
+> /** 
+> * A bank with a number of bank accounts that uses synchronization primitives. 
+> * ©version 1.30 2004-08-01 s * ©author Cay Horstmann 
+> */
+> public class Bank {
+> 	private final doublet[] accounts;
+> 	/**
+> 	* Constructs the bank.
+> 	* @parain n the number of accounts
+> 	* @param initialBalance the initial balance for each account
+> 	*/
+> 	public Bank(int n, double initialBalance) {
+> 		accounts = new double[n];
+> 		Arrays.fill (accounts, initialBalance);
+> 	}
+> 	/** Transfers money from one account to another.
+> 	* @param from the account to transfer from
+> 	* @param to the account to transfer to
+> 	* @param amount the amount to transfer
+> 	*/
+> 	public synchronized void transfer(int from, int to, double amount) throws InterruptedException {
+> 		while (accounts[from] < amount)
+> 			wait();
+> 		System.out.print(Thread.currentThread());
+> 		accounts[from] -= amount;
+> 		System.out.printf(" %10.2f from %d to %d", amount, from, to);
+> 		accounts[to] += amount;
+> 		System.out.printf(" Total Balance: %10.2f%n", getTotalBalanceO);
+> 		notifyAll();
+> 	}
+> 	/**
+> 	* Gets the sum of all account balances.
+> 	* return the total balance
+> 	*/
+> 	public synchronized double getTotalBalance() {
+> 		double sum = 0;
+> 		for (double a : accounts)
+> 			sum += a;
+> 		return sum;
+> 	}
+> 	/**
+> 	* Gets the number of accounts in the bank.
+> 	* ©return the number of accounts
+> 	*/
+> 	public int size() {
+> 		return accounts.length;
+> 	}
+> }
+> ```
+>
+> 
 
 > java.lang.Object 1.0 
-
-```java
-void notifyAll();  //解除那些在该对象上调用wait方法的线程的阻塞状态。该方法只能在同步方法或同步块内部调用。如果当前线程不是对象锁的持有者，该方法拋出一个IllegalMonitorStateException异常。
-void notify();  //随机选择一个在该对象上调用wait方法的线程，解除其阻塞状态。该方法只能在一个同步方法或同步块中调用。如果当前线程不是对象锁的持有者，该方法抛出一个IllegalMonitorStateException异常。
-void wait();  //导致线程进入等待状态直到它被通知。该方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者，该方法拋出一个IllegalMonitorStateException异常。
-void wait(long millis);
-void wait(long millis, int nanos);  //导致线程进入等待状态直到它被通知或者经过指定的时间。这些方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者该方法拋出一个IllegalMonitorStateException异常。
-	参数	millis	毫秒数
-		nanos	纳秒数，<1 000 000 
-```
+>
+> ```java
+> void notifyAll();  //解除那些在该对象上调用wait方法的线程的阻塞状态。该方法只能在同步方法或同步块内部调用。如果当前线程不是对象锁的持有者，该方法拋出一个IllegalMonitorStateException异常。
+> void notify();  //随机选择一个在该对象上调用wait方法的线程，解除其阻塞状态。该方法只能在一个同步方法或同步块中调用。如果当前线程不是对象锁的持有者，该方法抛出一个IllegalMonitorStateException异常。
+> void wait();  //导致线程进入等待状态直到它被通知。该方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者，该方法拋出一个IllegalMonitorStateException异常。
+> void wait(long millis);
+> void wait(long millis, int nanos);  //导致线程进入等待状态直到它被通知或者经过指定的时间。这些方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者该方法拋出一个IllegalMonitorStateException异常。
+> 	参数	millis	毫秒数
+> 		nanos	纳秒数，<1 000 000 
+> ```
 
 ### 5.6 同步阻塞
 
@@ -795,12 +752,10 @@ synchronized (obj) // this is the syntax for a synchronized block
  于是它获得Obj的锁。有时会发现“特殊的”锁，例如：
 
 ```java
-public class Bank
-{
+public class Bank {
 	private doublet[] accounts;
 	private Object lock = new Object();
-	public void transfer(int from, int to, int amount)
-	{
+	public void transfer(int from, int to, int amount) {
 		synchronized (lock) // an ad-hoc lock
 		{
 			accounts[from] -= amount;
@@ -875,7 +830,7 @@ volatile关键字为实例域的同步访问提供了一种免锁机制。如果
 
 ```java
 private boolean done;
-public synchronized boolean isDone(){
+public synchronized boolean isDone() {
 	return done;
 }
 public synchronized void setDone() {
@@ -951,7 +906,7 @@ final Map<String, Double> accounts = new HashKap<>();
 所有其他线程： 从他们的账户转移 $995 到另一个账户
 ```
 
-显然，除了线程 1, 所有的线程都被阻塞，因为他们的账户中没有足够的余额。
+显然，除了线程1, 所有的线程都被阻塞，因为他们的账户中没有足够的余额。
 
 线程1继续执行，运行后出现如下状况:
 
@@ -965,7 +920,7 @@ final Map<String, Double> accounts = new HashKap<>();
 线程1 ：从账户 1 转移 $997 到账户 2 
 ```
 
-现在，线程1也调用await, 所有的线程都被阻塞。系统死锁。 问题的起因在于调用signal。它仅仅为一个线程解锁， 而且，它很可能选择一个不能继续运行的线程（在我们的例子中，线程2必须把钱从账户2中取出）遗憾的是，Java编程语言中没有任何东西可以避免或打破这种死锁现象。必须仔细设计程序，以确保不会出现死锁。 
+现在，线程1也调用await, 所有的线程都被阻塞。系统死锁。问题的起因在于调用signal。它仅仅为一个线程解锁，而且，它很可能选择一个不能继续运行的线程（在我们的例子中，线程2必须把钱从账户2中取出）遗憾的是，Java编程语言中没有任何东西可以避免或打破这种死锁现象。必须仔细设计程序，以确保不会出现死锁。 
 
 ### 5.12 线程局部变量
 
@@ -974,8 +929,7 @@ final Map<String, Double> accounts = new HashKap<>();
 线程在调用lock方法来获得另一个线程所持有的锁的时候，很可能发生阻塞。应该更加谨慎地申请锁。tryLock方法试图申请一个锁，在成功获得锁后返回true, 否则，立即返回 false, 而且线程可以立即离开去做其他事情。 
 
 ```java
-if (myLock.tryLock())
-{
+if (myLock.tryLock()) {
 	// now the thread owns the lock
 	try {
 		... 
@@ -1072,8 +1026,7 @@ PriorityBlockingQueue是一个带优先级的队列，而不是先进先出队�
 最后，DelayQueue包含实现Delayed接口的对象：
 
 ```java
-interface Delayed extends Comparable<Delayed>
-{
+interface Delayed extends Comparable<Delayed> {
 	long getDelay(TimeUnit unit);
 } 
 ```
@@ -1101,54 +1054,44 @@ import java.util.concurrent.*;
 * ©version 1.02 2015-06-21
 * author Cay Horstmann
 */
-public class BlockingQueueTest
-{
+public class BlockingQueueTest {
 	private static final int FILE_QUEUE_SIZE = 10;
 	private static final int SEARCH_THREADS = 100;
 	private static final File DUMMY = new File("");
 	private static BlockingQueue<File> queue = new ArrayBlockingQueueo(FILE_QUEUE_SIZE);
-	public static void main(String[] args)
-	{
-		try (Scanner in = new Scanner(System.in))
-		{
+	public static void main(String[] args) {
+		try (Scanner in = new Scanner(System.in)) {
 			System.out.print("Enter base directory (e.g. /opt/jdkl.8.0/src): ");
 			String directory = in.nextline();
 			System.out.print("Enter keyword (e.g. volatile): ");
 			String keyword = in.nextLine();
 			
 			Runnable enumerator = () -> {
-				try
-				{
+				try {
 					enumerate(new File(directory));
 					queue.put(DUMMY);
 				}
-				catch (InterruptedException e)
-				{
+				catch (InterruptedException e) {
 				}
 			};
 			new Thread(enumerator).start();
 			for (int i = 1 ; i <= SEARCH.THREADS; i++) {
 				Runnable searcher = () -> {
-					try
-					{
+					try {
 						boolean done = false;
-						while (!done)
-						{
+						while (!done) {
 							File file = queue.take();
-							if (file = DUMMY)
-							{
+							if (file = DUMMY) {
 								queue.put(file);
 								done = true;
 							}
 							else search(file, keyword);
 						}
 					}
-					catch (IOException e)
-					{
+					catch (IOException e) {
 						e.printStackTrace();
 					}
-					catch (InterruptedException e)
-					{
+					catch (InterruptedException e) {
 					}
 				};
 				new Thread(searcher).start();
@@ -1159,11 +1102,9 @@ public class BlockingQueueTest
 	* Recursively enumerates all files in a given directory and its 	subdirectories.
 	* @paran directory the directory in which to start 
 	*/
-	public static void enumerate(File directory) throws InterruptedException
-	{
+	public static void enumerate(File directory) throws InterruptedException {
 		File[] files = directory.listFiles();
-		for (File file : files)
-		{
+		for (File file : files) {
 			if (file.isDirectory())
 				enumerate(file);
 			else
@@ -1175,13 +1116,10 @@ public class BlockingQueueTest
 	* @param file the file to search
 	* @param keyword the keyword to search for
 	*/
-	public static void search(File file, String keyword) throws IOException
-	{
-		try (Scanner in = new Scanner(file, "UTF-8"))
-		{
+	public static void search(File file, String keyword) throws IOException {
+		try (Scanner in = new Scanner(file, "UTF-8")) {
 			int lineNuinber = 0;
-			while (in.hasNextLine())
-			{
+			while (in.hasNextLine()) {
 				lineNumber++;
 				String line = in.nextLine();
 				if (line,contains(keyword))
