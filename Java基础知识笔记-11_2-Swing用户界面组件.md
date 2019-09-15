@@ -1,8 +1,12 @@
 Java基础知识笔记-11_2-Swing用户界面组件
-> *这章教程两个版本，一个语法是非lambda表达式版本，另一个是lambda表达式版本*
 
+# 11_2-Swing用户界面组件
+
+> *这章教程两个版本，一个语法是非lambda表达式版本，另一个是lambda表达式版本*
+> 
 > # 非lambda表达式版本
-# 1 Java Swing概述
+
+## 1 Java Swing概述
 Java的java.awt包，即抽象窗口工具包JDK1.2推出后，增加了一个新的javax.swing包，该包提供了更为强大的GUI类，这两个包中一部分类的层次关系的UML类如下图所示
 
 ![avatar](
@@ -10,29 +14,36 @@ https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/Comp
 
 >Component类的部分子类
 
-学习GUI编程时，必须很好的了解两个概念：容器类(Container)和组建类(Component)。javax.swing包中JComponent类是java.awt包中Container类的一个直接子类，是Component类的一个间接子类，学习GUI编程主要是学习掌握使用Component类的一些重要的子类。  
+学习GUI编程时，必须很好的了解两个概念：容器类(Container)和组建类(Component)。javax.swing包中JComponent类是java.awt包中Container类的一个直接子类，是Component类的一个间接子类，学习GUI编程主要是学习掌握使用Component类的一些重要的子类。 
 
-以下是GUI编程的一些基本知识点：  
-- *Java可以把component类的子类或间接自类创建的对象称为一个组件。*  
-- *Java可以把container的子类或间接子类创建的对象称为一个容器。*  
-- 可以向容器中添加组件。container类提供了一个public方法`add()`,一个容器可以调用这个方法将组建添加到该容器中。  
-- 容器调用`removeAll()`方法可以以掉容器中的全部组件，调用`remove(Component c)`方法可以移掉容器中参数C指定的组件。  
+以下是GUI编程的一些基本知识点： 
+
+- *Java可以把component类的子类或间接自类创建的对象称为一个组件。* 
+- *Java可以把container的子类或间接子类创建的对象称为一个容器。* 
+- 可以向容器中添加组件。container类提供了一个public方法`add()`,一个容器可以调用这个方法将组建添加到该容器中。 
+- 容器调用`removeAll()`方法可以以掉容器中的全部组件，调用`remove(Component c)`方法可以移掉容器中参数C指定的组件。
 - **注意到容器本身也是一个组件，因此可以把一个容器添加到另一个容器中实现容器的嵌套。**
-# 2 窗口
-一个基于GUI的应用程序应当提供一个能和操作系统直接交互的容器，该容器可以被直接显示、绘制在操作系统控制的平台上，例如显示器上,这样的容器被称作GUI设计中的底层容器。  
 
-Java提供的JFrame类的实例就是一个底层容器(JDialog类的实例也是一个底层容器，见后面的11.6节)，即通常所说的窗口。其他组件必须被添加到底层容器中,以便借助这个底层容器和操作系统进行信息交互。简单地讲，如果应用程序需要一个按钮，并希望用户和按钮交互，即用户单击按钮使程序做出某种相应的操作，那么这个按钮必须出现在底层容器中，否则用户无法看见按钮,更无法让用户和按钮交互。  
+## 2 窗口
+
+一个基于GUI的应用程序应当提供一个能和操作系统直接交互的容器，该容器可以被直接显示、绘制在操作系统控制的平台上，例如显示器上,这样的容器被称作GUI设计中的底层容器。
+
+Java提供的JFrame类的实例就是一个底层容器(JDialog类的实例也是一个底层容器，见后面的11.6节)，即通常所说的窗口。其他组件必须被添加到底层容器中,以便借助这个底层容器和操作系统进行信息交互。简单地讲，如果应用程序需要一个按钮，并希望用户和按钮交互，即用户单击按钮使程序做出某种相应的操作，那么这个按钮必须出现在底层容器中，否则用户无法看见按钮,更无法让用户和按钮交互。
 
 **JFrame类是Container类的间接子类。当需要一个窗口时，可使用JFrame或其子类创建个对象。** 窗口也是个容器,可以向窗口添加组件。需要注意的是，窗口默认地被系统添加到显示器屏幕上,因此不允许将一个窗口添加到另一个容器中。
+
 ## 2.1 JFrame常用方法
+
 - `JFrame()`: 创建一一个无标题的窗口。
-- `JFrame(Strings)`: 创建标题为s的窗口。  
-- `public void setisble(boolean b)`:设置窗口是否可见。窗口默认是不可见的。  
+- `JFrame(Strings)`: 创建标题为s的窗口。
+- `public void setisble(boolean b)`:设置窗口是否可见。窗口默认是不可见的。
 - `public void dispose()`:撒销当前窗口，并释放当前窗口所使用的资源。
 - `public void setDefaultCloseOperation(int operation)`:该方法用来设置单机窗体右上角的关闭图标后，程序会做出怎样的处理，其中的参数operation取JFrame类中的下列int型static常量，程序根据参数operation取值做出不同的处理。 
+
 `HIDE_ON_CLOSE`：什么也不做 
 `DISPOSE_ON_CLOSE`：隐藏当前窗口，并释放窗体占有的其他资源。 
-`EXIT_ON_CLOSE`：结束窗口所在的应用程序  
+`EXIT_ON_CLOSE`：结束窗口所在的应用程序
+
 ```java
 import javax.swing.*;
 import java.awt.*;
@@ -52,25 +63,41 @@ public class exercise {
 }
 ```
 注意两次单击关闭窗口，程序运行效果不同。
-## 2.2 菜单条，菜单，菜单项
+
+### 2.2 菜单条，菜单，菜单项
+
 窗口中的菜单项放在菜单里，菜单放在菜单条里。
+
 ##### 1.菜单条
+
 **JComponent类的子类`JMenubar`负责创建菜单条，即JMenubar的一个实例就是一个菜单条，JFrame类有一个将菜单条放置到窗口的方法;**
+
 ```java
 setJMenuBar(JMenuBar bar);
 ```
+
 该方法将菜单条添加到窗口的顶端，需要注意的是，只能向窗口中添加一个菜单条。
+
 ##### 2.菜单
+
 JComponent类的子类`JMenu`负责创建菜单，即JMenu的一个实例就是一个菜单。
+
 ##### 3.菜单项
+
 JComponent类的子类`JMenuItem`负责创建菜单项，即JMenuItem的一个实例就是一个菜单项。
+
 ##### 4.嵌入子菜单
+
 JMenu是`JMenuItem`的子类，因此菜单本身也是一个菜单项，当把一个菜单看作菜单项添加到某个菜单中，称这样的菜单为子菜单
+
 ##### 5.菜单上的图标
+
 我们先用Icon声明一个图标，然后使用其子类ImageIcon类创建一个图标，如：
+
 ```java
 Icon icon=new ImageIcon("a.gif");
 ```
+
 然后菜单项调用`setlcon(Icon icon)`方法将图标设置为icon. 
 
 例11.2中在主类Examplell_2的main 方法中，用Frame的子类WindowMenu创建一个含有菜单的窗口，效果如图11.3所示。
@@ -120,33 +147,55 @@ public class exercise {
     }
 }
 ```
-# 3 常用组件与布局
+
+## 3 常用组件与布局
+
 可以使用JComponent的子类创建各种组件，利用组件可以完成应用程序与用户的交互。
-## 3.1 常用组件
+
+### 3.1 常用组件
+
 ##### 1.文本框
+
 使用JComponent的子类`JTestField`创建文本框，允许用户在文本框输入单行文本。
+
 ##### 2.文本区
+
 使用JComponent的子类`JButton`类创建按钮，允许用户单击按钮
+
 ##### 4.标签
+
 使用JComponent的子类`JLabel`类创建标签，允许用户单击按钮。
+
 ##### 5.选择框
+
 使用JComponent的子类`JCheckBox`类创建选择框，为用户提供多种选择。选择框有两种状态，一种是选中，另一种是未选中，用户通过单该组件切换状态。
+
 ##### 6.单选按钮
+
 使用JComponent的子类`JRadioButton`类创单项选择框，为用户提供单项选择。
+
 ##### 7.下拉列表
+
 使用JComponent的子类`JComboBox`类创建下拉列表，为用户提供单项选择，用户可以在下拉列表看到第一个选项和他旁边的箭头按钮，当用户单击按钮箭头时，选项列表打开。
+
 ##### 8.密码框
+
 可以使用JComponent的子类`JPasswordField`创建密码框，密码框可以使用
+
 ```
 setEchoChar(char c)
 ```
-方法重新设置回显字符，用户输入密码时，密码框只显示回显字符。  
+
+方法重新设置回显字符，用户输入密码时，密码框只显示回显字符。 
 
 密码框调用
+
 ```java
 char[]getPassword()
 ```
+
 方法可以返回实际的密码。
+
 ```java
 import java.awt.*;
 import javax.swing.*;
@@ -204,17 +253,25 @@ public class exercise{
 	}
 }
 ```
-## 3.2 常用容器
+
+### 3.2 常用容器
+
 JComponent是Container的子类，因此JComponent子类创建的组建也都是容器，但是我们很少将`JButton,JTeseField,JCheckBox`等组件当容器来使用。JComponent专门提供了一些经常用来添加组件的容器，相对于JFrame底层容器，本节提到的容器习惯性被称为中间容器，中间容器必须被添加到底层容器中才会发生作用
 
 ##### 1.JPanel面板
+
 我们经常会使用JPlanel创建一个面板，然后再向这个面板添加组件，然后把这个面板添加到其他的容器中。JPlanel面板的默认布局是FlowLayout布局。
+
 ##### 2.滚动窗格JSrollPane
+
 滚动窗格只可以添加一个组件，可以把一个组件放到一个滚动窗格中，然后通过滚动条来操作该组件，JTextArea不自带滚动条，因此我们需要把文本区放入到一个滚动窗格中，例如：
+
 ```java
 JScrollPane scroll=new JScrollPane(new JTextArea());
 ```
+
 ##### 3.拆分窗格ISplitPane
+
 顾名思义,拆分窗格就是被分成两部分的容器,拆分窗格有两种类型:水平拆分和垂直拆分。水平拆分窗格用一条拆分线把窗格分成左右两部分,左面放一个组件,右面放一组件,拆分线可以水平移动。垂直拆分窗格用一条拆分线把窗格分成上下两部分,上面放个组件,下面放一个组件,拆分线可以垂直移动
 
 JSplitPane的两个常用的构造方法:
@@ -222,37 +279,52 @@ JSplitPane的两个常用的构造方法:
 ```java
 JSplitPane(int a, Component b, Component c);
 ```
+
 >参数a取JSplitPane的静态常量HORIZONTAL_SPLIT或VERTICAL_SPLIT,以解决水平还是垂直拆分,后两个参数决定要放置的组件,当拆分线移动时,组件不是连续变化的
-```java
-JSplitPane(int a, boolean b, Component c, Component d);
-```
+> ```java
+> JSplitPane(int a, boolean b, Component c, Component d);
+> ```
+
 参数a取JSplitPane的静态常量HORIZONTAL_SPLIT或VERTICAL_SPLIT,以决定是水平还是垂直拆分。参数b决定当拆分线移动时,组件是否连续变化(true是连续),后两个参数决定要放置的组件, SPlit Pane拆分窗格还可以调用setDividerlocation(int)方法修改拆分线的初始位置
+
 ##### 4 JLayeredPane分层窗格
+
 如果添加到容器中的组件经常需要处理重叠问题,就可以考虑将组件添加到分层窗格分层窗格分成5个层,分层窗格使用
+
 ```java
 add(Component com, int layer);
 ```
+
 添加组件com,并指定com所在的层,其中参数layer取值JLayeredPane类中的类常量
+
 ```
 DEFAULT_LAYER、 PALETTE_LAYER、 MODAL_LAYER、 POPUP_LAYES、 DRAG_LAYER
 ```
-DEFAULT LAYER是最底层,添加到DEFAULT_LAYER层的组件如果和其他层的组件发生重叠时,将被其他组件遮挡。 DRAG_LAYER层是最上面的层,如果分层窗格中添加了许多组件,当用户用鼠标移动一个组件时,可以把该组件放到DRAG__LAYER层
+
+DEFAULT_LAYER是最底层,添加到DEFAULT_LAYER层的组件如果和其他层的组件发生重叠时,将被其他组件遮挡。DRAG_LAYER层是最上面的层,如果分层窗格中添加了许多组件,当用户用鼠标移动一个组件时,可以把该组件放到DRAG_LAYER层
 
 这样,用户在移动组件过程中,该组件就不会被其他组件遮挡。添加到同一层上的组件,如发生重叠,后添加的会遮挡先添加的组件。分层窗格调用
 
 ```java
 public void setLayer(Component c, int layer);
 ```
+
 可以重新设置组件c所在的层,调用
+
 ```java
 public int getlayer( Component c)
 ```
+
 可以获取组件c所在的层数
-## 3.3常用布局
-当把组件添加到容器中时,希望控制组件在容器中的位置,这就需要学习设计的知识。本节将分别介绍java.awt包中的`FlowLayout` `BorderLayout` `Cardlayout` `GridLayout`布局  
+
+### 3.3常用布局
+
+当把组件添加到容器中时,希望控制组件在容器中的位置,这就需要学习设计的知识。本节将分别介绍java.awt包中的`FlowLayout` `BorderLayout` `Cardlayout` `GridLayout`布局 
 
 容器可以使用方法`setLayout(布局对象);`设置自己的布局
+
 ##### 1.FlowLayout布局
+
 FlowLayout类创建的对象称作FlowLayout型布局。FlowLayout型布局是JPanel容器的默认布局,即JPanel及其子类创建的容器对象,如果不专门为其指定布局,则它们的布局就是Flow Layout型布局
 
 Flow Layout类的一个常用构造方法如下,该构造方法可以创建一个居中对齐的布局对象。例如:
@@ -260,35 +332,51 @@ Flow Layout类的一个常用构造方法如下,该构造方法可以创建一�
 ```java
 FlowLayout flow=new FlowLayout();
 ```
+
 如果一个容器con使用这个布局对象
+
 ```java
 con.setLayout(flow);
 ```
+
 那么,con可以使用Container类提供的add方法将组件顺序地添加到容器中,组件按照加入的先后顺序从左向右排列,一行排满之后就转到下一行继续从左至右排列,每一行中的组件都居中排列,组件之间的默认水平和垂直间隙是5个像素,组件的大小为默认的最住大小,例如,按钮的大小刚好能保证显示其上面的名字。对于添加到使用Flowlayout布局的容器中的组件,组件调用`setSize(int x,int y);`设置的大小无效,如果需要改变最佳大小,组件需调用
+
 ```java
 public void setPreferredsize(Dinension preferredsize);
 ```
 设置大小,例如:
+
 ```java
 button.setPreferredsize(new Dinension(20,20));
 ```
 FlowLayout布局对象调用
+
 ```java
 setAliginmen(int aligin);
 ```
-方法可以重新设置布局的对齐方式,其中aligin可以取值`ElowLayout.LEFT,FlowLayout.CENTER,FlowLayout.RIGHT`  
+方法可以重新设置布局的对齐方式,其中aligin可以取值`ElowLayout.LEFT,FlowLayout.CENTER,FlowLayout.RIGHT` 
 
 FlowLayout布局对象调用`setHgap(int hgap)`方法和`setVgap(intvgap)`可以重新设置水平间隙和垂直间隙。
+
 ##### 2.BorderLayout布局
+
 Borderlayout布局是window型容器的默认布局,例如JFrame、JDialog都是Window类的子类,它们的默认布局都是BorderLayout布局,Borderlayout也是一种简单的布局策略,如果一个容器使用这种布局,那么容器空间简单地划分为东、西、南、北、中5个区域,中间的区域最大。每加入一个组件都应该指明把这个组件加在哪个区域中,区域由Borderlayout中的静态常量CENTER、NORTH、SOUTH、WEST、EAST表示,例如,一个使用BorderLayout布局的容器con,可以使用add方法将一个组件b添加到中心区域
+
 ```java
 con.add(b,BorderLayout.CENTER);
+```
+
 或者：
+
+```java
 on.add(BorderLayour.CENTER,b);
 ```
+
 添加到某个区域的组件将占据整个这个区域,每个区域只能放置一个组件,如果向某个已放置了组件的区域再放置一个组件,那么先前的组件将被后者替换掉,使用BorderLayout布局的容器最多能添加5个组件,如果容器中需要加入超过5个组件,就必须使用容器的嵌套或改用其他的布局策略.
+
 ##### 3.CardLayout布局
-使用CardLayout的容器可以容纳多个组件,这些组件被层叠放入容器中,最先加入容器的是第一张(在最上面),依次向下排序,使用该布局的特点是,同一时刻容器只能从这些件中选出一个来显示,就像叠“扑克牌”,每次只能显示其中的一张,这个被显示的组件将占据所有的容器空间  
+
+使用CardLayout的容器可以容纳多个组件,这些组件被层叠放入容器中,最先加入容器的是第一张(在最上面),依次向下排序,使用该布局的特点是,同一时刻容器只能从这些件中选出一个来显示,就像叠“扑克牌”,每次只能显示其中的一张,这个被显示的组件将占据所有的容器空间 
 
 假设有一个容器con,那么,使用Cardlayout的一般步骤如下 
 
@@ -300,17 +388,15 @@ Cardlayout card=new Cardlayout();
 ```java
 con.setLayout(card);
 ```
+
 - 容器调用`add(String s,Component b)`将组件b加入容器,并给出了显示该组件的代号s。组件的代号是一个字符串,和组件的名没有必然联系,但是,不同的组件代号必须互不相同。最先加入con的是第一张,依次排序.
 - 创建的布局card用Cardlayout类提供的`show()`方法,显示容器con中组件代号为s的组件`card.show(con,s)`;
 
 也可以按组件加入容器的顺序显示组件: 
 
 `card.first(con)`显示con中的第一个组件; 
-
 `card.last(con)`显示con中最后一个组件; 
-
 `card.next(con)`显示当前正在被显示的组件的下个组件; 
-
 `card.previous(con)`显示当前正在被显示的组件的前一个组件
 
 ##### 4.GridLayout布局
@@ -318,33 +404,39 @@ con.setLayout(card);
 GridLayout是使用较多的布局编辑器,其基本布局策略是把容器划分成若干行乘若干列的网格区域,组件就位于这些划分出来的小格中, Gridlayout比较灵活,划分多少网格由程序自由控制,而且组件定位也比较精确,使用GridLayout布局编辑器的一般步骤如下
 
 使用 GridLayout的构造方法
+
 ```java
 GridLayout(int m,int n);
 ```
-创建布局对象,指定划分网格
-的行数m和列数n,例如
+创建布局对象,指定划分网格的行数m和列数n,例如
+
 ```java
 Gridlayout grid= new Gridlayout(10,8);
 ```
-使用 GridLayout布局的容器调用方法`add(Component c)`将组件c加入容器,组件进入容器的顺序将按照第一行第一个、第一行第二个行最后一个、第二行第一个、…、最后一行第一个、…、最后一行最后一个.  
+使用 GridLayout布局的容器调用方法`add(Component c)`将组件c加入容器,组件进入容器的顺序将按照第一行第一个、第一行第二个行最后一个、第二行第一个、…、最后一行第一个、…、最后一行最后一个.
 
-使用GridLayout布局的容器最多可添加m×n个组件,GridLayout布局中每个网格都是相同大小并且强制组件与网格的大小相同.  
+使用GridLayout布局的容器最多可添加m×n个组件,GridLayout布局中每个网格都是相同大小并且强制组件与网格的大小相同. 
 
 由于Gridlayout布局中每个网格都是相同大小并且强制组件与网格的大小相同,使得容器中的每个组件也都是相同的大小,显得很不自然。为了克服这个缺点,你可以使用容器套,如,一个容器使用GridLayout布局,将容器分为三行一列的网格,那么你可以把另个容器添加到某个网格中,而添加的这个容器又可以设置为GridLayout布局、FlowLayout布局、CarderLayout布局或BorderLayout布局等,利用这种嵌套方法,可以设计出符合定需要的布局.
 
-## 3.4 选项卡窗格
-JTabbedPane创建的对象也是一个容器,由于JTabbedPane在设计GUl程序时比较方便实用,所以单独列出一小节来讲解。  
+### 3.4 选项卡窗格
 
-JTabbedPane创建的对象称为选项卡窗格。JTabbedPane窗格的默认布局是CardLayour布局,并且自带一些选项卡(不需用户添加),这些选项卡与用户添加到JTabbedPane窗格中的组件相对应,也就是说,当用户向JTabbedPane窗格添加一个组件时,JTabbedPane窗格就会自动指定给该组件一个选项卡,单击该选项卡,JTabbedPane窗格将显示对应的组件,选项卡窗格自带的选项卡默认地在该选项卡窗格的顶部,从左向右依次排列,选项卡的顺序和对应的组件的顺序相同。  
+JTabbedPane创建的对象也是一个容器,由于JTabbedPane在设计GUl程序时比较方便实用,所以单独列出一小节来讲解。 
+
+JTabbedPane创建的对象称为选项卡窗格。JTabbedPane窗格的默认布局是CardLayour布局,并且自带一些选项卡(不需用户添加),这些选项卡与用户添加到JTabbedPane窗格中的组件相对应,也就是说,当用户向JTabbedPane窗格添加一个组件时,JTabbedPane窗格就会自动指定给该组件一个选项卡,单击该选项卡,JTabbedPane窗格将显示对应的组件,选项卡窗格自带的选项卡默认地在该选项卡窗格的顶部,从左向右依次排列,选项卡的顺序和对应的组件的顺序相同。 
 
 JTabbledPane窗格可以使用
+
 ```java
 add(String text,Component c);
 ```
+
 方法将组件c添加到JTabbedPane窗格中,并指定和组件c对应的选项卡的文本提示text,使用 JTabbedPane窗格的构造方法
+
 ```java
 public JTabbedPane(int tabPlacenent);
 ```
+
 创建的选项卡窗格的选项卡的位置由参数tabPlacement指定,该参数的有效值为`JTabbedPane.TOP`, `JTabbedPane.BOTTOM`, `JTabbedPane.LEFT`和`JTablePane.RIGHT ` 
 
 > 例11.4的 Example14窗口中有一个选项卡窗格,选项卡窗格中又添加了3个不同布局的面板FlowLayoutJPanel,BorderlayoutJPanel和GridLayoutJPanel并设置了相对应的选项卡的文本提示.
@@ -414,13 +506,17 @@ public class exercise extends JFrame{
 	}
 }
 ```
+
 > # lambda表达式版本
 
 上一章主要介绍了如何使用Java中的事件模式。通过学习读者已经初步知道了构造图形用户界面的基本方法。本章将介绍构造功能更加齐全的图形用户界面(GUI) 所需要的一些重要工具。下面，首先介绍Swing的基本体系结构。要想弄清如何有效地使用一些更高级的组件，必须了解底层的东西。然后，再讲述Swing中各种常用的用户界面组件，如文本框、单选按钮以及菜单等。接下来，介绍在不考虑特定的用户界面观感时，如何使用Java中的布局管理 器排列在窗口中的这些组件。最后，介绍如何在Swing中实现对话框。本章囊括了基本的Swing组件，如文本组件、按钮和滑块等，这些都是基本的用户界面组件，使用十分频繁。Swing中的高级组件将在卷Ⅱ中讨论。
 
-# 1 Swing 和模型-视图-控制器设计模式
+## 1 Swing 和模型-视图-控制器设计模式
+
 前面说过，本章将从Swing组件的体系结构开始。首先，我们讨论设计模式的概念，然后再看一下Swing框架中最具影响力的“模型-视图-控制器”模式。
-## 1.1 设计模式
+
+### 1.1 设计模式
+
 在“模型-视图-控制器”模式中，背景是显示信息和接收用户输入的用户界面系统。有关“模型-视图-控制器”模式将在接下来的章节中讲述。这里有几个冲突因素。对于同一数据来说，可能需要同时更新多个可视化表示。例如，为了适应各种观感标准，可能需要改变可视化表示形式；又例如，为了支持语音命令，可能需要改变交互机制。解决方案是将这些功能分布到三个独立的交互组件：模型、视图和控制器。模型-视图-控制器模式并不是AWT和Swing设计中使用的唯一模式。下列是应用的另外几种模式： 
 
 - 容器和组件是“组合(composite)” 模式
@@ -429,9 +525,10 @@ public class exercise extends JFrame{
 
 设计模式的另外一个最重要的特点是它们已经成为文化的一部分。只要谈论起模型-视图-控制器或“装饰器”模式，遍及世界各地的程序员就会明白。因此，模式已经成为探讨设计方案的一种有效方法。
 
-## 1.2 模型-视图-控制器模式
+### 1.2 模型-视图-控制器模式
 
 让我们稍稍停顿一会儿，回想一下构成用户界面组件的各个组成部分，例如，按钮、复选框、文本框或者复杂的树形组件等。每个组件都有三个要素： 
+
 - 内容，如：按钮的状态（是否按下)，或者文本框的文本。 
 - 外观（颜色，大小等)。 
 - 行为（对事件的反应)。 
@@ -449,7 +546,6 @@ public class exercise extends JFrame{
 模型必须实现改变内容和查找内容的方法。例如，一个文本模型中的方法有：在当前文本中添加或者删除字符以及把当前文本作为一个字符串返回等。记住：模型是完全不可见的。显示存储在模型中的数据是视图的工作。
 
 > 注释：“模式”这个术语可能不太贴切，因为人们通常把模式视为一个抽象概念的具体表示。汽车和飞机的设计者构造模式来模拟真实的汽车和飞机。但这种类比可能会使你对模型-视图-控制器模式产生错误的理解。在设计模式中，模型存储完整的内容，视图给出了内容的可视化显示（完整或者不完整）。一个更恰当的比喻应当是模特为画家摆好姿势。
->
 > 此时，就要看画家如何看待模特，并由此来画一张画了。那张画是一幅规矩的肖像画，或是一幅印象派作品，还是一幅立体派作品（以古怪的曲线来描绘四肢）完全取决于画家。 
 
 模型-视图-控制器模式的一个优点是一个模型可以有多个视图，其中每个视图可以显示全部内容的不同部分或不同形式。 例如，一个HTML编辑器常常为同一内容在同一时刻提供两个视图：一个WYSIWYG (所见即所得）视图和一个“原始标记” 视图（见图 12-3 )。当通过某一个视图的控制器对模型进行更新时，模式会把这种改变通知给两个视图。视图得到通知以后就会自动地刷新。当然，对于一个简单的用户界面组件来说，如按钮，不需要为同一模型提供多个视图。
@@ -462,7 +558,7 @@ public class exercise extends JFrame{
 
 当然，模式只能作为一种指导性的建议而并没有严格的戒律。没有一种模式能够适用于所有情况。例如，使用“窗户位置”模式（设计模式中并非主要成分）来安排小卧室就不太合适。同样地，Swing设计者发现对于可插观感实现来说，使用模型-视图-控制器模式并非都是完美的。模型容易分离开，每个用户界面组件都有一个模型类。但是，视图和控制器的职责分工有时就不很明显，这样将会导致产生很多不同的类。当然，作为这些类的使用者来说，不必为这些细节费心。前面已经说过，这些类的使用者根本无需为模型操心，仅使用组件包装器类即可。
 
-## 1.3 Swing 按钮的模型-视图-控制器分析
+### 1.3 Swing 按钮的模型-视图-控制器分析
 
 前一章已经介绍了如何使用按钮，当时没有考虑模型、视图和控制器。按钮是最简单的用户界面元素，所以我们从按钮开始学习模型-视图-控制器模式会感觉容易些。对于更复杂的Swing组件来说，所遇到的类和接口都是类似的。
 
@@ -493,15 +589,13 @@ ButtonModel model = button.getModel();
 
 需要注意的是，同样的模型（即DefaultButtonModel) 可用于下压按钮、单选按钮、复选框、甚至是菜单项。当然，这些按钮都有各自不同的视图和控制器。当使用Metal观感时，JButton类用 BasicButtonUI类作为其视图；用ButtonUIListener类作为其控制器。通常，每 个 Swing组件都有一个相关的后缀为UI的视图对象，但并不是所有的Swing组件都有专门的控制器对象。在阅读JButton底层工作的简介之后可能会想到：JButton究竟是什么？事实上，它仅仅是一个继承了JComponent的包装器类，JComponent包含了一个DefauUButtonModel对象，一些视图数据（例如按钮标签和图标）和一个负责按钮视图的BasicButtonUI对象。
 
-# 2 布局管理概述
+## 2 布局管理概述
 
+### 2.1 边框布局
 
+### 2.2 网格布局
 
-## 2.1 边框布局
-
-## 2.2 网格布局
-
-# 3 文本输入
+## 3 文本输入
 
 现在终于可以开始介绍Swing用户界面组件了。首先，介绍具有用户输入和编辑文本功能的组件。文本域(JTextField)和文本区(JTextArea)组件用于获取文本输入。文本域只能接收单行文本的输入，而文本区能够接收多行文本的输入。JPassword也只能接收单行文本的输入，但不会将输入的内容显示出来。 
 
@@ -517,6 +611,7 @@ ButtonModel model = button.getModel();
 > ```
 
 ### 3.1 文本域
+
 把文本域添加到窗口的常用办法是将它添加到面板或者其他容器中，这与添加按钮完全一样： 
 
 ```JAVA
@@ -578,7 +673,7 @@ String text = textField.getText().trim;
 > Font getFont(); //获取组件的字体。
 > ```
 
-## 3.2 标签和标签组件
+### 3.2 标签和标签组件
 
 标签是容纳文本的组件，它们没有任何的修饰（例如没有边缘)，也不能响应用户输入。可以利用标签标识组件。例如：与按钮不同，文本域没有标识它们的标签，要想用标识符标识这种不带标签的组件，应该 
 
@@ -625,7 +720,7 @@ JLabel label = new JLabel("User name:",JLabel.RIGHT);
 >void setIcon(Icon Icon); //获取或设置标签的图标。
 >```
 
-## 3.3 密码域
+### 3.3 密码域
 密码域是一种特殊类型的文本域。为了避免有不良企图的人看到密码， 用户输入的字符不显示出来。每个输入的字符都用回显字符（echo character) 表示， 典型的回显字符是星号 (*)。Swing 提供了 JPasswordField类来实现这样的文本域。
 
 密码域是另一个应用模型-视图控制器体系模式的例子。密码域采用与常规的文本域相同的模型来存储数据， 但是，它的视图却改为显示回显字符，而不是实际的字符。
@@ -638,7 +733,7 @@ JLabel label = new JLabel("User name:",JLabel.RIGHT);
 > char[] getPassworci(); //返回密码域中的文本。为了安全起见，在使用之后应该覆写返回的数组内容（密码并不是以String的形式返回，这是因为字符串在被垃圾回收器回收之前会一直驻留在虚拟机中）。
 > ```
 
-## 3.4 文本区
+### 3.4 文本区
 有时，用户的输入超过一行。正像前面提到的，需要使用JTextArea组件来接收这样的输入。当在程序中放置一个文本区组件时，用户就可以输入多行文本，并用ENTER键换行。每行都以一个“ \n” 结尾。图12-13显示了一个工作的文本区。
 
 在JTextArea组件的构造器中，可以指定文本区的行数和列数。例如：
@@ -657,7 +752,7 @@ textArea.setLineWrap(true); //long lines are wrapped
 
 换行只是视觉效果；文档中的文本没有改变，在文本中并没有插入“ \n”字符。
 
-## 3.5 滚动窗格
+### 3.5 滚动窗格
 
 在Swing中，文本区没有滚动条。如果需要滚动条，可以将文本区插入到滚动窗格 (scroll pane) 中。
 
@@ -741,10 +836,10 @@ JScrollPane scrollPane = new JScratlPane(textArea);
 > JScrol1Pane(Component c); //创建一个滚动窗格，用来显示指定组件的内容。当组件内容超过显示范围时，滚动条会自动地出现。
 > ```
 
-# 4 选择组件
+## 4 选择组件
 前面已经讲述了如何获取用户输入的文本。然而，在很多情况下，可能更加愿意给用户几种选项，而不让用户在文本组件中输入数据。使用一组按钮或者选项列表让用户做出选择 (这样也免去了检查错误的麻烦)。在本节中，将介绍如何编写程序来实现复选框、单选按钮、选项列表以及滑块。
 
-## 4.1 复选框
+### 4.1 复选框
 
 如果想要接收的输入只是“是” 或“非”，就可以使用复选框组件。复选框自动地带有标识标签。用户通过点击某个复选框来选择相应的选项， 再点击则取消选取。当复选框获得焦点时，用户也可以通过按空格键来切换选择。
 
@@ -840,7 +935,7 @@ ActionListener listener = event -> {
 > void setSelected(boolean state); //获取或设置复选框的选择状态。
 > ```
 
-## 4.2 单选钮
+### 4.2 单选钮
 
 在前一个例子中，对于两个复选框，用户既可以选择一个、两个，也可以两个都不选。在很多情况下，我们需要用户只选择几个选项当中的一个。当用户选择另一项的时候， 前一项就自动地取消选择。这样一组选框通常称为单选钮组（RadioButtonGroup), 这是因为这些 按钮的工作很像收音机上的电台选择按钮。当按下一个按钮时，前一个按下的按钮就会自动 弹起。图12-15给出了一个典型的例子。这里允许用户在多个选择中选择字体的大小，即小、中、大和超大，但是，每次用户只能选择一个。
 
@@ -958,7 +1053,7 @@ else if (mediumButton.isSelected()) size = 12;
 > void setActionCommand(String s); //设置按钮及其模型的动作命令
 > ```
 
-## 4.3 边框
+### 4.3 边框
 
 如果在一个窗口中有多组单选按钮，就需要用可视化的形式指明哪些按钮属于同一组。Swing提供了一组很有用的边框（borders) 来解决这个问题。可以在任何继承了JComponent的组件上应用边框。最常用的用途是在一个面板周围放置一个边框，然后用其他用户界面元素（如单选钮）填充面板。
 
@@ -1052,7 +1147,7 @@ panel.setBorder(titled);
 > void setBorder(Border border); //设置这个组件的边框
 > ```
 
-## 4.4 组合框
+### 4.4 组合框
 
 如果有多个选择项， 使用单选按钮就不太适宜了，其原因是占据的屏幕空间太大。这时就可以选择组合框。当用户点击这个组件时，选择列表就会下拉出来，用户可以从中选择一项（见图 12-17 )。
 
@@ -1167,7 +1262,7 @@ ActionListener listener = event ->
 > Object getSelectedItem(); //返回当前选择的选项。
 > ```
 
-## 4.5 滑动条
+### 4.5 滑动条
 组合框可以让用户从一组离散值中进行选择。滑动条允许进行连续值的选择，例如，从1~100之间选择任意数值。
 
 通常，可以使用下列方式构造滑动条：
@@ -1399,12 +1494,12 @@ slider.setlnverted(true);
 > void setPaintTrack(boolean b); //如果b是ture，显示滑动条滑动的轨迹。
 > ```
 
-# 5 菜 单
+## 5 菜 单
 前面介绍了几种最常用的可以放到窗口内的组件， 如：各种按钮、文本域以及组合框等。 Swing还提供了一些其他种类的用户界面兀素，下拉式菜单就是 GUI 应用程序中很常见的一种。
 
 位于窗口顶部的菜单栏 （menubar) 包括了下拉菜单的名字。点击一个名字就可以打开包含菜单项 （ menu items) 和子菜单（submenus) 的菜单。 当用户点击菜单项时，所有的菜单都会被关闭并且将一条消息发送给程序。图12-19显示了一个带子菜单的典型菜单。
 
-## 5.1 菜单创建
+### 5.1 菜单创建
 
 创建菜单是一#非常容易的事情。首先要创建一个菜单栏： 
 
@@ -1520,7 +1615,7 @@ fileMenu.add(exitltem);
 > void setJMenuBar(JMenuBar menubar); //为这个框架设置菜单栏。
 > ```
 
-## 5.2 菜单项中的图标
+### 5.2 菜单项中的图标
 
 菜单项与按钮很相似。实际上，JMenuItem类扩展了AbstractButton类。与按钮一样，菜单可以包含文本标签、图标，也可以两者都包含。既可以利用 JMenuItem(String，Icon) 或者 JMenuItem(Icon) 构造器为菜单指定一个图标，也可以利用JMenuItem类中的setlcon方法 (继承自AbstractButton类）指定一个图标。例如：
 
@@ -1569,7 +1664,7 @@ cutAction = new AbstractAction("Cut", new Imagelcon("cut.gif")) {
 > AbstractAction(String name, Icon smallIcon); //用给定的名字和图标构造一个抽象的动作。
 > ```
 
-## 5.3 复选框和单选钮菜单项
+### 5.3 复选框和单选钮菜单项
 
 复选框和单选钮菜单项在文本旁边显示了一个复选框或一个单选钮（参见图 12-19)。当用户选择一个菜单项时，菜单项就会自动地在选择和未选择间进行切换。除了按钮装饰外，同其他菜单项的处理一样。例如，下面是创建复选框菜单项的代码： 
 
@@ -1613,7 +1708,7 @@ optionsMenu.add(overtypeltem);
 > void setSelected(boolean state); //获取或设置这个菜单项的选择状态（true 为选定)。
 > ```
 
-## 5.4 弹出菜单
+### 5.4 弹出菜单
 
 弹出菜单（pop-up menu) 是不固定在菜单栏中随处浮动的菜单（参见图 12-20 )。
 
@@ -1673,7 +1768,7 @@ child.setlnheritsPopupMenu(true);
 > void setInheritsPopupMenu(boolean b) 5.0 //获取或设置 inheritsPopupMenu 特性。 如果这个特性被设置或这个组件的弹出菜单为null, 则应用上一级弹出菜单。
 > ```
 
-## 5.5 快捷键和加速器
+### 5.5 快捷键和加速器
 对于有经验的用户来说，通过快捷键来选择菜单项会感觉更加便捷。可以通过在菜单项的构造器中指定一个快捷字母来为菜单项设置快捷键：
 
 ```java
@@ -1729,7 +1824,7 @@ openItem.setAccelerator(KeyStroke.getKeyStroke("ctrl 0"));
 > void setDisplayedMnemoniclndex(int index) 1.4 //将按钮文本中的index字符设定为带下划线。如果不希望第一个出现的快捷键字符带下划线， 就可以使用这个方法。
 > ```
 
-## 5.6 启用和禁用菜单项
+### 5.6 启用和禁用菜单项
 
 在有些时候，某个特定的菜单项可能只能够在某种特定的环境下才可用。例如，当文档以只读方式打开时，Save菜单项就没有意义。当然，可以使用JMemremove方法将这个菜单项从菜单中删掉，但用户会对菜单内容的不断变化感到奇怪。然而，可以将这个菜单项设为禁用状态，以便屏蔽掉这些暂时不适用的命令。被禁用的菜单项被显示为灰色，不能被选择它（见图 12-23 )。 
 
@@ -1902,7 +1997,7 @@ public void menuSelected(MenuEvent event) {
 > }
 > ```
 
- ## 5.7 工具栏
+### 5.7 工具栏
 
 工具栏是在程序中提供的快速访问常用命令的按钮栏， 如图 12-24 所示。
 
@@ -1957,7 +2052,7 @@ bar = new JToolBar(titleString, SwingConstants.VERTICAL)
 
 按钮是工具栏中最常见的组件类型。然而工具栏中的组件并不仅限如此。例如，可以往工具栏中加入组合框。
 
-## 5.8 工具提示
+### 5.8 工具提示
 
 工具栏有一个缺点，这就是用户常常需要猜测按钮上小图标按钮的含义。为了解决这个问题，用户界面设计者发明了工具提示（tooltips)。当光标停留在某个按钮上片刻时，工具提示就会被激活。工具提示文本显示在一个有颜色的矩形里。 当用户移开鼠标时，工具提示就会自动地消失。如图12-28所示。
 
@@ -2058,9 +2153,9 @@ exitAction.putValue(Action.SHORTJESCRIPnON, "Exit");
 > void setToolTipText(String text); //设置当鼠标停留在组件上时显示在工具提示中的文本
 > ```
 
-# 6 复杂的布局管理
+## 6 复杂的布局管理
 
-# 7 对话框
+## 7 对话框
 
 到目前为止，所有的用户界面组件都显示在应用程序创建的框架窗口中。这对于编写运行在Web浏览器中的applets来说是十分常见的情况。但是，如果编写应用程序，通常就需要弹出独立的对话框来显示信息或者获取用户信息。 
 
@@ -2072,7 +2167,7 @@ exitAction.putValue(Action.SHORTJESCRIPnON, "Exit");
 
 本节用两个标准的对话框结束：文件对话框和颜色对话框。文件对话框比较复杂，为此需要熟悉Swing中的JFileChooser自已编写文件对话框是一项颇有挑战性的任务。JColorChooser对话框可用来让用户选取颜色。
 
-## 7.1 选项对话框
+### 7.1 选项对话框
 Swing有一套简单的对话框，用于获取用户的一些简单信息。JOptionPane有4个用于显示这些对话框的静态方法：
 
 ```
@@ -2419,7 +2514,7 @@ if (selection == JOptionPane.OK_0PTI0N) ...
 > */
 > ```
 
-## 7.2 创建对话框
+### 7.2 创建对话框
 
 在上一节中，介绍了如何使用JOptionPane来显示一个简单的对话框。本节将讲述如何手工地创建这样一个对话框。
 
@@ -2565,7 +2660,8 @@ ok.addActionListener(event -> setVisible(false));
 > //modal		true代表模式对话框（模式对话框阻塞其他窗口的输入）
 > ```
 
-## 7.3 数据交换
+### 7.3 数据交换
+
 使用对话框最通常的目的是获取用户的输入信息。在前面已经看到，构造对话框对象非常简单：首先初始化数据，然后调用setViSible(true)就会在屏幕上显示对话框。现在，看看如何将数据传入传出对话框。
 
 看一下如图12-39所示的对话框，可以用来获得用户名和用户密码以便连接某些在线服务。

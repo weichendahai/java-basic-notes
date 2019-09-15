@@ -568,7 +568,7 @@ Employee[] staff = new Employee[actualSize];
 ```
 当然，这段代码并没有完全解决运行时动态更改数组的问题。一旦确定了数组的大小，改变它就不太容易了。在Java中， 解决这个问题最简单的方法是使用Java中另外一个被称为ArrayList的类。它使用起来有点像数组，但在添加或删除元素时， 具有自动调节数组容量的功能，而不需要为此编写任何代码。
 
-ArrayList 是一个采用类型参数（type parameter) 的泛型类（generic class)。为了指定数组列表保存的元素对象类型，需要用一对尖括号将类名括起来加在后面，例如，`ArrayList <Employee>`。在第8章中将可以看到如何自定义一个泛型类， 这里并不需要了解任何技术细节就可以使用 ArrayList 类型。 
+ArrayList是一个采用类型参数（type parameter) 的泛型类（generic class)。为了指定数组列表保存的元素对象类型，需要用一对尖括号将类名括起来加在后面，例如，`ArrayList <Employee>`。在第8章中将可以看到如何自定义一个泛型类， 这里并不需要了解任何技术细节就可以使ArrayList类型。 
 
 下面声明和构造一个保存Employee对象的数组列表：
 
@@ -582,7 +582,7 @@ ArrayList<Employee> staff = new ArrayList<Employee>();
 ArrayList<Employee> staff = new ArrayList();
 ```
 
-这被称为“菱形”语法，因为空尖括号<>就像是一个菱形。可以结合new操作符使用菱形语法。编译器会检查新值是什么。如果赋值给一个变量，或传递到某个方法，或者从某个方法返回，编译器会检査这个变量、 参数或方法的泛型类型，然后将这个类型放在o中。在这个例子中，`new ArrayListo()`将赋至一个类型为`ArrayList<Employee>`的变量， 所以泛型类型为Employee。 
+这被称为“菱形”语法，因为空尖括号<>就像是一个菱形。可以结合new操作符使用菱形语法。编译器会检查新值是什么。如果赋值给一个变量，或传递到某个方法，或者从某个方法返回，编译器会检査这个变量、 参数或方法的泛型类型，然后将这个类型放在<>中。在这个例子中，`new ArrayList<>()`将赋至一个类型为`ArrayList<Employee>`的变量，所以泛型类型为Employee。
 
 > 注释：Java SE5.0以前的版本没有提供泛型类，而是有一个ArrayList类，其中保存类型为Object的元素，它是“自适应大小”的集合。如果一定要使用老版本的Java, 则需要将所有的后缀 <...> 删掉，在Java SE 5.0以后的版本中，没有后缀<...>仍然可以使用 ArrayList, 它将被认为是一个删去了类型参數的“原始”类型
 
@@ -617,7 +617,7 @@ ArrayList<Employee> staff = new ArrayListo(100);
 > new Employee[100] // size is 100
 > ```
 >
-> 数组列表的容量与数组的大小有一个非常重要的区别。如果为数组分配100个元素 的存储空间，数组就有100个空位置可以使用。而容量为100个元素的数组列表只是拥有保存100个元素的潜力（实际上，重新分配空间的话，将会超过100), 但是在最初，甚至完成初始化构造之后，数组列表根本就不含有任何元素。size方法将返回数组列表中包含的实际元素数目。例如，
+> 数组列表的容量与数组的大小有一个非常重要的区别。如果为数组分配100个元素的存储空间，数组就有100个空位置可以使用。而容量为100个元素的数组列表只是拥有保存100个元素的潜力（实际上，重新分配空间的话，将会超过100), 但是在最初，甚至完成初始化构造之后，数组列表根本就不含有任何元素。size方法将返回数组列表中包含的实际元素数目。例如，
 >
 > ```java
 > staff.size()
@@ -625,8 +625,232 @@ ArrayList<Employee> staff = new ArrayListo(100);
 
 将返回staff数组列表的当前元素数量，它等价于数组a的a.length。
 
-一旦能够确认数组列表的大小不再发生变化，就可以调用trimToSize方法。这个方法将存储区域的大小调整为当前元素数量所需要的存储空间数目。垃圾回收器将回收多余的存储 空间。
+一旦能够确认数组列表的大小不再发生变化，就可以调用trimToSize方法。这个方法将存储区域的大小调整为当前元素数量所需要的存储空间数目。垃圾回收器将回收多余的存储空间。
 
 一旦整理了数组列表的大小，添加新元素就需要花时间再次移动存储块，所以应该在确认不会添加任何元素时，再调用trimToSize。 
 
-> C++注释：ArrayList类似于C++的vector模板。ArrayList与vector都是泛型类型。但是C++的vector模板为了便于访问元素重载了[ ]运算符。由于Java没有运算符重栽，所以必须调用显式的方法。此外，C++向量是值拷贝。如果a和b是两个向量，賦值操作 a = b将会构造一个与b长度相同的新向量a, 并将所有的元素由b拷贝到a, 而在Java中，这条赋值语句的操作结果是让a和b引用同一个数组列表。
+> C++注释：ArrayList类似于C++的vector模板。ArrayList与vector都是泛型类型。但是C++的vector模板为了便于访问元素重载了[ ]运算符。由于Java没有运算符重栽，所以必须调用显式的方法。此外，C++向量是值拷贝。如果a和b是两个向量，賦值操作a = b将会构造一个与b长度相同的新向量a, 并将所有的元素由b拷贝到a, 而在Java中，这条赋值语句的操作结果是让a和b引用同一个数组列表。
+
+> API java.util.ArrayList<E> 1.2
+>
+> ```java
+> ArrayList<E>( ) //构造一个空数组列表。
+> ArrayList<E>(int initialCapacity) //用指定容量构造一个空数组列表。
+> //参数：initalCapacity 数组列表的最初容量
+>     
+> boolean add(E obj) //在数组列表的尾端添加一个元素。永远返回true。
+> //参数：obj 添加的元素
+>     
+> int size() //返回存储在数组列表中的当前元素数量。(这个值将小于或等于数组列表的容量。)
+> void ensureCapacity(int capacity) //确保数组列表在不重新分配存储空间的情况下就能够保存给定数量的元素。
+> //参数：capacity 需要的存储容量
+>     
+> void trimToSize() //将数组列表的存储容量削减到当前尺寸。
+> ```
+
+### 9.1 访问数组列表元素
+
+很遗憾， 天下没有免费的午餐。 数组列表自动扩展容量的便利增加了访问元素语法的复杂程度。 其原因是ArrayList类并不是Java程序设计语言的一部分；它只是一个由某些人编写且被放在标准库中的一个实用类。
+
+使用get和set方法实现访问或改变数组元素的操作，而不使用人们喜爱的[ ]语法格式。
+
+例如，要设置第i个元素，可以使用：
+
+```java
+staff.set(i, harry);
+```
+
+它等价于对数组a的元素赋值（数组的下标从 0开始)： 
+
+```java
+a[i] = harry;
+```
+
+> 警告：只有i小于或等于数组列表的大小时， 才能够调用`list.set(i,x)`。例如，下面这段代码是错误的：
+>
+> ```java
+> ArrayList<Employee> list = new ArrayListo(100); // capacity 100，size 0 list.set(0, x); // no element 0 yet
+> ```
+>
+>  使用add方法为数组添加新元素， 而不要使用set方法， 它只能替换数组中已经存在的元素内容。 
+
+使用下列格式获得数组列表的元素: 
+
+```java
+Employee e = staff.get(i);
+```
+
+等价于：
+
+```java
+Employee e = a[i];
+```
+
+> 注释：没有泛型类时，原始的ArrayList类提供的get方法别无选择只能返回Object, 因此，get方法的调用者必须对返回值进行类型转换：
+>
+> ```java
+> Employee e = (Employee)staff.get(i);
+> ```
+>
+>  原始的ArrayList存在一定的危险性。它的add和set方法允许接受任意类型的对象。对于下面这个调用
+>
+> ```java
+> staff.set(i, "Harry Hacker");
+> ```
+>
+> 编译不会给出任何警告， 只有在检索对象并试图对它进行类型转换时，才会发现有问题。如果使用`ArrayList<Employee>`, 编译器就会检测到这个错误。
+
+下面这个技巧可以一举两得，既可以灵活地扩展数组，又可以方便地访问数组元素。首先，创建一个数组，并添加所有的元素。
+
+```java
+ArrayList<X> list = new ArrayList();
+while (...) {
+	x = ...;
+	list.add(x);
+}
+```
+
+执行完上述操作后，使用toArray方法将数组元素拷贝到一个数组中。
+
+```java
+X[] a = new X[list.size()];
+list.toArray(a);
+```
+
+除了在数组列表的尾部追加元素之外，还可以在数组列表的中间插入元素，使用带索引参数的add方法。
+
+```java
+int n = staff.size()/2;
+staff.add(n, e);
+```
+
+为了插入一个新元素，位于 n之后的所有元素都要向后移动一个位置。如果插入新元素后，数组列表的大小超过了容量， 数组列表就会被重新分配存储空间。 同样地，可以从数组列表中间删除一个元素。
+
+```java
+Employee e = staff.remove(n);
+```
+
+位于这个位置之后的所有元素都向前移动一个位置，并且数组的大小减1
+
+对数组实施插入和删除元素的操作其效率比较低。对于小型数组来说，这一点不必担心。但如果数组存储的元素数比较多，又经常需要在中间位置插入、删除元素， 就应该考虑使用链表了。有关链表操作的实现方式将在第9章中讲述。
+
+可以使用“foreach”循环遍历数组列表： 
+
+```java
+for (Employee e : staff)
+	dosomethingwith e
+```
+
+这个循环和下列代码具有相同的效果 
+
+```java
+for (int i = 0; i < staff.size(); i++) {
+	Employee e = staff.get(i);
+	dosomething with e
+}
+```
+
+程序清单5-11是对第4章中EmployeeTest做出修改后的程序。在这里，将Employee[ ]数组替换成了`ArrayList<Employee>`。请注意下面的变化：
+
+- 不必指出数组的大小。
+- 使用add将任意多的元素添加到数组中。
+- 使用size()替代length计算元素的数目。
+- 使用a.get(i)替代a[i]访问元素。
+
+> 程序清单 5-11 arrayList/ArrayListTestjava
+>
+> ```java
+> package arrayList;
+> import java.util.*;
+> /**
+> * This program demonstrates the ArrayList class.
+> * ©version 1.11 2012-01-26
+> * ©author Cay Horstmann
+> */
+> public class ArrayListTest {
+> 	public static void main(String[] args) {
+> 		// fill the staff array list with three Employee objects
+> 		ArrayList<Employee> staff = new ArrayList<>();
+> 		staff.add(new Employee("Carl Cracker", 75000, 1987, 12, 15));
+> 		staff.add(new Employee("Harry Hacker", 50000, 1989, 10, 1));
+> 		staff.add(new Employee("Tony Tester", 40000, 1990, 3, 15));
+> 		// raise everyone's salary by 5%
+> 		for (Employee e : staff)
+> 			e.raiseSalary(5);
+> 		// print out information about all Employee objects
+> 		for (Employee e : staff)
+> 			System,out.println("name: " + e.getName() + ".salary: " + e.getSalary() + ",hi reDay=" + e.getHireDay());
+> 	}
+> }
+> ```
+>
+> API|java.util.ArrayList<T> 1.2
+>
+> ```java
+> void set(int index,E obj) //设置数组列表指定位置的元素值， 这个操作将覆盖这个位置的原有内容。
+> 参数： index 位置（必须介于 0 ~ size()-l 之间）
+> 	obj 新的值
+> 	
+> E get(int index) //获得指定位置的元素值。
+> 参数： index 获得的元素位置（必须介于 0 ~ size()-l 之间）
+> 
+> void add(int index,E obj) //向后移动元素，以便插入元素。
+> 参数： index 插入位置（必须介于 0 〜 size()-l 之间）
+> 	obj 新兀素
+> 
+> E remove(int index) //删除一个元素，并将后面的元素向前移动。被删除的元素由返回值返回。
+> 参数：index 被删除的元素位置（必须介于 0 〜 size()-l 之间）
+> ```
+
+### 9.2 类型化与原始数组列表的兼容性
+在你自己的代码中，你可能更愿意使用类型参数来增加安全性。这一节中，你会了解如何与没有使用类型参数的遗留代码交互操作。
+
+假设有下面这个遗留下来的类：
+
+```java
+public class EmployeeDB {
+	public void update(ArrayList list) {
+		...
+	}
+	public ArrayList find(String query) {
+		...
+	}
+}
+```
+
+可以将一个类型化的数组列表传递给update方法，而并不需要进行任何类型转换。
+
+```java
+ArrayList<Employee>staff = ...;
+employeeDB.update(staff);
+```
+
+也可以将staff对象传递给update方法。
+
+> 警告：尽管编译器没有给出任何错误信息或警告，但是这样调用并不太安全。在update方法中， 添加到数组列表中的元素可能不是Employee类型。在对这些元素进行检索时就会出现异常。听起来似乎很吓人，但思考一下就会发现，这与在Java中增加泛型之前是 一样的，虚拟机的完整性绝对没有受到威胁。在这种情形下，既没有降低安全性，也没有受益于编译时的检查。 
+
+相反地，将一个原始ArrayList赋给一个类型化ArrayList会得到一个警告。 
+
+```java
+ArrayList<Employee> result = employeeDB.find(query); // yields warning 0
+```
+
+> 注释：为了能够看到警告性错误的文字信息，要将编译选项置为`-Xlint:unchecked`。
+
+使用类型转换并不能避免出现警告。
+
+```java
+ArrayList<Employee> result = (ArrayList<Employee>) employeeDB.find(query); // yields another warning
+```
+
+这样，将会得到另外一个警告信息，指出类型转换有误。
+
+这就是Java中不尽如人意的参数化类型的限制所带来的结果。鉴于兼容性的考虑，编译器在对类型转换进行检査之后，如果没有发现违反规则的现象，就将所有的类型化数组列表转换成原始ArrayList对象。在程序运行时，所有的数组列表都是一样的，即没有虚拟机中的类型参数。因此，类型转换（ArrayList)和(`ArrayList<Employee>`) 将执行相同的运行时检查。
+
+在这种情形下，不必做什么，只要在与遗留的代码进行交叉操作时，研究一下编泽器的警告性提示，并确保这些警告不会造成太严重的后果就行了。
+
+一旦能确保不会造成严重的后果，可以用`@SuppressWamings("unchecked")`标注来标记这个变量能够接受类型转换，如下所示：
+
+```java
+@SuppressWarnings("unchecked") ArrayList<Employee> result = (ArrayList<Employee>) employeeDB.find(query); // yields another warning
+```
