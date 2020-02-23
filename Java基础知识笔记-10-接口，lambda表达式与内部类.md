@@ -57,7 +57,7 @@ public interface MyIFC{
 ```java
 public class Tester implements MyIFC{
 	public void method3(){//实现接口中的method3()方法
-		System.out.println("method3);
+		System.out.println("method3");
 	}
 	public static void main(String args[]){
 		Tester t=new Tester();
@@ -172,7 +172,7 @@ public interface Comparators {
 ```java
 class LengthComparator implements Comparator<String> {
 	public int compare(String first, String second) {
-	return first.length() - second.length();
+		return first.length() - second.length();
 	}
 }
 ```
@@ -247,7 +247,6 @@ class IFExtends {
 		ob.meth1();
 		ob.meth2();
 		ob.meth3();
-		}
 	}
 }
 ```
