@@ -3,7 +3,7 @@ Java基础知识笔记-8-包
 # 8 包
 一般而言，当命名类的时候，是从名称空间中分配一个名称。名称空间定义了一个声明性的区域。在java中，同一个名称空间中的两个类不能使用相同的名称。这样，再给定的一个名称空间中，每一个类名必然是唯一的包提供了一种为名称空间分区的方法。当在包中定义一个类时，该包的名称将附加到每一个类上，这样就避免了与其他包中具有相同名字的类发生名字冲突。
 
-Java 允许使用包（package） 将类组织起来。借助于包可以方便地组织自己的代码，并将 自己的代码与别人提供的代码库分开管理。
+Java允许使用包（package）将类组织起来。借助于包可以方便地组织自己的代码，并将 自己的代码与别人提供的代码库分开管理。
 
 标准的Java类库分布在多个包中，包括java.lang、java.util和java.net等。标准的Java包具有一个层次结构。如同硬盘的目录嵌套一样，也可以使用嵌套层次组织包。所有标准的Java包都处于java和javax包层次中。
 
@@ -102,7 +102,7 @@ Mammal travel
 ## 3 包和成员访问
 包也参与了java的访问控制机制，元素的可见性取决于它的访问说明private，public，protected或者默认，也取决于元素所在的包。因此，一个元素的可见性就由它所属的类和所属的包的可见性来决定，这种多层次的访问控制方法适用与丰富的访问权限分表，如下表：
 
--|private成员|默认成员|protected成员|public成员
+private成员|默认成员|protected成员|public成员
 ---|---|---|---|---
 在同一个类中可见|Y|Y|Y|Y
 在位于同一个包中的子类中可见|N|Y|Y|Y
@@ -122,34 +122,42 @@ import package1[.package2…].(classname|*);
 如果在一个包中，一个类想要使用本包中的另一个类，那么该包名可以省略。
 
 > 例子
+>
+> 下面的payroll包已经包含了Employee类，接下来向payroll包中添加一个Boss类。Boss类引用Employee类的时候可以不用使用payroll前缀，Boss类的实例如下。
+>
+> ```java
+> //Boss.java 文件代码：
+> package payroll;
+>  
+> public class Boss
+> {
+>    public void payEmployee(Employee e)
+>    {
+>       e.mailCheck();
+>    }
+> }
+> ```
+>
+> 如果Boss类不在payroll包中又会怎样？Boss类必须使用下面几种方法之一来引用其他包中的类。
+>
+> 使用类全名描述，例如：
+>
+> ```java
+> payroll.Employee
+> ```
+>
+> 用import关键字引入，使用通配符 "*"
+>
+> ```java
+> import payroll.*;
+> ```
+>
+> 使用import关键字引入 Employee 类:
+>
+> ```java
+> import payroll.Employee;
+> ```
 
-下面的payroll包已经包含了Employee类，接下来向payroll包中添加一个Boss类。Boss类引用Employee类的时候可以不用使用payroll前缀，Boss类的实例如下。
-```java
-//Boss.java 文件代码：
-package payroll;
- 
-public class Boss
-{
-   public void payEmployee(Employee e)
-   {
-      e.mailCheck();
-   }
-}
-```
-如果Boss类不在payroll包中又会怎样？Boss类必须使用下面几种方法之一来引用其他包中的类。
-
-使用类全名描述，例如：
-```java
-payroll.Employee
-```
-用import关键字引入，使用通配符 "*"
-```java
-import payroll.*;
-```
-使用import关键字引入 Employee 类:
-```java
-import payroll.Employee;
-```
 ##### 注意：
 
 类文件中可以包含任意数量的import声明。import声明必须在包声明之后，类声明之前。
