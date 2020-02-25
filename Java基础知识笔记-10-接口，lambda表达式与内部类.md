@@ -393,6 +393,212 @@ public class exercise{
 
 ## 6 接口变量做参数
 
+将接口作为值传递：
+
+```java
+public class A {
+	private TestInterface test;
+	public A(TestInterface test) {
+		this.test = test; 
+		doSth();
+	}
+	public void doSth() {
+		test.systemStr("this is a message!");
+	}
+}
+
+public Interface TestInterface(){
+	void systemStr(String str);
+}
+
+public class B implement TestInterface{
+	public static void main(String[] args) {
+		new A(new B());
+	}
+    
+	@Override
+	public void systemStr(String str) {
+		System.out(str);
+	}
+}
+```
+
+##### 且看这两个类，一个接口，它们什么关系？
+
+> `class B` 作为程序入口类，实现了`interface TestInterface`，并定义了接口中`systemStr(String str)`。主方法`main()`中实例化`class A`，并将自身`class B`的实例化对象传入。
+>
+> 在`class A`中，定义了一个接口`TestInterface`类型的成员变量`test`,一个具体的方法`doSth()`。
+>
+> 其构造方法接受主方法中传来的数据并初始化成员变量`test`。`doSth`方法执行方法`systemStr()`
+
+#####  `class A`的构造方法明明规定接受类型为`TestInterface`，为什么向`class A`的对象中传入的是`class B`的实例？
+
+> 这涉及到java自动转型，`TestInterface test`由编译器自动（向下）转型为`class B`。实际执行的方法是由`class B`继承自`TestInterface`并定义的`systemStr(String str)`方法。
+>
+> 虽然接受的类型为`TestInterface`，但是`接口不能被实例化`，所以我们要定义一个类来实现接口，并将这个类传递过去。
+>
+> 我们大可以规定`class A`的构造方法接受类型为`class B`。
+
+**以下内容为类型转换的解释**
+
+#### 什么是向上/向下转型？
+
+##### 首先是什么时候能转型？
+
+> 二者必须存在继承关系后才能相互转型
+
+##### 什么是向上/向下转型？
+
+向上转型：`继承者类型对象（子）`向`被继承者类型（父）`转型（自动转型）
+
+> 如`子类`转型为`父类`
+> 再比如上面程序中的接口实现类向`接口`转型
+
+向下转型：`被继承者类型对象（父）`  向  `继承者类型（子）`  转型（强制转型）
+
+> 比如`父类`转型为  `子类`
+> 注意：`接口`不能实例化，没有对象，自然也就不能转型为`接口实现类`。
+
+##### 什么是自动/强制转型？
+
+```cpp
+public Interface Interface1() {
+	public void i11(){
+		//dosth
+	}
+  
+	public void i12(){
+		//dosth
+	}
+}
+
+public class Parent() implement Interface1 {
+	public void p1(){
+		//dosth
+	}
+  
+	public void p2(){
+		//dosth
+	}
+
+	public void i11(){
+		//dosth
+	}
+  
+	public void i12(){
+		//dosth
+	}
+}
+
+public Interface Interface2() {
+	public void i21(){
+		//dosth
+	}
+  
+	public void i22(){
+        //dosth
+	}
+}
+public class Child1() extends Parent implement Interface2 {
+	public void c11(){
+		//dosth
+	}
+  
+	public void c12(){
+		//dosth
+	}
+  
+	public void i21(){
+		//dosth
+	}
+	
+    public void i22(){
+		//dosth
+	}
+}
+
+public class Child2() extends Parent{
+	public void c21(){
+		//dosth
+	}
+	public void c22(){
+		//dosth
+	}
+}
+```
+
+如上程序
+
+>`class Child1`继承`class Parent`，并实现`Interface Interface2;而class Parent`又实现了`Interface Interface1`
+> 
+> `Parent parent = new Child1()`  为 `子类转型为父类`，即`向上转型``new Child1()`  转型后的  父类对象`parent`只能访问与子类`Child1`共有的方法。
+>
+> 如：父类的全部方法【父类自身的`p1()、p2()`和继承自接口的`i11()、i12()`】，子类的方法则不是共有的，不能访问。如果编写`parent.c11();`  或者  `parent.i21()` 则不能通过编译。
+> 
+> 你的编辑器可能会提示你这样写`(Child1)parent.c11();`，这就是强制转型（向下转型）
+> 
+>`Child1 child1= (Child1)new Parent()`  为 `父类转型为子类`，即`向下转型new Parent()`转型后的子类对象  `child1`能访问子类`Child1`的全部方法（包括自身方法，继承自父类与接口的方法）。
+> 
+> 然而，向上转型是安全的，总是能成功的；向下转型只不安全的，可能会产生`ClassCastExcption`。
+>
+> 比如以下`向下转型`是能成功的：
+> 
+> ```php
+>Child1 child1= (Child1)new Parent();
+> Child2 child1= (Child2)new Parent();
+> ```
+> 
+> 随即，将child1,child2`向上转型`
+>
+> ```php
+>Parent parent1 = child1;
+> Parent parent2 = child2;
+> ```
+> 
+> 再将parent1,parent2按以下方式`向下转型`是不能成功的
+>
+> ```cpp
+>child1 = (Chid1)parent2;
+> child2 = (Child2)parent1;
+> //或者
+> Child1 child11 = (Chid1)parent2;
+> Child1 child21 = (Chid2)parent1;
+> ```
+> 
+> 因为这相当于将`Child2`类型强转为`Child1`类型，将`Child1`类型强转为`Child2`类型，它们之间没有继承关系，这是不可行的
+>
+> 当然，以下是可行的
+>
+> ```cpp
+>child1 = (Chid1)parent1;
+> child2 = (Child2)parent2;
+> //或者
+> Child1 child11 = (Chid1)parent1;
+> Child1 child21 = (Chid2)parent2;
+> ```
+> 
+> 这相当于将`Child1`类型与`Child2`类型转换回去，自然是能成功的。
+
+##### 补充知识：接口不能实例化，为什么可以写成形如以下的格式？
+
+```java
+view.setOncickListener(new OnClickListener() {
+	@Override
+	public void onClick(View v) {});
+```
+
+> 这不是将`OnCLickListener`接口实例化，而是匿名内部类的形式。相当于创建了一个implement了`OnCLickListener`的类实例，并将其传递。
+
+##### 什么是内部类？什么是匿名内部类？
+
+内部类：是嵌套在类中的类，根据修饰符的不同，还可分为静态内部类、局部内部类等，定义在方法中的内部类，即使为`static`所修饰，也是局部内部类。
+
+匿名内部类：是一种没有类名的内部类，不使用`class、extends、implements`，没有构造函数，它必须继承其他类或实现其他接口。但是其本质上依然创建了一个继承了其他类或实现了其他接口类实例。
+
+所以，除了以上new 接口()的内部类形式，还有形如`listView.setAdapter(new BaseAdaptetr(){......});`的new 类() 的内部类形式。
+
+大可在`{}`中定义新的成员变量、方法甚至新的内部类，只是这些只能在该内部类中访问罢了。
+
 ## 7 接口与抽象类
 可能会产生这样一个疑问：为什么Java程序设计语言还要不辞辛苦地引入接口概念？为什么不将Comparable直接设计成如下所示的抽象类。
 ```java
