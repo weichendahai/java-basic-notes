@@ -167,7 +167,8 @@ void mySubTask() throws InterruptedException {
 > java.Iang.Thread1.0 
 >
 > ```java
-> void interrupts(); //向线程发送中断请求。线程的中断状态将被设置为true。如果目前该线程被一个sleep调用阻塞，那么，InterruptedException异常被抛出。 static boolean interrupted(); //测试当前线程（即正在执行这一命令的线程）是否被中断。注意，这是一个静态方法。这一调用会产生副作用---它将当前线程的中断状态重置为false。
+> void interrupts(); //向线程发送中断请求。线程的中断状态将被设置为true。如果目前该线程被一个sleep调用阻塞，那么，InterruptedException异常被抛出。
+> static boolean interrupted(); //测试当前线程（即正在执行这一命令的线程）是否被中断。注意，这是一个静态方法。这一调用会产生副作用---它将当前线程的中断状态重置为false。
 > boolean islnterrupted(); //测试线程是否被终止。不像静态的中断方法，这一调用不改变线程的中断状态。
 > static Thread currentThread(); //返回代表当前执行线程的Thread对象。
 > ```
@@ -201,7 +202,7 @@ void mySubTask() throws InterruptedException {
 ### 3.3 被阻塞线程和等待线程
 当线程处于被阻塞或等待状态时，它暂时不活动。它不运行任何代码且消耗最少的资源。直到线程调度器重新激活它。细节取决于它是怎样达到非活动状态的。
 
-- 当一个线程试图获取一个内部的对象锁（而不是javiutiUoncurrent库中的锁)，而该锁被其他线程持有，则该线程进入阻塞状态（我们在14.5.3节讨论java.util.concurrent锁，在14.5.5节讨论内部对象锁)。当所有其他线程释放该锁，并且线程调度器允许本线程持有它的时候，该线程将变成非阻塞状态。
+- 当一个线程试图获取一个内部的对象锁（而不是java.util.concurrent库中的锁)，而该锁被其他线程持有，则该线程进入阻塞状态（我们在14.5.3节讨论java.util.concurrent锁，在14.5.5节讨论内部对象锁)。当所有其他线程释放该锁，并且线程调度器允许本线程持有它的时候，该线程将变成非阻塞状态。
 
 - 当线程等待另一个线程通知调度器一个条件时，它自己进入等待状态。我们在第14.5.4节来讨论条件。在调用Object.wait方法或Thread.join方法，或者是等待java.util.concurrent库中的Lock或Condition时，就会出现这种情况。实际上，被阻塞状态与等待状态是有很大不同的。 
 
@@ -737,7 +738,7 @@ class Bank {
 > void wait(long millis);
 > void wait(long millis, int nanos);  //导致线程进入等待状态直到它被通知或者经过指定的时间。这些方法只能在一个同步方法中调用。如果当前线程不是对象锁的持有者该方法拋出一个IllegalMonitorStateException异常。
 > 	参数	millis	毫秒数
-> 		nanos	纳秒数，<1 000 000 
+> 		 nanos	纳秒数，<1 000 000 
 > ```
 
 ### 5.6 同步阻塞
@@ -816,7 +817,7 @@ Java设计者以不是很精确的方式采用了监视器概念，Java中的每
 
 这种对安全性的轻视激怒了Per Brinch Hansen。他在一次对原始Java中的多线程的严厉评论中，写道：“这实在是令我震惊，在监视器和并发Pascal出现四分之一个世纪后，Java的这种不安全的并行机制被编程社区接受。这没有任何益处。” [Java’ s Insecure Parallelism, ACM SIGPLANNotices 34:38-45, April 1999.]
 
-### 5.8 Volatile 域
+### 5.8 Volatile域
 有时，仅仅为了读写一个或两个实例域就使用同步，显得开销过大了。毕竟，什么地方能出错呢？遗憾的是，使用现代的处理器与编译器，出错的可能性很大。 
 
 - 多处理器的计算机能够暂时在寄存器或本地内存缓冲区中保存内存中的值。结果是，运行在不同处理器上的线程可能在同一个内存位置取到不同的值。
@@ -928,7 +929,7 @@ final Map<String, Double> accounts = new HashKap<>();
 
 ### 5.13 锁测试与超时
 
-线程在调用lock方法来获得另一个线程所持有的锁的时候，很可能发生阻塞。应该更加谨慎地申请锁。tryLock方法试图申请一个锁，在成功获得锁后返回true, 否则，立即返回 false, 而且线程可以立即离开去做其他事情。 
+线程在调用lock方法来获得另一个线程所持有的锁的时候，很可能发生阻塞。应该更加谨慎地申请锁。tryLock方法试图申请一个锁，在成功获得锁后返回true, 否则，立即返回 false, 而且线程可以立即离开去做其他事情。
 
 ```java
 if (myLock.tryLock()) {
