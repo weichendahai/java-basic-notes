@@ -12,6 +12,8 @@
 
 Java虚拟机在执行Java程序的过程中会把它所管理的内存划分为若干个不同的数据区域。这些区域有各自的用途，以及创建和销毁的时间，有的区域随着虚拟机进程的启动而一直存在，有些区域则是依赖用户线程的启动和结束而建立和销毁。根据《Java虚拟机规范》的规定，Java虚拟机所管理的内存将会包括以下几个运行时数据区域，如图
 
+![]([https://github.com/whatsabc/java-basic-notes/blob/master/JVM%E9%85%8D%E5%9B%BE/1.jpg?raw=true](https://github.com/whatsabc/java-basic-notes/blob/master/JVM配图/1.jpg?raw=true))
+
 #### 2.2.1 程序计数器
 
 程序计数器（Program Counter Register）是一块较小的内存空间，它可以看作是当前线程所执行的字节码的行号指示器。在Java虚拟机的概念模型里，字节码解释器工作时就是通过改变这个计数器的值来选取下一条需要执行的字节码指令，它是程序控制流的指示器，分支、循环、跳转、异常处理、线程恢复等基础功能都需要依赖这个计数器来完成。
