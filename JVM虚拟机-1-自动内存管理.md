@@ -12,7 +12,7 @@
 
 Java虚拟机在执行Java程序的过程中会把它所管理的内存划分为若干个不同的数据区域。这些区域有各自的用途，以及创建和销毁的时间，有的区域随着虚拟机进程的启动而一直存在，有些区域则是依赖用户线程的启动和结束而建立和销毁。根据《Java虚拟机规范》的规定，Java虚拟机所管理的内存将会包括以下几个运行时数据区域，如图
 
-![]([https://github.com/whatsabc/java-basic-notes/blob/master/JVM%E9%85%8D%E5%9B%BE/1.jpg?raw=true](https://github.com/whatsabc/java-basic-notes/blob/master/JVM配图/1.jpg?raw=true))
+![](https://github.com/whatsabc/java-basic-notes/blob/master/JVM配图/1.jpg?raw=true)
 
 #### 2.2.1 程序计数器
 
