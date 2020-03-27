@@ -556,17 +556,139 @@ obj = staff; // OK
 obj = new int[10]; // OK
 ```
 
-## 9 泛型数组列表
+> C++ 注释：在 C++ 中没有所有类的根类， 不过，每个指针都可以转换成 void* 指针  
 
-在许多程序设计语言中，特别是在C++语言中，必须在编译时就确定整个数组的大小。程序员对此十分反感，因为这样做将迫使程序员做出一些不情愿的折中。例如，在一个部门中有多少雇员？ 肯定不会超过100人。一旦出现一个拥有150名雇员的大型部门呢？ 愿意为那些仅有10名雇员的部门浪费90名雇员占据的存储空间吗？ 
+### 8.1 equals方法
+Object类中的equals方法用于检测一个对象是否等于另外一个对象。在Object类中，这
+个方法将判断两个对象是否具有相同的引用。如果两个对象具有相同的引用，它们一定是相
+等的。从这点上看，将其作为默认操作也是合乎情理的。然而，对于多数类来说，这种判断
+并没有什么意义。例如，采用这种方式比较两个PrintStream对象是否相等就完全没有意义。
+然而，经常需要检测两个对象状态的相等性，如果两个对象的状态相等，就认为这两个对象
+是相等的。
 
-在Java中，情况就好多了。它允许在运行时确定数组的大小。 
+例如，如果两个雇员对象的姓名、薪水和雇佣日期都一样，就认为它们是相等的（在实
+际的雇员数据库中，比较ID更有意义。利用下面这个示例演示equals方法的实现机制）。
+
+```java
+public class Employee {
+	...
+	public boolean equals(Object otherObject){
+		// a quick test to see if the objects are identical
+		if (this == otherObject) return true;
+        
+		// must return false if the explicit parameter is null
+		if (otherObject == null) return false;
+        
+		// if the classes don't match, they can't be equal
+		if (getClass() != otherObject.getClass())
+			return false;
+        
+		// now we know otherObject is a non-null Employee
+		Employee other = (Employee)otherObject;
+        
+		// test whether the fields have identical values
+		return name.equals(other.name)&&salary==other.salary&&hireDay. equals(other.hireDay);
+	}
+}
+```
+
+getClass方法将返回一个对象所属的类，有关这个方法的详细内容稍后进行介绍。在检
+测中，只有在两个对象属于同一个类时，才有可能相等。
+
+> 提示：为了防备name或hireDay可能为null的情况，需要使用Objects.equals方法。如
+> 果两个参数都为null，Objects.equals(a，b)调用将返回true;如果其中一个参数为null,
+> 则返回false;否则，如果两个参数都不为null，则调用a.equals(b)利用这个方法，Employee.equals方法的最后一条语句要改写为：
+> 
+> ```java
+>return Objects.equals(name, other.name)
+> && salary == other.salary
+> && Object.equals(hireDay, other.hireDay);  
+> ```
+
+在子类中定义 equals 方法时， 首先调用超类的 equals。 如果检测失败， 对象就不可能相
+等。 如果超类中的域都相等， 就需要比较子类中的实例域。
+
+```java
+public class Manager extends Employee
+    ...
+	public boolean equals(Object otherObject)
+	{
+		if (!super.equals(otherObject)) return false;
+		// super.equals checked that this and otherObject belong to the same class
+		Manager other = (Manager)otherObject;
+		return bonus == other.bonus;
+	}
+}  
+```
+
+### 8.2相等测试与继承
+
+如果隐式和显式的参数不属于同一个类，equal方法将如何处理呢？这是一个很有争议的问题。在前面的例子中，如果发现类不匹配，equals方法就返冋false: 但是，许多程序员却喜欢使用instanceof进行检测：  
+
+```java
+if (!(otherObject instanceof Employee)) return false;
+```
+
+这样做不但没有解决otherObject是子类的情况，并且还有可能会招致一些麻烦。这就是建议
+不要使用这种处理方式的原因所在。Java语言规范要求equals方法具有下面的特性：
+
+1 ) 自反性：对于任何非空引用 x, x.equals() 应该返回true
+
+2 ) 对称性: 对于任何引用 x 和 y, 当且仅当 y.equals(x) 返回 true, x.equals(y) 也应该返
+回true。
+
+3 ) 传递性： 对于任何引用 x、 y 和 z, 如果 x.equals(y) 返回true， y.equals(z) 返回true,
+x.equals(z) 也应该返回 true。
+
+4 ) 一致性：如果x和y引用的对象没有发生变化，反复调用 x.equal(y) 应该返回同样
+的结果。
+
+5 ) 对于任意非空引用 x, x.equals(null) 应该返回false
+
+### 8.3 hashCode方法
+
+散列码（hash code)是由对象导出的一个整型值。散列码是没有规律的。如果x和y是两个不同的对象，x.hashCode()与y.hashCode()基本上不会相同。在表5-1中列出了几个通过调用String类的hashCode方法得到的散列码。
+
+String类使用下列算法计算散列码：
+
+```java
+int hash = 0;
+for (int i = 0; i < length0；i++)
+	hash = 31 * hash + charAt(i);
+```
+由于hashCode方法定义在Object类中，因此每个对象都有一个默认的散列码，其值为对象的存储地址。来看下面这个例子。
+
+```java
+String s = "Ok";
+StringBuilder sb = new StringBuilder(s);
+System.out.println(s.hashCode() + " " + sb.hashCode());
+String t = new String("Ok");
+StringBuilder tb = new StringBuilder(t);
+System.out.println(t.hashCode() + " " + tb.hashCode());  
+```
+
+| 对象 | 散列码   |
+| ---- | -------- |
+| s    | 2556     |
+| sb   | 20526976 |
+| t    | 2556     |
+| tb   | 20527144 |
+
+请注意，字符串s与t拥有相同的散列码，这是因为字符串的散列码是由内容导出的。而字符串缓冲sb与t却有着不同的散列码，**这是因为在 StringBuffer 类中没有定义hashCode方法，它的散列码是由Object类的默认hashCode方法导出的对象存储地址。**
+
+如果重新定义equals方法，就必须重新定义hashCode方法，以便用户可以将对象插入到散列表中（有关散列表的内容将在第9章中讨论)。  
+
+## 9泛型数组列表
+
+在许多程序设计语言中，特别是在C++语言中，必须在编译时就确定整个数组的大小。程序员对此十分反感，因为这样做将迫使程序员做出一些不情愿的折中。例如，在一个部门中有多少雇员？肯定不会超过100人。一旦出现一个拥有150名雇员的大型部门呢？愿意为那些仅有10名雇员的部门浪费90名雇员占据的存储空间吗？
+
+在Java中，情况就好多了。它允许在运行时确定数组的大小。
 
 ```java
 int actualSize =...;
 Employee[] staff = new Employee[actualSize];
 ```
-当然，这段代码并没有完全解决运行时动态更改数组的问题。一旦确定了数组的大小，改变它就不太容易了。在Java中， 解决这个问题最简单的方法是使用Java中另外一个被称为ArrayList的类。它使用起来有点像数组，但在添加或删除元素时， 具有自动调节数组容量的功能，而不需要为此编写任何代码。
+当然，这段代码并没有完全解决运行时动态更改数组的问题。一旦确定了数组的大小，改变它就不太容易了。在Java中，解决这个问题最简单的方法是使用Java中另外一个被称为ArrayList的类。它使用起来有点像数组，但在添加或删除元素时，具有自动调节数组容量的功能，而不需要为此编写任何代码。
 
 ArrayList是一个采用类型参数（type parameter) 的泛型类（generic class)。为了指定数组列表保存的元素对象类型，需要用一对尖括号将类名括起来加在后面，例如，`ArrayList <Employee>`。在第8章中将可以看到如何自定义一个泛型类， 这里并不需要了解任何技术细节就可以使ArrayList类型。 
 

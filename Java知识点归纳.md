@@ -45,7 +45,7 @@ String			AbstractStringBuilder
 
 ```
 
-StringBuilder类在Java 5中被提出，它和StringBuffer之间的最大不同在于StringBuilder 的方法不是线程安全的（不能同步访问）由于StringBuilder相较于StringBuffer有速度优势，所以多数情况下建议使用StringBuilder类。然而在应用程序要求线程安全的情况下，则必须使用 StringBuffer 类。
+StringBuilder类在Java 5中被提出，它和StringBuffer之间的最大不同在于StringBuilder的方法不是线程安全的（不能同步访问）由于StringBuilder相较于StringBuffer有速度优势，所以多数情况下建议使用StringBuilder类。然而在应用程序要求线程安全的情况下，则必须使用 StringBuffer 类。
 
 再详细说一下String，String并不是基本数据类型，而是一个对象。字符串为对象，那么在初始化之前，它的值为null，到这里就有必要提下””、null、new String()三者的区别。null表示string还没有new，也就是说对象的引用还没有创建，也没有分配内存空间给他，而””、new String()则说明了已经new了，只不过内部为空，但是它创建了对象的引用，是需要分配内存空间的。
 
@@ -125,7 +125,7 @@ public static void main(String[] args) {
 	}
 	else {
 		System.out.println("s1 != s2"); 
-		}
+	}
 }
 ```
 
@@ -200,7 +200,7 @@ s1 equals s2
 public static void main(String[] args) { 
 	String Monday = "Monday";  
 	String Mon = "Mon";  
-	String  day = "day";  
+	String day = "day";  
 	System.out.println(Monday == "Mon" + "day");  
 	System.out.println(Monday == "Mon" + day);  
 }
