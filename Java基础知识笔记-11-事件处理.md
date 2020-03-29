@@ -1,4 +1,4 @@
-Java基础知识笔记-12-事件处理
+Java基础知识笔记-11-事件处理
 
 学习组件除了要熟悉组建的属性和功能外，一个更重要的方面是学习怎样处理组建上发生的界面事件，当用户在文本框中输入文本后按回车，单击按钮，在一个下拉式列表中选择一个条目进行一个条目等操作时，都发生界面事件，例如，用户单击一个确定或者取消的按钮，程序可能需要做出不同的处理。
 
@@ -24,16 +24,18 @@ Java程序设计环境折中了Visual Basic与原始C的事件处理方式，因
 - 当事件发生时，事件源将事件对象传递给所有注册的监听器。
 - 监听器对象将利用事件对象中的信息决定如何对事件做出响应。
 
-##### 1.事件源
+1. 事件源
+
 能够产生事件的对象都可以成为事件源，如文本框、按钮、下拉式列表等。也就是说，事件源必须是一个对象，而且这个对象必须是Java认为能够发生事件的对象。
-##### 2.监视器
+2. 监视器
+
 我们需要一个对象对事件源进行监视，以便对发生的事件作出处理。
 事件源通过调用相应的方法将某个对象注册为自己的监视器。例如，对于文本框,这个方法是:
 ```
 addActionListener(监视器);
 ```
 对于注册了监视器的文本框，在文本框获得输入焦点后,如果用户按回车键，Java运行环境就自动用Actionven类创建一个对象，即发生了ActionEvent事件。也就是说，事件源注册监视器之后，相应的操作就会导致相应的事件地发生，并通知监视器，监视器就会出相应的处理。
-##### 3.处理事件的接口
+3. 处理事件的接口
 
 监视器负责处理事件源发生的事件。监视器是一个对象，为了处理事件源发生的事件，监视器这个对象会自动调用一个方法来处理事件。那么监视器去调用哪个方法呢？我们我知道，对象可以调用创建它的那个类中的方法，那么它到底调用该类中的哪个方法呢？Java规定为了让监视器这个对象能对事件源发生的事件进行处理，创建该监视器对象的以实现相应的接口，即必须在类体中重写接口中的所有方法，那么当事件源发生事，监视器就自动调用被类重写的某个接口方法。事件处理模式如图11.6所示。
 
@@ -67,15 +69,18 @@ E[类A负责创建监视器,A必须实现XXXListener接口]---A[事件源.addXXX
 ```
 
 ## 2 ActionEvent事件
-##### 1.ActionEvent事件源
+1. ActionEvent事件源
+
 文本框、按钮、菜单项、密码框和单选按钮都可以触发ActionEvent事件，即都可以成为ActionEvent事件的事件源。例如，对于注册了监视器的文本框，在文本框获得输入焦点后，如果用户按回车键，Java运行环境就自动用ActionEvent类创建一个对象，即触发ActionEvent事件;对于注册了监视器的按钮，如果用户单击按钮，就会触发ActionEvent事件;对于注册了监视器的菜单项，如果用户选中该菜单项，就会触发ActionEvent事件;如果用户选择了某个单选按钮，就会触发ActionEvent事件。
-##### 2.注册监视器
+2. 注册监视器
+
 能触发ActionEvent事件的组件使用
 ```java
 addActionListener(ActionListener listen);
 ```
 将实现ActionListener接口的类的实例注册为事件源的监视器。
-##### 3.ActionListener接口
+3. ActionListener接口
+
 ActionListener接口在java.awt.event包中，该接口中只有一个方法:
 ```java
 public void actionPerformed(ActionEvente);
@@ -85,13 +90,15 @@ public void actionPerformed(ActionEvente);
 actionPerformed(ActionEvent e);
 ```
 对发生的事件作出处理。当监视器调用actionPerformed(ActionEvent e)方法时，ActionEvent类事先创建的事件对象就会传递给该方法的参数C。
-##### 4.ActionEvent类中的方法
+4. ActionEvent类中的方法
+
 ActionEvent类有如下常用的方法。
 ```java
 public ObeceSurce();//该方法是从Enentobiect继承的方法，ActionEvent事件对象调用该方法可以获取发生ActionEvent事件的事件源对象的引用，即BetSource()方法将事件源上转型为Object对象，并返回这个上转型对象的引用，
 public String getActionCommand();//ActionEvent对象调用该方法可以获取发生ActionEvent事件时，和该事件相关的一个命令字符串，对于文本框，当发生ActionEvent事件时，文本框中的文本字符串就是和该事件相关的一个命令字符串.
 ```
-### 实例1
+> 实例1
+
 例11.5处理文本框上触发的ActionEvent事件。在文本框text中输入字符串回车，监视器负责计算字符串的长度，并在命令行窗口显示字符串的长度。例11.5程序运行效果如图11.7和图11.8所示。
 ```java
 import java.awt.*;
@@ -187,7 +194,8 @@ public class exercise {
 ```
 Java的事件处理是基于授权模式，即事件源调用方法将某个对象注册为自己的监视器。**处理相应的事件调用相应的接口**
 
-### 实例2
+> 实例2
+
 为了加深对事件委托模型的理解，下面以一个响应按钮点击事件的简单示例来说明所需要知道的所有细节。在这个示例中，想要在一个面板中放置三个按钮，添加三个监听器对象用来作为按钮的动作监听器。
 
 在这个情况下，只要用户点击面板上的任何一个按钮，相关的监听器对象就会接收到一个Action Event对象，它表示有个按钮被点击了。在示例程序中，监听器对象将改变面板的背景颜色。
@@ -317,7 +325,7 @@ public class ButtonFrame extends JFrame {
 	}
 }
 ```
-### 2.2 简洁的指定监听器
+### 2.1 简洁的指定监听器
 在上一节中，我们为事件监听器定义了一个类并构造了这个类的3个对象。一个监听器类有多个实例的情况并不多见。更常见的情况是：每个监听器执行一个单独的动作。在这种情况下，没有必要分别建立单独的类。只需要使用一个lambda表达式：
 ```java
 exitButton.addActionListener(event -> System.exit(O));
@@ -387,15 +395,18 @@ makeButton("red", Color.RED);
 > EventHandler机制的效率也不高，而且比较容易出错。它使用反射来调用方法。出于这个原因，EventHandler.create调用的第二个参数必须属于一个公有类。否则，反射机制就无法确定和调用目标方法
 
 ## 3 ItemEvent事件
-##### 1.ItemEvent事件源
+1. ItemEvent事件源
+
 选择框，下拉列表都可以触发ItemEvent事件。选择框提供两种状态，一种是选中，另一种是未选中。对于注册了监视器的选择框，当用户的操作使得选择框从未选中状态变成选中状态，或是相反变化的时候就会触发ItemEvent事件，同样，对于注册了监视器的下拉列表，如果用户选中下拉列表中的某个选项，就会触发ItemEvent事件。
-##### 2.注册监视器
+2. 注册监视器
+
 能触发ItemEvent事件的组件使用
 ```java
 addItemListener(ItemListener listen);
 ```
 将实现ItemListener接口的类的实例注册为事件源的监视器。
-##### 3.ItemListener接口
+3. ItemListener接口
+
 ItemListener接口在java.awt.event包中，该接口只有一个方法;
 ```java
 public void itemStateChanged(itemEvent e);
@@ -409,11 +420,14 @@ itemStateChange(ItemEvent e);
 ItemEvent事件对象除了可以使用getSource()方法返回发生ItemEvent事件的事件源外，也可以使用getItemSelectable()方法返回发生ItemEvent事件的事件源。  
 
 ## 4 DocumentEvent事件
-##### 1.DocumentEvent事件源
+1. DocumentEvent事件源
+
 文本区中含有一个实现Document接口的实例，该实例被称作文本区维护的文档，文本区调用getDocument()方法返回维护的文档。文本区维护的文档能触发DocumentEvent事件。需要注意的是，DocumentEvent不在java.awt.event包中，而是在javax.swing.event包中。用户在文本区中进行文本编辑操作，使得文本区中的文本区内容发生变化，将导致文本区维护的文档模型中的数据发生变化，从而导致文本区维护的文档触发DocumentEvent事件。
-##### 2.注册监视器
+2. 注册监视器
+
 能触发DocumentEvent事件的事件源使用addDocumentListener(DocumentListenerlisten)将实现DocumentListener接口的类的实例注册为事件源的监视器。
-##### 3.DocumentListener接口
+3. DocumentListener接口
+
 DocumentListener接口在java.swing.event包中，该接口中有三个方法：
 ```java
 public void changedUpdate(DocumentEvent e);
@@ -486,7 +500,8 @@ public class exercise{
 
 ## 5 MouseEvent事件
 任何组件都可以发生鼠标事件，如鼠标进入组件，退出组件，在组建上方单击鼠标，拖动鼠标等都可以触发鼠标事件，即导致`MouseEvent`类自动创建一个事件对象。
-##### 1.使用MouseEvent接口处理鼠标事件
+1. 使用MouseEvent接口处理鼠标事件
+
 使用MouseListener接口可以处理以下5种操作触发的鼠标事件。
 - 在事件源上按下鼠标键
 - 在事件源上释放鼠标键
@@ -542,7 +557,8 @@ mouseEntered(MouseEvent);//负责处理鼠标进入组件触发的鼠标事件�
 mouseExited(MouseEvent);//负责处理鼠标离开组件触发的鼠标事件。即当鼠标指针离开容器时，监视器调用接口中的这个方法对事件作出处理。
 mouseClicked(MouseEvent);//负责处理在组件上单击鼠标键触发的鼠标事件。即当单击鼠标时，监视器调用接口中的这个方法对事件做出处理。
 ```
-### 实例
+> 实例
+
 在列举的简单示例中， 提供了`mousePressed`和`mouseClicked`方法。当鼠标点击在所有小方块的像素之外时，就会绘制一个新的小方块。这个操作是在`mousePressed`方法中实现的，这样可以让用户的操作立即得到响应，而不必等到释放鼠标按键。如果用户在某个小方块中双击鼠标，就会将它擦除。由于需要知道点击次数，所以这个操作将在`mouseClicked`方法中实现。
 ```java
 public void mousePressed (MouseEvent event) {
@@ -756,7 +772,7 @@ public class MouseComponent extends JComponent {
 > public void setCursor(Cursor cursor);	1.1
 > //用光标图像设置给定光标
 > ```
-## AWT事件继承层次
+## 6 AWT事件继承层次
 弄清了事件处理的工作过程之后，作为本章的结束，总结一下AWT事件处理的体系架构。前面已经提到，Java事件处理采用的是面向对象方法，所有的事件都是由java.util包中的EventObject类扩展而来的（公共超类不是Event, 它是旧事件模型中的事件类名。尽管现在不赞成使用旧的事件模型，但这些类仍然保留在Java库中)。
 
 有些Swing组件将生成其他事件类型的事件对象；它们都直接扩展于EventObject, 而不是AWTEvent。
@@ -767,7 +783,7 @@ public class MouseComponent extends JComponent {
 
 对于有些AWT事件类来说，Java程序员并不会实际地使用它们。例如，AWT将会把PaintEvent对象插入事件队列中，但这些对象并没有传递给监听器。Java程序员并不监听绘图事件，如果希望控制重新绘图操作，就需要覆盖paintComponent方法。另外，AWT还可以生成许多只对系统程序员有用的事件，用于提供表义语言的输入系统以及自动检测机器人等。在此，将不讨论这些特殊的事件类型。
 
-### 1语义事件和底层事件
+### 6.1 语义事件和底层事件
 AWT将事件分为底层(low-level)事件和语义(semantic)事件。语义事件是表示用户动作的事件，例如，点击按钮；因此，ActionEvent是一种语义事件。底层事件是形成那些事件的事件。在点击按钮时，包含了按下鼠标、连续移动鼠标、抬起鼠标（只有鼠标在按钮区中抬起才引发）事件。或者在用户利用TAB键选择按钮，并利用空格键激活它时，发生的敲击键盘事件。同样，调节滚动条是一种语义事件，但拖动鼠标是底层事件。
 
 下面是java.awt.event包中最常用的语义事件类：
@@ -808,7 +824,7 @@ MouseAdapter
 ![事件处理总结表1](https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%80%BB%E7%BB%93%E8%A1%A81.jpg?raw=true)
 ![事件处理总结表2](https://github.com/whatsabc/java-basic-notes/blob/master/%E6%8F%92%E5%9B%BE/%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%80%BB%E7%BB%93%E8%A1%A82.jpg?raw=true)
 
-## 6 焦点事件
+## 7 焦点事件
 组件可以触发焦点事件。组件可以使用
 ```java
 addFocusListener(FocusListener listener);
@@ -824,7 +840,7 @@ public void focusLost(FocusEvnet e);//监视器从有焦点输入变成无焦点
 public boolean requestFocusInWindow();
 ```
 方法可以获得输入焦点。
-## 7 键盘事件
+## 8 键盘事件
 当按下，释放或敲击键盘上一个键时就就触发了键盘事件，在Java事件模式中，必须要有发生事件的事件源。当一个组件处于激活状态时，敲击键盘上一个键就导致这个组件触发键盘事件。当使用KeyListener接口处理键盘事件，有如下3个方法：
 ```java
 public void keyPessed(KeyEvent e);
@@ -946,9 +962,9 @@ public class exercise{
 	}
 }
 ```
-## 8 匿名类实例或窗口做监视器
+## 9 匿名类实例或窗口做监视器
 
-## 9 使用MVC结构
+## 10 使用MVC结构
 模型-视图-控制器，简称MVC，MVC是一种先进的设计结构，是TrygveReenskaug教授于1978年最早开发的一个基本结构，其目的是以会话形式提供方便的GUI支持，MVC首先出现在Smalltalk编程语言中。
 
 MVC是一种通过三个不同部分构造一个软件或组件的理想办法。
@@ -1059,7 +1075,7 @@ public class exercise{
 	}
 }
 ```
-## 10 对话框
+## 11 对话框
 JDialog类和JFrame类都是window的子类，二者的实例都是底层容器，但是二者有相似之处也有不同的地方，主要区别是，JDialog类创建的对话框必须要依赖某个窗口。 
 
 对话框分为无模式和有模式两种。如果一个对话框是有模式的对话框，那么当这个对话框处于激活状态时，只让程序响应对话框内部的事件，而且将堵塞其他线程的执行，用户不能再激活对话框所在程序中的其他窗口，知道该对话框消失不可见。无模式对话框处于激活状态时，能再激活其他窗口，也不阻塞其他线程的执行。 
