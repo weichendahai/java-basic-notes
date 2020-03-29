@@ -674,6 +674,56 @@ int n = Employee.getNextld();
 
 **和实例方法不同的是，类方法不可以操作实例变量，这是因为在类创建对象之前，实例成员变量还没有分配内存。**
 
+### 4.4 main方法
+
+需要注意，不需要使用对象调用静态方法。例如，不需要构造Math类对象就可以调用Math.pow。
+
+同理，main方法也是一个静态方法。
+
+```java
+public class Application {
+	public static void main(String[] args) {
+		// construct objects here
+        ...
+	}
+}
+```
+main方法不对任何对象进行操作。事实上，在启动程序时还没有任何一个对象。静态的main方法将执行并创建程序所需要的对象。
+
+> 提示：每一个类可以有一个main方法。这是一个常用于对类进行单元测试的技巧。例如，可以在Employee类中添加一个main方法：
+>
+> ```java
+> class Employee {
+> 	public Employee(String n, double s, int year, int month, int day)
+> 		name = n;
+> 		salary = s;
+> 		Local Date hireDay = LocalDate.now(year, month , day);
+> 	}
+> 	...
+> 	public static void main(String[] args) // unit test 
+> 	{
+> 		Employee e = new Employee("Romeo" , 50000, 2003, 3, 31);
+> 		e.raiseSalary(1O);
+> 		System.out.7println(e.getName() + " " + e.getSalary());
+> 	}
+> 	...
+> }
+> ```
+>
+> 如果想要独立地测试Employee类，只需要执行
+>
+> ```
+> java Employee
+> ```
+>
+> 如果Employee类是一个更大型应用程序的一部分，就可以使用下面这条语句运行程序
+>
+> ```
+> java Application
+> ```
+
+Employee类的main方法永远不会执行。  
+
 ## 5 方法参数（参数传值）
 
 方法中最重要的部分之一就是方法的参数，参数属于局部变量，当对象调用方法时，参数被分配到内存空间，并要求调用者向参数传递值，即方法被调用时，参数变量必须有具体的值。
