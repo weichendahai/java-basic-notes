@@ -423,7 +423,7 @@ public class B implement TestInterface{
 }
 ```
 
-##### 且看这两个类，一个接口，它们什么关系？
+且看这两个类，一个接口，它们什么关系？
 
 > `class B` 作为程序入口类，实现了`interface TestInterface`，并定义了接口中`systemStr(String str)`。主方法`main()`中实例化`class A`，并将自身`class B`的实例化对象传入。
 >
@@ -431,7 +431,7 @@ public class B implement TestInterface{
 >
 > 其构造方法接受主方法中传来的数据并初始化成员变量`test`。`doSth`方法执行方法`systemStr()`
 
-#####  `class A`的构造方法明明规定接受类型为`TestInterface`，为什么向`class A`的对象中传入的是`class B`的实例？
+`class A`的构造方法明明规定接受类型为`TestInterface`，为什么向`class A`的对象中传入的是`class B`的实例？
 
 > 这涉及到java自动转型，`TestInterface test`由编译器自动（向下）转型为`class B`。实际执行的方法是由`class B`继承自`TestInterface`并定义的`systemStr(String str)`方法。
 >
@@ -443,11 +443,11 @@ public class B implement TestInterface{
 
 #### 什么是向上/向下转型？
 
-##### 首先是什么时候能转型？
+**首先是什么时候能转型？**
 
 > 二者必须存在继承关系后才能相互转型
 
-##### 什么是向上/向下转型？
+**什么是向上/向下转型？**
 
 向上转型：`继承者类型对象（子）`向`被继承者类型（父）`转型（自动转型）
 
@@ -459,7 +459,7 @@ public class B implement TestInterface{
 > 比如`父类`转型为  `子类`
 > 注意：`接口`不能实例化，没有对象，自然也就不能转型为`接口实现类`。
 
-##### 什么是自动/强制转型？
+**什么是自动/强制转型？**
 
 ```cpp
 public Interface Interface1() {
@@ -579,7 +579,7 @@ public class Child2() extends Parent{
 > 
 > 这相当于将`Child1`类型与`Child2`类型转换回去，自然是能成功的。
 
-##### 补充知识：接口不能实例化，为什么可以写成形如以下的格式？
+补充知识：接口不能实例化，为什么可以写成形如以下的格式？
 
 ```java
 view.setOncickListener(new OnClickListener() {
@@ -589,7 +589,7 @@ view.setOncickListener(new OnClickListener() {
 
 > 这不是将`OnCLickListener`接口实例化，而是匿名内部类的形式。相当于创建了一个implement了`OnCLickListener`的类实例，并将其传递。
 
-##### 什么是内部类？什么是匿名内部类？
+什么是内部类？什么是匿名内部类？
 
 内部类：是嵌套在类中的类，根据修饰符的不同，还可分为静态内部类、局部内部类等，定义在方法中的内部类，即使为`static`所修饰，也是局部内部类。
 
@@ -630,11 +630,11 @@ class Employee extends Person implements Comparable // OK
 
 接口和abstract类的比较如下：
 
-#### 1.abstract类和接口都有abstract方法  
+1. abstract类和接口都有abstract方法  
 
-#### 2.接口中只可以有常量，不能有变量；而abstract类中既可以有常量又可以有变量  
+2. 接口中只可以有常量，不能有变量；而abstract类中既可以有常量又可以有变量  
 
-#### 3.abstract类中也可以有非abstract方法，接口不可以
+3. abstract类中也可以有非abstract方法，接口不可以
 
 在设计程序时，应当根据具体的分析方法来确定是使用抽象类还是接口。abstract类除了提供重要的需要子类重写的abstract方法外，也提供了子类需要继承的变量和非abstract方法，如果子类需要重写父类的abstract方法，还需要从父类继承一些变量或继承一些重要的非abstract方法，就可以考虑用abstract。  
 
@@ -669,7 +669,7 @@ x -> 2 * x
 ```
 更多外链到：https://www.cnblogs.com/franson-2016/p/5593080.html
 
-## 2 为什么引入lambda 表达式
+## 2 为什么引入lambda表达式
 lambda表达式是一个可传递的代码块，可以在以后执行一次或多次。具体介绍语法（以及解释这个让人好奇的名字）之前，下面先退一步，观察一下我们在Java中的哪些地方用过这种代码块。
 
 已经了解了如何按指定时间间隔完成工作。将这个工作放在一个ActionListener的actionPerformed方法中：
