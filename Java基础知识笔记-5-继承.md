@@ -23,7 +23,7 @@ class Student extends People{
 
 子类只继承父类中protected和public访问权限的成员变量和方法作为继承；
 
-### 1.2 方法覆盖（重写）Override
+### 1.2 覆盖方法（重写）Override
 如果子类中定义的一个方法，其名称，返回类型及参数签名正好与父类中的某个方法的名称，返回类型及参数签名相匹配，那么可以说，子类的方法覆盖了父类的方法。
 
 在类层次结构中，当子类的方法与父类的方法具有相同的返回类型和签名时，就称子类中的方法重写了父类中的方法，当在子类中调用被重写的方法时，总是引用子类中定义的方法，而父类中定义的方法将被隐藏。
@@ -82,6 +82,7 @@ public abstract class Base{
 }
 public abstract class Sub extends Base{
 	public void method1() {
+        
 	}//实现method1方法，并且扩大访问权限
 }
 public abstract void method2();//重新申明method2方法，仅仅扩大访问权限，但不实现
@@ -91,6 +92,7 @@ public abstract void method2();//重新申明method2方法，仅仅扩大访问�
 ```java
 public class Base{
 	void method(){
+        
 	}
 }
 public abstract class Sub extends Base{
@@ -105,9 +107,7 @@ public abstract class Sub extends Base{
 
 方法重写是指：
 
-**子类中定义一个方法，这个方法的类型和父类的方法的类型一致或者是父类的方法的类型的子类型（所谓子类型是指，如果父类的方法的类型是“类”，那么允许子类的重写方法的类型是“子类”）一致，并且这个方法的名字，参数个数，参数的类型和父类的方法完全相同。**
-
-子类如此定义的方法称作子类重写的方法。
+**子类中定义一个方法，这个方法的类型和父类的方法的类型一致或者是父类的方法的类型的子类型（所谓子类型是指，如果父类的方法的类型是“类”，那么允许子类的重写方法的类型是“子类”）一致，并且这个方法的名字，参数个数，参数的类型和父类的方法完全相同。**子类如此定义的方法称作子类重写的方法。
 
 
 #### 1.2.2 重写的目的
@@ -116,7 +116,8 @@ public abstract class Sub extends Base{
 
 如果父类的方法`f()`可以被子类继承，子类就有权利重写f()，一旦子类重写了父类的方法f()，就隐藏了继承的方法f()，那么子类对象调用方法f()一定是调用的重写方法f()；如果子类没有重写，而是继承了父类的方法f()，那么子类创建的对象当然可以调用f()方法，只不过方法f()产生的行为和父类的相同而已。
 
-重写方法即可以操作继承的成员变量，调用继承的方法，也可以操作子类新声明的成员变量，调用新定义的其他方法，但无法操作被子类隐藏的方法，如果子类想使用被隐藏的方法或成员变量，必须使用关键字super。
+重写方法即可以操作继承的成员变量，调用继承的方法，也可以操作子类新声明的成员变量，调用新定义的其他方法，但无法操作被子类隐藏的方法，**如果子类想使用被隐藏的方法或成员变量，必须使用关键字super。**
+
 例：
 
 ```java
@@ -189,7 +190,7 @@ double computer(float x,float y) {
 }
 ```
 
-原因是子类重写的方法和父类的方法类型不一致，这样子类就无法隐藏继承的方法，导致子类出现两个方法的名字相同，参数也相同的情况，这是不允许的（见上一章第七节）
+原因是子类重写的方法和父类的方法类型不一致，这样子类就无法隐藏继承的方法，导致子类出现两个方法的名字相同，参数也相同的情况，这是不允许的
 
 ### 1.3 子类构造器
 
@@ -267,7 +268,7 @@ public class exercise{
 首先在子类调用父类的构造方法的时候，必须遵守以下语法规则：
 
 - 在子类的构造方法中，不能直接通过父类方法名调用父类的构造方法，而是要使用super语句
-- 假如在子类的构造方法中有super语句，他必须作为构造方法中的第一条语句
+- **假如在子类的构造方法中有super语句，他必须作为构造方法中的第一条语句**
 
 用子类的构造方法创建一个子类的对象时，子类的构造方法总是先调用父类的某个构造方法，也就是说，如果子类的构造方法没有明显的指明使用父类的哪个构造方法，子类就调用父类的不带参数的构造方法。  
 
@@ -413,8 +414,16 @@ monkey.computer(10,10);
 
 当子类的构造方法没有用super语句显示调用父类的构造方法时，而父类有没有提供默认的构造方法时，就会出现编译错误。
 
----
+### 1.4 继承的利弊和使用原则
+
+- 继承树的层次不可太多
+- 继承树的上层为抽象层
+- 继承关系最大的弱点：打破封装
+- 精心设计专门用于被继承的类
+- 区分对象的属性与继承
+
 ### 1.5 多态
+
 如下面这个例子，显示了饲养员Feeder，食物Feed，动物Animal，以及它的子类的类框图
 
 可以把饲养员 动物和食物看作独立的子系统。Feeder类的定义如下：
@@ -443,109 +452,76 @@ Creature creature=animal;//向上转型，把animal类型转换为Creature类型
 ```
 如果把引用变量转换为子类类型，称为向下转型，如果把引用变量转换为父类类型，成为向上转型。在进行引用变量的类型转换时，会受到各种限制，而且在通过引用变量访问它所引用的实例的静态属性，静态方法，实例属性，实例方法，以及从父类中继承的方法和属性事，Java虚拟机会采用不同的绑定机制。
 
-### 1.6 继承与多态（重写的方法支持多态性）
+### 1.6 理解方法调用
 
-当一个类有很多子类时，并且这些子类都重写了父类中的某个方法。那么当我们把子类创建的对象的引用都放到一个父类的对象中，就得到了该对象的一个上传型对象，那么这个上传型对象在调用这个方法时就可能具有多种形态，因为不同的子类在重写父类的方法时可能产生不同的行为。
+弄清楚如何在对象上应用方法调用非常重要。下面假设要调用x.f(args)隐式参数x声明为类C的一个对象。下面是调用过程的详细描述：
+
+1)编译器査看对象的声明类型和方法名。假设调用x.f(param)且隐式参数x声明为C类的对象。需要注意的是：有可能存在多个名字为f,但参数类型不一样的方法。例如，可能存在方法f(int)和方法String)。编译器将会一一列举所有C类中名为f的方法和其超类中访问属性为public且名为f的方法（超类的私有方法不可访问）。
+
+至此，编译器已获得所有可能被调用的候选方法。
+
+2)接下来，编译器将査看调用方法时提供的参数类型。如果在所有名为f的方法中存在一个与提供的参数类型完全匹配，就选择这个方法。这个过程被称为重栽解析（overloading resolution)。例如，对于调用x.f(“Hello”）来说，编译器将会挑选f(String)，而不是f(int)。
+
+由于允许类型转换（int可以转换成 double, Manager可以转换成Employee, 等等，)所以这个过程可能很复杂。如果编译器没有找到与参数类型匹配的方法，或者发现经过类型转换后有多个方法与之匹配，就会报告一个错误。至此，编译器已获得需要调用的方法名字和参数类型。
+
+> 注释：前面曾经说过，方法的名字和参数列表称为方法的签名。例如，f(int)和f(String)是两个具有相同名字，不同签名的方法。如果在子类中定义了一个与超类签名相同的方法，那么子类中的这个方法就覆盖了超类中的这个相同签名的方法。
+>
+> 不过，返回类型不是签名的一部分，因此，在覆盖方法时，一定要保证返回类型的兼容性。允许子类将覆盖方法的返回类型定义为原返回类型的子类型。例如，假设Employee类有
+>
+> ```java
+> public Employee getBuddy() { ... }
+> ```
+>
+> 经理不会想找这种地位低下的员工。为了反映这一点，在后面的子类Manager中，可以按照如下所示的方式覆盖这个方法
+>
+> ```java
+> public Manager getBuddy() { ... } // OK to change return type
+> ```
+>
+> 我们说，这两个getBuddy方法具有可协变的返回类型。
+
+3 )如果是private方法、static方法、final方法（有关final修饰符的含义将在下一节讲述）或者构造器，那么编译器将可以准确地知道应该调用哪个方法，我们将这种调用方式称为静态绑定（static binding)。与此对应的是，调用的方法依赖于隐式参数的实际类型，并且在运行时实现动态绑定。在我们列举的示例中，编译器采用动态绑定的方式生成一条调用f(String)的指令。
+
+4 )当程序运行，并且采用动态绑定调用方法时，虚拟机一定调用与x所引用对象的实际类型最合适的那个类的方法。假设x的实际类型是D，它是C类的子类。如果D类定义了方法f(String)，就直接调用它；否则，将在D类的超类中寻找f(String)，以此类推。
+
+每次调用方法都要进行搜索，时间开销相当大。因此，虚拟机预先为每个类创建了一个方法表（method table),其中列出了所有方法的签名和实际调用的方法。这样一来，在真正调用方法的时候，虚拟机仅查找这个表就行了。在前面的例子中，虚拟机搜索D类的方法表，以便寻找与调用f(Sting)相K配的方法。这个方法既有可能是D.f(String),也有可能是X.f(String),这里的X是D的超类。这里需要提醒一点，如果调用super.f(param),编译器将对隐式参数超类的方法表进行搜索。
+
+现在，查看一下程序清单5-1 中调用e.getSalary()的详细过程。e声明为Employee类型。Employee类只有一个名叫getSalary的方法，这个方法没有参数。因此，在这里不必担心重载解析的问题。
+
+由于getSalary不是private方法、static方法或final方法，所以将采用动态绑定。虚拟机为Employee和Manager两个类生成方法表。在Employee的方法表中，列出了这个类定义的所有方法：
 
 ```java
-class Animal{
-	void cry(){
-	}
-}
-
-class Dog extends Animal(){
-	void cry(){
-		System.out.println("wangwang");
-	}
-}
-class Cat extends Animal(){
-	void cry(){
-		System.out.println("miaomiao");
-	}
-}
-
-public class exercise{
-	public static void main(String args{]){
-		Animal animal;
-		animal=new Dog();
-		animal.cry();
-		animal=new Cat();
-		animal.cry();
-	}
-}
+Employee:
+	getName() -> Employee.getName()
+	getSalary() -> Employee.getSalary()
+	getHireDay() -> Employee.getHireDay()
+	raiseSalary(double) -> Employee.raiseSalary(double)
 ```
-多态性就是指父类中的某个方法被其子类重写时，可以各自产生自己的功能行为。
 
-> 面向抽象编程
+实际上，上面列出的方法并不完整，稍后会看到Employee类有一个超类Object，Employee类从这个超类中还继承了许多方法，在此，我们略去了Object方法。
 
-在设计一个系统时，可以通过abstract类中声明若干个abstract方法，表明这些方法在整个系统设计中的重要性，方法体的内容细节由它的非abstract子类去完成。  
-
-例如:
+Manager方法表稍微有些不同。其中有三个方法是继承而来的，一个方法是重新定义的，还有一个方法是新增加的。
 
 ```java
-abstract class Geometry{
-	public abstract double getArea();
-}
+Manager:
+	getName() -> Employee.getName()
+	getSalary() -> Manager.getSalary()
+	getHireDay() -> Employee.getHireDay()
+	raiseSalary(double) -> Employee.raiseSalary(double)
+	setBonus(double) -> Manager.setBonus(double)
 ```
-Pillar类的设计者可以面向Geometry类编写代码，即Pillar类应当把Geometry对象当作自己的成员，该成员可以调用Geometry的子类重写`getArea()`方法，这样，Pillar类就可以将计算底面积的任务指派给Geometry类的子类的实例；  
 
-以下pillar类的设计不再依赖具体类，而是面向Geometry类，即Pillar类中的bottom对象是抽象类Geometry声明的对象，而不是具体类声明的对象，重新设计的pillar类的代码如下：
-```java
-class Pillar{//柱体
-	Geometry bottom;
-	double height;
-	Pillar(Geometry bottom,double height){
-		this.bottom=bottom;
-		this.height=height;
-	}
-	public double getVolume() {
-		return bottom.getArea()*height;
-	}
-}
+在运行时，调用e.getSalary()的解析过程为：
 
-class Circle extends Geometry{//圆底柱体
-	double r;
-	Circle(double r){
-		this.r=r;
-	}
-	public double getArea() {
-		return(3.14*r*r);
-	}
-}
+1 )首先，虚拟机提取e的实际类型的方法表。既可能是Employee、 Manager的方法表，也可能是Employee类的其他子类的方法表。
 
-class Rectangle extends Geometry{//矩形底柱体
-	double a,b;
-	Rectangle(double a,double b){
-		this.a=a;
-		this.b=b;
-	}
-	public double getArea() {
-		return a*b;
-	}
-}
+2 )接下来，虚拟机搜索定义getSalary签名的类。此时，虚拟机已经知道应该调用哪个方法。
 
-public class exercise{
-	public static void main(String args[]) {
-		Pillar pillar;
-		Geometry bottom;
-		bottom=new Rectangle(12,22);
-		pillar=new Pillar(bottom,58);
-		System.out.println("矩形底柱体的体积是："+pillar.getVolume());
-		bottom=new Circle(10);
-		pillar=new Pillar(bottom,58);
-		System.out.println("圆底柱体的体积是："+pillar.getVolume());
-	}
-}
-```
-关于抽象类和final参见笔记Java基础知识笔记-5-Java语言中的修饰符
+3 )最后，虚拟机调用方法。
 
-> 继承的利弊和使用原则
+动态绑定有一个非常重要的特性：无需对现存的代码进行修改，就可以对程序进行扩展。假设增加一个新类 Executive,并且变量e有可能引用这个类的对象，我们不需要对包含调用e.getSalary()的代码进行重新编译。如果e恰好引用一个Executive类的对象，就会自动地调用 Executive.getSalary()方法。
 
-- 继承树的层次不可太多
-- 继承树的上层为抽象层
-- 继承关系最大的弱点：打破封装
-- 精心设计专门用于被继承的类
-- 区分对象的属性与继承
+> 警告：在覆盖一个方法的时候，子类方法不能低于超类方法的可见性。特别是， 如果超类方法是public, 子类方法一定要声明为public。经常会发生这类错误：在声明子类方法的时候，遗漏了public修饰符。**此时，编译器将会把它解释为试图提供更严格的访问权限。**  
 
 ### 1.7 阻止继承：final类和方法
 
@@ -1026,7 +1002,7 @@ System.out.println(t.hashCode() + " " + tb.hashCode());
 | t    | 2556     |
 | tb   | 20527144 |
 
-请注意，字符串s与t拥有相同的散列码，这是因为字符串的散列码是由内容导出的。而字符串缓冲sb与t却有着不同的散列码，**这是因为在 StringBuffer 类中没有定义hashCode方法，它的散列码是由Object类的默认hashCode方法导出的对象存储地址。**
+请注意，字符串s与t拥有相同的散列码，这是因为字符串的散列码是由内容导出的。而字符串缓冲sb与t却有着不同的散列码，**这是因为在StringBuffer类中没有定义hashCode方法，它的散列码是由Object类的默认hashCode方法导出的对象存储地址。**
 
 如果重新定义equals方法，就必须重新定义hashCode方法，以便用户可以将对象插入到散列表中（有关散列表的内容将在第9章中讨论)。  
 

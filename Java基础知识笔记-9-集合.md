@@ -64,7 +64,7 @@ expressLane.add(new Custonier("Harry"));
 
 在研究API文档时，会发现另外一组名字以Abstract开头的类，例如，AbstractQueue。这些类是为类库实现者而设计的。如果想要实现自己的队列类（也许不太可能，)会发现扩展AbstractQueue类要比实现Queue接口中的所有方法轻松得多。
 
-### 9.1.2 Collection 接口
+### 9.1.2 Collection接口
 在Java类库中，集合类的基本接口是Collection接口。这个接口有两个基本方法
 ```java
 public interface Collection<E>
@@ -100,14 +100,14 @@ Iterator<String> iter = c.iterator();
 while (iter.hasNext())
 {
 	String element = iter.next();
-	do something with element
+	//do something with element
 } 
 ```
 用“for each”循环可以更加简练地表示同样的循环操作：
 ```java
 for (String element : c)
 {
-	do something with element
+	//do something with element
 }
 ```
 
@@ -306,7 +306,7 @@ String obj=list.get(n);
 | "lee" | 107020 |
 | "eel" | 100300 |
 
-如果自定义类，就要负责实现这个类的hashCode方法。有关hashCode方法的详细内容请参看第5章。注意，自己实现的hashCode方法应该与equals方法兼容，即如果a_equals(b)为true,a与b必须具有相同的散列码。
+如果自定义类，就要负责实现这个类的hashCode方法。有关hashCode方法的详细内容请参看第5章。注意，自己实现的hashCode方法应该与equals方法兼容，即如果a.equals(b)为true,a与b必须具有相同的散列码。
 
 现在，最重要的问题是散列码要能够快速地计算出来，并且这个计算只与要散列的对象状态有关，与散列表中的其他对象无关。
 
@@ -387,3 +387,9 @@ scores.forEach((k, v) ->
 	System.out.println("key=" + k + ", value:" + v));
 ```
 
+## 9.6 遗留的集合
+
+### 9.6.1 Hashtable类
+
+Hashtable类与HashMap类的作用一样，实际上，它们拥有相同的接口。与Vector类的
+方法一样。Hashtable的方法也是同步的。如果对同步性或与遗留代码的兼容性没有任何要求，就应该使用HashMap。如果需要并发访问，则要使用ConcurrentHashMap,参见第14章。
