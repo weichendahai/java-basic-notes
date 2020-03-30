@@ -783,12 +783,14 @@ Person p = new Student("Vinee Vu", "Economics");
 
 这里的p是一个抽象类Person的变量，Person引用了一个非抽象子类Student的实例
 
+#### abstract关键字
+
 abstract修饰符可用来修饰类和成员方法;
 
 - 用abstract修饰的类表示抽象类，抽象类位于继承树的抽象层，抽象类不能被实例化，既不允许创建抽象类本身的实例。
 - 用abstract修饰的方法表示抽象方法，抽象方法没有方法体，抽象方法用来描述系统具有什么功能，但不提供具体的实现，没有用abstract修饰的方法称为具体方法，具体方法具有方法体。
 
-> abstract类和abstract方法
+#### abstract类和abstract方法
 
 用关键字abstract修饰的类称为abstract类（抽象类） 
 
@@ -807,11 +809,11 @@ abstract int min(int x,int y);
 
 对于abstract方法，只允许声明，不允许实现（没有方法体），而且不允许使用abstract和final同时修饰一个方法和类。
 
-**使用abstract修饰符需要遵守以下语法规则**
+使用abstract修饰符需要遵守以下语法规则
 
 1. 抽象类中可以没有抽象方法，但包含了抽象方法的类必须被定义为抽象类。如果子类没有实现父类中所有的抽象方法，那么子类也必须定义为抽象类，否则编译会出错。
 
-2. 没有抽象静态方法，static和abstract关键字不可在一起使用。
+2. **没有抽象静态方法，static和abstract关键字不可在一起使用。**
 
 3. 抽象类中可以有非抽象的构造方法，创建子类的实例可能会调用这些构造方法。抽象类不能被实例化，然而可以创建一个引用变量，其类型是一个抽象类，并让他引用非抽象的子类的一个实例。
 
@@ -1006,6 +1008,10 @@ System.out.println(t.hashCode() + " " + tb.hashCode());
 
 如果重新定义equals方法，就必须重新定义hashCode方法，以便用户可以将对象插入到散列表中（有关散列表的内容将在第9章中讨论)。  
 
+### 2.4 toString方法
+
+
+
 ## 3 泛型数组列表
 
 在许多程序设计语言中，特别是在C++语言中，必须在编译时就确定整个数组的大小。程序员对此十分反感，因为这样做将迫使程序员做出一些不情愿的折中。例如，在一个部门中有多少雇员？肯定不会超过100人。一旦出现一个拥有150名雇员的大型部门呢？愿意为那些仅有10名雇员的部门浪费90名雇员占据的存储空间吗？
@@ -1120,10 +1126,11 @@ a[i] = harry;
 > 警告：只有i小于或等于数组列表的大小时， 才能够调用`list.set(i,x)`。例如，下面这段代码是错误的：
 >
 > ```java
-> ArrayList<Employee> list = new ArrayListo(100); // capacity 100，size 0 list.set(0, x); // no element 0 yet
+> ArrayList<Employee> list = new ArrayListo(100); // capacity 100，size 0 
+> list.set(0, x); // no element 0 yet
 > ```
 >
->  使用add方法为数组添加新元素， 而不要使用set方法， 它只能替换数组中已经存在的元素内容。 
+> 使用add方法为数组添加新元素， 而不要使用set方法， 它只能替换数组中已经存在的元素内容。 
 
 使用下列格式获得数组列表的元素: 
 
@@ -1185,7 +1192,7 @@ Employee e = staff.remove(n);
 
 对数组实施插入和删除元素的操作其效率比较低。对于小型数组来说，这一点不必担心。但如果数组存储的元素数比较多，又经常需要在中间位置插入、删除元素， 就应该考虑使用链表了。有关链表操作的实现方式将在第9章中讲述。
 
-可以使用“foreach”循环遍历数组列表： 
+可以使用“for each”循环遍历数组列表： 
 
 ```java
 for (Employee e : staff)
@@ -1230,12 +1237,12 @@ for (int i = 0; i < staff.size(); i++) {
 > 			e.raiseSalary(5);
 > 		// print out information about all Employee objects
 > 		for (Employee e : staff)
-> 			System,out.println("name: " + e.getName() + ".salary: " + e.getSalary() + ",hi reDay=" + e.getHireDay());
+> 			System.out.println("name: " + e.getName() + ".salary: " + e.getSalary() + ",hireDay=" + e.getHireDay());
 > 	}
 > }
 > ```
 >
-> API|java.util.ArrayList<T> 1.2
+> API java.util.ArrayList<\T> 1.2
 >
 > ```java
 > void set(int index,E obj) //设置数组列表指定位置的元素值， 这个操作将覆盖这个位置的原有内容。
@@ -1310,15 +1317,15 @@ ArrayList<Employee> result = (ArrayList<Employee>) employeeDB.find(query); // yi
 
 有时，需要将int这样的基本类型转换为对象。所有的基本类型都有一个与之对应的类。例如，Integer类对应基本类型Int。通常，这些类称为包装器（wrapper)这些对象包装器类拥有很明显的名字：Integer、Long、Float、Double、Short、Byte、Character、Void和Boolean(前6个类派生于公共的超类Number)。对象包装器类是不可变的，即一旦构造了包装器，就不允许更改包装在其中的值。同时，对象包装器类还是final,因此不能定义它们的子类。
 
-假设想定义一个整型数组列表。而尖括号中的类型参数不允许是基本类型，也就是说，不允许写成ArrayList<int>。这里就用到了Integer对象包装器类。我们可以声明一个Integer对象的数组列表。
+假设想定义一个整型数组列表。而尖括号中的类型参数不允许是基本类型，也就是说，不允许写成ArrayList<\int>。这里就用到了Integer对象包装器类。我们可以声明一个Integer对象的数组列表。
 
-```
+```java
 ArrayList<Integer> list = new ArrayList<>();
 ```
 
-> 警告：由于每个值分别包装在对象中，所以ArrayList<lnteger> 的效率远远低于int[ ]数组。因此，应该用它构造小型集合，其原因是此时程序员操作的方便性要比执行效率更加重要。  
+> 警告：由于每个值分别包装在对象中，所以ArrayList<\lnteger> 的效率远远低于int[ ]数组。因此，应该用它构造小型集合，其原因是此时程序员操作的方便性要比执行效率更加重要。
 
-幸运的是，有一个很有用的特性，从而更加便于增添int类型的元素到ArrayList<Integer>中。下面这个调用
+幸运的是，有一个很有用的特性，从而更加便于增添int类型的元素到ArrayList<\Integer>中。下面这个调用
 
 ```java
 list.add(3);
