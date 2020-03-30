@@ -103,7 +103,7 @@ while (iter.hasNext())
 	do something with element
 } 
 ```
-用“foreach”循环可以更加简练地表示同样的循环操作：
+用“for each”循环可以更加简练地表示同样的循环操作：
 ```java
 for (String element : c)
 {
@@ -111,7 +111,7 @@ for (String element : c)
 }
 ```
 
-编译器简单地将“foreach”循环翻译为带有迭代器的循环。
+编译器简单地将“for each”循环翻译为带有迭代器的循环。
 
 “for each”循环可以与任何实现了Iterable接口的对象一起工作，这个接口只包含一个抽象方法：
 
@@ -138,12 +138,12 @@ it.remove(); // now remove it
 如果想删除两个相邻的元素，不能直接地这样调用：
 ```java
 it.remove();
-it.remove0;// Error
+it.remove();// Error
 ```
 相反地，必须先调用next越过将要删除的元素。
 ```java
-it,remove();
-it.next0;
+it.remove();
+it.next();
 it.remove(); // OK
 ```
 
@@ -233,8 +233,11 @@ iter.add("Juliet");
 当用一个刚刚由Iterator方法返回，并且指向链表表头的迭代器调用add操作时，新添加的元素将变成列表的新表头。当迭代器越过链表的最后一个元素时（即hasNext返回false),添加的元素将变成列表的新表尾。如果链表有n个元素，有n+1个位置可以添加新元素。这些位置与迭代器的n+1个可能的位置相对应。例如，如果链表包含3个元素，A、B、C，就有4个位置（标有丨）可以插入新元素：
 
 |ABC
+
 A|BC
+
 AB|C
+
 ABC|
 
 > 注释：在用“光标”类比时要格外小心。remove操作与BACKSPACE键的工作方式不太一样。在调用next之后，remove方法确实与BACKSPACE键一样删除了迭代器左侧的元素。但是，如果调用previous就会将右侧的元素删除掉，并且不能连续调用两次remove
