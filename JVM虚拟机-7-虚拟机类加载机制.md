@@ -119,6 +119,37 @@ public class NotInitialization {
 
 [2] 关于类构造器＜clinit＞()和方法构造器＜init＞()的生成过程和作用， 可参见第10章的相关内容。
 
+**final变量实例**
+
+对于一个final型的类变量，如果该类变量的值在编译时就可以确定下来，那么这个类变量相当于“宏变量”。Java编译器会在编译时直接把这个类变量出现的地方替换成它的值，因此即使程序使用该静态类变量，也不会导致类的初始化。如下示例程序
+
+```java
+class MyTest {
+	static {
+		System.out.println("静态初始化块...");
+	}
+	//使用一个字符串直接量为static final的类变量赋值
+	static final String compileConstant="疯狂Java讲义";   
+}
+public class CompileConstantTest {
+	public static void main(String[] args) {
+		//访问，输出MyTest中的compileConstant类变量
+		System.out.println(MyTest.compileConstant); //①
+	}
+}
+```
+
+上面程序的MyTest类章有一个compileConstant的类变量，该变量使用了final修饰，而且它的值可以在编译时确定下来，因此compileConstant会被当成“宏变量”处理。程序中所有使用compileConstant的地方都会被直接替换成它的值---也就是说，上面程序中①处的代码在编译时就会被替换成“疯狂Java讲义”，所有①行代码不会导致初始化MyTest类。
+
+反之，如果final修饰的类变量不能在编译时确定下来，则必须等到运行时才可以确定该类变量的值，如果通过该类来访问它的类变量，就会导致该类被初始化。例如将上面程序中定义compileConstant的代码改为如下
+
+```java
+//采用系统当前时间为static final类变量赋值
+static final String compileConstant=System.currentTimeMills()+"";
+```
+
+因为上面定义的cimpileConstant类变量的值必须在运行时才可以确定，所以①处的粗体字代码必须保留对MyTest类的类变量的引用，这行代码就变成了使用MyTest的类变量，这将导致MyTest类被初始化。
+
 ## 7.3 类的加载过程
 
 当调用Java命令运行某个Java程序时，该命令将会启动一个Java虚拟机进程，不管该Java程序有多么复杂，当程序启动了多少个线程，他们都处于该Java虚拟机进程里。正如前面介绍的，同一个JVM的所有线程，所有变量都处于同一个进程里，他们都使用该JVM进程的内存区。当系统出现以下几种情况时，JVM进程将被终止。
