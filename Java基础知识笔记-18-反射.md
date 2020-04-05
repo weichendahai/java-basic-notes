@@ -1,6 +1,30 @@
 Java基础知识笔记-18-反射
 
-## 3 通过反射查看类信息
+# 18 反射
+
+反射库（reflection library)提供了一个非常丰富且精心设计的工具集，以便编写能够动态操纵Java代码的程序。这项功能被大量地应用于JavaBeans中，它是Java组件的体系结构(有关JavaBeans的详细内容在卷II中阐述)。使用反射，Java可以支持VisualBasic用户习惯使用的工具。特别是在设计或运行中添加新类时，能够快速地应用开发工具动态地查询新添加类的能力。
+
+能够分析类能力的程序称为反射（reflective)。反射机制的功能极其强大，在下面可以看到，反射机制可以用来：
+
+- 在运行时分析类的能力。
+- 在运行时查看对象，例如，编写一个toString方法供所有类使用。
+- 实现通用的数组操作代码。
+- 利用Method对象，这个对象很像中的函数指针。
+
+反射是一种功能强大且复杂的机制。使用它的主要人员是工具构造者，而不是应用程序员。如果仅对设计应用程序感兴趣，而对构造工具不感兴趣，可以跳过本章的剩余部分，稍后再返回来学习。
+
+**反射机制的相关类**
+
+与Java反射相关的类如下：
+
+| 类名          | 用途                                             |
+| ------------- | ------------------------------------------------ |
+| Class类       | 代表类的实体，在运行的Java应用程序中表示类和接口 |
+| Field类       | 代表类的成员变量（成员变量也称为类的属性）       |
+| Method类      | 代表类的方法                                     |
+| Constructor类 | 代表类的构造方法                                 |
+
+## 1 通过反射查看类信息
 
 Java程序中的许多对象在运行时都会出现两种类型：编译时类型和运行时类型，例如代码Person p=new Student();这行代码将会生成一个p变量，该变量的编译时类型为Person，运行时类型为Student；除此之外，还有更极端的情形，程序在运行时接收到外部传入的一个对象，该对象的编译时类型为Object，但程序又需要调用该对象运行时类型的方法。
 
@@ -8,14 +32,12 @@ Java程序中的许多对象在运行时都会出现两种类型：编译时类�
 
 - 第一种做法是假设在编译时和运行时发现对象和类的真实信息。在这种情况下，可以先使用instanceof运算符进行判断
 
-> instanceof主要用来判断一个类是否实现了某个接口，或者判断一个实例对象是否属于一个类。
->
-> 该运算符是二目运算符，左边的操作元是一个对象，右边是一个类，当左边的对象是右边的类或子类创建的对象时，该运算符运算的结果是true,否则是false。
+> instanceof主要用来判断一个类是否实现了某个接口，或者判断一个实例对象是否属于一个类。该运算符是二目运算符，左边的操作元是一个对象，右边是一个类，当左边的对象是右边的类或子类创建的对象时，该运算符运算的结果是true,否则是false。
 >
 > 例：
 >
 > ```java
-> class instanceOfDemo{
+>class instanceOfDemo{
 > 	public static void main(String []args){
 > 		instanceOfDemo t=new instanceOfDemo();
 > 		if(t instanceof instanceOfDemo){
@@ -25,21 +47,138 @@ Java程序中的许多对象在运行时都会出现两种类型：编译时类�
 > }
 > ```
 
-### 3.1 获得Class对象
+- 第二种做法是编译时根本无法预知该对象和类可能属于哪些类，程序只依靠运行时信息来发现该对象和类的真实信息，这就必须使用反射。
 
-每个类被加载后，系统就会为该类生成一个对应的Class对象，通过该Class对象就可以访问到JVM中的这个类。在Java程序中获得Class对象通常有下列四种方式：
+### 1.1 Class类
 
-- 使用Class类的forName(String className) 静态方法，该静态方法需要传入类的全限定名称字符串。
-- 调用某个类的class属性来获得该类对应的class对象。
-- 调用某个对象的getClass()方法。
-- 调用ClassLoader实例对象的loadClass方法。
+Class 是一个类，**一个描述类的类**，封装了描述方法的Method，描述字段的Filed，描述构造器的 Constructor等属性.
 
-### 3.2 从Class中获取信息
+每个类被加载后，系统就会为该类生成一个对应的Class对象，通过该Class对象就可以访问到JVM中的这个类。
+
+获取Class对象的三种方式
+
+1.通过类名获取   类名.class
+
+2.通过对象获取   对象名.getClass()
+
+3.通过全类名获取  Class.forName(全类名)
+
+**class类的常用方法**
+
+| 方法                       | 用途                                                   |
+| -------------------------- | ------------------------------------------------------ |
+| asSubclass(Class<U> clazz) | 把传递的类的对象转换成代表其子类的对象                 |
+| Cast                       | 把对象转换成代表类或是接口的对象                       |
+| getClassLoader()           | 获得类的加载器                                         |
+| getClasses()               | 返回一个数组，数组中包含该类中所有公共类和接口类的对象 |
+| getDeclaredClasses()       | 返回一个数组，数组中包含该类中所有类和接口类的对象     |
+| forName(String className)  | 根据类名返回类的对象                                   |
+| getName()                  | 获得类的完整路径名字                                   |
+| newInstance()              | 创建类的实例                                           |
+| getPackage()               | 获得类的包                                             |
+| getSimpleName()            | 获得类的名字                                           |
+| getSuperclass()            | 获得当前类继承的父类的名字                             |
+| getInterfaces()            | 获得当前类实现的类或是接口                             |
+
+在程序运行期间，Java运行时系统始终为所有的对象维护一个被称为运行时的类型标识。这个信息跟踪着每个对象所属的类。虚拟机利用运行时类型信息选择相应的方法执行。
+
+然而，可以通过专门的Java类访问这些信息。保存这些信息的类被称为Class,这个名字很容易让人混淆。Object类中的getClass()方法将会返回一个Class类型的实例。
+
+```java
+Employee e;
+...
+Class cl = e.getClass();
+```
+
+如同用一个Employee对象表示一个特定的雇员属性一样，一个Class对象将表示一个特定类的属性。最常用的Class方法是getName。这个方法将返回类的名字。例如，下面这条语句：
+
+```java
+System.out.println(e.getClass().getName() + " " + e.getName());
+```
+
+如果e是一个雇员，则会打印输出：
+
+```
+Employee Harry Hacker
+```
+
+如果e是经理， 则会打印输出：
+
+```
+Manager Harry Hacker
+```
+
+如果类在一个包里，包的名字也作为类名的一部分：
+
+```java
+Random generator = new Random():
+Class cl = generator.getClass() ;
+String name = cl.getName(); // name is set to "java.util.Random"
+```
+
+还可以调用静态方法forName获得类名对应的Class对象。
+
+```java
+String className = "java.util.Random";
+Class cl = Class.forName(className) ;
+```
+
+如果类名保存在字符串中，并可在运行中改变，就可以使用这个方法。当然，这个方法只有在className是类名或接口名时才能够执行。否则，forName方法将抛出一个checkedexception(已检查异常）。无论何时使用这个方法，都应该提供一个异常处理器（exceptionhandler)。如何提供一个异常处理器，请参看下一节。
+
+> 提示：在启动时，包含main方法的类被加载。它会加载所有需要的类。这些被加栽的类又要加载它们需要的类，以此类推。对于一个大型的应用程序来说，这将会消耗很多时间，用户会因此感到不耐烦。可以使用下面这个技巧给用户一种启动速度比较快的幻觉。不过，要确保包含main方法的类没有显式地引用其他的类。首先，显示一个启动画面；然后，通过调用Class.forName手工地加载其他的类。
+
+获得Class类对象的第三种方法非常简单。如果T是任意的Java类型（或void关键字)，T.class将代表匹配的类对象。例如：
+
+```java
+Classcll = Random.class; // if you import java.util
+Class cl2 = int.class;
+Class cl3 = Double[].class;
+```
+
+请注意， 一个Class对象实际上表示的是一个类型，而这个类型未必一定是一种类。例如，int不是类，但int.class是一个Class类型的对象。
+
+> 注释：Class类实际上是一个泛型类。例如，Employee.class的类型是Class<Employee>。没有说明这个问题的原因是：它将已经抽象的概念更加复杂化了。在大多数实际问题中，可以忽略类型参数，而使用原始的Class类。有关这个问题更详细的论述请参看第8章
+
+> 警告：鉴于历史原getName方法在应用于数组类型的时候会返回一个很奇怪的名字：
+>
+> - Double[]class.getName()返回“[Ljava.lang.Double;’’
+> - int[].class.getName()返回“[I”，
+
+虚拟机为每个类型管理一个Class对象。因此，可以利用==运算符实现两个类对象比较的操作。例如，
+
+```java
+if (e.getClass()==Employee.class) . . .
+```
+
+还有一个很有用的方法newlnstance( )， 可以用来动态地创建一个类的实例例如，
+
+```java
+e.getClass().newlnstance();
+```
+
+创建了一个与e具有相同类类型的实例。newlnstance方法调用默认的构造器（没有参数的构造器）初始化新创建的对象。如果这个类没有默认的构造器，就会抛出一个异常
+
+将forName与newlnstance配合起来使用，可以根据存储在字符串中的类名创建一个对象
+
+```java
+String s = "java.util.Random";
+Object m = Class.forName(s) .newlnstance();
+```
+
+> 注释：如果需要以这种方式向希望按名称创建的类的构造器提供参数，就不要使用上面那条语句，而必须使用Constructor类中的newlnstance方法。
+
+> C++注释：newlnstance方法对应C++中虚拟构造器的习惯用法。然而，C++中的虚拟构造器不是一种语言特性，需要由专门的库支持。Class类与C++中的type_info类相似，getClass方法与C++中的typeid运算符等价。但Java中的Class比C++中的type_info的功能强。C++中的type_info只能以字符串的形式显示一个类型的名字，而不能创建那个类型的对象
+
+### 1.2 从Class中获取信息
+
+在java.lang.reflect包中有三个类Field、Method和Constructor分别用于描述类的域、方法和构造器。这三个类都有一个叫做getName的方法，用来返回项目的名称。Held类有一个getType方法，用来返回描述域所属类型的Class对象。Method和Constructor类有能够报告参数类型的方法，Method类还有一个可以报告返回类型的方法。这<个类还有一个叫做getModifiers的方法，它将返回一个整型数值，用不同的位开关描述public和static这样的修饰符使用状况。另外，还可以利用java.lang.reflect包中的Modifiei类的静态方法分析getModifiers返回的整型数值。例如，可以使用Modifier类中的isPublic、isPrivate或isFinal判断方法或构造器是否是public、private或final。我们需要做的全部工作就是调用Modifier类的相应方法，并对返回的整型数值进行分析，另外，还可以利用Modifier.toString方法将修饰符打印出来。
+
+Class类中的getFields、getMethods和getConstructors方法将分别返回类提供的public域、方法和构造器数组，其中包括超类的公有成员。Class类的getDeclareFields、getDeclareMethods和getDeclaredConstructors方法将分别返回类中声明的全部域、方法和构造器，其中包括私有和受保护成员，但不包括超类的成员。
 
 Class类提供了大量的实例方法来获取该Class对象所对应类的详细信息，Class类大致包含如下方法，下面每个方法都包括多个重载的版本。
 
 ```java
-package com.test.reflection;
+packagecom.test.reflection;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
@@ -93,7 +232,7 @@ public class TestReflection01 {
 				System.out.println(aasa);
 			}
 			
-			////////////////////////////////////////////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////////////////////////
 			/**
 			 * 2,属性的获取
 			 */
@@ -138,7 +277,7 @@ public class TestReflection01 {
 				System.out.println(das2);
 			}
 			
-			//////////////////////////////////////////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////////////////////////
 			
 			/**
 			 * 3,方法的获取
@@ -216,7 +355,7 @@ public class TestReflection01 {
 				}
 			}
 			
-			////////////////////////////////////////////////////////////////////////////////////////////
+			//////////////////////////////////////////////////////////////////////////
 			/**
 			 * 4,构造函数的获取
 			 */
@@ -249,7 +388,21 @@ public class TestReflection01 {
 }
 ```
 
-### 3.3 Java8新增的方法参数反射
+- **类中其他重要的方法**
+
+| 方法                                                         | 用途                             |
+| ------------------------------------------------------------ | -------------------------------- |
+| isAnnotation()                                               | 如果是注解类型则返回true         |
+| isAnnotationPresent(Class<? extends Annotation> annotationClass) | 如果是指定类型注解类型则返回true |
+| isAnonymousClass()                                           | 如果是匿名类则返回true           |
+| isArray()                                                    | 如果是一个数组类则返回true       |
+| isEnum()                                                     | 如果是枚举类则返回true           |
+| isInstance(Object obj)                                       | 如果obj是该类的实例则返回true    |
+| isInterface()                                                | 如果是接口类则返回true           |
+| isLocalClass()                                               | 如果是局部类则返回true           |
+| isMemberClass()                                              | 如果是内部类则返回true           |
+
+### 1.3 Java8 新增的方法参数反射
 
 Java 8在java.lang.reflect包下新增了一个Executable抽象基类，该对象代表可执行的类成员，该类派生了Constructor、Method两个子类。
 
@@ -273,7 +426,6 @@ Executable基类提供了大量方法来获取修饰该方法或构造器的注�
 如下程序示范了Java 8中的参数反射功能
 
 ```java
-
 import java.lang.reflect.*;
 import java.util.*;
  
@@ -318,11 +470,11 @@ replace方法参数个数：2
 泛型类型：java.util.List<java.lang.String>
 ```
 
-## 4 利用反射生成并操作对象
+## 2 利用反射生成并操作对象
 
-### 4.1 创建对象
+### 2.1 创建对象
 
-## 5 使用反射生成JDK动态代理
+## 3 使用反射生成JDK动态代理
 
 如果不懂动态代理就无法深入理解当下最流行的诸多框架的原理，如spring。首先
 

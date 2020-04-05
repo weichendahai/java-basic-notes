@@ -848,7 +848,8 @@ Timer t = new Timer(1000, event ->
 *lambda表达式未完待续*
 
 ## 4 内部类
-### 内部类的简单实例
+**内部类的简单实例**
+
 前面已经知道，类可以有两种重要的成员：变量成员和方法，实际上Java还允许类可以有另一种成员：内部类。
 
 Java支持在一个类中声明另一个类，这样的类叫做内部类。而包含内部类的类称为内部类的外嵌类。内部类的外嵌类的成员变量在内部类中仍然有效，内部类中的方法也可以调用外嵌类中的方法。  
@@ -935,3 +936,119 @@ public class exercise{
 > 然而，Java内部类还有另外一个功能，这使得它比C++的嵌套类更加丰富，用途更加广泛。内部类的对象有一个隐式引用，它引用了实例化该内部对象的外围类对象。通过这个指针，可以访问外围类对象的全部状态。在本章后续内容中，我们将会看到有关这个Java机制的详细介绍
 >
 > 在Java中，static内部类没有这种附加指针，这样的内部类与C++中的嵌套类很相似。
+
+### 4.1 使用内部类访问对象状态
+内部类的语法比较复杂。鉴于此情况，我们选择一个简单但不太实用的例子说明内部类的使用方式。下面将进一步分析TimerTest示例，并抽象出一个TalkingClock类。构造一个语音时钟时需要提供两个参数：发布通告的间隔和开关铃声的标志。
+
+```java
+public class TalkingClock
+{
+	private int interval:
+	private boolean beep;
+	public TalkingClock(int interval, boolean beep) { . . . }
+	public void start() { . . . }
+	public class TimePrinter implements ActionListener
+	// an inner class
+	{
+		//...
+	}
+}
+```
+
+需要注意，这里的TimePrinter类位于TalkingClock类内部。这并不意味着每个TalkingClock都有一个TimePrinter实例域，如前所示，TimePrinter对象是由TalkingClock类的方法构造。下面是TimePrinter类的详细内容。需要注意一点，actionPerformed方法在发出铃声之前检查了beep标志
+
+```java
+public class TimePrinter implements ActionListener
+{
+	public void actionPerformed(ActionEvent event)
+	{
+		System.out.println("At the tone, the time is " + new Date());
+		if (beep)
+            Toolkit.getDefaultToolkit().beep();
+	}
+}
+```
+
+令人惊讶的事情发生了。TimePrinter类没有实例域或者名为beep的变量，取而代之的是beep引用了创建TimePrinter的TalkingClock对象的域。这是一种创新的想法。从传统意义上讲，一个方法可以引用调用这个方法的对象数据域。内部类既可以访问自身的数据域，也可以访问创建它的外围类对象的数据域.
+
+为了能够运行这个程序，内部类的对象总有一个隐式引用，它指向了创建它的外部类对象。
+
+这个引用在内部类的定义中是不可见的。然而，为了说明这个概念，我们将外围类对象的引用称为outer。于是 actionPerformed 方法将等价于下列形式：
+
+```java
+public void actionPerformed(ActionEvent event)
+{
+	System.out.println("At the tone, the time is " + new Date());
+	if (outer.beep)
+        Toolkit.getDefaultToolkit().beep();
+}
+```
+
+外围类的引用在构造器中设置。编译器修改了所有的内部类的构造器，添加一个外围类引用的参数。因为TimePrinter类没有定义构造器，所以编译器为这个类生成了一个默认的构造器，其代码如下所示：
+
+```java
+public TimePrinter(TalkingClock clock) // automatically generated code
+{
+	outer = clock;
+}
+```
+
+请再注意一下，outer不是Java的关键字。 我们只是用它说明内部类中的机制
+
+当在 start 方法中创建了TimePrinter对象后， 编译器就会将this引用传递给当前的语音时钟的构造器：
+
+```java
+ActionListener listener = new TimePrinter(this); // parameter automatically added
+```
+
+程序清单6-7给出了一个测试内部类的完整程序。下面我们再看一下访问控制。如果有一个TimePrinter类是一个常规类，它就需要通过TalkingClock类的公有方法访问beep标志，而使用内部类可以给予改进，即不必提供仅用于访问其他类的访问器。
+
+> 注释：TimePrinter类声明为私有的。这样一来，只有TalkingClock的方法才能够构造
+> TimePrinter对象。只有内部类可以是私有类，而常规类只可以具有包可见性，或公有可见性。
+
+### 4.2 内部类的特殊语法规则
+在上一节中，已经讲述了内部类有一个外围类的引用outer。事实上，使用外围类引用的正规语法还要复杂一些。表达式
+
+```
+OuterClass.this
+```
+
+表示外围类引用。例如，可以像下面这样编写TimePrinter内部类的actionPerformed方法：
+
+```java
+public void actionPerformed(ActionEvent event)
+{
+    ...
+	if (TalkingClock.this.beep)
+		Toolkit.getDefaultToolkit().beep();
+}
+```
+
+反过来，可以采用下列语法格式更加明确地编写内部对象的构造器：
+
+```
+outerObject.new InnerClass(construction parameters)
+```
+
+例如，
+
+```java
+ActionListener listener = this.new TimePrinter();
+```
+
+在这里，最新构造的TimePrinter对象的外围类引用被设置为创建内部类对象的方法中的this引用。这是一种最常见的情况。通常，this限定词是多余的。不过，可以通过显式地命名将外围类引用设置为其他的对象。例如，如果TimePrinter是一个公有内部类，对于任意的语音时钟都可以构造一个TimePrinter ：
+
+```java
+TalkingClock jabberer = new TalkingClock(1000, true);
+TalkingOock.TimePrinter listener = jabberer.new TimePrinter();
+```
+
+需要注意，在外围类的作用域之外，可以这样引用内部类：
+
+```
+OuterClass.InnerClass
+```
+
+> 注释：内部类中声明的所有静态域都必须是final。原因很简单。我们希望一个静态域只有一个实例，不过对于每个外部对象，会分别有一个单独的内部类实例。如果这个域不是final,它可能就不是唯一的。
+> 
+> 内部类不能有static方法。Java语言规范对这个限制没有做任何解释。也可以允许有静态方法，但只能访问外围类的静态域和方法。显然，Java设计者认为相对于这种复杂性来说，它带来的好处有些得不偿失。
