@@ -2,9 +2,15 @@ Java基础知识笔记-8-泛型
 
 # 8 泛型
 
-## 1.概述
+从Java程序设计语言1.0版发布以来，变化最大的部分就是泛型。致使Java SE 5.0中增加泛型机制的主要原因是为了满足在1999年制定的最早的Java规范需求之一（JSR 14)。专家组花费了5年左右的时间用来定义规范和测试实现。
 
-Java集合有一个缺点---把一个对象“丢进”集合里之后，集合就会忘记这个对象的数据类型，当再次取出该对象时，该对象的编译类型就变成了Object类型（在运行时类型没变）
+泛型正是我们需要的程序设计手段。使用泛型机制编写的程序代码要比那些杂乱地使用Object变量，然后再进行强制类型转换的代码具有更好的安全性和可读性。泛型对于集合类尤其有用，例如，ArrayList就是一个无处不在的集合类。
+
+至少在表面上看来，泛型很像C++中的模板。与java—样，在C++中，模板也是最先被添加到语言中支持强类型集合的。但是，多年之后人们发现模板还有其他的用武之地。学习完本章的内容可以发现Java中的泛型在程序中也有新的用途。 
+
+## 1.使用泛型的原因
+
+Java集合有一个缺点——把一个对象“丢进”集合里之后，集合就会忘记这个对象的数据类型，当再次取出该对象时，该对象的编译类型就变成了Object类型（在运行时类型没变）
 
 Java集合之所以设计成这样，是因为集合的设计者不知道我们会用集合来保存什么类型的对象，所以他们把集合设计成能保存任何类型的对象，只要求很很好的通用性。但这样做会带来如下两个问题：
 
@@ -23,9 +29,20 @@ Java集合之所以设计成这样，是因为集合的设计者不知道我们�
 
 操作的数据类型被指定为一个参数，这种参数类型可以用在类、接口和方法中，分别被称为泛型类、泛型接口、泛型方法。
 
-### 1.1 一个例子
+### 1.1 类型参数的好处
 
-一个被举了无数次的例子：
+在Java中增加范型类之前，泛型程序设计是用继承实现的。ArrayList类只维护一个Object引用的数组：
+
+```java
+public class ArrayList // before generic classes
+{
+	private Object[] elementData;
+	public Object get(int i) { . . . }
+	public void add(Object o) { . . . }
+}
+```
+
+下面是一个例子：
 
 ```java
 List arrayList = new ArrayList();
@@ -40,7 +57,14 @@ for(int i = 0; i< arrayList.size();i++){
 ```
 java.lang.ClassCastException: java.lang.Integer cannot be cast to java.lang.String
 ```
-ArrayList可以存放任意类型，例子中添加了一个String类型，添加了一个Integer类型，再使用时都以String的方式使用，因此程序崩溃了。为了解决类似这样的问题（在编译阶段就可以解决），泛型应运而生。
+这种方法有两个问题。当获取一个值的时候必须进行强制转换。
+
+```java
+ArrayList files = new ArrayList();
+String filename = (String) files.get(O);
+```
+
+此外，这里没有检查错误。可以向程序中添加任何类的对象。ArrayList可以存放任意类型，例子中添加了一个String类型，添加了一个Integer类型，再使用时都以String的方式使用，因此程序崩溃了。为了解决类似这样的问题（在编译阶段就可以解决），泛型应运而生。
 
 我们将第一行声明初始化list的代码更改一下，编译器会在编译阶段就能够帮我们发现类似这样的问题。
 ```java
@@ -48,6 +72,32 @@ List<String> arrayList = new ArrayList<String>();
 ...
 //arrayList.add(100); 在编译阶段，编译器就会报错
 ```
+这使得代码具有更好的可读性。人们一看就知道这个数组列表中包含的是String对象。
+
+> 注释：前面已经提到，在Java SE 7及以后的版本中，构造函数中可以省略泛型类型：
+>
+> ```java
+> ArrayList<String> files = new ArrayList<>();
+> ```
+>
+> 省略的类型可以从变量的类型推断得出。
+
+编译器也可以很好地利用这个信息。当调用get的时候，不需要进行强制类型转换，编译器就知道返回值类型为String，而不是Object：
+
+```java
+String filename = files.get(0);
+```
+
+编译器还知道ArrayList< String> 中add方法有一个类型为String的参数。这将比使用Object类型的参数安全一些。现在， 编译器可以进行检査，避免插入错误类型的对象。例如：
+
+```java
+files.add(new File("...")); // can only add String objects to an ArrayList<String>
+```
+
+是无法通过编译的。出现编译错误比类在运行时出现类的强制类型转换异常要好得多。
+
+类型参数的魅力在于：使得程序具有更好的可读性和安全性。  
+
 ### 1.2 特性
 
 泛型只在编译阶段有效。看下面的代码：
@@ -88,7 +138,7 @@ class 类名称 <泛型标识：可以随便写任意标识号，标识指定的
 一个最普通的泛型类：
 
 ```java
-//此处T可以随便写为任意标识，常见的如T、E、K、V等形式的参数常用于表示泛型
+//此处T可以随便写为任意标识，常见的如T、E(表示集合的元素类型)、K、V(K V分别表示表的关键字与值的类型)等形式的参数常用于表示泛型
 //在实例化泛型类时，必须指定T的具体类型
 public class Generic<T>{ 
 	//key这个成员变量的类型为T,T的类型由外部指定  
@@ -214,7 +264,7 @@ public class FruitGenerator implements Generator<String> {
 	}
 }
 ```
-#### 并不存在泛型类
+**并不存在泛型子类**
 
 前面提到可以把`ArrayList<String>`类当成ArrayList的子类，事实上，`ArrayList<String>`类也确实像一种特殊的ArrayList类：该`ArrayList<String>`对象只能添加String对象作为集合元素，但实际上，系统并没有为`ArrayList<String>`对象生成新的class文件，而且也不会把`ArrayList<String>`当成新类来处理。
 
@@ -247,346 +297,7 @@ java.util.Collection<String> cs=new java.util.ArrayList<>();
 if(cs instanceof java.util.ArrayList<String>){...}
 ```
 
-## 3 泛型通配符
-
-我们知道Ingeter是Number的一个子类，同时在特性章节中我们也验证过`Generic<Ingeter>`与`Generic<Number>`实际上是相同的一种基本类型。那么问题来了，在使用`Generic<Number>`作为形参的方法中，能否使用`Generic<Ingeter>`的实例传入呢？在逻辑上类似于`Generic<Number>`和`Generic<Ingeter>`是否可以看成具有父子关系的泛型类型呢？
-
-为了弄清楚这个问题，我们使用`Generic<T>`这个泛型类继续看下面的例子：
-```java
-public void showKeyValue1(Generic<Number> obj){
-	Log.d("泛型测试","key value is " + obj.getKey());
-}
-```
-```java
-Generic<Integer> gInteger = new Generic<Integer>(123);
-Generic<Number> gNumber = new Generic<Number>(456);
-
-showKeyValue(gNumber);
-// showKeyValue这个方法编译器会为我们报错：Generic<java.lang.Integer> 
-// cannot be applied to Generic<java.lang.Number>
-// showKeyValue(gInteger);
-```
-通过提示信息我们可以看到`Generic<Integer>`不能被看作为`Generic<Number>`的子类。由此可以看出:同一种泛型可以对应多个版本（因为参数类型是不确定的），不同版本的泛型类实例是不兼容的。
-
-回到上面的例子，如何解决上面的问题？总不能为了定义一个新的方法来处理`Generic<Integer>`类型的类，这显然与java中的多台理念相违背。因此我们需要一个在逻辑上可以表示同时是`Generic<Integer>`和`Generic<Number>`父类的引用类型。由此类型通配符应运而生。
-
-我们可以将上面的方法改一下：
-```java
-public void showKeyValue1(Generic<?> obj){
-	Log.d("泛型测试","key value is " + obj.getKey());
-}
-```
-类型通配符一般是使用`?`代替具体的类型实参，注意了，此处`?`是类型实参，而不是类型形参 。重要说三遍！此处`?`是类型实参，而不是类型形参！此处`?`是类型实参，而不是类型形参 ！再直白点的意思就是，此处的`?`和Number、String、Integer一样都是一种实际的类型，可以把`?`看成所有类型的父类。是一种真实的类型。
-
-可以解决当具体类型不确定的时候，这个通配符就是`?`；当操作类型时，不需要使用类型的具体功能时，只使用Object类中的功能。那么可以用`?`通配符来表未知类型。
-
-### 3.1 设定类型通配符的上限
-
-当直接使用`List<?>`这种形式时，即表明这个List集合可以是任何泛型List的父类。但是还有一种特殊的情形，程序不希望这个`List<?>`是任何泛型List的父类，只希望他代表某一泛型List的父类。考虑一个简单的绘图程序，下面定义三个形状类。
-
-```java
-//Shape.java
-//定义一个抽象类Shape
-public abstract class Shape {
-	public abstract void draw(Canvas c);
-}
-```
-
-```java
-//Circle.java
-public class Circle extends Shape {
-	//实现画图方法，以打印字符串来模拟画图方法实现
-	public void draw(Canvas c) {
-		System.out.println("在画布"+c+"上画一个圆");
-	}
-}
-```
-
-```java
-//Canvas.java
-public class Rectangle extends Shape {
-	//实现画图方法，以打印字符串来模拟画图方法的实现
-	public void draw(Canvas c) {
-		System.out.println("把一个矩形画在画布"+c+"上");
-	}
-}
-```
-
-接下来定义一个Canvas类，该画布类可以画数量不等的形状（Shape子类的对象），那应该如何定义这个Canvas类呢？考虑如下的Canvas实现类。
-
-```java
-//Canvas.java
-public class Canvas {
-	public void drawAll(List<Shape> shapes) {
-		for(Shape s:shapes)
-			s.draw(this);
-	}
-}
-```
-
-注意上面的`drawAll()`方法的形参类型是`List<Shape>`，而`List<Circle>`并不是`List<Shape>`的子类型，因此，下面的代码会编译错误
-
-```java
-List<Circle> circleList=new ArrayList<>();
-Canvas c=new Canvas();
-//不能把List<canvas>当成List<Shape>来使用，所以下面代码引起编译错误
-c.drawAll(circleList);
-```
-
-关键在于`List<Circle>`并不是`List<Shape>>`的子类型，所以不能把`List<Circle>`对象当成`List<Shape>`使用。为了表示`List<Circle>`的父类，可以考虑使用`List<?>`，把Canvas改成如下形式
-
-```java
-//Canvas.java
-public class Canvas {
-	public void drawAll(List<?> shapes) {
-		for(Shape s:shapes)
-			s.draw(this);
-	}
-}
-```
-
-上面程序使用了通配符来表示所有的类型，上面的`drawAll()`方法可以接受`List<Circle>`对象作为参数，问题是上面的方法实现体显得极为臃肿而繁琐：使用了泛型还需要进行强制类型转换。
-
-实际上需要一种泛型表示方法。发可以表示所有的Shape泛型List的父类，为了满足这种需求，Java泛型提供了被限制的泛型通配符。被限制的泛型通配符表示如下
-
-```java
-//它表示所有Shape泛型List的父类
-List<? extends Shape>
-```
-
-上面的Canvas程序改为如下形式：
-
-```java
-//Canvas.java
-public class Canvas {
-	public void drawAll(List<? extends Shape> shapes) {
-		for(Shape s:shapes)
-			s.draw(this);
-	}
-}
-```
-
-将Canvas改为如上形式，就可以把`List<Circle>`对象当成`List<? extends Shape>`使用。即`List<? extends Shape>`可以表示`List<Circle>`，`List<Rectange>`的父类---只要List后尖括号里的类型是Shape的子类型即可。
-
-`List<? extends Shape>`是受限制通配符的例子，此处的`?`代表一个未知的类型，就像前面看到的通配符一样。但是此处的这个未知类型一定是Shape子类型或者它本身，因此可以把Shape称为这个通配符的上限。
-
-类似的，由于程序无法确定那个这个受限制的统配符的具体类型，所以不能把Shape对象及其子类的对象加入这个泛型集合中。例如，下面的代码就是错误的。
-
-```java
-public void addRectangle(List<? extends Shape> shapes) {
-	//下面代码引起编译错误
-	shapes.add(0,new Rectangle());
-}
-```
-
-与使用普通通配符相似的是，`shapes.add()`的第二个参数类型是`? extends Shape`，它表示Shape未知的子类，程序无法确定这个类型是什么，所以无法将任何对象添加到这种集合中。
-
-### 3.2 设定类型形参的上限
-
-Java泛型不仅允许在使用通配符形参是设定上限，而且可以在定义类型形参时设定上限，用于表示传给该类型形参的实际类型要么是该上限类型，要么是该上限的子类，如下面的例子
-
-```java
-public class Apple<T extends Number>
-T col;
-public static void main(String[] args) {
-	Apple<Integer> ai=new Apple<>();
-	Apple<Double> ad=new Apple<>();
-	//下面的代码将引发编译异常，下面代码试图把String类型传给T形参
-	//但String不是Number的子类型，所以引起编译错误
-	Apple<String> as=new Apple<>();
-}
-```
-
-上面程序定义了一个Apple泛型类，但是该类的类型形参上限是Number类，这表明使用Apple类时为T形参传入的实际类型参数只能是Number或者他的子类。
-
-在一种更极端的情况下，程序需要为类型形参设定多个上限（至多有一个父类上限，可以有多个接口上限），表明该类型形参必须是其父类的子类（或者本身），并且实现多个上限接口。如下代码所示
-
-```java
-//表明T类型必须是Number类或者他的子类，并且必须实现Java.io.Serializable接口
-public class Apple<T extends Bumber&java.io.Serializable>
-{...}
-```
-
-与类同时继承父类，实现接口类似的是，为类型形参指定多个上限时，所有的接口必须位于类上限之后，也就是说，如果需要为类型形参指定类上限，类上线必须位于第一位。
-
-## 4 泛型方法
-
-在java中，泛型类的定义非常简单，但是泛型方法就比较复杂了。
-
-> ## 版本1
-
-### 4.1 定义泛型方法
-
-假设需要实现这样一个方法---该方法负责将一个Object数组的所有元素添加到一个Collection集合中。考虑采用下面的代码
-
-```java
-static void fromArrayToCollection(Object[] a,Collection<Object> c) {
-	for(Object o:a) {
-		c.add(o);
-	}
-}
-```
-
-上面定义的方法没有任何问题，关键在于方法中的c形参，他的数据类型是`Collection<Object>`。正如前面所介绍的，`Collection<String>`不是`Collection<Object>`的子类型----所以这个方法的功能非常有限，它只能将`Object[]`数组的元素复制为Object（Object的子类不行）的Collection集合中，即下面的代码将引起编译错误
-
-```java
-String[] atrArr={"a","b"};
-List<String> strList=new ArrayList<>();
-//Collection<String>对象不能当成Collection<Object>使用，下面的代码会出现编译错误
-fromArrayToCollection(strArr,strList);
-```
-
-可见上面方法的参数类型不可以使用`Collection<String>`，那使用通配符`Collection<?>`是否可行呢？显然也不行，因为Java不允许把对象放进一个未知类型的集合中。
-
-为了解决这个问题，可以使用Java提供的泛型方法，就是在声明方法时定义一个或多个类型形参。
-
-将上面的方法改成如下形式
-
-```java
-static <T> void fromArrayToCollection(T[] a,Collection<T> c) {
-	for(T o:a) {
-		c.add(o);
-	}
-}
-```
-
-可以发现，泛型方法的方法签名比普通方法签名多了类型形参声明，类型形参声明以括号括起来，多个类型形参之间以逗号隔开，所有的类型形参声明妨碍方法修饰符和方法返回类型之间。
-
-下面的程序示范了完整的用法
-
-```java
-public class GenericMethodTest {
-	//声明一个泛型方法，该泛型方法中带一个T类型形参
-	static <T> void fromArrayToCollection(T[] a,Collection<T> c) {
-		for(T o:a) {
-			c.add(o);
-		}
-	}
-	public static void main(String[] args) {
-		Object[] oa=new Object[100];
-		Collection<Object> co=new ArrayList<>();
-		//下面代码中T代表Object类型
-		fromArrayToCollection(oa,co);
-		
-		String[] sa=new String[100];
-		Collection<String> co=new ArrayList<>();
-		//下面代码中T代表String类型
-		fromArrayToCollection(sa,cs);
-		
-		//下面代码中T代表Object类型
-		fromArrayToCollection(sa,co);
-		
-		Integer[] ia=new Integer[100];
-		Float[] fa=new Float[100];
-		Number[] na=new Number[100];
-		Collection<Number> cn=new ArrayList<>();
-		
-		//下面代码中T代表Number类型
-		fromArrayToCollection(ia,cn);
-		//下面代码中T代表Number类型
-		fromArrayToCollection(fa,cn);
-		//下面代码中T代表Number类型
-		fromArrayToCollection(na,cn);
-		//下面代码中T代表Object类型
-		fromArrayToCollection(na,co);
-		//下面代码中T代表String类型，但是na是一个Number数组
-		//因为Number既不是String类型，又不是他的子类，编译错误
-		//fromArrayToCollection(na,cs);
-	}
-}
-```
-
-与类，接口中使用泛型参数不同的是，方法中的泛型参数无须显式传入实际类型参数，如上面程序所示，当程序调用fromArrayToCollection()方法时，无须在调用该方法前传入String，Object等类型，但系统仍然可以知道类型形参的数据类型，因为编译器根据实参推断类型形参的值，它通常推断出最直接的类型参数，例如
-
-```java
-fromArrayToCollection(sa,cs);
-```
-
-上面代码中cs是一个`Collection<String>`类型，与方法定义时的`fromArrayToCollection(T[] a,Collection<T> c)`进行比较---只比较泛型参数，不难发现T类型形参代表的实际类型是String类型
-
-对于如下调用代码
-
-```java
-fromArrayToCollection(ia,cn);
-```
-
-上面的cn时`Collection<Number>`类型，与此方法的方法签名进行比较----只比较泛型参数，不难发现T类型形参代表了Number类型
-
-为了防编译器能准确的推断出泛型方法中类型形参的类型，不要制造迷惑
-
-```java
-public class ErrorTest {
-	//声明一个泛型方法，在该泛型方法中带一个T类型形参
-	static <T> void test(Collection<T> from,Collection<T> to) {
-		for(T ele:from) {
-			to.add(ele);
-		}
-		public static void main(String[] args) {
-			List<Object> as=new ArrayList<>();
-			List<String> ao=new ArrayList<>();
-			//下面的代码将产生编译错误
-			test(as,ao);
-		}
-	}
-}
-```
-
-上面程序中定义了test()方法，该方法用于将前一个集合里的元素复制到下一个集合中，该方法中的两个形参from,to类型都是`Collection<T>`，这要求嗲用该方法时两个集合实参中的泛型类型相同，负责编译器无法准确地推断出泛型方法中类型形参的类型。
-
-上面程序中调用test方法传入了两个实际参数，其中as的数据类型是`List<String>`，而ao的数据类型是`List<Object>`，与泛型方法签名进行对比：`test(Collection<T> a,Collection<T> c)`，编译器无法正确识别T所代表的实际类型。为了避免这种错误，可以将该方法改成如下形式：
-
-```java
-public class ErrorTest {
-	//声明一个泛型方法，在该泛型方法中带一个T类型形参
-	static <T> void test(Collection<? extends T> from,Collection<T> to) {
-		for(T ele:from) {
-			to.add(ele);
-		}
-		public static void main(String[] args) {
-			List<Object> ao=new ArrayList<>();
-			List<String> as=new ArrayList<>();
-			//下面的代码正常
-			test(as,ao);
-		}
-	}
-}
-```
-
-上面代码改变了test()方法签名，将该方法的前一个形参类型改为Collection<? extends T>，这种采用类型通配符的表示方法，只要test()方法的前一个Collection集合里的和元素类型最后一个Collction集合里元素类型恶子集即可。
-
-*那么这里产生了一个问题：到底何时使用泛型方法？何时使用类型通配符呢？接下来详细介绍泛型方法和类型通配符的区别*
-
-### 4.2 泛型方法和类型通配符的区别
-
-大多数时候可以使用泛型方法来替代类型通配符。例如，对于Java的Collection接口中的两个方法的定义：
-
-```java
-public interface Collection<E> {
-	boolean containsAll(Collection<?> c);
-	boolean addAll(Collection<? extends E> c);
-}
-```
-
-上面集合中的两个方法的形参都采用了类型通配符的形式，也可以采用泛型方法的形式，如下所示：
-
-```java
-public interface Collection<E> {
-	<T> boolean containsAll(Collection<T> c);
-	<T extends E> boolean addAll(Collection<T> c);
-}
-```
-
-上面方法使用了`<T extends E>`泛型类型，这时定义类型形参时设定上限（其中E是Collection接口里定义的类型形参，在该接口里E可以当成普通类型使用）。
-
-上面两个方法中类型形参T只使用了一次，类型形参T产生的唯一效果是可以在不同的调用点传入不同的实际类型。对于这种情况，应该使用通配符：通配符就是被设计用来支持灵活的子类化的。
-
-泛型方法允许类型新参被用来表示方法的一个或者多个参数之间的类型依赖关系，或者方法返回值与参数之间的类型依赖关系。如果没有这样的类型依赖关系，就不应该使用泛型方法。
-
-------
-
-> ## 版本2
-
-尤其是我们见到的大多数泛型类中的成员方法也都使用了泛型，有的甚至泛型类中也包含着泛型方法，这样在初学者中非常容易将泛型方法理解错了。
+## 3 泛型方法
 
 泛型类，是在实例化类的时候指明泛型的具体类型；泛型方法，是在调用方法的时候指明泛型的具体类型 。
 
@@ -596,22 +307,52 @@ public interface Collection<E> {
  * @param tClass 传入的泛型实参
  * @return T 返回值为T类型
  * 说明：
- *     1）public 与 返回值中间<T>非常重要，可以理解为声明此方法为泛型方法。
+ *     1）public与返回值中间<T>非常重要，可以理解为声明此方法为泛型方法。
  *     2）只有声明了<T>的方法才是泛型方法，泛型类中的使用了泛型的成员方法并不是泛型方法。
  *     3）<T>表明该方法将使用泛型类型T，此时才可以在方法中使用泛型类型T。
  *     4）与泛型类的定义一样，此处T可以随便写为任意标识，常见的如T、E、K、V等形式的参数常用于表示泛型。
  */
-public <T> T genericMethod(Class<T> tClass)throws InstantiationException,
-	IllegalAccessException{
+public <T> T genericMethod(Class<T> tClass) throws InstantiationException,IllegalAccessException {
 		T instance = tClass.newInstance();
 		return instance;
+}
+
+class ArrayAlg
+{
+	public static <T> T getMiddle(T... a)
+	{
+		return a[a.length / 2];
+	}
 }
 ```
 
 ```
 Object obj = genericMethod(Class.forName("com.test.test"));
 ```
-### 4.1 泛型方法的基本用法
+
+这个方法是在普通类中定义的，而不是在泛型类中定义的。然而，这是一个泛型方法，可以从尖括号和类型变量看出这一点。注意，类型变量放在修饰符（这里是public static)的后面，返回类型的前面。
+
+泛型方法可以定义在普通类中，也可以定义在泛型类中。
+
+当调用一个泛型方法时，在方法名前的尖括号中放r入具体的类型：
+
+```java
+String middle = ArrayAlg.<String>getMiddle("JohnM", "Q.n", "Public");
+```
+
+在这种情况（实际也是大多数情况）下，方法调用中可以省略<\String>类型参数。编译器有足够的信息能够推断出所调用的方法。它用names的类型（即 String[]) 与泛型类型T[]进行匹配并推断出T一定是String。也就是说，可以调用
+
+```java
+String middle = ArrayAlg.getHiddle("John", "Q.", "Public");  
+```
+
+几乎在大多数情况下，对于泛型方法的类型引用没有问题。 偶尔， 编译器也会提示错误， 此时需要解译错误报告。看一看下面这个示例：
+
+```java
+double middle = ArrayAlg.getMiddle(3.14, 1729, 0);
+```
+
+错误消息会以晦涩的方式指出（不同的编译器给出的错误消息可能有所不同）：解释这句代码有两种方法，而且这两种方法都是合法的。简单地说，编译器将会自动打包参数为1个Double和2个Integer对象，而后寻找这些类的共同超类型。事实上；找到2个这样的超类型：Number和Comparable接口，其本身也是一个泛型类型。在这种情况下，可以采取的补救措施是将所有的参数写为double值。 
 
 光看上面的例子有的同学可能依然会非常迷糊，我们再通过一个例子，把我泛型方法再总结一下。
 
@@ -687,8 +428,6 @@ public class GenericTest {
 	}
 }
 ```
-### 4.2 类中的泛型方法
-
 当然这并不是泛型方法的全部，泛型方法可以出现杂任何地方和任何场景中使用。但是有一种情况是非常特殊的，当泛型方法出现在泛型类中时，我们再通过一个例子看一下
 
 ```java
@@ -750,87 +489,473 @@ public class GenericFruit {
 	}
 }
 ```
-### 4.3 泛型方法与可变参数
 
-再看一个泛型方法和可变参数的例子：
+## 4 泛型变量的限定
+
+有时，类或方法需要对类型变量加以约束。下面是一个典型的例子。我们要计算数组中的最小元素：
+
 ```java
-public <T> void printMsg( T... args){
-	for(T t : args){
-		Log.d("泛型测试","t is " + t);
+class ArrayAIg
+{
+	public static <T> T min(T[] a) // almost correct
+	{
+		if (a == null || a.length = 0) return null;
+		T smallest = a[0] ;
+		for (int i = 1; i < a.length; i++)
+			if (smallest.compareTo(a[i]) > 0) smallest = a[i];
+				return smallest;
 	}
 }
 ```
-```
-printMsg("111",222,"aaaa","2323.4",55.55);
-```
-### 4.4 静态方法与泛型
 
-静态方法有一种情况需要注意一下，那就是在类中的静态方法使用泛型：静态方法无法访问类上定义的泛型；如果静态方法操作的引用数据类型不确定的时候，必须要将泛型定义在方法上。
-
-即：如果静态方法要使用泛型的话，必须将静态方法也定义成泛型方法 。
+但是，这里有一个问题。请看一下min方法的代码内部。变量smallest类型为T，这意味着它可以是任何一个类的对象。怎么才能确信T所属的类有compareTo方法呢？解决这个问题的方案是将T限制为实现了Comparable接口（只含一个方法compareTo的标准接口）的类。可以通过对类型变量T设置限定（bound) 实现这一点：
 
 ```java
-public class StaticGenerator<T> {
-	....
-	....
+public static <T extends Comparab1e> T min(T[] a) . . .
+```
+
+实际上Comparable接口本身就是一个泛型类型。目前，我们忽略其复杂性以及编译器产生的警告。第8.8节讨论了如何在Comparable接口中适当地使用类型参数。现在，泛型的min方法只能被实现了Comparable接口的类（如String、LocalDate等）的数组调用。由于Rectangle类没有实现Comparable接口，所以调用min将会产生一个编译错误。
+
+> C++注释：在C++中不能对模板参数的类型加以限制。如果程序员用一个不适当的类型实例化一个模板，将会在模板代码中报告一个（通常是含糊不清的）错误消息。
+
+读者或许会感到奇怪——在此为什么使用关键字extends而不是implements?毕竟，Comparable是一个接口。下面的记法
+
+```java
+<T extends BoundingType>
+```
+
+表示T应该是绑定类型的子类型（subtype)。T和绑定类型可以是类，也可以是接口。选择关键字extends的原因是更接近子类的概念，并且Java的设计者也不打算在语言中再添加一个新的关键字（如sub)。
+
+一个类型变量或通配符可以有多个限定，例如：
+
+```java
+T extends Comparable & Serializable
+```
+
+限定类型用“&”分隔，而逗号用来分隔类型变量。
+
+在Java的继承中，可以根据需要拥有多个接口超类型，但限定中至多有一个类。如果用一个类作为限定，它必须是限定列表中的第一个。
+
+在程序清单8-2的程序中，重新编写了一个泛型方法minmax。这个方法计算泛型数组的最大值和最小值，并返回Pair< T>。
+
+程序清单 8-2 pair2/PairTest2.java
+
+```java
+package pair2;
+
+import java.time.*;
+
+/**
+* ©version 1.02 2015-06-21
+* ©author Cay Horstmann
+*/
+
+public class PairTest2
+{
+	public static void main(String[] args)
+	{
+		Local Date[] birthdays =
+			{
+				Local Date.of(1906, 12, 9), // G. Hopper
+				Local Date.of(1815, 12, 10), // A. Lovelace
+				Local Date.of(1903, 12, 3), // J. von Neumann
+				Local Date.of(1910, 6, 22), // K. Zuse
+			};
+		Pair<LocalDate> mm = ArrayAlg.minmax(birthdays);
+		System.out.println("min = " + min.getFirst());
+		System.out.println("max = " + mm.getSecond());
+	}
+}
+
+class ArrayAlg
+{
 	/**
-	* 如果在类中定义使用泛型的静态方法，需要添加额外的泛型声明（将这个方法定义成泛型方法）
-	* 即使静态方法要使用泛型类中已经声明过的泛型也不可以。
-	* 如：public static void show(T t){..},此时编译器会提示错误信息：
-	"StaticGenerator cannot be refrenced from static context"
+	Gets the minimum and maximum of an array of objects of type T.
+	@param a an array of objects of type T
+	©return a pair with the min and max value, or null if a is
+	null or empty
 	*/
-	public static <T> void show(T t){
+	
+	public static <T extends Comparabl> Pair<T> minmax(T[] a)
+	{
+		if (a == null || a.length == 0) return null ;
+		T min = a[0];
+		T max = a[0];
+		for (int i = 1; i < a.length;i++)
+		{
+			if (min.compareTo(a[i]) > 0) min = a[i];
+			if (max.compareTo(a[i]) < 0) max = a[i];
+		}
+		return new Pairo<>(min, max);
+	}
+}  
+```
 
+## 5 泛型代码和虚拟机
+
+### 5.1 类型擦除
+
+无论何时定义一个泛型类型，都自动提供了一个相应的原始类型（raw type）。原始类型的名字就是删去类型参数后的泛型类型名。擦除（erased）类型变量，并替换为限定类型（无限定的变量用Object）。
+
+例如，Pair< T> 的原始类型如下所示：
+
+```java
+public class Pair
+{
+	private Object first;
+	private Object second;
+	public Pair(Object first, Object second)
+	{
+		this.first = first;
+		this.second = second;
+    }
+	public Object getFirst() { return first; }
+	public Object getSecond() { return second; }
+	public void setFirst(Object newValue) { first = newValue; }
+	public void setSecond(Object newValue) { second = newValue; }
+}  
+```
+
+因为T是一个无限定的变量，所以直接用Object替换。
+
+结果是一个普通的类，就好像泛型引入Java语言之前已经实现的那样。
+
+在程序中可以包含不N类型的Pair，例如，Pair< String>或Pair< LocalDate>。而擦除类型后就变成原始的Pair类型了。
+
+>C++注释：就这点而言，Java泛型与C++模板有很大的区别。C++中每个模板的实例化产生不同的类型，这一现象称为“模板代码膨账”。Java不存在这个问题的困扰。
+
+原始类型用第一个限定的类型变量来替换，如果没有给定限定就用Object替换。例如，类Pair< T>中的类型变量没有显式的限定，因此，原始类型用Object替换T。假定声明了一个不同的类型。
+
+```java
+public class Interval <T extends Comparable & Serializable> implements Serializable
+{
+	private T lower;
+	private T upper;
+	public Interval (T first, T second)
+	{
+		if (first.compareTo(second) <= 0) { lower = first; upper = second; }
+		else { lower = second; upper = first; }
 	}
 }
 ```
-### 4.5 泛型方法总结
 
-泛型方法能使方法独立于类而产生变化，以下是一个基本的指导原则：
-
-无论何时，如果你能做到，你就该尽量使用泛型方法。也就是说，如果使用泛型方法将整个类泛型化，那么就应该使用泛型方法。另外对于一个static的方法而已，无法访问泛型类型的参数。所以如果static方法要使用泛型能力，就必须使其成为泛型方法。
-
-## 5 关于泛型数组
-
-看到了很多文章中都会提起泛型数组，经过查看sun的说明文档，在java中是”不能创建一个确切的泛型类型的数组”的。
-
-也就是说下面的这个例子是不可以的：
-```java
-List<String>[] ls = new ArrayList<String>[10];  
-```
-而使用通配符创建泛型数组是可以的，如下面这个例子：
-```java
-List<?>[] ls = new ArrayList<?>[10];
-```
-这样也是可以的：
-```java
-List<String>[] ls = new ArrayList[10];
-```
-下面使用Sun的一篇文档的一个例子来说明这个问题：
+原始类型 Interval 如下所示：
 
 ```java
-List<String>[] lsa = new List<String>[10]; // Not really allowed.    
-Object o = lsa;    
-Object[] oa = (Object[]) o;    
-List<Integer> li = new ArrayList<Integer>();    
-li.add(new Integer(3));    
-oa[1] = li; // Unsound, but passes run time store check    
-String s = lsa[1].get(0); // Run-time error: ClassCastException.
+public class Interval implements Serializable
+{
+	private Comparable lower;
+	private Comparable upper;
+	public Interval (Comparable first, Comparable second) { . . . }
+}
 ```
 
-> 这种情况下，由于JVM泛型的擦除机制，在运行时JVM是不知道泛型信息的，所以可以给oa[1]赋上一个ArrayList而不会出现异常，但是在取出数据的时候却要做一次类型转换，所以就会出现ClassCastException，如果可以进行泛型数组的声明，上面说的这种情况在编译期将不会出现任何的警告和错误，只有在运行时才会出错。而对泛型数组的声明进行限制，对于这样的情况，可以在编译期提示代码有类型安全问题，比没有任何提示要强很多。
+> 注释：读者可能想要知道切换限定：classInterval<T extends Serializable & Comparable>会发生什么。 如果这样做，原始类型用Serializable替换T, 而编译器在必要时要向Comparable插入强制类型转换。为了提高效率，应该将标签（tagging) 接口（即没有方法的接口）放在边界列表的末尾。  
 
-下面采用通配符的方式是被允许的:数组的类型不可以是类型变量，除非是采用通配符的方式，因为对于通配符的方式，最后取出数据是要做显式的类型转换的。
+### 5.2 翻译泛型表达式
+当程序调用泛型方法时，如果擦除返回类型，编译器插入强制类型转换。例如，下面这个语句序列
 
 ```java
-List<?>[] lsa = new List<?>[10]; // OK, array of unbounded wildcard type.    
-Object o = lsa;    
-Object[] oa = (Object[]) o;    
-List<Integer> li = new ArrayList<Integer>();    
-li.add(new Integer(3));    
-oa[1] = li; // Correct.    
-Integer i = (Integer) lsa[1].get(0); // OK 
+Pair<Employee> buddies = ...;
+Employee buddy = buddies.getFirst();
 ```
-> 最后
 
-本文中的例子主要是为了阐述泛型中的一些思想而简单举出的，并不一定有着实际的可用性。另外，一提到泛型，相信大家用到最多的就是在集合中，其实，在实际的编程过程中，自己可以使用泛型去简化开发，且能很好的保证代码质量。
+擦除getFirst的返回类型后将返回Object类型。编译器自动插入Employee的强制类型转换。也就是说，编译器把这个方法调用翻译为两条虚拟机指令：
+
+- 对原始方法Pair.getFirst的调用。
+- 将返回的Object类型强制转换为Employee类型。
+
+当存取一个泛型域时也要插入强制类型转换。假设Pair类的first域和second域都是公有的（也许这不是一种好的编程风格，但在Java中是合法的)。表达式：
+
+```java
+Employee buddy = buddies.first;
+```
+
+也会在结果字节码中插入强制类型转换。
+
+### 5.3 翻译泛型方法
+
+### 5.4 调用遗留代码
+
+## 6 约束与局限性
+
+在下面几节中，将阐述使用Java泛型时需要考虑的一些限制。大多数限制都是由类型擦除引起的。
+
+### 6.1 不能用基本类型实例化类型参数
+
+不能用类型参数代替基本类型。因此，没有Pair< double>，只有Pair< Double>。当然，其原因是类型擦除。擦除之后，Pair类含有Object类型的域，而Object不能存储double值
+
+这的确令人烦恼。但是，这样做与Java语言中基本类型的独立状态相一致。这并不是一个致命的缺陷——只有8种基本类型，当包装器类型（wrappertype)不能接受替换时，可以使用独立的类和方法处理它们。
+
+### 6.2 运行时类型查询只适用于原始类型
+虚拟机中的对象总有一个特定的非泛型类型。因此，所有的类型查询只产生原始类型。
+
+例如：
+
+```java
+if (a instanceof Pair<String>) // Error
+```
+
+实际上仅仅测试 a 是否是任意类型的一个 Pair。下面的测试同样如此：
+
+```java
+if (a instanceof Pair<T>) // Error
+```
+
+或强制类型转换：
+
+```java
+Pair<String> p = (Pair<String>) a; // Warning-can only test that a is a Pair
+```
+
+为提醒这一风险，试图查询一个对象是否属于某个泛型类型时，倘若使用instanceof会得到一个编译器错误，如果使用强制类型转换会得到一个警告。
+
+同样的道理，getClass方法总是返回原始类型。例如：
+
+```java
+Pair<String> stringPair = . . .;
+Pair<Employee> employeePair = . . .;
+if (stringPair.getClass() == employeePair.getClass()) // they are equal
+```
+
+其比较的结果是 true, 这是因为两次调用 getClass 都将返回 Pair.class 。  
+
+### 6.3 不能创建参数化类型的数组
+不能实例化参数化类型的数组， 例如：
+
+```java
+Pair<String>[] table = new Pair<String>[10]; // Error
+```
+
+这有什么问题呢？ 擦除之后，table的类型是Pair[]。可以把它转换为Object[]:
+
+```java
+Object[] objarray = table;
+```
+
+数组会记住它的元素类型，如果试图存储其他类型的元素，就会抛出一个ArrayStoreException异常：
+
+```java
+objarray[0] = "Hello"; // Error component type is Pair
+```
+
+不过对于泛型类型，擦除会使这种机制无效。以下赋值：
+
+```java
+objarray[0] = new Pair <Employee>();
+```
+
+能够通过数组存储检査，不过仍会导致一个类型错误。出于这个原因，不允许创建参数化类型的数组。
+
+需要说明的是，只是不允许创建这些数组，而声明类型为Pair< String>[]的变量仍是合法的。不过不能用new Pair< String>[10]初始化这个变量。
+
+> 注释：可以声明通配类型的数组，然后进行类型转换：Pair< String>[] table = (Pair< String>[]) new Pair< ?>[10];
+>
+> 结果将是不安全的。如果在table[0]中存储一个Pair< Employee>,然后对table[0].
+> getFirst()调用一个String方法，会得到一个ClassCastException异常。
+
+> 提示：如果需要收集参数化类型对象，只有一种安全而有效的方法：使用ArrayList:ArrayList< Pair < String>>
+
+### 6.6 关于泛型数组
+
+就像不能实例化一个泛型实例一样，也不能实例化数组。不过原因有所不同，毕竟数组会填充null值，构造时看上去是安全的。不过， 数组本身也有类型，用来监控存储在虚拟机中的数组。这个类型会被擦除。 例如， 考虑下面的例子：
+
+```java
+public static <T extends Comparable〉T[] minmax(T[] a) { T[] mm = new T[2]; . . . } // Error
+```
+
+类型擦除会让这个方法永远构造Comparable[2]数组。
+
+如果数组仅仅作为一个类的私有实例域，就可以将这个数组声明为Object[]，并且在获取元素时进行类型转换。例如
+
+ArrayList类可以这样实现：
+
+```java
+public class ArrayList<E>
+{
+	private Object[] elements;
+    ...
+	@SuppressWarnings("unchecked") public E get (int n) { return (E) elements[n]; }
+	public void set (int n, E e) { elements[n] = e; } // no cast needed
+}
+```
+
+实际的实现没有这么清晰：
+
+```java
+public class ArrayList<E>
+{
+	private E[] elements;
+	public ArrayList() { elements = (E[]) new Object[10]; }
+}
+```
+
+这里，强制类型转换E[]是一个假象，而类型擦除使其无法察觉。
+
+由于minmax方法返回T[]数组，使得这一技术无法施展， 如果掩盖这个类型会有运行时错误结果。假设实现代码：
+
+```java
+public static <T extends Comparable> T[] minmax(T... a)
+{
+	Object[] mm = new Object[2];
+	return (T[]) mm; // compiles with warning
+}
+```
+
+调用
+
+```java
+String[] ss = ArrayAlg.minmax("Tom", "Dick", "Harry");
+```
+
+编译时不会有任何警告。当Object[]引用赋给Comparable[]变量时，将会发生ClassCastException异常。
+
+在这种情况下，最好让用户提供一个数组构造器表达式：
+
+```java
+String[] ss = ArrayAlg.minmax(String[]::new,"Tom", "Dick", "Harry");
+```
+
+构造器表达式Stringxnew指示一个函数，给定所需的长度，会构造一个指定长度的String数组。
+
+minmax方法使用这个参数生成一个有正确类型的数组：
+
+```java
+public static <T extends Comparable> T[] minmax(IntFunction<T[]> constr, T... a)
+{
+	T[] mm = constr.apply(2);
+    ...
+}
+```
+
+比较老式的方法是利用反射，调用Array.newlnstance:
+
+```java
+public static <T extends Comparable> T[] minmax(T... a)
+{
+	T[] mm = (T[]) Array.newlnstance(a.getClass().getComponentType() , 2);
+	...
+}
+```
+
+ArrayList类的toArray方法就没有这么幸运。它需要生成一个T[] 数组，但没有成分类型。因此，有下面两种不同的形式：
+
+```
+Object[] toArray()
+T[] toArray(T[] result)
+```
+
+第二个方法接收一个数组参数。如果数组足够大，就使用这个数组。否则，用result的成分类型构造一个足够大的新数组。
+
+## 7 泛型类型的继承规则
+在使用泛型类时，需要了解一些有关继承和子类型的准则。下面先从许多程序员感觉不太直观的情况开始。考虑一个类和一个子类， 如 Employee 和 Manager。Pair< Manager> 是Par< Employee> 的一个子类吗？ 答案是“ 不是”， 或许人们会感到奇怪。例如， 下面的代码将不能编译成功：
+
+```java
+Manager[] topHonchos = ...;
+Pair<Employee> result = ArrayAlg.ininmax(topHonchos) ; // Error
+```
+
+minmax方法返回Pair< Manager>，而不是Pair< Employee>，并且这样的赋值是不合法的。
+
+无论S与T有什么联系 （如图8-1所示，) 通常，Pair< S>与Pair< T> S有什么联系。
+
+这一限制看起来过于严格，但对于类型安全非常必要。假设允许将 Pair< Manager> 转换为Pair< Employee>。考虑下面代码： 
+
+```java
+Pair<Manager> managerBuddies = new Pair<>(ceo, cfo);
+Pair<Employee> employeeBuddies = managerBuddies; // illegal , but suppose it wasn't
+employeeBuddies.setFirst(lowlyEmployee);
+```
+
+显然，最后一句是合法的。但是employeeBuddies和managerBuddies引用了同样的对象。现在将CFO和一个普通员工组成一对，这对于说应该是不可能的。
+
+> 注释：必须注意泛型与Java数组之间的重要区别。可以将一个Manager[] 数组賦给一个类型为Employee[]的变量：
+>
+> ```java
+> Manager[] managerBuddies = { ceo, cfo };
+> Employee[] employeeBuddies = managerBuddies; // OK
+> ```
+>
+> 然而，数组带有特别的保护。如果试图将一个低级别的雇员存储到employeeBuddies[0]，虚拟机将会抛出ArrayStoreException异常。  
+
+泛型类可以扩展或实现其他的泛型类。就这一点而言，与普通的类没有什么区别。例如，ArrayList< T>类实现List< T>接口。这意味着，一个ArrayList< Manager>可以被转换为一个List< Manager>。但是，如前面所见，一个ArrayList< Manager>不是一个ArrayList < Employee>或List< Employee>。
+
+## 8 泛型通配符
+
+### 8.1 通配符概念
+通配符类型中，允许类型参数变化。例如，通配符类型
+
+```java
+Pair<? extends Employe>
+```
+
+表示任何泛型Pair类型，它的类型参数是Employee的子类，如Pair< Manager>，但不是Pair< String>。
+
+假设要编写一个打印雇员对的方法， 像这样：
+
+```java
+public static void printBuddies(Pair<Employee> p)
+{
+	Employee first = p.getFirst();
+	Employee second = p.getSecond();
+	Systefn.out.println(first.getName() + " and " + second.getName() + " are buddies.");
+}
+```
+
+正如前面讲到的，不能将 Pair< Manager> 传递给这个方法，这一点很受限制。解决的方法很简单：使用通配符类型：
+
+```java
+public static void printBuddies(Pair<? extends Employee> p)
+```
+
+类型Pair< Manager> 是Pair< ? extends Employee>的子类型
+
+使用通配符会通过Pair< ? extends Employee>的引用破坏Pair< Manager>吗？
+
+```java
+Pair<Manager> managerBuddies = new Pairo<>(ceo, cfo) ;
+Pair<? extends Employee> wildcardBuddies = managerBuddies; // OK
+wi1dcardBuddies.setFirst(lowlyEnployee); // compile-time error
+```
+
+这可能不会引起破坏。对 setFirst 的调用有一个类型错误。要了解其中的缘由，请仔细看一看类型 Pair< ? extends Employee>。其方法似乎是这样的：
+
+```java
+? extends Employee getFirst()
+void setFirst(? extends Employee)
+```
+
+这样将不可能调用 setFirst 方法。编译器只知道需要某个Employee的子类型，但不知道具体是什么类型。它拒绝传递任何特定的类型。毕竟？不能用来匹配。
+
+使用getFirst就不存在这个问题： 将getFirst的返回值赋给一个Employee的引用完全合法。
+
+这就是引入有限定的通配符的关键之处。现在已经有办法区分安全的访问器方法和不安全的更改器方法了。
+
+### 8.3 无限定通配符
+还可以使用无限定的通配符，例如，Pair< ?>。初看起来，这好像与原始的Pair类型一样。实际上， 有很大的不同。类型Pair< ?>有以下方法：
+
+```java
+? getFirst()
+void setFirst(7)
+```
+
+getFirst 的返回值只能赋给一个Object。setFirst方法不能被调用， 甚至不能用Object调用。Pair< ?> 和Pair本质的不同在于：可以用任意Object对象调用原始Pair类的setObject方法。
+
+> 注释：可以调用 setFirst(null)
+
+为什么要使用这样脆弱的类型？它对于许多简单的操作非常有用。例如，下面这个方法将用来测试一个pair是否包含一个null 引用，它不需要实际的类型。
+
+```java
+public static boolean hasNulls(Pair<?> p)
+{
+	return p.getFirst() = null || p.getSecond() = null;
+}
+```
+
+通过将hasNulls转换成泛型方法，可以避免使用通配符类型：
+
+```java
+public static <T> boolean hasNulls(Pair<T> p)
+```
+
+但是，带有通配符的版本可读性更强。  
