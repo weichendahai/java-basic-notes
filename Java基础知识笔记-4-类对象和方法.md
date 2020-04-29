@@ -1389,8 +1389,8 @@ public class Card {
 > 注释： 没有必要在每一行的开始用星号\*， 例如， 以下注释同样是合法的：
 ```java
 /**
-A <code>Card< / code> object represents a playing card , such
-as "Queen of Hearts". A card has a suit (Diamond， Heart ,
+A <code>Card</code> object represents a playing card , such
+as "Queen of Hearts". A card has a suit (Diamond, Heart ,
 Spade or Club) and a value (1 = Ace, 2 . . . 10, 11 = jack ,
 12 = Queen, 13 = King) .
 */
@@ -1436,7 +1436,7 @@ public static final int HEARTS = 1;
 - `@see`引用
   这个标记将在“see also”部分增加一个超级链接。它可以用于类中，也可以用于方法中。这里的引用可以选择下列情形之一：
 
-  ```html
+  ```java
   package.class#feature label
   <a href="...">lable</a>
   "test"
@@ -1455,19 +1455,17 @@ public static final int HEARTS = 1;
   如果@see标记后面有一个<字符，就需要指定一个超链接。可以超链接到任何URL。例如：
 
   ```java
-  @see <a href="m«w.horstmann .com/corejava.html">The Core Java home page</a>
+  @see <a href="www.horstmann.com/corejava.html">The Core Java home page</a>
   ```
 
   在上述各种情况下， 都可以指定一个可选的标签(label)作为链接锚(link anchor)如果省略了label,用户看到的锚的名称就是目标代码名或URL。
 
-  如果@see 标记后面有一个双引号（"）字符， 文本就会显示在“ see also” 部分。
-
-  例如，
+  如果@see标记后面有一个双引号（"）字符， 文本就会显示在“ see also” 部分。例如，
 
   ```java
-  @see "Core Java 2 volume 2"
+@see "Core Java 2 volume 2"
   ```
-
+  
   可以为一个特性添加多个`@see`标记，但必须将它们放在一起。
 - 如果愿意的话， 还可以在注释中的任何位置放置指向其他类或方法的超级链接， 以及插入一个专用的标记，例如，
 
