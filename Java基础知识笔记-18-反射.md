@@ -693,7 +693,7 @@ public class Test {
 
 当执行printer.print();时会自动调用invoke方法，很多初学者不理解为什么能调用这个方法，回忆一下创建代理对象的时候是通过
 
-```text
+```java
 return Proxy.newProxyInstance(targetObject.getClass().getClassLoader(),targetObject.getClass().getInterfaces(),this);
 ```
 
